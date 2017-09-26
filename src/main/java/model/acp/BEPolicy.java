@@ -1,5 +1,7 @@
 package model.acp;
 
+import model.acp.ToInclude.PolicyMetadata;
+
 import java.util.List;
 
 /**
@@ -8,6 +10,8 @@ import java.util.List;
 public class BEPolicy {
 
     private String id;
+
+    private String description;
 
     /**
      * 1) user = Alice ^ loc = 2065
@@ -29,7 +33,7 @@ public class BEPolicy {
      * 2) Concierge
      * 3) Noodle
      */
-    private List<String> purpose;
+    private String purpose;
 
     /**
      * 1) Allow
@@ -37,5 +41,16 @@ public class BEPolicy {
      */
     private String action;
 
+    public void print(){
+        System.out.println
+    }
 
+    public BEPolicy(String id, String description, List<ObjectCondition> object_conditions, List<QuerierCondition> querier_conditions, String purpose, String action) {
+        this.id = id;
+        this.description = description;
+        this.object_conditions = object_conditions;
+        this.querier_conditions = querier_conditions;
+        this.purpose = purpose;
+        this.action = action;
+    }
 }
