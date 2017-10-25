@@ -1,4 +1,4 @@
-package model;
+package model.data;
 
 /**
  * Created by cygnus on 7/7/17.

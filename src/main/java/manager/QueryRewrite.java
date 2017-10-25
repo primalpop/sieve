@@ -1,5 +1,7 @@
-import model.Infrastructure;
-import model.User;
+package manager;
+
+import model.data.Infrastructure;
+import model.data.User;
 import util.QueryManager;
 
 /**

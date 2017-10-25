@@ -1,0 +1,196 @@
+[{
+  "id": "1",
+  "description": "Policy example 1",
+  "metadata": {},
+  "object_condtions": [{
+    "attribute": "Presence.timeStamp",
+    "value": "5 pm",
+    "operator": ">="
+  },
+    {
+      "attribute": "Presence.timeStamp",
+      "value": "7 pm",
+      "operator": "<="
+    },
+    {
+      "attribute": "Presence.timeStamp",
+      "value": "Alice",
+      "operator": "="
+    }
+  ],
+  "querier_conditions": [{
+    "attribute": "Query.timeStamp",
+    "value": "6 pm",
+    "operator": ">="
+  },
+    {
+      "attribute": "Query.timeStamp",
+      "value": "8 pm",
+      "operator": "<="
+    },
+    {
+      "attribute": "Query.user_name",
+      "value": "John",
+      "operator": "="
+    }
+  ],
+  "purpose": ["*"],
+  "action": ["Presence.location"]
+},
+  {
+    "id": "2",
+    "description": "Policy example 2",
+    "metadata": {},
+    "object_condtions": [{
+      "attribute": "Presence.timeStamp",
+      "value": "7 pm",
+      "operator": ">="
+    },
+      {
+        "attribute": "Presence.timeStamp",
+        "value": "9 pm",
+        "operator": "<="
+      },
+      {
+        "attribute": "Presence.timeStamp",
+        "value": "Alice",
+        "operator": "="
+      }
+    ],
+    "querier_conditions": [{
+      "attribute": "Query.timeStamp",
+      "value": "6 pm",
+      "operator": ">="
+    },
+      {
+        "attribute": "Query.timeStamp",
+        "value": "8 pm",
+        "operator": "<="
+      },
+      {
+        "attribute": "Query.user_name",
+        "value": "John",
+        "operator": "="
+      }
+    ],
+    "purpose": ["*"],
+    "action": ["Presence.location"]
+  },
+  {
+    "id": "3",
+    "description": "Policy example 3",
+    "metadata": {},
+    "object_condtions": [{
+      "attribute": "Presence.timeStamp",
+      "value": "7 pm",
+      "operator": ">="
+    },
+      {
+        "attribute": "Presence.timeStamp",
+        "value": "9 pm",
+        "operator": "<="
+      },
+      {
+        "attribute": "Presence.user",
+        "value": "Alice",
+        "operator": "="
+      }
+    ],
+    "querier_conditions": [{
+      "attribute": "Query.timeStamp",
+      "value": "6 pm",
+      "operator": ">="
+    },
+      {
+        "attribute": "Query.timeStamp",
+        "value": "8 pm",
+        "operator": "<="
+      },
+      {
+        "attribute": "Query.user_name",
+        "value": "John",
+        "operator": "="
+      }
+    ],
+    "purpose": ["*"],
+    "action": ["Presence.location"]
+  },
+  {
+    "id": "4",
+    "description": "Policy example 4",
+    "metadata": {},
+    "object_condtions": [{
+      "attribute": "Presence.timeStamp",
+      "value": "7 pm",
+      "operator": ">="
+    },
+      {
+        "attribute": "Presence.timeStamp",
+        "value": "9 pm",
+        "operator": "<="
+      },
+      {
+        "attribute": "Presence.user",
+        "value": "Alice",
+        "operator": "="
+      }
+    ],
+    "querier_conditions": [{
+      "attribute": "Query.timeStamp",
+      "value": "6 pm",
+      "operator": ">="
+    },
+      {
+        "attribute": "Query.timeStamp",
+        "value": "8 pm",
+        "operator": "<="
+      },
+      {
+        "attribute": "Query.user_name",
+        "value": "John",
+        "operator": "="
+      }
+    ],
+    "purpose": ["*"],
+    "action": ["Presence.location"]
+  },
+  {
+    "id": "5",
+    "description": "Policy example 5",
+    "metadata": {},
+    "object_condtions": [{
+      "attribute": "Presence.timeStamp",
+      "value": "7 pm",
+      "operator": ">="
+    },
+      {
+        "attribute": "Presence.timeStamp",
+        "value": "9 pm",
+        "operator": "<="
+      },
+      {
+        "attribute": "Presence.user",
+        "value": "Alice",
+        "operator": "="
+      }
+    ],
+    "querier_conditions": [{
+      "attribute": "Query.timeStamp",
+      "value": "6 pm",
+      "operator": ">="
+    },
+      {
+        "attribute": "Query.timeStamp",
+        "value": "8 pm",
+        "operator": "<="
+      },
+      {
+        "attribute": "Query.user_name",
+        "value": "John",
+        "operator": "="
+      }
+    ],
+    "purpose": ["*"],
+    "action": ["Presence.location"]
+  }
+]

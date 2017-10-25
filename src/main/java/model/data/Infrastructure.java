@@ -1,4 +1,4 @@
-package model;
+package model.data;
 
 /**
  * Created by cygnus on 7/7/17.
@@ -6,7 +6,7 @@ package model;
 public class Infrastructure {
     //Semantic entity id of the room
     int location_id;
-    //Name as per DBH, e.g. 2065. This is used in model.Presence table
+    //Name as per DBH, e.g. 2065. This is used in model.data.Presence table
     String name;
     //Available types: lab, faculty_office, corridor, restroom, utility, kitchen, Test?, Mail room, Conference room, Floor
     String type;

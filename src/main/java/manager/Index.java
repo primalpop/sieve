@@ -1,10 +1,12 @@
+package manager;
+
 import com.github.davidmoten.rtree.Entry;
 import com.github.davidmoten.rtree.RTree;
 import com.github.davidmoten.rtree.geometry.Geometries;
 import com.github.davidmoten.rtree.geometry.Point;
-import model.Infrastructure;
-import model.Presence;
-import model.User;
+import model.data.Infrastructure;
+import model.data.Presence;
+import model.data.User;
 import rx.Observable;
 
 import java.io.BufferedReader;
@@ -19,12 +21,12 @@ import java.util.ArrayList;
  * Simple RTree for deny policies based on user and location predicates.
  *
  */
-public class PolicyIndex {
+public class Index {
 
     RTree<Integer, Point> tree;
     ArrayList<Presence> pList;
 
-    public PolicyIndex(){
+    public Index(){
         pList = new ArrayList<Presence>();
     }
 
@@ -103,7 +105,7 @@ public class PolicyIndex {
 
         String firstArg = "csv_july5/3.csv";
 
-        PolicyIndex t = new PolicyIndex();
+        Index t = new Index();
         t.pList = readCSVtoArrayList(firstArg);
         System.out.println("# tuples: " + t.pList.size());
 

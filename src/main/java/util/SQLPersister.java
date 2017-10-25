@@ -1,6 +1,6 @@
 package util;
 
-import model.acp.BEPolicy;
+import model.policy.BEPolicy;
 
 import java.io.IOException;
 import java.sql.*;

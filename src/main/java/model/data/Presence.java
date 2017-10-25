@@ -1,4 +1,4 @@
-package model;
+package model.data;
 
 /**
  * Created by cygnus on 7/5/17.
@@ -26,7 +26,7 @@ public class Presence {
 
     @Override
     public String toString() {
-        return "model.Presence{" +
+        return "model.data.Presence{" +
                 "id=" + id +
                 ", user_id=" + user_id +
                 ", location=" + location +
