@@ -1,5 +1,7 @@
 package model.policy;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -7,10 +9,12 @@ import java.util.Map;
  * Created by cygnus on 9/25/17.
  */
 public enum RelOperator {
-
-    EQUALS("EQUALS"),
-    GEQ("GEQ"),
-    LEQ("LEQ");
+    @JsonProperty("=")
+    EQUALS("="),
+    @JsonProperty(">=")
+    GEQ(">="),
+    @JsonProperty("<=")
+    LEQ("<=");
 
     private final String name;
 

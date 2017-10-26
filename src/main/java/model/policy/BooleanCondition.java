@@ -2,10 +2,13 @@ package model.policy;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.io.Serializable;
+
+
 /**
  * Created by cygnus on 9/25/17.
  */
-public class BooleanCondition {
+public class BooleanCondition implements Serializable {
 
     @JsonProperty("attribute")
     private String attribute;
@@ -24,8 +27,8 @@ public class BooleanCondition {
         this.attribute = attribute;
     }
 
-    public RelOperator getOperator() {
-        return operator;
+    public String getOperator() {
+        return operator.getName();
     }
 
     public void setOperator(RelOperator operator) {
@@ -44,5 +47,8 @@ public class BooleanCondition {
         this.attribute = attribute;
         this.operator = operator;
         this.value = value;
+    }
+
+    public BooleanCondition() {
     }
 }

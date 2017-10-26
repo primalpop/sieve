@@ -7,4 +7,8 @@ public class QuerierCondition extends BooleanCondition {
     public QuerierCondition(String attribute, RelOperator operator, String value) {
         super(attribute, operator, value);
     }
+
+    public QuerierCondition(){
+
+    }
 }

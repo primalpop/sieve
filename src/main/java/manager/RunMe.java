@@ -5,6 +5,10 @@ import model.policy.ObjectCondition;
 import model.policy.QuerierCondition;
 import model.policy.RelOperator;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,26 +19,28 @@ public class RunMe {
 
     public static void main(String args[]){
 
+        BEPolicy policy = BEPolicy.parseJSONObject(readFile("/policy0.json"));
 
-        /**
-         * Testing creation of policy
-         */
+        policy.printPolicy();
 
-        ObjectCondition oc = new ObjectCondition("location", RelOperator.EQUALS, "2065");
-        List<ObjectCondition> ocs = new ArrayList<ObjectCondition>();
-        ocs.add(oc);
+        List<BEPolicy> policies = BEPolicy.parseJSONList(readFile("/policy1.json"));
+    }
 
-        QuerierCondition qc = new QuerierCondition("name", RelOperator.EQUALS, "John");
-        List<QuerierCondition> qcs = new ArrayList<QuerierCondition>();
-        qcs.add(qc);
-
-        BEPolicy samplePolicy = new BEPolicy("abcd", "Sample Policy", ocs, qcs, "Concierge", "Analysis");
-
-        /**
-         * Testing Query rewriting
-         */
-
-        System.out.println(manager.QueryRewrite.rewriteQuery(0,2,0, false));
-
+    public static String readFile(String filename) {
+        String result = "";
+        try {
+            InputStream is = RunMe.class.getResourceAsStream(filename);
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+            StringBuilder sb = new StringBuilder();
+            String line = br.readLine();
+            while (line != null) {
+                sb.append(line);
+                line = br.readLine();
+            }
+            result = sb.toString();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 }

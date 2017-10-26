@@ -1,8 +1,8 @@
 [{
-  "id": "1",
+  "id": "001",
   "description": "Policy example 1",
-  "metadata": {},
-  "object_condtions": [{
+  "metadata": "",
+  "object_conditions": [{
     "attribute": "Presence.timeStamp",
     "value": "5 pm",
     "operator": ">="
@@ -34,14 +34,14 @@
       "operator": "="
     }
   ],
-  "purpose": ["*"],
-  "action": ["Presence.location"]
+  "purpose": "",
+  "action": ""
 },
   {
-    "id": "2",
+    "id": "002",
     "description": "Policy example 2",
-    "metadata": {},
-    "object_condtions": [{
+    "metadata": "",
+    "object_conditions": [{
       "attribute": "Presence.timeStamp",
       "value": "7 pm",
       "operator": ">="
@@ -73,14 +73,14 @@
         "operator": "="
       }
     ],
-    "purpose": ["*"],
-    "action": ["Presence.location"]
+    "purpose": "",
+    "action": ""
   },
   {
-    "id": "3",
+    "id": "003",
     "description": "Policy example 3",
-    "metadata": {},
-    "object_condtions": [{
+    "metadata": "",
+    "object_conditions": [{
       "attribute": "Presence.timeStamp",
       "value": "7 pm",
       "operator": ">="
@@ -112,14 +112,14 @@
         "operator": "="
       }
     ],
-    "purpose": ["*"],
-    "action": ["Presence.location"]
+    "purpose": "",
+    "action": ""
   },
   {
-    "id": "4",
-    "description": "Policy example 4",
-    "metadata": {},
-    "object_condtions": [{
+    "id": "004",
+    "description": "Policy example 3",
+    "metadata": "",
+    "object_conditions": [{
       "attribute": "Presence.timeStamp",
       "value": "7 pm",
       "operator": ">="
@@ -151,14 +151,14 @@
         "operator": "="
       }
     ],
-    "purpose": ["*"],
-    "action": ["Presence.location"]
+    "purpose": "",
+    "action": ""
   },
   {
-    "id": "5",
-    "description": "Policy example 5",
-    "metadata": {},
-    "object_condtions": [{
+    "id": "003",
+    "description": "Policy example 3",
+    "metadata": "",
+    "object_conditions": [{
       "attribute": "Presence.timeStamp",
       "value": "7 pm",
       "operator": ">="
@@ -190,7 +190,7 @@
         "operator": "="
       }
     ],
-    "purpose": ["*"],
-    "action": ["Presence.location"]
+    "purpose": "",
+    "action": ""
   }
 ]

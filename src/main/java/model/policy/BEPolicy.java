@@ -1,6 +1,7 @@
 package model.policy;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
@@ -18,7 +19,7 @@ public class BEPolicy {
     private String description;
 
     @JsonProperty("metadata")
-    private PolicyMetadata metadata;
+    private String metadata;
 
     /**
      * 1) user = Alice ^ loc = 2065
@@ -51,6 +52,10 @@ public class BEPolicy {
     @JsonProperty("action")
     private String action;
 
+    public BEPolicy(){
+
+    }
+
     public BEPolicy(String id, String description, List<ObjectCondition> object_conditions, List<QuerierCondition> querier_conditions, String purpose, String action) {
         this.id = id;
         this.description = description;
@@ -76,11 +81,11 @@ public class BEPolicy {
         this.description = description;
     }
 
-    public PolicyMetadata getMetadata() {
+    public String getMetadata() {
         return metadata;
     }
 
-    public void setMetadata(PolicyMetadata metadata) {
+    public void setMetadata(String metadata) {
         this.metadata = metadata;
     }
 
@@ -117,7 +122,7 @@ public class BEPolicy {
     }
 
 
-    public BEPolicy parseJSON(String jsonData){
+    public static BEPolicy parseJSONObject(String jsonData){
         ObjectMapper objectMapper = new ObjectMapper();
         BEPolicy bePolicy = null;
         try {
@@ -126,5 +131,57 @@ public class BEPolicy {
             e.printStackTrace();
         }
         return bePolicy;
+    }
+
+    public static List<BEPolicy> parseJSONList(String jsonData) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<BEPolicy> bePolicies = null;
+        try {
+            bePolicies = objectMapper.readValue(jsonData, new TypeReference<List<BEPolicy>>(){});
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return bePolicies;
+    }
+
+    public String serializeObjectConditions(List<ObjectCondition> bcs){
+        StringBuilder result = new StringBuilder();
+        result.append("[ ");
+        BooleanCondition bc;
+        for(int i = 0; i < bcs.size(); i++){
+            bc = bcs.get(i);
+            result.append(" (");
+            result.append(bc.getAttribute() + " " + bc.getOperator() +  " " + bc.getValue());
+            result.append(" ), ");
+        }
+        result.append(" ],");
+        return result.toString();
+    }
+
+    public String serializeQuerierConditions(List<QuerierCondition> bcs){
+        StringBuilder result = new StringBuilder();
+        result.append("[ ");
+        BooleanCondition bc;
+        for(int i = 0; i < bcs.size(); i++){
+            bc = bcs.get(i);
+            result.append(" (");
+            result.append(bc.getAttribute() + " " +  bc.getOperator() + " " + bc.getValue());
+            result.append(" ), ");
+        }
+        result.append(" ],");
+        return result.toString();
+    }
+
+
+
+    public void printPolicy(){
+        System.out.println(
+                "Policy ID: " + this.getId() +
+                        " Description: " + this.getDescription() +
+                        " Object Conditions: " + serializeObjectConditions(this.getObject_conditions()) +
+                        " Querier Conditions: " + serializeQuerierConditions(this.getQuerier_conditions()) +
+                        " Action: " + this.getAction() +
+                        " Purpose: " + this.getPurpose()
+        );
     }
 }
