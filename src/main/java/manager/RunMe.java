@@ -19,11 +19,9 @@ public class RunMe {
 
     public static void main(String args[]){
 
-        BEPolicy policy = BEPolicy.parseJSONObject(readFile("/policy0.json"));
+        BEPolicy policy = BEPolicy.parseJSONObject(readFile("/policy2.json"));
 
         policy.printPolicy();
-
-        List<BEPolicy> policies = BEPolicy.parseJSONList(readFile("/policy1.json"));
     }
 
     public static String readFile(String filename) {

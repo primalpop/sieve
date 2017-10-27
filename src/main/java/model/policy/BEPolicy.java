@@ -155,15 +155,19 @@ public class BEPolicy {
         return bePolicies;
     }
 
+    //TODO: Make it a single method for both subclasses taking parent class as parameter
+
     public String serializeObjectConditions(List<ObjectCondition> bcs){
         StringBuilder result = new StringBuilder();
         result.append("[ ");
-        Predicate bc;
+        BooleanCondition bc;
+        BooleanPredicate bp;
         for(int i = 0; i < bcs.size(); i++){
             bc = bcs.get(i);
-            result.append(" (");
-            result.append(bc.getAttribute() + " " + bc.getOperator() +  " " + bc.getValue());
-            result.append(" ), ");
+            for (int j = 0; j < bc.getBooleanPredicates().size(); j++){
+                bp = bc.getBooleanPredicates().get(j);
+                result.append("(" + bc.getAttribute() + bp.getOperator() + bp.getValue() + ")");
+            }
         }
         result.append(" ],");
         return result.toString();
@@ -172,12 +176,14 @@ public class BEPolicy {
     public String serializeQuerierConditions(List<QuerierCondition> bcs){
         StringBuilder result = new StringBuilder();
         result.append("[ ");
-        Predicate bc;
+        BooleanCondition bc;
+        BooleanPredicate bp;
         for(int i = 0; i < bcs.size(); i++){
             bc = bcs.get(i);
-            result.append(" (");
-            result.append(bc.getAttribute() + " " +  bc.getOperator() + " " + bc.getValue());
-            result.append(" ), ");
+            for (int j = 0; j < bc.getBooleanPredicates().size(); j++){
+                bp = bc.getBooleanPredicates().get(j);
+                result.append("(" + bc.getAttribute() + bp.getOperator() + bp.getValue() + ")");
+            }
         }
         result.append(" ],");
         return result.toString();
