@@ -1,193 +1,109 @@
-[{
-  "id": "001",
-  "description": "Policy example 1",
-  "metadata": "",
-  "object_conditions": [{
-    "attribute": "Presence.timeStamp",
-    "value": "5 pm",
-    "operator": ">="
+[
+  {
+    "id": "001",
+    "description": "Policy example 1",
+    "metadata": "",
+    "object_conditions": [
+      {
+        "attribute": "Presence.timeStamp",
+        "predicates": [
+          {
+            "value": "5 pm",
+            "operator": ">="
+          },
+          {
+            "value": "7 pm",
+            "operator": "<="
+          }
+        ]
+      },
+      {
+        "attribute": "Presence.user",
+        "predicates": [
+          {
+            "value": "Alice",
+            "operator": "="
+          }
+        ]
+      }
+    ],
+    "querier_conditions": [
+      {
+        "attribute": "Query.timeStamp",
+        "predicates": [
+          {
+            "value": "6 pm",
+            "operator": ">="
+          },
+          {
+            "value": "8 pm",
+            "operator": "<="
+          }
+        ]
+      },
+      {
+        "attribute": "Query.user_name",
+        "predicates": [
+          {
+            "value": "John",
+            "operator": "="
+          }
+        ]
+      }
+    ],
+    "purpose": "",
+    "action": ""
   },
-    {
-      "attribute": "Presence.timeStamp",
-      "value": "7 pm",
-      "operator": "<="
-    },
-    {
-      "attribute": "Presence.timeStamp",
-      "value": "Alice",
-      "operator": "="
-    }
-  ],
-  "querier_conditions": [{
-    "attribute": "Query.timeStamp",
-    "value": "6 pm",
-    "operator": ">="
-  },
-    {
-      "attribute": "Query.timeStamp",
-      "value": "8 pm",
-      "operator": "<="
-    },
-    {
-      "attribute": "Query.user_name",
-      "value": "John",
-      "operator": "="
-    }
-  ],
-  "purpose": "",
-  "action": ""
-},
   {
     "id": "002",
     "description": "Policy example 2",
     "metadata": "",
-    "object_conditions": [{
-      "attribute": "Presence.timeStamp",
-      "value": "7 pm",
-      "operator": ">="
-    },
+    "object_conditions": [
       {
         "attribute": "Presence.timeStamp",
-        "value": "9 pm",
-        "operator": "<="
-      },
-      {
-        "attribute": "Presence.timeStamp",
-        "value": "Alice",
-        "operator": "="
-      }
-    ],
-    "querier_conditions": [{
-      "attribute": "Query.timeStamp",
-      "value": "6 pm",
-      "operator": ">="
-    },
-      {
-        "attribute": "Query.timeStamp",
-        "value": "8 pm",
-        "operator": "<="
-      },
-      {
-        "attribute": "Query.user_name",
-        "value": "John",
-        "operator": "="
-      }
-    ],
-    "purpose": "",
-    "action": ""
-  },
-  {
-    "id": "003",
-    "description": "Policy example 3",
-    "metadata": "",
-    "object_conditions": [{
-      "attribute": "Presence.timeStamp",
-      "value": "7 pm",
-      "operator": ">="
-    },
-      {
-        "attribute": "Presence.timeStamp",
-        "value": "9 pm",
-        "operator": "<="
+        "predicates": [
+          {
+            "value": "5 pm",
+            "operator": ">="
+          },
+          {
+            "value": "7 pm",
+            "operator": "<="
+          }
+        ]
       },
       {
         "attribute": "Presence.user",
-        "value": "Alice",
-        "operator": "="
+        "predicates": [
+          {
+            "value": "Alice",
+            "operator": "="
+          }
+        ]
       }
     ],
-    "querier_conditions": [{
-      "attribute": "Query.timeStamp",
-      "value": "6 pm",
-      "operator": ">="
-    },
+    "querier_conditions": [
       {
         "attribute": "Query.timeStamp",
-        "value": "8 pm",
-        "operator": "<="
+        "predicates": [
+          {
+            "value": "6 pm",
+            "operator": ">="
+          },
+          {
+            "value": "8 pm",
+            "operator": "<="
+          }
+        ]
       },
       {
         "attribute": "Query.user_name",
-        "value": "John",
-        "operator": "="
-      }
-    ],
-    "purpose": "",
-    "action": ""
-  },
-  {
-    "id": "004",
-    "description": "Policy example 3",
-    "metadata": "",
-    "object_conditions": [{
-      "attribute": "Presence.timeStamp",
-      "value": "7 pm",
-      "operator": ">="
-    },
-      {
-        "attribute": "Presence.timeStamp",
-        "value": "9 pm",
-        "operator": "<="
-      },
-      {
-        "attribute": "Presence.user",
-        "value": "Alice",
-        "operator": "="
-      }
-    ],
-    "querier_conditions": [{
-      "attribute": "Query.timeStamp",
-      "value": "6 pm",
-      "operator": ">="
-    },
-      {
-        "attribute": "Query.timeStamp",
-        "value": "8 pm",
-        "operator": "<="
-      },
-      {
-        "attribute": "Query.user_name",
-        "value": "John",
-        "operator": "="
-      }
-    ],
-    "purpose": "",
-    "action": ""
-  },
-  {
-    "id": "003",
-    "description": "Policy example 3",
-    "metadata": "",
-    "object_conditions": [{
-      "attribute": "Presence.timeStamp",
-      "value": "7 pm",
-      "operator": ">="
-    },
-      {
-        "attribute": "Presence.timeStamp",
-        "value": "9 pm",
-        "operator": "<="
-      },
-      {
-        "attribute": "Presence.user",
-        "value": "Alice",
-        "operator": "="
-      }
-    ],
-    "querier_conditions": [{
-      "attribute": "Query.timeStamp",
-      "value": "6 pm",
-      "operator": ">="
-    },
-      {
-        "attribute": "Query.timeStamp",
-        "value": "8 pm",
-        "operator": "<="
-      },
-      {
-        "attribute": "Query.user_name",
-        "value": "John",
-        "operator": "="
+        "predicates": [
+          {
+            "value": "John",
+            "operator": "="
+          }
+        ]
       }
     ],
     "purpose": "",

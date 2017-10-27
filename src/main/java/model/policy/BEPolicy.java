@@ -160,14 +160,8 @@ public class BEPolicy {
     public String serializeObjectConditions(List<ObjectCondition> bcs){
         StringBuilder result = new StringBuilder();
         result.append("[ ");
-        BooleanCondition bc;
-        BooleanPredicate bp;
         for(int i = 0; i < bcs.size(); i++){
-            bc = bcs.get(i);
-            for (int j = 0; j < bc.getBooleanPredicates().size(); j++){
-                bp = bc.getBooleanPredicates().get(j);
-                result.append("(" + bc.getAttribute() + bp.getOperator() + bp.getValue() + ")");
-            }
+            result.append(bcs.get(i).print());
         }
         result.append(" ],");
         return result.toString();
@@ -176,22 +170,14 @@ public class BEPolicy {
     public String serializeQuerierConditions(List<QuerierCondition> bcs){
         StringBuilder result = new StringBuilder();
         result.append("[ ");
-        BooleanCondition bc;
-        BooleanPredicate bp;
         for(int i = 0; i < bcs.size(); i++){
-            bc = bcs.get(i);
-            for (int j = 0; j < bc.getBooleanPredicates().size(); j++){
-                bp = bc.getBooleanPredicates().get(j);
-                result.append("(" + bc.getAttribute() + bp.getOperator() + bp.getValue() + ")");
-            }
+            result.append(bcs.get(i).print());
         }
         result.append(" ],");
         return result.toString();
     }
 
-
-
-    public void printPolicy(){
+    public void print(){
         System.out.println(
                 "Policy ID: " + this.getId() +
                         " Description: " + this.getDescription() +

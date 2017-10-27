@@ -2,36 +2,50 @@
   "id": "001",
   "description": "Policy example 1",
   "metadata": "",
-  "object_conditions": [{
+  "object_conditions": [
+    {
     "attribute": "Presence.timeStamp",
-    "value": "5 pm",
-    "operator": ">="
+    "predicates": [{
+      "value": "5 pm",
+      "operator": ">="
+    },
+      {
+        "value": "7 pm",
+        "operator": "<="
+      }
+    ]
   },
     {
-      "attribute": "Presence.timeStamp",
-      "value": "7 pm",
-      "operator": "<="
-    },
-    {
-      "attribute": "Presence.timeStamp",
-      "value": "Alice",
-      "operator": "="
+      "attribute": "Presence.user",
+      "predicates": [{
+        "value": "Alice",
+        "operator": "="
+      }
+      ]
     }
   ],
-  "querier_conditions": [{
+  "querier_conditions": [
+    {
     "attribute": "Query.timeStamp",
-    "value": "6 pm",
-    "operator": ">="
+    "predicates": [
+      {
+      "value": "6 pm",
+      "operator": ">="
+      },
+      {
+        "value": "8 pm",
+        "operator": "<="
+      }
+    ]
   },
     {
-      "attribute": "Query.timeStamp",
-      "value": "8 pm",
-      "operator": "<="
-    },
-    {
       "attribute": "Query.user_name",
-      "value": "John",
-      "operator": "="
+      "predicates": [
+        {
+          "value": "John",
+          "operator": "="
+        }
+      ]
     }
   ],
   "purpose": "",
