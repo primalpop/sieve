@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -121,6 +122,16 @@ public class BEPolicy {
         this.action = action;
     }
 
+    public List<String> objectConditionAttributes(){
+        List<String> attrs = new ArrayList<String>();
+        for(ObjectCondition oc: object_conditions) {
+            if(!attrs.contains(oc.getAttribute())){
+                attrs.add(oc.getAttribute());
+            }
+        }
+        return attrs;
+    }
+
 
     public static BEPolicy parseJSONObject(String jsonData){
         ObjectMapper objectMapper = new ObjectMapper();
@@ -147,7 +158,7 @@ public class BEPolicy {
     public String serializeObjectConditions(List<ObjectCondition> bcs){
         StringBuilder result = new StringBuilder();
         result.append("[ ");
-        BooleanCondition bc;
+        Predicate bc;
         for(int i = 0; i < bcs.size(); i++){
             bc = bcs.get(i);
             result.append(" (");
@@ -161,7 +172,7 @@ public class BEPolicy {
     public String serializeQuerierConditions(List<QuerierCondition> bcs){
         StringBuilder result = new StringBuilder();
         result.append("[ ");
-        BooleanCondition bc;
+        Predicate bc;
         for(int i = 0; i < bcs.size(); i++){
             bc = bcs.get(i);
             result.append(" (");

@@ -8,7 +8,7 @@ import java.io.Serializable;
 /**
  * Created by cygnus on 9/25/17.
  */
-public class BooleanCondition implements Serializable {
+public class Predicate implements Serializable {
 
     @JsonProperty("attribute")
     private String attribute;
@@ -43,12 +43,12 @@ public class BooleanCondition implements Serializable {
         this.value = value;
     }
 
-    public BooleanCondition(String attribute, RelOperator operator, String value) {
+    public Predicate(String attribute, RelOperator operator, String value) {
         this.attribute = attribute;
         this.operator = operator;
         this.value = value;
     }
 
-    public BooleanCondition() {
+    public Predicate() {
     }
 }
