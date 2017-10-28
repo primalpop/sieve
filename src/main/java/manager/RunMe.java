@@ -25,7 +25,10 @@ public class RunMe {
 
         System.out.println(policies.get(1).getObject_conditions().get(0).print());
 
-        System.out.println(policies.get(0).getObject_conditions().get(0).sameAs(policies.get(1).getObject_conditions().get(0)));
+        System.out.println(policies.get(0).getObject_conditions().get(0).checkSame(policies.get(1).getObject_conditions().get(0)));
+
+        System.out.println(policies.get(0).getObject_conditions().get(0).checkOverlap(policies.get(1).getObject_conditions().get(0)));
+
 
 
 //        System.out.println(policies.get(0).getObject_conditions().get(0).sameAs(policies.get(1).getObject_conditions().get(1)));

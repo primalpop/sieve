@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Optional;
 
 
 /**
@@ -52,14 +53,39 @@ public class BooleanCondition {
         return r.toString();
     }
 
-    //TODO: This is wrong as it compares objects
-
-    public Boolean sameAs(BooleanCondition b){
-        if(!this.getAttribute().equals(b.getAttribute()))
-            return false;
-        if(!this.getBooleanPredicates().containsAll(b.getBooleanPredicates()))
-            return false;
-        return true;
+    public double getStart(){
+        return Double.parseDouble(this.booleanPredicates.stream()
+                .filter(x -> x.getOperator().equals(RelOperator.EQUALS) || x.getOperator().equals(RelOperator.GEQ))
+                .map(BooleanPredicate::getValue)
+                .findAny()
+                .orElse(String.valueOf(Double.NEGATIVE_INFINITY)));
     }
+
+
+    public double getEnd(){
+        return Double.parseDouble(this.booleanPredicates.stream()
+                .filter((x) -> x.getOperator().equals(RelOperator.EQUALS) || x.getOperator().equals(RelOperator.LEQ))
+                .map(BooleanPredicate::getValue)
+                .findFirst()
+                .orElse(String.valueOf(Double.POSITIVE_INFINITY)));
+    }
+
+
+    public boolean checkOverlap(BooleanCondition bc) {
+        System.out.println(bc.getStart() + " " +  bc.getEnd());
+        if (! (this.getEnd() < bc.getStart() || this.getStart() > bc.getEnd())){
+            return true;
+        }
+        return false;
+    }
+
+    public boolean checkSame(BooleanCondition bc) {
+        System.out.println(bc.getStart() + " " +  bc.getEnd());
+        if (this.getStart() == bc.getStart() && this.getEnd() == bc.getEnd())
+            return true;
+        return false;
+    }
+
+
 
 }

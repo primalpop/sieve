@@ -8,11 +8,11 @@
         "attribute": "Presence.timeStamp",
         "predicates": [
           {
-            "value": "5 pm",
+            "value": "17",
             "operator": ">="
           },
           {
-            "value": "7 pm",
+            "value": "19",
             "operator": "<="
           }
         ]
@@ -63,11 +63,11 @@
         "attribute": "Presence.timeStamp",
         "predicates": [
           {
-            "value": "5 pm",
+            "value": "20",
             "operator": ">="
           },
           {
-            "value": "7 pm",
+            "value": "21",
             "operator": "<="
           }
         ]
