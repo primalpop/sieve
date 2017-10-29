@@ -1,6 +1,7 @@
-package util;
+package db;
 
 import model.policy.BEPolicy;
+import model.policy.BooleanCondition;
 
 import java.io.IOException;
 import java.sql.*;
@@ -98,10 +99,13 @@ public class SQLPersister implements Persister {
     }
 
     @Override
-    public BEPolicy[] FindPoliciesForQuerier(String Querier) {
-        // TODO Auto-generated method stub
-        return null;
+    public BEPolicy[] FindPoliciesForQuerier(BooleanCondition querier) {
+        return new BEPolicy[0];
     }
 
+    @Override
+    public BEPolicy[] FindPoliciesforObject(BooleanCondition object) {
+        return new BEPolicy[0];
+    }
 
 }

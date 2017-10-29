@@ -2,7 +2,7 @@ package manager;
 
 import model.data.Infrastructure;
 import model.data.User;
-import util.QueryManager;
+import model.query.BasicQuery;
 
 /**
  * Created by cygnus on 7/7/17.
@@ -11,8 +11,7 @@ public class QueryRewrite {
 
 
     public static String rewriteQuery(int queryIndex, int userPreds, int locPreds, boolean optimize) {
-        QueryManager qm = QueryManager.getInstance();
-        String rewrittenQuery = qm.queryList[queryIndex];
+        String rewrittenQuery = BasicQuery.queryList[queryIndex];
         userPreds = (userPreds > User.users.length) ? User.users.length : userPreds;
         locPreds = (locPreds > Infrastructure.locations.length) ? Infrastructure.locations.length : locPreds;
 
@@ -64,8 +63,7 @@ public class QueryRewrite {
     }
 
     public static String optimizedRewriteQuery(int queryIndex, int userPreds, int locPreds){
-        QueryManager qm = QueryManager.getInstance();
-        String rewrittenQuery = qm.queryList[queryIndex];
+        String rewrittenQuery = BasicQuery.queryList[queryIndex];
         String user_predicate = "user_id in (";
         String location_predicate = ") and location in (";
         for(int i = 0; i < userPreds; i++){

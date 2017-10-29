@@ -55,7 +55,7 @@ public class BooleanCondition {
 
     public double getStart(){
         return Double.parseDouble(this.booleanPredicates.stream()
-                .filter(x -> x.getOperator().equals(RelOperator.EQUALS) || x.getOperator().equals(RelOperator.GEQ))
+                .filter(x -> x.getOperator().equals(RelOperator.EQUALS.getName()) || x.getOperator().equals(RelOperator.GEQ.getName()))
                 .map(BooleanPredicate::getValue)
                 .findAny()
                 .orElse(String.valueOf(Double.NEGATIVE_INFINITY)));
@@ -64,7 +64,7 @@ public class BooleanCondition {
 
     public double getEnd(){
         return Double.parseDouble(this.booleanPredicates.stream()
-                .filter((x) -> x.getOperator().equals(RelOperator.EQUALS) || x.getOperator().equals(RelOperator.LEQ))
+                .filter((x) -> x.getOperator().equals(RelOperator.EQUALS.getName()) || x.getOperator().equals(RelOperator.LEQ.getName()))
                 .map(BooleanPredicate::getValue)
                 .findFirst()
                 .orElse(String.valueOf(Double.POSITIVE_INFINITY)));
@@ -72,7 +72,6 @@ public class BooleanCondition {
 
 
     public boolean checkOverlap(BooleanCondition bc) {
-        System.out.println(bc.getStart() + " " +  bc.getEnd());
         if (! (this.getEnd() < bc.getStart() || this.getStart() > bc.getEnd())){
             return true;
         }
@@ -80,7 +79,6 @@ public class BooleanCondition {
     }
 
     public boolean checkSame(BooleanCondition bc) {
-        System.out.println(bc.getStart() + " " +  bc.getEnd());
         if (this.getStart() == bc.getStart() && this.getEnd() == bc.getEnd())
             return true;
         return false;

@@ -5,7 +5,7 @@ import com.github.davidmoten.rtree.RTree;
 import com.github.davidmoten.rtree.geometry.Geometries;
 import com.github.davidmoten.rtree.geometry.Point;
 import model.data.Infrastructure;
-import model.data.Presence;
+import model.data.Semantic_Observation;
 import model.data.User;
 import rx.Observable;
 
@@ -24,10 +24,10 @@ import java.util.ArrayList;
 public class Index {
 
     RTree<Integer, Point> tree;
-    ArrayList<Presence> pList;
+    ArrayList<Semantic_Observation> pList;
 
     public Index(){
-        pList = new ArrayList<Presence>();
+        pList = new ArrayList<Semantic_Observation>();
     }
 
 
@@ -44,8 +44,8 @@ public class Index {
     }
 
 
-    public static ArrayList<Presence> readCSVtoArrayList(String fileCSV) {
-        ArrayList<Presence> result = new ArrayList<Presence>();
+    public static ArrayList<Semantic_Observation> readCSVtoArrayList(String fileCSV) {
+        ArrayList<Semantic_Observation> result = new ArrayList<Semantic_Observation>();
         BufferedReader br = null;
         String line = "";
         String csvSplit = ",";
@@ -54,7 +54,7 @@ public class Index {
                 br = new BufferedReader(new FileReader(fileCSV));
                 while ((line = br.readLine()) != null) {
                     String[] pString = line.split(csvSplit);
-                    Presence p = new Presence();
+                    Semantic_Observation p = new Semantic_Observation();
                     p.setId(Integer.parseInt(pString[0]));
                     p.setLocation(Integer.parseInt(pString[1]));
                     p.setTimeStamp(pString[2] + " " + pString[3]);
@@ -87,7 +87,7 @@ public class Index {
      */
     public void checkPoliciesAgainstTuples() {
         int count = 0;
-        for (Presence tuple : this.pList) {
+        for (Semantic_Observation tuple : this.pList) {
             Observable<Entry<Integer, Point>> match =
                     this.tree.search(Geometries.point(tuple.getUser_id(), tuple.getLocation()));
             if (!match.toList().toBlocking().single().isEmpty()) {

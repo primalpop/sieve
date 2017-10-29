@@ -1,15 +1,11 @@
-package manager;
+package execution;
 
+import db.MySQLQueryManager;
 import model.policy.BEPolicy;
-import model.policy.ObjectCondition;
-import model.policy.QuerierCondition;
-import model.policy.RelOperator;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,7 +15,7 @@ public class RunMe {
 
     public static void main(String args[]){
 
-        List<BEPolicy> policies = BEPolicy.parseJSONList(readFile("/policy1.json"));
+        List<BEPolicy> policies = BEPolicy.parseJSONList(readFile("/policies/policy1.json"));
 
         System.out.println(policies.get(0).getObject_conditions().get(0).print());
 
@@ -29,6 +25,9 @@ public class RunMe {
 
         System.out.println(policies.get(0).getObject_conditions().get(0).checkOverlap(policies.get(1).getObject_conditions().get(0)));
 
+
+        MySQLQueryManager mqm = new MySQLQueryManager();
+        println(mqm.runCountingQuery("location = 5039"));
 
 
 //        System.out.println(policies.get(0).getObject_conditions().get(0).sameAs(policies.get(1).getObject_conditions().get(1)));
@@ -51,4 +50,9 @@ public class RunMe {
         }
         return result;
     }
+
+    public static void println(Object line) {
+        System.out.println(line);
+    }
+
 }
