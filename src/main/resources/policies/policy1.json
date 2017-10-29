@@ -63,11 +63,11 @@
         "attribute": "Presence.timeStamp",
         "predicates": [
           {
-            "value": "20",
+            "value": "18",
             "operator": ">="
           },
           {
-            "value": "21",
+            "value": "20",
             "operator": "<="
           }
         ]

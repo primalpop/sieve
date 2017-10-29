@@ -3,7 +3,7 @@ package model.data;
 /**
  * Created by cygnus on 7/5/17.
  */
-public class Presence {
+public class Semantic_Observation {
 
     int id;
 
@@ -13,11 +13,11 @@ public class Presence {
 
     String timeStamp;
 
-    public Presence(){
+    public Semantic_Observation(){
 
     }
 
-    public Presence(int id, int user_id, int location, String timeStamp) {
+    public Semantic_Observation(int id, int user_id, int location, String timeStamp) {
         this.id = id;
         this.user_id = user_id;
         this.location = location;
@@ -26,7 +26,7 @@ public class Presence {
 
     @Override
     public String toString() {
-        return "model.data.Presence{" +
+        return "model.data.Semantic_Observation{" +
                 "id=" + id +
                 ", user_id=" + user_id +
                 ", location=" + location +
