@@ -1,6 +1,7 @@
 package model.guard;
 
 import model.policy.BooleanCondition;
+import model.policy.ObjectCondition;
 
 import java.util.List;
 
@@ -8,7 +9,7 @@ import java.util.List;
  * Created by cygnus on 10/25/17.
  */
 public abstract class Factor {
-
+    
     BooleanCondition factor;
 
     List<BooleanCondition> Quotient;
@@ -17,7 +18,7 @@ public abstract class Factor {
 
     public abstract void factorize();
 
-    public abstract double computeCost();
+    public abstract long computeCost(List<ObjectCondition> objectConditions);
 
     public abstract double computeFalsePositives();
 
