@@ -1,10 +1,11 @@
 package model.policy;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import common.AttributeType;
+import common.PolicyConstants;
+import common.PolicyEngineException;
 
-import java.io.Serializable;
 import java.util.List;
-import java.util.Optional;
 
 
 /**
@@ -14,6 +15,9 @@ public class BooleanCondition {
 
     @JsonProperty("attribute")
     private String attribute;
+
+    @JsonProperty("type")
+    private AttributeType type;
 
     @JsonProperty("predicates")
     private List<BooleanPredicate> booleanPredicates;
@@ -35,20 +39,45 @@ public class BooleanCondition {
         this.booleanPredicates = booleanPredicates;
     }
 
+    public AttributeType getType() {
+        return type;
+    }
+
+    public void setType(AttributeType type) {
+        this.type = type;
+    }
+
     public BooleanCondition(String attribute, List<BooleanPredicate> booleanPredicates) {
         this.attribute = attribute;
         this.booleanPredicates = booleanPredicates;
     }
 
+
     public BooleanCondition() {
+    }
+
+    public String check_type(String value) {
+        switch(type.getID()){
+            case 1: //String
+                return " \"" + value + "\" ";
+            case 2: //Timestamp
+                return value;
+            case 3: //Double
+                return value;
+            default:
+                throw new PolicyEngineException("Unknown Type error");
+        }
     }
 
     public String print(){
         StringBuilder r = new StringBuilder();
         BooleanPredicate bp;
+        String delim = "";
         for (int i = 0; i < this.getBooleanPredicates().size(); i++){
             bp = this.getBooleanPredicates().get(i);
-            r.append("(" + this.getAttribute() + bp.getOperator() + bp.getValue() + ")");
+            r.append(delim);
+            r.append(" (" + this.getAttribute() + bp.getOperator() + check_type(bp.getValue()) + ") ");
+            delim = PolicyConstants.CONJUNCTION;
         }
         return r.toString();
     }

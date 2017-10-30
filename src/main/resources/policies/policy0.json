@@ -4,42 +4,48 @@
   "metadata": "",
   "object_conditions": [
     {
-    "attribute": "Presence.timeStamp",
-    "predicates": [{
-      "value": "5 pm",
-      "operator": ">="
+      "attribute": "SEMANTIC_OBSERVATION.timeStamp",
+      "type": "TIMESTAMP",
+      "predicates": [
+        {
+          "value": "5 pm",
+          "operator": ">="
+        },
+        {
+          "value": "7 pm",
+          "operator": "<="
+        }
+      ]
     },
-      {
-        "value": "7 pm",
-        "operator": "<="
-      }
-    ]
-  },
     {
-      "attribute": "Presence.user",
-      "predicates": [{
-        "value": "Alice",
-        "operator": "="
-      }
+      "attribute": "SEMANTIC_OBSERVATION.user",
+      "type": "STRING",
+      "predicates": [
+        {
+          "value": "Alice",
+          "operator": "="
+        }
       ]
     }
   ],
   "querier_conditions": [
     {
-    "attribute": "Query.timeStamp",
-    "predicates": [
-      {
-      "value": "6 pm",
-      "operator": ">="
-      },
-      {
-        "value": "8 pm",
-        "operator": "<="
-      }
-    ]
-  },
+      "attribute": "Query.timeStamp",
+      "type": "TIMESTAMP",
+      "predicates": [
+        {
+          "value": "6 pm",
+          "operator": ">="
+        },
+        {
+          "value": "8 pm",
+          "operator": "<="
+        }
+      ]
+    },
     {
       "attribute": "Query.user_name",
+      "type": "STRING",
       "predicates": [
         {
           "value": "John",

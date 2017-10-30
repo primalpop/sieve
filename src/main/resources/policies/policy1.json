@@ -5,7 +5,8 @@
     "metadata": "",
     "object_conditions": [
       {
-        "attribute": "Presence.timeStamp",
+        "attribute": "SEMANTIC_OBSERVATION.timeStamp",
+        "type": "TIMESTAMP",
         "predicates": [
           {
             "value": "17",
@@ -18,7 +19,8 @@
         ]
       },
       {
-        "attribute": "Presence.user",
+        "attribute": "SEMANTIC_OBSERVATION.user_id",
+        "type": "STRING",
         "predicates": [
           {
             "value": "Alice",
@@ -30,6 +32,7 @@
     "querier_conditions": [
       {
         "attribute": "Query.timeStamp",
+        "type": "TIMESTAMP",
         "predicates": [
           {
             "value": "6 pm",
@@ -43,6 +46,7 @@
       },
       {
         "attribute": "Query.user_name",
+        "type": "STRING",
         "predicates": [
           {
             "value": "John",
@@ -60,7 +64,8 @@
     "metadata": "",
     "object_conditions": [
       {
-        "attribute": "Presence.timeStamp",
+        "attribute": "SEMANTIC_OBSERVATION.timeStamp",
+        "type": "TIMESTAMP",
         "predicates": [
           {
             "value": "18",
@@ -73,7 +78,8 @@
         ]
       },
       {
-        "attribute": "Presence.user",
+        "attribute": "SEMANTIC_OBSERVATION.user_id",
+        "type": "STRING",
         "predicates": [
           {
             "value": "Alice",
@@ -85,6 +91,7 @@
     "querier_conditions": [
       {
         "attribute": "Query.timeStamp",
+        "type": "TIMESTAMP",
         "predicates": [
           {
             "value": "6 pm",
@@ -98,6 +105,7 @@
       },
       {
         "attribute": "Query.user_name",
+        "type": "STRING",
         "predicates": [
           {
             "value": "John",

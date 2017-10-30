@@ -1,6 +1,6 @@
 package execution;
 
-import db.MySQLQueryManager;
+import model.guard.ExactFactor;
 import model.policy.BEPolicy;
 
 import java.io.BufferedReader;
@@ -17,20 +17,18 @@ public class RunMe {
 
         List<BEPolicy> policies = BEPolicy.parseJSONList(readFile("/policies/policy1.json"));
 
-        System.out.println(policies.get(0).getObject_conditions().get(0).print());
+//        System.out.println(policies.get(0).getObject_conditions().get(0).print());
+//
+//        System.out.println(policies.get(1).getObject_conditions().get(0).print());
+//
+//        System.out.println(policies.get(0).getObject_conditions().get(0).checkSame(policies.get(1).getObject_conditions().get(0)));
+//
+//        System.out.println(policies.get(0).getObject_conditions().get(0).checkOverlap(policies.get(1).getObject_conditions().get(0)));
+        
+        ExactFactor ef = new ExactFactor();
 
-        System.out.println(policies.get(1).getObject_conditions().get(0).print());
+        println(ef.computeCost(policies.get(0).getObject_conditions()));
 
-        System.out.println(policies.get(0).getObject_conditions().get(0).checkSame(policies.get(1).getObject_conditions().get(0)));
-
-        System.out.println(policies.get(0).getObject_conditions().get(0).checkOverlap(policies.get(1).getObject_conditions().get(0)));
-
-
-        MySQLQueryManager mqm = new MySQLQueryManager();
-        println(mqm.runCountingQuery("location = 5039"));
-
-
-//        System.out.println(policies.get(0).getObject_conditions().get(0).sameAs(policies.get(1).getObject_conditions().get(1)));
     }
 
     public static String readFile(String filename) {

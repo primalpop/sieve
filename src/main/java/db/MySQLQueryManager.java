@@ -1,9 +1,7 @@
 package db;
 
 import common.PolicyEngineException;
-import model.policy.BooleanCondition;
 
-import java.io.IOException;
 import java.sql.*;
 import java.time.Duration;
 import java.time.Instant;
@@ -21,12 +19,13 @@ public class MySQLQueryManager {
 
     /**
      * Compute the cost by execution time of the query
-     * @param query
+     * @param predicates
      * @return
      * @throws PolicyEngineException
      */
 
-    public Duration runTimedQuery(String query) throws PolicyEngineException {
+    public long runTimedQuery(String predicates) throws PolicyEngineException {
+        String query = "Select count(*) from SEMANTIC_OBSERVATION where " + predicates;
         try {
             PreparedStatement stmt = connection.prepareStatement(query);
             Instant start = Instant.now();
@@ -35,7 +34,7 @@ public class MySQLQueryManager {
             int columnsNumber = rsmd.getColumnCount();
             rs.close();
             Instant end = Instant.now();
-            return Duration.between(start, end);
+            return Duration.between(start, end).toMillis();
         } catch (SQLException e) {
             e.printStackTrace();
             throw new PolicyEngineException("Error Running Query");
