@@ -5,12 +5,30 @@ import common.AttributeType;
 import common.PolicyConstants;
 import common.PolicyEngineException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 /**
  * Created by cygnus on 9/25/17.
+ *
+ * BooleanCondition within the same policy
+ *
+ * {
+ *      "attribute": "semantic_observation.timeStamp",
+ *      "type":   "TIMESTAMP",
+ *      "predicates": [{
+ *          "operator": ">=",
+ *          "value": "17"
+ *      },
+ *      {
+ *          "operator": "<=",
+ *          "value": "19"
+ *      }
+ *    ]
+ * }
  */
+
 public class BooleanCondition {
 
     @JsonProperty("attribute")
@@ -113,6 +131,38 @@ public class BooleanCondition {
         return false;
     }
 
+    /**
+     * Check if a boolean condition is contained within a list
+     * @param bcs
+     * @return
+     */
+    public boolean containedInList(List<ObjectCondition> bcs){
+        for (int i = 0; i < bcs.size(); i++) {
+            if(this.getAttribute().equals(bcs.get(i).getAttribute())){
+                if(this.getType().equals(bcs.get(i).getType())){
+                    if(this.compareBooleanPredicates(bcs.get(i).getBooleanPredicates())){
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
 
+    /**
+     * https://stackoverflow.com/a/16209854
+     * @param bps
+     * @return true if they are equal, false if not
+     */
 
+    public boolean compareBooleanPredicates(List<BooleanPredicate> bps){
+        if(this.getBooleanPredicates().size() != bps.size())
+            return false;
+        List<BooleanPredicate> cp = new ArrayList<BooleanPredicate>(this.getBooleanPredicates());
+        for (BooleanPredicate bp: bps) {
+            if( !cp.remove(bp))
+                return false;
+        }
+        return cp.isEmpty();
+    }
 }

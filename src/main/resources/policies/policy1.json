@@ -9,7 +9,7 @@
         "type": "TIMESTAMP",
         "predicates": [
           {
-            "value": "17",
+            "value": "15",
             "operator": ">="
           },
           {
@@ -23,7 +23,7 @@
         "type": "STRING",
         "predicates": [
           {
-            "value": "Alice",
+            "value": "10",
             "operator": "="
           }
         ]
@@ -68,11 +68,11 @@
         "type": "TIMESTAMP",
         "predicates": [
           {
-            "value": "18",
+            "value": "17",
             "operator": ">="
           },
           {
-            "value": "20",
+            "value": "19",
             "operator": "<="
           }
         ]
@@ -82,7 +82,7 @@
         "type": "STRING",
         "predicates": [
           {
-            "value": "Alice",
+            "value": "10",
             "operator": "="
           }
         ]
@@ -108,7 +108,7 @@
         "type": "STRING",
         "predicates": [
           {
-            "value": "John",
+            "value": "12",
             "operator": "="
           }
         ]
