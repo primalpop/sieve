@@ -1,5 +1,6 @@
 package model.guard;
 
+import model.policy.BEPolicy;
 import model.policy.BooleanCondition;
 import model.policy.ObjectCondition;
 
@@ -12,14 +13,14 @@ public abstract class Factor {
     
     BooleanCondition factor;
 
-    List<BooleanCondition> Quotient;
+    List<BooleanCondition> quotient;
 
     List<BooleanCondition> reminder;
 
-    public abstract void factorize();
+    public abstract void factorize(List<BEPolicy> policies, List<String> combiners);
 
-    public abstract long computeCost(List<ObjectCondition> objectConditions);
+    public abstract long computeCost(List<ObjectCondition> objectConditions, List<String> combiners);
 
-    public abstract double computeFalsePositives();
+    public abstract double computeFalsePositives(List<ObjectCondition> objectConditions, List<String> combiners);
 
 }

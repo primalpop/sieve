@@ -1,11 +1,14 @@
 package execution;
 
+import common.PolicyConstants;
 import model.guard.ExactFactor;
 import model.policy.BEPolicy;
+import model.policy.ObjectCondition;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,7 +30,17 @@ public class RunMe {
         
         ExactFactor ef = new ExactFactor();
 
-        println(ef.computeCost(policies.get(0).getObject_conditions()));
+        List<ObjectCondition> dnf = policies.get(0).getObject_conditions();
+        dnf.addAll(policies.get(1).getObject_conditions());
+
+        List<String> combiners = new ArrayList<String>();
+        combiners.add(PolicyConstants.CONJUNCTION);
+        combiners.add(PolicyConstants.DISJUNCTION);
+        combiners.add(PolicyConstants.CONJUNCTION);
+
+        println(ef.computeCost(dnf, combiners));
+
+        ef.factorize(dnf, combiners);
 
     }
 
