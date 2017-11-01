@@ -1,14 +1,11 @@
 package execution;
 
-import common.PolicyConstants;
 import model.guard.ExactFactor;
 import model.policy.BEPolicy;
-import model.policy.ObjectCondition;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -43,7 +40,9 @@ public class RunMe {
 //        ef.factorize(dnf, combiners);
 
 
-        ExactFactor ef = new ExactFactor();
+        ExactFactor ef = new ExactFactor(policies);
+
+        ef.factorize();
 
 
     }
