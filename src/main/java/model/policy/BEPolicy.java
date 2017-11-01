@@ -3,6 +3,7 @@ package model.policy;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import common.PolicyConstants;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -11,7 +12,7 @@ import java.util.List;
 /**
  * Created by cygnus on 9/25/17.
  */
-public class BEPolicy {
+public class BEPolicy implements Comparable<BEPolicy> {
 
     @JsonProperty("id")
     private String id;
@@ -186,5 +187,69 @@ public class BEPolicy {
                         " Action: " + this.getAction() +
                         " Purpose: " + this.getPurpose()
         );
+    }
+
+    /**
+     * Check if a boolean condition is contained within the policy
+     * @param oc
+     * @return
+     */
+    public boolean containsObjCond(ObjectCondition oc){
+        List<ObjectCondition> ocs = this.getObject_conditions();
+        for (int i = 0; i < ocs.size(); i++) {
+            if(oc.getAttribute().equals(ocs.get(i).getAttribute())){
+                if(oc.getType().equals(ocs.get(i).getType())){
+                    if(oc.compareBooleanPredicates(ocs.get(i).getBooleanPredicates())){
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    public void deleteObjCond(ObjectCondition oc){
+        for (ObjectCondition objCond: this.getObject_conditions()) {
+            if (objCond.compareTo(oc) == 0)
+                this.object_conditions.remove(objCond);
+        }
+    }
+
+    public String createQueryFromObjectConditions(){
+        StringBuilder query = new StringBuilder();
+        String delim = "";
+        for (int i = 0; i < this.object_conditions.size(); i++) {
+            ObjectCondition oc = this.object_conditions.get(i);
+            query.append(delim);
+            query.append(oc.print());
+            delim = PolicyConstants.CONJUNCTION;
+        }
+        return query.toString();
+
+    }
+
+    /**
+     * TODO: Check rest of the policy parameters, currently only check policy id and object conditions
+     * @param bePolicy
+     * @return
+     */
+    @Override
+    public int compareTo(BEPolicy bePolicy) {
+        return this.getId().equals(bePolicy.getId()) && compareBooleanConditions(bePolicy.getObject_conditions())? 0: -1;
+    }
+
+    public boolean compareBooleanConditions(List<ObjectCondition> objectConditions){
+        if (objectConditions.size() != this.getObject_conditions().size())
+            return false;
+        int count = 0;
+        for (int i = 0; i < objectConditions.size(); i++) {
+            for (int j = 0; j < this.getObject_conditions().size() ; j++) {
+                if (objectConditions.get(i).compareTo(this.getObject_conditions().get(j)) == 0){
+                    count++;
+                }
+            }
+        }
+        if (count == objectConditions.size()) return true;
+        return false;
     }
 }

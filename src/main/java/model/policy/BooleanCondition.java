@@ -6,7 +6,9 @@ import common.PolicyConstants;
 import common.PolicyEngineException;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -29,7 +31,7 @@ import java.util.List;
  * }
  */
 
-public class BooleanCondition {
+public class BooleanCondition  implements Comparable<BooleanCondition>  {
 
     @JsonProperty("attribute")
     private String attribute;
@@ -138,31 +140,42 @@ public class BooleanCondition {
      */
     public boolean containedInList(List<ObjectCondition> bcs){
         for (int i = 0; i < bcs.size(); i++) {
-            if(this.getAttribute().equals(bcs.get(i).getAttribute())){
-                if(this.getType().equals(bcs.get(i).getType())){
-                    if(this.compareBooleanPredicates(bcs.get(i).getBooleanPredicates())){
-                        return true;
-                    }
-                }
-            }
+            if (this.compareTo(bcs.get(i)) == 0)
+                return true;
         }
         return false;
     }
 
     /**
-     * https://stackoverflow.com/a/16209854
      * @param bps
      * @return true if they are equal, false if not
      */
 
     public boolean compareBooleanPredicates(List<BooleanPredicate> bps){
-        if(this.getBooleanPredicates().size() != bps.size())
+        if (bps.size() != this.getBooleanPredicates().size())
             return false;
-        List<BooleanPredicate> cp = new ArrayList<BooleanPredicate>(this.getBooleanPredicates());
-        for (BooleanPredicate bp: bps) {
-            if( !cp.remove(bp))
-                return false;
+        int count = 0;
+        for (int i = 0; i < bps.size(); i++) {
+            for (int j = 0; j < this.getBooleanPredicates().size() ; j++) {
+                int flag = bps.get(i).compareTo(this.getBooleanPredicates().get(j));
+                if (bps.get(i).compareTo(this.getBooleanPredicates().get(j)) == 0){
+                    count++;
+                }
+            }
         }
-        return cp.isEmpty();
+        if (count == bps.size()) return true;
+        return false;
+    }
+
+    @Override
+    public int compareTo(BooleanCondition booleanCondition) {
+        if(this.getAttribute().equals(booleanCondition.getAttribute())) {
+            if (this.getType().equals(booleanCondition.getType())) {
+                if (this.compareBooleanPredicates(booleanCondition.getBooleanPredicates())) {
+                    return 0;
+                }
+            }
+        }
+        return -1;
     }
 }
