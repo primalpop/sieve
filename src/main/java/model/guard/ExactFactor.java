@@ -1,11 +1,8 @@
 package model.guard;
 
 import common.PolicyConstants;
-import common.PolicyEngineException;
 import db.MySQLQueryManager;
 import model.policy.BEPolicy;
-import model.policy.BooleanCondition;
-import model.policy.BooleanPredicate;
 import model.policy.ObjectCondition;
 
 import java.util.ArrayList;
@@ -36,7 +33,7 @@ public class ExactFactor{
     //Cost of evaluating the expression
     Long cost;
 
-    public void ExactFactor(List<BEPolicy> policies){
+    public ExactFactor(List<BEPolicy> policies){
         expression = new ArrayList<BEPolicy>(policies);
         factor = new ObjectCondition();
         quotient = new ArrayList<BEPolicy>();
@@ -92,50 +89,35 @@ public class ExactFactor{
         return polRemPred;
     }
 
-    /**
-     * Substract a list of policies from another
-     * @param policies
-     * @param expression
-     * @return
-     */
-    public List<BEPolicy> deletePolicies(List<BEPolicy> expression, List<BEPolicy> policies){
-        for (BEPolicy exp: expression) {
-            for (BEPolicy p: policies) {
-                if (p.compareTo(exp) == 0){
-                    expression.remove(exp);
-                }
-            }
-        }
-        return expression;
-    }
 
-    public void factorize(List<BEPolicy> policies){
-        List<ObjectCondition> objectConditions = getUnique(policies);
-        ExactFactor ef = new ExactFactor();
-        ef.expression = policies;
+    public void factorize(){
+        List<ObjectCondition> objectConditions = getUnique(this.expression);
         for (ObjectCondition oc: objectConditions) {
-            List<BEPolicy> q = checkAgainstPolicies(oc, ef.expression);
+            List<BEPolicy> q = checkAgainstPolicies(oc, this.expression);
             if(q.size() > 1){ //was able to factor
-                ef.factor = oc;
-                ef.quotient = q;
-                ef.reminder = deletePolicies(ef.expression, ef.quotient);
-                ef.cost = queryManager.runTimedQuery(ef.createQueryFromExactFactor());
+                this.factor = oc;
+                this.quotient = removeFromPolicies(oc, q);
+                this.reminder = new ArrayList<BEPolicy>(expression);
+                this.reminder.removeAll(q);
+                this.cost = queryManager.runTimedQuery(this.createQueryFromExactFactor());
             }
         }
     }
-
-    //TODO: Start here tomorrow
-
+    
     /**
      * Creates a query string from Exact Factor by
-     * AND'ing factor and quotient and by OR'ing the reminder
+     * AND'ing factor, quotient and by OR'ing the reminder
      * @return
      */
     public String createQueryFromExactFactor(){
-        return null;
+        StringBuilder query = new StringBuilder();
+        query.append(this.factor.print());
+        query.append(PolicyConstants.CONJUNCTION);
+        query.append(this.createQueryFromPolices(quotient));
+        query.append(PolicyConstants.DISJUNCTION);
+        query.append(this.createQueryFromPolices(reminder));
+        return query.toString();
     }
-
-
 
     /**
      * Given a list of policies, it creates a query by
@@ -164,38 +146,3 @@ public class ExactFactor{
         return queryManager.runCountingQuery(createQueryFromPolices(policies));
     }
 }
-
-
-
-//
-//    public void factorize(List<BEPolicy> policies) {
-//        ExactFactor ef = new ExactFactor();
-//
-//        List<ObjectCondition> checkedObjConditions = new ArrayList<ObjectCondition>();
-//        Boolean factored = false;
-//        for (int i = 0; i < policies.size(); i++) {
-//            ObjectCondition objCond = policies.get(i).getObject_conditions().get();
-//            if (objCond.containedInList(checkedObjConditions))
-//                continue;
-//            List<ObjectCondition> factoredExp = new ArrayList<ObjectCondition>(objectConditions);
-//            for (int j = 0; j < objectConditions.size(); j++) {
-//                if (i != j) {
-//                    if (objCond.checkSame(objectConditions.get(j))) {
-//                        factoredExp.remove(objectConditions.get(j));
-//                        factor = objCond;
-//                        factored = true;
-//                    }
-//                }
-//            }
-//            if(factored){
-//                factoredExp.remove(factor);
-//
-//            }
-////            Long fCost = computeCost(factoredExp, combiners);
-////            if (fCost < bfCost){
-////                bfCost = fCost;
-////                bf = objectConditions.get(i);
-////            }
-//        }
-//
-//    }

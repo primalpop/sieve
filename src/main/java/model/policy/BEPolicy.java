@@ -8,6 +8,7 @@ import common.PolicyConstants;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by cygnus on 9/25/17.
@@ -209,10 +210,10 @@ public class BEPolicy implements Comparable<BEPolicy> {
     }
 
     public void deleteObjCond(ObjectCondition oc){
-        for (ObjectCondition objCond: this.getObject_conditions()) {
-            if (objCond.compareTo(oc) == 0)
-                this.object_conditions.remove(objCond);
-        }
+        List<ObjectCondition> toRemove = this.object_conditions.stream()
+                .filter(objCond -> objCond.compareTo(oc) == 0)
+                .collect(Collectors.toList());
+        this.object_conditions.removeAll(toRemove);
     }
 
     public String createQueryFromObjectConditions(){
