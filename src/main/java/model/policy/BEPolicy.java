@@ -146,17 +146,6 @@ public class BEPolicy implements Comparable<BEPolicy> {
         return bePolicy;
     }
 
-    public static List<BEPolicy> parseJSONList(String jsonData) {
-        ObjectMapper objectMapper = new ObjectMapper();
-        List<BEPolicy> bePolicies = null;
-        try {
-            bePolicies = objectMapper.readValue(jsonData, new TypeReference<List<BEPolicy>>(){});
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return bePolicies;
-    }
-
     //TODO: Make it a single method for both subclasses taking parent class as parameter
 
     public String serializeObjectConditions(List<ObjectCondition> bcs){

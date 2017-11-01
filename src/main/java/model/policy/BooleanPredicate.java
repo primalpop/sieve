@@ -47,4 +47,18 @@ public class BooleanPredicate implements Comparable<BooleanPredicate> {
         }
         return -1;
     }
+
+    @Override
+    public int hashCode() {
+        return value.hashCode() ^ operator.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof BooleanPredicate))
+            return false;
+
+        BooleanPredicate bp = (BooleanPredicate) obj;
+        return bp.value.equals(value) && bp.operator.equals(operator);
+    }
 }

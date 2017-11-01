@@ -1,6 +1,7 @@
 package model.policy;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import common.AttributeType;
 import common.PolicyConstants;
 import common.PolicyEngineException;
@@ -177,5 +178,19 @@ public class BooleanCondition  implements Comparable<BooleanCondition>  {
             }
         }
         return -1;
+    }
+
+    @Override
+    public int hashCode() {
+        return attribute.hashCode() ^ type.hashCode() ^ this.booleanPredicates.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof BooleanCondition))
+            return false;
+
+        BooleanCondition bc = (BooleanCondition) obj;
+        return bc.attribute.equals(attribute) && bc.type.equals(type) && bc.booleanPredicates.equals(booleanPredicates);
     }
 }
