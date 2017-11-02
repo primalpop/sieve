@@ -16,20 +16,22 @@ import java.util.Set;
  */
 public class BEExpression {
 
-    MySQLQueryManager queryManager;
+    MySQLQueryManager queryManager = new MySQLQueryManager();
 
 
     List<BEPolicy> policies;
 
     public BEExpression(){
         policies = new ArrayList<BEPolicy>();
-        queryManager = new MySQLQueryManager();
 
     }
 
     public BEExpression(List<BEPolicy> policies){
         policies = new ArrayList<BEPolicy>(policies);
-        queryManager = new MySQLQueryManager();
+    }
+
+    public BEExpression(BEExpression beExpression){
+        this.policies = beExpression.policies;
     }
 
     public List<BEPolicy> getPolicies() {
