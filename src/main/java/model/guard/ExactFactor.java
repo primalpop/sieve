@@ -34,12 +34,20 @@ public class ExactFactor{
     //Cost of evaluating the expression
     Long cost;
 
-    public ExactFactor(BEExpression beExpression){
-        expression = beExpression;
+    public ExactFactor(){
+        expression = new BEExpression();
         factor = new ObjectCondition();
         quotient = new BEExpression();
         reminder = new BEExpression();
         cost = PolicyConstants.INFINTIY;
+    }
+
+    public ExactFactor(ExactFactor ef){
+        expression = ef.expression;
+        factor = ef.factor;
+        quotient = ef.quotient;
+        reminder = ef.reminder;
+        cost = ef.cost;
     }
 
 
@@ -83,18 +91,16 @@ public class ExactFactor{
         this.cost = cost;
     }
 
-    public void factorize(){
-        List<ObjectCondition> objectConditions = this.expression.getRepeating();
-        for (ObjectCondition oc: objectConditions) {
-            BEExpression q = new BEExpression();
-            q.setPolicies(this.expression.checkAgainstPolicies(oc));
-            if(q.getPolicies().size() > 1){ //was able to factor
-                this.factor = oc;
-                this.quotient.setPolicies(q.removeFromPolicies(oc));
-                this.reminder = expression;
-                this.reminder.getPolicies().removeAll(q.getPolicies());
-                this.cost = queryManager.runTimedQuery(this.createQueryFromExactFactor());
-            }
+    public void factorize(ObjectCondition oc) {
+        BEExpression q = new BEExpression();
+        q.setPolicies(this.expression.checkAgainstPolicies(oc));
+        if (q.getPolicies().size() > 1) { //was able to factor
+            this.factor = oc;
+            this.quotient.setPolicies(q.removeFromPolicies(oc));
+            this.reminder = expression;
+            this.reminder.getPolicies().removeAll(q.getPolicies());
+            this.cost = queryManager.runTimedQuery(this.createQueryFromExactFactor());
+
         }
     }
     
