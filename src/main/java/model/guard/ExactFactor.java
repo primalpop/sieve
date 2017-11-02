@@ -35,19 +35,19 @@ public class ExactFactor{
     Long cost;
 
     public ExactFactor(){
-        expression = new BEExpression();
-        factor = new ObjectCondition();
-        quotient = new BEExpression();
-        reminder = new BEExpression();
-        cost = PolicyConstants.INFINTIY;
+        this.expression = new BEExpression();
+        this.factor = new ObjectCondition();
+        this.quotient = new BEExpression();
+        this.reminder = new BEExpression();
+        this. cost = PolicyConstants.INFINTIY;
     }
 
-    public ExactFactor(ExactFactor ef){
-        expression = ef.expression;
-        factor = ef.factor;
-        quotient = ef.quotient;
-        reminder = ef.reminder;
-        cost = ef.cost;
+    public ExactFactor(BEExpression expression){
+        this.expression = new BEExpression(expression);
+        this.factor = new ObjectCondition();
+        this.quotient = new BEExpression();
+        this.reminder = new BEExpression();
+        this.cost = PolicyConstants.INFINTIY;
     }
 
 
@@ -92,11 +92,10 @@ public class ExactFactor{
     }
 
     public void factorize(ObjectCondition oc) {
-        BEExpression q = new BEExpression();
-        q.setPolicies(this.expression.checkAgainstPolicies(oc));
+        BEExpression q = new BEExpression(this.expression.checkAgainstPolicies(oc));
         if (q.getPolicies().size() > 1) { //was able to factor
             this.factor = oc;
-            this.quotient.setPolicies(q.removeFromPolicies(oc));
+            this.quotient = new BEExpression(q.removeFromPolicies(oc));
             this.reminder = expression;
             this.reminder.getPolicies().removeAll(q.getPolicies());
             this.cost = queryManager.runTimedQuery(this.createQueryFromExactFactor());

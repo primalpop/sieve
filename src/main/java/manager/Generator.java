@@ -17,17 +17,15 @@ public class Generator {
 
         ExactFactor bestFactor = new ExactFactor();
 
-        ExactFactor currentFactor = new ExactFactor();
-
-        //Error because current Factor expression doesn't get reset to the original policy
+        ExactFactor currentFactor = new ExactFactor(beExpression);
 
         List<ObjectCondition> objectConditions = beExpression.getRepeating();
 
         for (ObjectCondition oc : objectConditions) {
-            currentFactor.setExpression(beExpression);
+            currentFactor = new ExactFactor(beExpression);
             currentFactor.factorize(oc);
             if (bestFactor.getCost() > currentFactor.getCost()) {
-                bestFactor = new ExactFactor(currentFactor);
+                bestFactor = currentFactor;
             }
         }
         return bestFactor;
