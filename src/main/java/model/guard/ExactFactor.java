@@ -43,6 +43,45 @@ public class ExactFactor{
     }
 
 
+    public BEExpression getExpression() {
+        return expression;
+    }
+
+    public void setExpression(BEExpression expression) {
+        this.expression = expression;
+    }
+
+    public ObjectCondition getFactor() {
+        return factor;
+    }
+
+    public void setFactor(ObjectCondition factor) {
+        this.factor = factor;
+    }
+
+    public BEExpression getQuotient() {
+        return quotient;
+    }
+
+    public void setQuotient(BEExpression quotient) {
+        this.quotient = quotient;
+    }
+
+    public BEExpression getReminder() {
+        return reminder;
+    }
+
+    public void setReminder(BEExpression reminder) {
+        this.reminder = reminder;
+    }
+
+    public Long getCost() {
+        return cost;
+    }
+
+    public void setCost(Long cost) {
+        this.cost = cost;
+    }
 
     public void factorize(){
         List<ObjectCondition> objectConditions = this.expression.getRepeating();
