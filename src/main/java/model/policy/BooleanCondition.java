@@ -35,13 +35,16 @@ import java.util.Set;
 public class BooleanCondition  implements Comparable<BooleanCondition>  {
 
     @JsonProperty("attribute")
-    private String attribute;
+    protected String attribute;
 
     @JsonProperty("type")
-    private AttributeType type;
+    protected AttributeType type;
 
     @JsonProperty("predicates")
-    private List<BooleanPredicate> booleanPredicates;
+    protected List<BooleanPredicate> booleanPredicates;
+
+    public BooleanCondition(BooleanCondition oc) {
+    }
 
     public String getAttribute() {
         return attribute;

@@ -59,6 +59,23 @@ public class BEPolicy implements Comparable<BEPolicy> {
 
     }
 
+    public BEPolicy(BEPolicy bePolicy){
+        this.id = bePolicy.getId();
+        this.description = bePolicy.getDescription();
+        this.metadata = bePolicy.getMetadata();
+        this.object_conditions = new ArrayList<ObjectCondition>(bePolicy.getObject_conditions().size());
+        for(ObjectCondition oc: bePolicy.getObject_conditions()){
+            this.object_conditions.add(new ObjectCondition(oc));
+        }
+        this.querier_conditions = new ArrayList<QuerierCondition>(bePolicy.getQuerier_conditions().size());
+        for(QuerierCondition qc: bePolicy.getQuerier_conditions()){
+            this.querier_conditions.add(new QuerierCondition(qc));
+        }
+        this.action = bePolicy.getAction();
+        this.purpose = bePolicy.getPurpose();
+
+    }
+
     public BEPolicy(String id, String description, List<ObjectCondition> object_conditions, List<QuerierCondition> querier_conditions, String purpose, String action) {
         this.id = id;
         this.description = description;
