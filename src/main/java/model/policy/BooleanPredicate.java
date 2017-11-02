@@ -39,6 +39,11 @@ public class BooleanPredicate implements Comparable<BooleanPredicate> {
 
     }
 
+    public BooleanPredicate(BooleanPredicate bp){
+        this.value = bp.getValue();
+        this.operator = bp.getOperator();
+    }
+
     @Override
     public int compareTo(BooleanPredicate bp) {
         if(this.getValue().equals(bp.getValue())) {

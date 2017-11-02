@@ -3,6 +3,7 @@ package model.policy;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import common.PolicyConstants;
+import common.PolicyEngineException;
 import db.MySQLQueryManager;
 
 import java.io.IOException;
@@ -31,11 +32,14 @@ public class BEExpression {
     }
 
     public BEExpression(BEExpression beExpression){
-        this.policies = new ArrayList<BEPolicy>(beExpression.getPolicies());
+        this.policies = new ArrayList<BEPolicy>(beExpression.getPolicies().size());
+        for(BEPolicy bp: beExpression.getPolicies()){
+            this.policies.add(new BEPolicy(bp));
+        }
     }
 
     public List<BEPolicy> getPolicies() {
-        return policies;
+        return this.policies;
     }
 
     public void setPolicies(List<BEPolicy> policies) {
@@ -93,19 +97,31 @@ public class BEExpression {
     }
 
 
+    /**
+     * Returns the matching policy or null if no match found
+     * @param bePolicy
+     * @return
+     */
+    public BEPolicy searchFor(BEPolicy bePolicy){
+        for (BEPolicy bp: this.getPolicies()) {
+            if(bp.compareTo(bePolicy) == 0)
+                return bp;
+        }
+        return null;
+    }
 
     /**
      * Given a predicate and list of policies, identify the list of policies containing that predicate
      * @param objectCondition
      * @return
      */
-    public List<BEPolicy> checkAgainstPolicies(ObjectCondition objectCondition){
+    public void checkAgainstPolicies(ObjectCondition objectCondition){
         List<BEPolicy> polConPred = new ArrayList<BEPolicy>();
         for (int i = 0; i < this.policies.size(); i++) {
             if(this.policies.get(i).containsObjCond(objectCondition))
                 polConPred.add(this.policies.get(i));
         }
-        return polConPred;
+        this.policies = polConPred;
     }
 
     /**
@@ -113,12 +129,12 @@ public class BEExpression {
      * @param objectCondition
      * @return
      */
-    public List<BEPolicy> removeFromPolicies(ObjectCondition objectCondition){
+    public void removeFromPolicies(ObjectCondition objectCondition){
         List<BEPolicy> polRemPred = new ArrayList<BEPolicy>(this.policies);
         for (int i = 0; i < this.policies.size(); i++) {
             polRemPred.get(i).deleteObjCond(objectCondition);
         }
-        return polRemPred;
+        this.policies = polRemPred;
     }
 
     /**
@@ -138,6 +154,20 @@ public class BEExpression {
         return query.toString();
     }
 
+    /**
+     * Removes the list of policies from the expression
+     * @param policies
+     */
+    public void removePolicies(List<BEPolicy> policies) {
+        List<BEPolicy> polRem = new ArrayList<BEPolicy>();
+        for (int i = 0; i < policies.size(); i++) {
+            BEPolicy bp = searchFor(policies.get(i));
+            if (bp != null)
+                this.getPolicies().remove(bp);
+            else
+                throw new PolicyEngineException("Policy doesn't exist in the expression");
+        }
+    }
 
     public long computeCost(){
         return queryManager.runTimedQuery(createQueryFromPolices());
@@ -157,4 +187,5 @@ public class BEExpression {
         }
         this.policies = bePolicies;
     }
+
 }

@@ -1,6 +1,7 @@
 package model.guard;
 
 import common.PolicyConstants;
+import common.PolicyEngineException;
 import db.MySQLQueryManager;
 import model.policy.BEExpression;
 import model.policy.BEPolicy;
@@ -92,15 +93,19 @@ public class ExactFactor{
     }
 
     public void factorize(ObjectCondition oc) {
-        BEExpression q = new BEExpression(this.expression.checkAgainstPolicies(oc));
-        if (q.getPolicies().size() > 1) { //was able to factor
+        BEExpression candidate = new BEExpression(this.getExpression());
+        candidate.checkAgainstPolicies(oc);
+        if (candidate.getPolicies().size() > 1) { //was able to factor
             this.factor = oc;
-            this.quotient = new BEExpression(q.removeFromPolicies(oc));
-            this.reminder = expression;
-            this.reminder.getPolicies().removeAll(q.getPolicies());
+            this.quotient = new BEExpression(candidate);
+            this.quotient.removeFromPolicies(oc);
+            this.reminder = new BEExpression(this.getExpression());
+            this.reminder.removePolicies(candidate.getPolicies());
             this.cost = queryManager.runTimedQuery(this.createQueryFromExactFactor());
 
         }
+        else
+            throw new PolicyEngineException("Couldn't factor the expression using repeating object condition");
     }
     
     /**
