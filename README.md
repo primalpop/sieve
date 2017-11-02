@@ -14,7 +14,6 @@ Guards is an approximation of the complete DNF policy expression which is evalua
 
 We utilize a seed of different types of policies with their instances each and generate a large policy data set to test the policy engine.
 
-
 ## Policy Model
 ```json
 {
@@ -71,3 +70,9 @@ We utilize a seed of different types of policies with their instances each and g
   "action": ""
 }
 ```
+
+### Policy Files
+
+1. policy0.json - Single Policy
+2. policy1.json - Three Policies with one exact factor containing one predicate
+3. policy2.json - Five Policies with three exact factors
