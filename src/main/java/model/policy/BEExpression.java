@@ -22,16 +22,16 @@ public class BEExpression {
     List<BEPolicy> policies;
 
     public BEExpression(){
-        policies = new ArrayList<BEPolicy>();
+        this.policies = new ArrayList<BEPolicy>();
 
     }
 
     public BEExpression(List<BEPolicy> policies){
-        policies = new ArrayList<BEPolicy>(policies);
+        this.policies = new ArrayList<BEPolicy>(policies);
     }
 
     public BEExpression(BEExpression beExpression){
-        this.policies = beExpression.policies;
+        this.policies = new ArrayList<BEPolicy>(beExpression.getPolicies());
     }
 
     public List<BEPolicy> getPolicies() {

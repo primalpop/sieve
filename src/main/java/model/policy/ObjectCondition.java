@@ -9,4 +9,8 @@ public class ObjectCondition extends BooleanCondition {
 
     }
 
+    public ObjectCondition(ObjectCondition oc){
+        
+    }
+
 }
