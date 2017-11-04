@@ -19,17 +19,16 @@ public class BEExpression {
 
     MySQLQueryManager queryManager = new MySQLQueryManager();
 
-
     List<BEPolicy> policies;
 
     public BEExpression(){
         this.policies = new ArrayList<BEPolicy>();
-
     }
 
     public BEExpression(List<BEPolicy> policies){
         this.policies = new ArrayList<BEPolicy>(policies);
     }
+
 
     public BEExpression(BEExpression beExpression){
         this.policies = new ArrayList<BEPolicy>(beExpression.getPolicies().size());
@@ -45,8 +44,6 @@ public class BEExpression {
     public void setPolicies(List<BEPolicy> policies) {
         this.policies = policies;
     }
-
-
 
     /**
      * Get all the object conditions from a list of policies
