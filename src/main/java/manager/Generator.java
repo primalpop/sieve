@@ -20,6 +20,7 @@ public class Generator {
         ExactFactor currentFactor = new ExactFactor(beExpression);
 
         List<ObjectCondition> objectConditions = beExpression.getRepeating();
+        if (objectConditions.isEmpty()) return currentFactor; //No more factorization possible
 
         for (ObjectCondition oc : objectConditions) {
             currentFactor = new ExactFactor(beExpression);
@@ -28,6 +29,13 @@ public class Generator {
                 bestFactor = currentFactor;
             }
         }
+
+        ExactFactor qFactor = generateGuard(bestFactor.getQuotient().getExpression());
+        ExactFactor rFactor = generateGuard(bestFactor.getReminder().getExpression());
+
+        bestFactor.setQuotient(qFactor);
+        bestFactor.setReminder(rFactor);
+
         return bestFactor;
     }
 }

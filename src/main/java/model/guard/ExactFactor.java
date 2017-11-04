@@ -24,30 +24,26 @@ public class ExactFactor{
     BEExpression expression;
 
     // Chosen factor
-    ObjectCondition factor;
+    List<ObjectCondition> factor;
 
     // Polices from the original expression that contain the factor
-    BEExpression quotient;
+    ExactFactor quotient;
 
     // Polices from the original expression that does not contain the factor
-    BEExpression reminder;
+    ExactFactor reminder;
 
     //Cost of evaluating the expression
     Long cost;
 
     public ExactFactor(){
         this.expression = new BEExpression();
-        this.factor = new ObjectCondition();
-        this.quotient = new BEExpression();
-        this.reminder = new BEExpression();
+        this.factor = new ArrayList<ObjectCondition>();
         this. cost = PolicyConstants.INFINTIY;
     }
 
     public ExactFactor(BEExpression expression){
         this.expression = new BEExpression(expression);
-        this.factor = new ObjectCondition();
-        this.quotient = new BEExpression();
-        this.reminder = new BEExpression();
+        this.factor = new ArrayList<ObjectCondition>();
         this.cost = PolicyConstants.INFINTIY;
     }
 
@@ -60,27 +56,27 @@ public class ExactFactor{
         this.expression = expression;
     }
 
-    public ObjectCondition getFactor() {
+    public List<ObjectCondition> getFactor() {
         return factor;
     }
 
-    public void setFactor(ObjectCondition factor) {
+    public void setFactor(List<ObjectCondition> factor) {
         this.factor = factor;
     }
 
-    public BEExpression getQuotient() {
+    public ExactFactor getQuotient() {
         return quotient;
     }
 
-    public void setQuotient(BEExpression quotient) {
+    public void setQuotient(ExactFactor quotient) {
         this.quotient = quotient;
     }
 
-    public BEExpression getReminder() {
+    public ExactFactor getReminder() {
         return reminder;
     }
 
-    public void setReminder(BEExpression reminder) {
+    public void setReminder(ExactFactor reminder) {
         this.reminder = reminder;
     }
 
@@ -92,15 +88,19 @@ public class ExactFactor{
         this.cost = cost;
     }
 
+    /**
+     * Uses the given object condition to factorize the expression and set the quotient and reminder
+     * @param oc
+     */
     public void factorize(ObjectCondition oc) {
         BEExpression candidate = new BEExpression(this.getExpression());
         candidate.checkAgainstPolicies(oc);
         if (candidate.getPolicies().size() > 1) { //was able to factor
-            this.factor = oc;
-            this.quotient = new BEExpression(candidate);
-            this.quotient.removeFromPolicies(oc);
-            this.reminder = new BEExpression(this.getExpression());
-            this.reminder.removePolicies(candidate.getPolicies());
+            this.factor.add(oc);
+            this.quotient = new ExactFactor(candidate);
+            this.quotient.getExpression().removeFromPolicies(oc);
+            this.reminder = new ExactFactor(this.getExpression());
+            this.reminder.getExpression().removePolicies(candidate.getPolicies());
             this.cost = queryManager.runTimedQuery(this.createQueryFromExactFactor());
 
         }
@@ -111,16 +111,18 @@ public class ExactFactor{
     /**
      * Creates a query string from Exact Factor by
      * AND'ing factor, quotient and by OR'ing the reminder
+     * Parenthesis are important to denote the evaluation order
      * @return
      */
     public String createQueryFromExactFactor(){
         StringBuilder query = new StringBuilder();
         query.append(this.factor.print());
+        query.append("(");
         query.append(PolicyConstants.CONJUNCTION);
         query.append(this.quotient.createQueryFromPolices());
+        query.append(")");
         query.append(PolicyConstants.DISJUNCTION);
         query.append(this.reminder.createQueryFromPolices());
         return query.toString();
     }
-
 }
