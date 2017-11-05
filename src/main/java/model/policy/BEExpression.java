@@ -15,7 +15,7 @@ import java.util.Set;
 /**
  * Created by cygnus on 11/1/17.
  */
-public class BEExpression {
+public class BEExpression implements Comparable<BEExpression> {
 
     MySQLQueryManager queryManager = new MySQLQueryManager();
 
@@ -185,4 +185,13 @@ public class BEExpression {
         this.policies = bePolicies;
     }
 
+    @Override
+    public int compareTo(BEExpression be) {
+        int count = 0;
+        for (BEPolicy bp: be.policies) {
+            BEPolicy search = searchFor(bp);
+            if(search != null) count ++;
+        }
+        return count == be.getPolicies().size()? 0: -1;
+    }
 }
