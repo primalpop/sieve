@@ -1,15 +1,11 @@
 package model.policy;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import common.AttributeType;
 import common.PolicyConstants;
 import common.PolicyEngineException;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 
 /**
@@ -100,7 +96,7 @@ public class BooleanCondition  implements Comparable<BooleanCondition>  {
         for (int i = 0; i < this.getBooleanPredicates().size(); i++){
             bp = this.getBooleanPredicates().get(i);
             r.append(delim);
-            r.append(" (" + this.getAttribute() + bp.getOperator() + check_type(bp.getValue()) + ") ");
+            r.append("(" + this.getAttribute() + bp.getOperator() + check_type(bp.getValue()) + ")");
             delim = PolicyConstants.CONJUNCTION;
         }
         return r.toString();

@@ -37,6 +37,7 @@ public class MySQLQueryManager {
             return Duration.between(start, end).toMillis();
         } catch (SQLException e) {
             e.printStackTrace();
+            System.out.println(query);
             throw new PolicyEngineException("Error Running Query");
         }
     }

@@ -1,7 +1,6 @@
 package execution;
 
 import fileop.Reader;
-import manager.Generator;
 import model.guard.ExactFactor;
 import model.policy.BEExpression;
 
@@ -15,8 +14,8 @@ public class RunMe {
         BEExpression beExpression = new BEExpression();
         beExpression.parseJSONList(Reader.readFile("/policies/policy2.json"));
 
-        Generator generator = new Generator();
-        ExactFactor ef = generator.generateGuard(beExpression);
+        ExactFactor ef = new ExactFactor(beExpression);
+        ef.findBestFactor();
         System.out.println(ef.createQueryFromExactFactor());
     }
 }

@@ -4,7 +4,6 @@ import common.PolicyConstants;
 import common.PolicyEngineException;
 import db.MySQLQueryManager;
 import model.policy.BEExpression;
-import model.policy.BEPolicy;
 import model.policy.ObjectCondition;
 
 import java.util.ArrayList;
@@ -14,7 +13,7 @@ import java.util.List;
  * Created by cygnus on 10/29/17.
  *
  * E = D.Q + R
- * where D is an exact factor
+ * where D is an exact multiple
  */
 public class ExactFactor{
 
@@ -23,13 +22,13 @@ public class ExactFactor{
     //Original expression
     BEExpression expression;
 
-    // Chosen factor
-    List<ObjectCondition> factor;
+    // Chosen multiple
+    List<ObjectCondition> multiplier;
 
-    // Polices from the original expression that contain the factor
+    // Polices from the original expression that contain the multiple
     ExactFactor quotient;
 
-    // Polices from the original expression that does not contain the factor
+    // Polices from the original expression that does not contain the multiple
     ExactFactor reminder;
 
     //Cost of evaluating the expression
@@ -37,13 +36,13 @@ public class ExactFactor{
 
     public ExactFactor(){
         this.expression = new BEExpression();
-        this.factor = new ArrayList<ObjectCondition>();
+        this.multiplier = new ArrayList<ObjectCondition>();
         this. cost = PolicyConstants.INFINTIY;
     }
 
     public ExactFactor(BEExpression expression){
         this.expression = new BEExpression(expression);
-        this.factor = new ArrayList<ObjectCondition>();
+        this.multiplier = new ArrayList<ObjectCondition>();
         this.cost = PolicyConstants.INFINTIY;
     }
 
@@ -56,12 +55,12 @@ public class ExactFactor{
         this.expression = expression;
     }
 
-    public List<ObjectCondition> getFactor() {
-        return factor;
+    public List<ObjectCondition> getMultiplier() {
+        return multiplier;
     }
 
-    public void setFactor(List<ObjectCondition> factor) {
-        this.factor = factor;
+    public void setMultiple(List<ObjectCondition> multiplier) {
+        this.multiplier = multiplier;
     }
 
     public ExactFactor getQuotient() {
@@ -90,39 +89,76 @@ public class ExactFactor{
 
     /**
      * Uses the given object condition to factorize the expression and set the quotient and reminder
-     * @param oc
+     * TODO: Use list of object conditions instead of one object condition
      */
     public void factorize(ObjectCondition oc) {
-        BEExpression candidate = new BEExpression(this.getExpression());
-        candidate.checkAgainstPolicies(oc);
-        if (candidate.getPolicies().size() > 1) { //was able to factor
-            this.factor.add(oc);
-            this.quotient = new ExactFactor(candidate);
+
+        BEExpression qoutientWithMultiplier = new BEExpression(this.getExpression());
+        qoutientWithMultiplier.checkAgainstPolicies(oc);
+        if (qoutientWithMultiplier.getPolicies().size() > 1) { //was able to factorize
+            this.multiplier.add(oc);
+            this.quotient = new ExactFactor(qoutientWithMultiplier);
             this.quotient.getExpression().removeFromPolicies(oc);
             this.reminder = new ExactFactor(this.getExpression());
-            this.reminder.getExpression().removePolicies(candidate.getPolicies());
+            this.reminder.getExpression().removePolicies(qoutientWithMultiplier.getPolicies());
             this.cost = queryManager.runTimedQuery(this.createQueryFromExactFactor());
 
+        } else
+            throw new PolicyEngineException("Couldn't factorize the expression using repeating object condition");
+
+    }
+
+
+    public void findBestFactor() {
+        List<ObjectCondition> objectConditions = this.expression.getRepeating();
+        if (objectConditions.isEmpty()) return; //No more factorization possible
+
+        for (ObjectCondition oc : objectConditions) {
+            ExactFactor currentFactor = new ExactFactor(this.expression);
+            currentFactor.factorize(oc);
+            if (this.getCost() > currentFactor.getCost()) {
+                this.multiplier = currentFactor.getMultiplier();
+                this.quotient = currentFactor.getQuotient();
+                this.quotient.findBestFactor();
+                this.reminder = currentFactor.getReminder();
+                this.reminder.findBestFactor();
+                this.cost = queryManager.runTimedQuery(this.createQueryFromExactFactor());
+            }
         }
-        else
-            throw new PolicyEngineException("Couldn't factor the expression using repeating object condition");
     }
     
     /**
      * Creates a query string from Exact Factor by
-     * AND'ing factor, quotient and by OR'ing the reminder
+     * AND'ing object conditions in multiplier,
+     * AND'ing the quotient with multiplier and by
+     * OR'ing the reminder to the expression
      * Parenthesis are important to denote the evaluation order
      * @return
      */
     public String createQueryFromExactFactor(){
+        if (multiplier.isEmpty()){
+            if(expression != null) {
+                return this.expression.createQueryFromPolices();
+            }
+            else
+                return "";
+        }
         StringBuilder query = new StringBuilder();
-        query.append(this.factor.print());
+        for (ObjectCondition mul: multiplier) {
+            query.append(mul.print());
+            query.append(PolicyConstants.CONJUNCTION);
+        }
         query.append("(");
-        query.append(PolicyConstants.CONJUNCTION);
-        query.append(this.quotient.createQueryFromPolices());
+        query.append(this.quotient.createQueryFromExactFactor());
         query.append(")");
-        query.append(PolicyConstants.DISJUNCTION);
-        query.append(this.reminder.createQueryFromPolices());
+        if(!this.reminder.expression.getPolicies().isEmpty())  {
+            query.append(PolicyConstants.DISJUNCTION);
+            query.append("(");
+            query.append(this.reminder.createQueryFromExactFactor());
+            query.append(")");
+        }
         return query.toString();
     }
+
+
 }
