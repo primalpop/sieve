@@ -5,6 +5,7 @@ import common.AttributeType;
 import common.PolicyConstants;
 import common.PolicyEngineException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -74,7 +75,9 @@ public class BooleanCondition  implements Comparable<BooleanCondition>  {
 
 
     public BooleanCondition() {
+        this.booleanPredicates = new ArrayList<BooleanPredicate>();
     }
+
 
     public String check_type(String value) {
         switch(type.getID()){
