@@ -74,5 +74,5 @@ We utilize a seed of different types of policies with their instances each and g
 ### Policy Files
 
 1. policy0.json - Single Policy
-2. policy1.json - Three Policies with one exact factor containing one predicate
+2. policy1.json - Three Policies with one exact multiple containing one predicate
 3. policy2.json - Five Policies with three exact factors
