@@ -1,59 +1,61 @@
-{
-  "id": "001",
-  "description": "Policy example 1",
-  "metadata": "",
-  "object_conditions": [
-    {
-      "attribute": "SEMANTIC_OBSERVATION.timeStamp",
-      "type": "TIMESTAMP",
-      "predicates": [
-        {
-          "value": "5 pm",
-          "operator": ">="
-        },
-        {
-          "value": "7 pm",
-          "operator": "<="
-        }
-      ]
-    },
-    {
-      "attribute": "SEMANTIC_OBSERVATION.user",
-      "type": "STRING",
-      "predicates": [
-        {
-          "value": "Alice",
-          "operator": "="
-        }
-      ]
-    }
-  ],
-  "querier_conditions": [
-    {
-      "attribute": "Query.timeStamp",
-      "type": "TIMESTAMP",
-      "predicates": [
-        {
-          "value": "6 pm",
-          "operator": ">="
-        },
-        {
-          "value": "8 pm",
-          "operator": "<="
-        }
-      ]
-    },
-    {
-      "attribute": "Query.user_name",
-      "type": "STRING",
-      "predicates": [
-        {
-          "value": "John",
-          "operator": "="
-        }
-      ]
-    }
-  ],
-  "purpose": "",
-  "action": ""
-}
+[
+  {
+    "id": "001",
+    "description": "Policy example 1",
+    "metadata": "",
+    "object_conditions": [
+      {
+        "attribute": "SEMANTIC_OBSERVATION.timeStamp",
+        "type": "TIMESTAMP",
+        "predicates": [
+          {
+            "value": "5 pm",
+            "operator": ">="
+          },
+          {
+            "value": "7 pm",
+            "operator": "<="
+          }
+        ]
+      },
+      {
+        "attribute": "SEMANTIC_OBSERVATION.user",
+        "type": "STRING",
+        "predicates": [
+          {
+            "value": "Alice",
+            "operator": "="
+          }
+        ]
+      }
+    ],
+    "querier_conditions": [
+      {
+        "attribute": "Query.timeStamp",
+        "type": "TIMESTAMP",
+        "predicates": [
+          {
+            "value": "6 pm",
+            "operator": ">="
+          },
+          {
+            "value": "8 pm",
+            "operator": "<="
+          }
+        ]
+      },
+      {
+        "attribute": "Query.user_name",
+        "type": "STRING",
+        "predicates": [
+          {
+            "value": "John",
+            "operator": "="
+          }
+        ]
+      }
+    ],
+    "purpose": "",
+    "action": ""
+  }
+]

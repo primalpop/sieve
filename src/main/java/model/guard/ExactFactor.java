@@ -108,8 +108,10 @@ public class ExactFactor{
 
     }
 
-
-    public void findBestFactor() {
+    /**
+     * For the exact factor, finds the best possible factorization using greedy approach
+     */
+    public void greedyFactorization() {
         List<ObjectCondition> objectConditions = this.expression.getRepeating();
         if (objectConditions.isEmpty()) return; //No more factorization possible
 
@@ -119,13 +121,34 @@ public class ExactFactor{
             if (this.getCost() > currentFactor.getCost()) {
                 this.multiplier = currentFactor.getMultiplier();
                 this.quotient = currentFactor.getQuotient();
-                this.quotient.findBestFactor();
+                this.quotient.greedyFactorization();
                 this.reminder = currentFactor.getReminder();
-                this.reminder.findBestFactor();
+                this.reminder.greedyFactorization();
                 this.cost = queryManager.runTimedQuery(this.createQueryFromExactFactor());
             }
         }
     }
+
+    /**
+     * Finds the best multiplier and factorization using it
+     * Does not recursively factorize the quotient or remainder
+     */
+    public void findBestFactor(){
+        List<ObjectCondition> objectConditions = this.expression.getRepeating();
+        if (objectConditions.isEmpty()) return; //No more factorization possible
+
+        for (ObjectCondition oc : objectConditions) {
+            ExactFactor currentFactor = new ExactFactor(this.expression);
+            currentFactor.factorize(oc);
+            if (this.getCost() > currentFactor.getCost()) {
+                this.multiplier = currentFactor.getMultiplier();
+                this.quotient = currentFactor.getQuotient();
+                this.reminder = currentFactor.getReminder();
+                this.cost = currentFactor.getCost();
+            }
+        }
+    }
+
     
     /**
      * Creates a query string from Exact Factor by
