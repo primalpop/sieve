@@ -1,4 +1,4 @@
-package java.model.guard;
+package model.guard;
 
 import fileop.Reader;
 import model.guard.ExactFactor;
@@ -9,6 +9,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,19 +17,18 @@ import java.util.List;
  */
 class ExactFactorTest {
 
-    //TODO: Just change testing to string comparisons from print
-
     BEExpression beExpression;
-    BooleanCondition mulP1, mulP2, mulP22;
-    ExactFactor qP1, rP1, qP2, rP2;
+    ExactFactor ef;
+    List <String> policies;
 
     @BeforeEach
     void setUp() {
         beExpression = new BEExpression();
-        mulP1 = new BooleanCondition();
-        mulP1.setAttribute("SEMANTIC_OBSERVATION.user_id");
-        mulP1.getBooleanPredicates().add(new BooleanPredicate("10", "="));
-
+        ef = new ExactFactor();
+        policies = new ArrayList<String>();
+        policies.add(Reader.readFile("policy0.txt"));
+        policies.add(Reader.readFile("policy1.txt"));
+        policies.add(Reader.readFile("policy2.txt"));
     }
 
     @AfterEach
@@ -36,15 +36,24 @@ class ExactFactorTest {
     }
 
     @Test
-    void findBestFactor(){
-        assert(returnBestFactor("/policies/policy0.json").getMultiplier().isEmpty());
-        ExactFactor ef = new ExactFactor();
-        ef = returnBestFactor("/policies/policy1.json");
-        assert(ef.getMultiplier().get(0).compareTo(mulP1) == 0);
-        assert(ef.getQuotient());
-        assert(ef.getReminder());
-
+    void greedyFactorization1(){
+        ef = returnBestFactor("/policies/policy0.json");
+        assert(ef.createQueryFromExactFactor().equals(policies.get(0)));
+        assert(ef.getMultiplier().isEmpty());
     }
+
+    @Test
+    void greedyFactorization2(){
+        ef = returnBestFactor("/policies/policy1.json");
+        assert(ef.createQueryFromExactFactor().equals(policies.get(1)));
+    }
+
+    @Test
+    void greedyFactorization3(){
+        ef = returnBestFactor("/policies/policy3.json");
+        assert(ef.createQueryFromExactFactor().equals(policies.get(3)));
+    }
+
 
     ExactFactor returnBestFactor(String filename) {
         beExpression.parseJSONList(Reader.readFile(filename));
