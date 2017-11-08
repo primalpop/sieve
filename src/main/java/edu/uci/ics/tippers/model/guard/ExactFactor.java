@@ -1,13 +1,16 @@
 package edu.uci.ics.tippers.model.guard;
 
+import com.sun.corba.se.spi.ior.ObjectKey;
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.common.PolicyEngineException;
 import edu.uci.ics.tippers.db.MySQLQueryManager;
 import edu.uci.ics.tippers.model.policy.BEExpression;
+import edu.uci.ics.tippers.model.policy.BEPolicy;
 import edu.uci.ics.tippers.model.policy.ObjectCondition;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by cygnus on 10/29/17.
@@ -87,64 +90,41 @@ public class ExactFactor{
         this.cost = cost;
     }
 
-    /**
-     * Uses the given object condition to factorize the expression and set the quotient and reminder
-     * TODO: Use list of object conditions instead of one object condition
-     */
-    public void factorize(ObjectCondition oc) {
-
+    public void factorizeSet(Set<ObjectCondition> objSet){
         BEExpression qoutientWithMultiplier = new BEExpression(this.getExpression());
-        qoutientWithMultiplier.checkAgainstPolicies(oc);
-        if (qoutientWithMultiplier.getPolicies().size() > 1) { //was able to factorize
-            this.multiplier.add(oc);
+        qoutientWithMultiplier.checkAgainstPolices(objSet);
+        if(qoutientWithMultiplier.getPolicies().size() > 1 ) { //was able to factorize
+            this.multiplier = new ArrayList<ObjectCondition>(objSet);
             this.quotient = new ExactFactor(qoutientWithMultiplier);
-            this.quotient.getExpression().removeFromPolicies(oc);
+            this.quotient.getExpression().removeSetFromPolicies(objSet);
             this.reminder = new ExactFactor(this.getExpression());
             this.reminder.getExpression().removePolicies(qoutientWithMultiplier.getPolicies());
             this.cost = queryManager.runTimedQuery(this.createQueryFromExactFactor());
-
-        } else
-            throw new PolicyEngineException("Couldn't factorize the expression using repeating object condition");
-
-    }
-
-    /**
-     * For the exact factor, finds the best possible factorization using greedy approach
-     */
-    public void greedyFactorization() {
-        List<ObjectCondition> objectConditions = this.expression.getRepeating();
-        if (objectConditions.isEmpty()) return; //No more factorization possible
-
-        for (ObjectCondition oc : objectConditions) {
-            ExactFactor currentFactor = new ExactFactor(this.expression);
-            currentFactor.factorize(oc);
-            if (this.getCost() > currentFactor.getCost()) {
-                this.multiplier = currentFactor.getMultiplier();
-                this.quotient = currentFactor.getQuotient();
-                this.quotient.greedyFactorization();
-                this.reminder = currentFactor.getReminder();
-                this.reminder.greedyFactorization();
-                this.cost = queryManager.runTimedQuery(this.createQueryFromExactFactor());
-            }
         }
     }
 
     /**
-     * Finds the best multiplier and factorization using it
-     * Does not recursively factorize the quotient or remainder
+     * Factorization using set of object conditions
+     * TODO: Add a boolean flag to factorization after one step to return the best single factor
      */
-    public void findBestFactor(){
-        List<ObjectCondition> objectConditions = this.expression.getRepeating();
-        if (objectConditions.isEmpty()) return; //No more factorization possible
-
-        for (ObjectCondition oc : objectConditions) {
+    public void greedyFactorization(){
+        if(this.expression.getPolicies().isEmpty()) return;
+        for (int i = 0; i < expression.getPolicies().size(); i++) {
+            BEPolicy bp = expression.getPolicies().get(i);
             ExactFactor currentFactor = new ExactFactor(this.expression);
-            currentFactor.factorize(oc);
-            if (this.getCost() > currentFactor.getCost()) {
-                this.multiplier = currentFactor.getMultiplier();
-                this.quotient = currentFactor.getQuotient();
-                this.reminder = currentFactor.getReminder();
-                this.cost = currentFactor.getCost();
+            Set<Set<ObjectCondition>> powerSet = bp.calculatePowerSet();
+            for (Set<ObjectCondition> objSet: powerSet) {
+                if(objSet.size() == 0 || objSet.size() == bp.getObject_conditions().size()) continue;
+                currentFactor.factorizeSet(objSet);
+                if(currentFactor.getMultiplier().isEmpty()) continue;
+                if (this.getCost() > currentFactor.getCost()){
+                    this.multiplier = currentFactor.getMultiplier();
+                    this.quotient = currentFactor.getQuotient();
+                    this.quotient.greedyFactorization();;
+                    this.reminder = currentFactor.getReminder();
+                    this.reminder.greedyFactorization();
+                    this.cost = queryManager.runTimedQuery(this.createQueryFromExactFactor());
+                }
             }
         }
     }

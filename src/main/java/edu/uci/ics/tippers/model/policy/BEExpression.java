@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.common.PolicyEngineException;
 import edu.uci.ics.tippers.db.MySQLQueryManager;
+import edu.uci.ics.tippers.model.guard.ExactFactor;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -93,7 +94,6 @@ public class BEExpression implements Comparable<BEExpression> {
         return objConds;
     }
 
-
     /**
      * Returns the matching policy or null if no match found
      * @param bePolicy
@@ -120,6 +120,21 @@ public class BEExpression implements Comparable<BEExpression> {
         }
         this.policies = polConPred;
     }
+
+
+    /**
+     * Given a collection of object conditions and policies, identify the list of policies containing the collection
+     */
+    public void checkAgainstPolices(Set<ObjectCondition> objectConditionSet){
+        List<BEPolicy> polConPredSet = new ArrayList<BEPolicy>();
+        for (int i = 0; i < this.policies.size(); i++) {
+            if(this.policies.get(i).containsCombination(objectConditionSet))
+                polConPredSet.add(this.policies.get(i));
+        }
+        this.policies = polConPredSet;
+    }
+
+
 
     /**
      * Deletes the given predicate from the policies that contain it
@@ -193,5 +208,15 @@ public class BEExpression implements Comparable<BEExpression> {
             if(search != null) count ++;
         }
         return count == be.getPolicies().size()? 0: -1;
+    }
+
+    /**
+     * Removes a set of object condition from policies
+     * @param objSet
+     */
+    public void removeSetFromPolicies(Set<ObjectCondition> objSet) {
+        for (ObjectCondition obj: objSet) {
+            this.removeFromPolicies(obj);
+        }
     }
 }

@@ -32,7 +32,6 @@ public class MySQLQueryManager {
             ResultSet rs = stmt.executeQuery();
             ResultSetMetaData rsmd = rs.getMetaData();
             int columnsNumber = rsmd.getColumnCount();
-            rs.close();
             Instant end = Instant.now();
             return Duration.between(start, end).toMillis();
         } catch (SQLException e) {
@@ -41,7 +40,6 @@ public class MySQLQueryManager {
             throw new PolicyEngineException("Error Running Query");
         }
     }
-
 
     /**
      * Compute the number of false positives by counting the number of results
@@ -57,6 +55,14 @@ public class MySQLQueryManager {
                 count=rs.getInt(1);
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+
+                }
+            }
         }
         return count;
     }

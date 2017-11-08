@@ -2,11 +2,14 @@ package edu.uci.ics.tippers.model.policy;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Sets;
 import edu.uci.ics.tippers.common.PolicyConstants;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -214,6 +217,21 @@ public class BEPolicy implements Comparable<BEPolicy> {
         return false;
     }
 
+    /**
+     * Check if a set of object conditions is contained in a policy
+     * @param objectConditionSet
+     * @return true if all object conditions are contained in the policy, false otherwise
+     */
+    public boolean containsCombination(Set<ObjectCondition> objectConditionSet){
+        Boolean contained = true;
+        for (ObjectCondition oc: objectConditionSet) {
+            if (!this.containsObjCond(oc))
+                contained = false;
+        }
+        return contained;
+    }
+
+
     public void deleteObjCond(ObjectCondition oc){
         List<ObjectCondition> toRemove = this.object_conditions.stream()
                 .filter(objCond -> objCond.compareTo(oc) == 0)
@@ -258,4 +276,16 @@ public class BEPolicy implements Comparable<BEPolicy> {
         if (count == objectConditions.size()) return true;
         return false;
     }
+
+    /**
+     * Calculates the powerset of the object conditions of the policy which includes empty set and complete set
+     * @return Set of object condition sets
+     */
+    public Set<Set<ObjectCondition>> calculatePowerSet() {
+        Set<ObjectCondition> objectConditionSet = ImmutableSet.copyOf(this.getObject_conditions());
+        Set<Set<ObjectCondition>> result = Sets.powerSet(objectConditionSet);
+        return result;
+    }
+
+
 }
