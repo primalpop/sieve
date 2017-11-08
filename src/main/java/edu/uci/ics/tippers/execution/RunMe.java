@@ -14,6 +14,8 @@ public class RunMe {
         BEExpression beExpression = new BEExpression();
         beExpression.parseJSONList(Reader.readFile("/policies/policy2.json"));
 
+
+        System.out.println(beExpression.createQueryFromPolices());
         ExactFactor ef = new ExactFactor(beExpression);
         ef.greedyFactorization();
         System.out.println(ef.createQueryFromExactFactor());

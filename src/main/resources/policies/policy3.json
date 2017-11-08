@@ -1,0 +1,376 @@
+[
+  {
+    "id": "001",
+    "description": "Policy example 1",
+    "metadata": "",
+    "object_conditions": [
+      {
+        "attribute": "SEMANTIC_OBSERVATION.timeStamp",
+        "type": "TIMESTAMP",
+        "predicates": [
+          {
+            "value": "15",
+            "operator": ">="
+          },
+          {
+            "value": "19",
+            "operator": "<="
+          }
+        ]
+      },
+      {
+        "attribute": "SEMANTIC_OBSERVATION.user_id",
+        "type": "STRING",
+        "predicates": [
+          {
+            "value": "10",
+            "operator": "="
+          }
+        ]
+      },
+      {
+        "attribute": "SEMANTIC_OBSERVATION.location",
+        "type": "STRING",
+        "predicates": [
+          {
+            "value": "10",
+            "operator": "="
+          }
+        ]
+      }
+    ],
+    "querier_conditions": [
+      {
+        "attribute": "Query.timeStamp",
+        "type": "TIMESTAMP",
+        "predicates": [
+          {
+            "value": "6 pm",
+            "operator": ">="
+          },
+          {
+            "value": "8 pm",
+            "operator": "<="
+          }
+        ]
+      },
+      {
+        "attribute": "Query.user_name",
+        "type": "STRING",
+        "predicates": [
+          {
+            "value": "John",
+            "operator": "="
+          }
+        ]
+      }
+    ],
+    "purpose": "",
+    "action": ""
+  },
+  {
+    "id": "002",
+    "description": "Policy example 2",
+    "metadata": "",
+    "object_conditions": [
+      {
+        "attribute": "SEMANTIC_OBSERVATION.timeStamp",
+        "type": "TIMESTAMP",
+        "predicates": [
+          {
+            "value": "17",
+            "operator": ">="
+          },
+          {
+            "value": "19",
+            "operator": "<="
+          }
+        ]
+      },
+      {
+        "attribute": "SEMANTIC_OBSERVATION.user_id",
+        "type": "STRING",
+        "predicates": [
+          {
+            "value": "20",
+            "operator": "="
+          }
+        ]
+      }
+    ],
+    "querier_conditions": [
+      {
+        "attribute": "Query.timeStamp",
+        "type": "TIMESTAMP",
+        "predicates": [
+          {
+            "value": "6 pm",
+            "operator": ">="
+          },
+          {
+            "value": "8 pm",
+            "operator": "<="
+          }
+        ]
+      },
+      {
+        "attribute": "Query.user_name",
+        "type": "STRING",
+        "predicates": [
+          {
+            "value": "12",
+            "operator": "="
+          }
+        ]
+      }
+    ],
+    "purpose": "",
+    "action": ""
+  },
+  {
+    "id": "003",
+    "description": "Policy example 3",
+    "metadata": "",
+    "object_conditions": [
+      {
+        "attribute": "SEMANTIC_OBSERVATION.timeStamp",
+        "type": "TIMESTAMP",
+        "predicates": [
+          {
+            "value": "20",
+            "operator": ">="
+          },
+          {
+            "value": "22",
+            "operator": "<="
+          }
+        ]
+      },
+      {
+        "attribute": "SEMANTIC_OBSERVATION.user_id",
+        "type": "STRING",
+        "predicates": [
+          {
+            "value": "11",
+            "operator": "="
+          }
+        ]
+      }
+    ],
+    "querier_conditions": [
+      {
+        "attribute": "Query.timeStamp",
+        "type": "TIMESTAMP",
+        "predicates": [
+          {
+            "value": "6 pm",
+            "operator": ">="
+          },
+          {
+            "value": "8 pm",
+            "operator": "<="
+          }
+        ]
+      },
+      {
+        "attribute": "Query.user_name",
+        "type": "STRING",
+        "predicates": [
+          {
+            "value": "John",
+            "operator": "="
+          }
+        ]
+      }
+    ],
+    "purpose": "",
+    "action": ""
+  },
+  {
+    "id": "004",
+    "description": "Policy example 4",
+    "metadata": "",
+    "object_conditions": [
+      {
+        "attribute": "SEMANTIC_OBSERVATION.timeStamp",
+        "type": "TIMESTAMP",
+        "predicates": [
+          {
+            "value": "20",
+            "operator": ">="
+          },
+          {
+            "value": "22",
+            "operator": "<="
+          }
+        ]
+      },
+      {
+        "attribute": "SEMANTIC_OBSERVATION.user_id",
+        "type": "STRING",
+        "predicates": [
+          {
+            "value": "15",
+            "operator": "="
+          }
+        ]
+      }
+    ],
+    "querier_conditions": [
+      {
+        "attribute": "Query.timeStamp",
+        "type": "TIMESTAMP",
+        "predicates": [
+          {
+            "value": "6 pm",
+            "operator": ">="
+          },
+          {
+            "value": "8 pm",
+            "operator": "<="
+          }
+        ]
+      },
+      {
+        "attribute": "Query.user_name",
+        "type": "STRING",
+        "predicates": [
+          {
+            "value": "John",
+            "operator": "="
+          }
+        ]
+      }
+    ],
+    "purpose": "",
+    "action": ""
+  },
+  {
+    "id": "005",
+    "description": "Policy example 5",
+    "metadata": "",
+    "object_conditions": [
+      {
+        "attribute": "SEMANTIC_OBSERVATION.timeStamp",
+        "type": "TIMESTAMP",
+        "predicates": [
+          {
+            "value": "20",
+            "operator": ">="
+          },
+          {
+            "value": "22",
+            "operator": "<="
+          }
+        ]
+      },
+      {
+        "attribute": "SEMANTIC_OBSERVATION.user_id",
+        "type": "STRING",
+        "predicates": [
+          {
+            "value": "16",
+            "operator": "="
+          }
+        ]
+      }
+    ],
+    "querier_conditions": [
+      {
+        "attribute": "Query.timeStamp",
+        "type": "TIMESTAMP",
+        "predicates": [
+          {
+            "value": "6 pm",
+            "operator": ">="
+          },
+          {
+            "value": "8 pm",
+            "operator": "<="
+          }
+        ]
+      },
+      {
+        "attribute": "Query.user_name",
+        "type": "STRING",
+        "predicates": [
+          {
+            "value": "John",
+            "operator": "="
+          }
+        ]
+      }
+    ],
+    "purpose": "",
+    "action": ""
+  },
+  {
+    "id": "006",
+    "description": "Policy example 6",
+    "metadata": "",
+    "object_conditions": [
+      {
+        "attribute": "SEMANTIC_OBSERVATION.timeStamp",
+        "type": "TIMESTAMP",
+        "predicates": [
+          {
+            "value": "15",
+            "operator": ">="
+          },
+          {
+            "value": "19",
+            "operator": "<="
+          }
+        ]
+      },
+      {
+        "attribute": "SEMANTIC_OBSERVATION.user_id",
+        "type": "STRING",
+        "predicates": [
+          {
+            "value": "10",
+            "operator": "="
+          }
+        ]
+      },
+      {
+        "attribute": "SEMANTIC_OBSERVATION.location",
+        "type": "STRING",
+        "predicates": [
+          {
+            "value": "15",
+            "operator": "="
+          }
+        ]
+      }
+    ],
+    "querier_conditions": [
+      {
+        "attribute": "Query.timeStamp",
+        "type": "TIMESTAMP",
+        "predicates": [
+          {
+            "value": "6 pm",
+            "operator": ">="
+          },
+          {
+            "value": "8 pm",
+            "operator": "<="
+          }
+        ]
+      },
+      {
+        "attribute": "Query.user_name",
+        "type": "STRING",
+        "predicates": [
+          {
+            "value": "John",
+            "operator": "="
+          }
+        ]
+      }
+    ],
+    "purpose": "",
+    "action": ""
+  }
+]

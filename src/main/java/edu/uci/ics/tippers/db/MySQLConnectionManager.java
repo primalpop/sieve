@@ -23,6 +23,7 @@ public class MySQLConnectionManager {
     private static String DATABASE;
     private static String USER;
     private static String PASSWORD;
+    private static Connection connection;
 
     private MySQLConnectionManager() {
         try {
@@ -47,8 +48,8 @@ public class MySQLConnectionManager {
 
 
     public Connection getConnection() throws PolicyEngineException {
-
-        Connection connection;
+        if (connection != null)
+            return connection;
         try {
             connection = DriverManager.getConnection(
                     String.format("jdbc:mysql://%s:%s/%s", SERVER, PORT, DATABASE), USER, PASSWORD);
