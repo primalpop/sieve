@@ -1,5 +1,6 @@
 package edu.uci.ics.tippers.db;
 
+import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.common.PolicyEngineException;
 
 import java.sql.*;
@@ -25,7 +26,7 @@ public class MySQLQueryManager {
      */
 
     public long runTimedQuery(String predicates) throws PolicyEngineException {
-        String query = "Select count(*) from SEMANTIC_OBSERVATION where " + predicates;
+        String query = PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS + " where " +  predicates;
         try {
             PreparedStatement stmt = connection.prepareStatement(query);
             Instant start = Instant.now();
@@ -45,25 +46,23 @@ public class MySQLQueryManager {
      * Compute the number of false positives by counting the number of results
      * @param predicates
      */
-    public int runCountingQuery(String predicates){
-        int count = 0;
-        String query = "Select count(*) from SEMANTIC_OBSERVATION where " + predicates;
+    public long runCountingQuery(String predicates){
+        long fullCount = 0, count = 0;
+        String query = PolicyConstants.SELECT_COUNT_STAR_SEMANTIC_OBSERVATIONS + " where " +  predicates;
+        String allCount = PolicyConstants.SELECT_COUNT_STAR_SEMANTIC_OBSERVATIONS;
         try{
-            PreparedStatement stmt = connection.prepareStatement(query);
-            ResultSet rs = stmt.executeQuery();
-            while(rs.next())
-                count=rs.getInt(1);
+            PreparedStatement stmtQ = connection.prepareStatement(query);
+            ResultSet rsQ = stmtQ.executeQuery();
+            while(rsQ.next())
+                count=rsQ.getInt(1);
+            PreparedStatement stmtF = connection.prepareStatement(allCount);
+            ResultSet rsF = stmtF.executeQuery();
+            while(rsF.next())
+                count=rsF.getInt(1);
+
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-
-                }
-            }
         }
-        return count;
+        return fullCount - count;
     }
 }
