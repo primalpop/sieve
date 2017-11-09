@@ -9,6 +9,7 @@ import edu.uci.ics.tippers.model.policy.BEPolicy;
 import edu.uci.ics.tippers.model.policy.ObjectCondition;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -124,6 +125,49 @@ public class ExactFactor{
                     this.reminder = currentFactor.getReminder();
                     this.reminder.greedyFactorization();
                     this.cost = queryManager.runTimedQuery(this.createQueryFromExactFactor());
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Compute the false positives based on the inverse of the object conditions
+     * @param objectConditions
+     * @return
+     */
+    public long computeFalsePositives(List<ObjectCondition> objectConditions){
+        BEPolicy bp = new BEPolicy();
+        bp.setObject_conditions(objectConditions);
+        return queryManager.runCountingQuery(bp.createQueryFromObjectConditions());
+    }
+
+    /**
+     * For a given expression, finds the combination of object condition with lowest number of false positives and drops it
+     * TODO: Knapsack algorithm formulation where combination of object conditions can be dropped from different policies
+     * till the budget for false positives is exhausted.
+     * TODO: For factorized expression, combination of object conditions from multiplier and quotient
+     * TODO: The complete exact factor where it combines both of them recursively
+     *
+     * @param false_positives
+     */
+    public void dropBounded(long false_positives) {
+        if (multiplier.size() == 0) { // not factorized, only expression
+            for (int i = 0; i < expression.getPolicies().size(); i++) {
+                long max_false_positive = Long.MAX_VALUE;
+                Set<ObjectCondition> dropSet = new HashSet<ObjectCondition>();
+                BEPolicy bp = expression.getPolicies().get(i);
+                Set<Set<ObjectCondition>> powerSet = bp.calculatePowerSet();
+                for (Set<ObjectCondition> objSet : powerSet) {
+                    if (objSet.size() == 0 || objSet.size() == bp.getObject_conditions().size()) continue;
+                    long fapo = computeFalsePositives(new ArrayList<ObjectCondition>(objSet));
+                    if (max_false_positive > fapo) {
+                        max_false_positive = fapo;
+                        dropSet = objSet;
+                    }
+                }
+                for (ObjectCondition dObj: dropSet) {
+                    bp.deleteObjCond(dObj);
                 }
             }
         }
