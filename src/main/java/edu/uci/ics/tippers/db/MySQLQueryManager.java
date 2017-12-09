@@ -42,27 +42,27 @@ public class MySQLQueryManager {
         }
     }
 
-    /**
-     * Compute the number of false positives by counting the number of results
-     * @param predicates
-     */
-    public long runCountingQuery(String predicates){
-        long fullCount = 0, count = 0;
-        String query = PolicyConstants.SELECT_COUNT_STAR_SEMANTIC_OBSERVATIONS + " where " +  predicates;
-        String allCount = PolicyConstants.SELECT_COUNT_STAR_SEMANTIC_OBSERVATIONS;
+
+    public long runCountingQuery(String query){
+        long count = 0;
         try{
             PreparedStatement stmtQ = connection.prepareStatement(query);
             ResultSet rsQ = stmtQ.executeQuery();
             while(rsQ.next())
-                count=rsQ.getInt(1);
-            PreparedStatement stmtF = connection.prepareStatement(allCount);
-            ResultSet rsF = stmtF.executeQuery();
-            while(rsF.next())
-                count=rsF.getInt(1);
-
+                count =rsQ.getInt(1);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return fullCount - count;
+        return count;
+    }
+
+
+    /**
+     * Compute the number of false positives by counting the number of results
+     */
+    public long computeFalsePositives(String original, String modified){
+        String original_query = PolicyConstants.SELECT_COUNT_STAR_SEMANTIC_OBSERVATIONS + " where " +  original;
+        String modified_query = PolicyConstants.SELECT_COUNT_STAR_SEMANTIC_OBSERVATIONS + " where " + original;
+        return runCountingQuery(modified_query) - runCountingQuery(original_query);
     }
 }

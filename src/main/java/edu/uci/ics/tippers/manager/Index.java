@@ -32,15 +32,15 @@ public class Index {
 
 
     public void populateTree(int numUsers, int numLocations){
-        int id = 0;
-        numUsers = (numUsers > User.users.length) ? User.users.length : numUsers;
-        numLocations = (numLocations > Infrastructure.locations.length) ? Infrastructure.locations.length : numLocations;
-        System.out.println("Number of BEExpression: " + numUsers * numLocations);
-        for (int i = 0; i < numUsers; i++) {
-            for (int j = 0; j < numLocations; j++) {
-                this.tree = this.tree.add(id++, Geometries.point(User.users[i], Infrastructure.locations[j]));
-            }
-        }
+//        int id = 0;
+//        numUsers = (numUsers > User.users.length) ? User.users.length : numUsers;
+//        numLocations = (numLocations > Infrastructure.locations.length) ? Infrastructure.locations.length : numLocations;
+//        System.out.println("Number of BEExpression: " + numUsers * numLocations);
+//        for (int i = 0; i < numUsers; i++) {
+//            for (int j = 0; j < numLocations; j++) {
+//                this.tree = this.tree.add(id++, Geometries.point(User.users[i], Infrastructure.locations[j]));
+//            }
+//        }
     }
 
 
