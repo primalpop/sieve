@@ -200,6 +200,12 @@ public class BEExpression implements Comparable<BEExpression> {
         this.policies = bePolicies;
     }
 
+
+    /**
+     * Comparator for BEExpression
+     * @param be
+     * @return
+     */
     @Override
     public int compareTo(BEExpression be) {
         int count = 0;

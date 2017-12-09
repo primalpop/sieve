@@ -130,18 +130,6 @@ public class ExactFactor{
         }
     }
 
-
-    /**
-     * Compute the false positives based on the inverse of the object conditions
-     * @param objectConditions
-     * @return
-     */
-    public long computeFalsePositives(List<ObjectCondition> objectConditions){
-        BEPolicy bp = new BEPolicy();
-        bp.setObject_conditions(objectConditions);
-        return queryManager.runCountingQuery(bp.createQueryFromObjectConditions());
-    }
-
     /**
      * For a given expression, finds the combination of object condition with lowest number of false positives and drops it
      * TODO: Knapsack algorithm formulation where combination of object conditions can be dropped from different policies
@@ -160,11 +148,6 @@ public class ExactFactor{
                 Set<Set<ObjectCondition>> powerSet = bp.calculatePowerSet();
                 for (Set<ObjectCondition> objSet : powerSet) {
                     if (objSet.size() == 0 || objSet.size() == bp.getObject_conditions().size()) continue;
-                    long fapo = computeFalsePositives(new ArrayList<ObjectCondition>(objSet));
-                    if (max_false_positive > fapo) {
-                        max_false_positive = fapo;
-                        dropSet = objSet;
-                    }
                 }
                 for (ObjectCondition dObj: dropSet) {
                     bp.deleteObjCond(dObj);

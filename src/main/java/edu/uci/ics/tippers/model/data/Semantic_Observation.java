@@ -13,6 +13,10 @@ public class Semantic_Observation {
 
     String timeStamp;
 
+    float temperature;
+
+    float wemo;
+
     public Semantic_Observation(){
 
     }

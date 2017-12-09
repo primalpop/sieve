@@ -1,24 +1,53 @@
 /* Table creation statements for MySQL */
 
-/* "CREATE TABLE IF NOT EXISTS policy (\n" +
-                        "	id           varchar(255) NOT NULL PRIMARY KEY,\n" +
-                        "	description  text NOT NULL,\n" +
-                        "	action       text NOT NULL,\n" +
-                        "	conditions 	 text NOT NULL\n" +
-                        "	objects 	 text NOT NULL\n" +
-                        "	queriers 	 text NOT NULL\n" +
-                        "	purposes 	 text NOT NULL\n" +
-                        "	authors 	 text NOT NULL\n" +
-                        "	metadata 	 text NOT NULL\n" +
-                        ")",
-                "CREATE TABLE IF NOT EXISTS policy_condition (\n" +
-                        "	name varchar(255) NOT NULL,\n" +
-                        "	type   varchar(255) NOT NULL,\n" +
-                        "	key   varchar(255) NOT NULL,\n" +
-                        "	value   varchar(255) NOT NULL,\n" +
-                        "	relop   varchar(255) NOT NULL,\n" +
-                        "	policy  varchar(255) NOT NULL,\n" +
-                        "	FOREIGN KEY (policy) REFERENCES policy(id) ON DELETE CASCADE\n" +
-                        ")"
+CREATE TABLE IF NOT EXISTS INFRASTRUCTURE  (
+  NAME varchar(255) DEFAULT NULL,
+  INFRASTRUCTURE_TYPE varchar(255) DEFAULT NULL,
+  ID varchar(255) NOT NULL,
+  FLOOR integer NOT NULL,
+  REGION_NAME varchar(255) DEFAULT NULL,
+  PRIMARY KEY (ID)
+) ;
 
-                        */
+CREATE TABLE IF NOT EXISTS USER  (
+  EMAIL varchar(255) DEFAULT NULL UNIQUE,
+  NAME varchar(255) DEFAULT NULL,
+  ID varchar(255) NOT NULL,
+  OFFICE varchar(255) DEFAULT NULL,
+  PRIMARY KEY (ID)
+ ) ;
+
+CREATE TABLE IF NOT EXISTS USER_GROUP  (
+  ID varchar(255) NOT NULL,
+  DESCRIPTION varchar(255) DEFAULT NULL,
+  NAME varchar(255) DEFAULT NULL,
+  OWNER varchar(255) DEFAULT NULL,
+  PRIMARY KEY (ID),
+    FOREIGN KEY (OWNER) REFERENCES USER (ID)
+) ;
+
+CREATE TABLE IF NOT EXISTS USER_GROUP_MEMBERSHIP  (
+  USER_ID varchar(255) NOT NULL,
+  USER_GROUP_ID varchar(255) NOT NULL,
+  PRIMARY KEY (USER_GROUP_ID, USER_ID),
+   FOREIGN KEY (USER_ID) REFERENCES USER (ID),
+   FOREIGN KEY (USER_GROUP_ID) REFERENCES USER_GROUP (ID)
+) ;
+
+CREATE TABLE IF NOT EXISTS SEMANTIC_OBSERVATION  (
+  id varchar(255) NOT NULL,
+  user_id varchar(255) NOT NULL,
+  location_id varchar(255) NOT NULL,
+  temperature varchar(255) DEFAULT NULL,
+  energy varchar(255) DEFAULT NULL,
+  activity varchar(255) DEFAULT NULL,
+  timeStamp timestamp NOT NULL,
+  PRIMARY KEY (id),
+   FOREIGN KEY (location_id) REFERENCES INFRASTRUCTURE (ID),
+   FOREIGN KEY (user_id) REFERENCES USER (ID)
+) ;
+
+
+--CREATE INDEX IF NOT EXISTS semantic_observation_timestamp_idx ON SEMANTIC_OBSERVATION(timeStamp);
+--CREATE INDEX semantic_observation_user_idx ON SEMANTIC_OBSERVATION(user_id);
+--CREATE INDEX semantic_observation_location_idx ON SEMANTIC_OBSERVATION(location_id);
