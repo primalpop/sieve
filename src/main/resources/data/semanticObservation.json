@@ -1,5 +1,4 @@
-{
-	"SEMANTIC_OBSERVATION": [
+[
 		{
 			"id" : 1,
 			"confidence" : 0.0,
@@ -684,4 +683,4 @@
 			"so_type_id" : 4,
 			"virtual_sensor_id" : 1
 		}
-	]}
+	]
