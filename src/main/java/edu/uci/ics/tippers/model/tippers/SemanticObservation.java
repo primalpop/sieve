@@ -7,7 +7,7 @@ import java.util.Calendar;
 /**
  * Created by cygnus on 7/5/17.
  */
-public class Semantic_Observation {
+public class SemanticObservation {
 
     @JsonProperty("id")
     int id;
@@ -16,7 +16,7 @@ public class Semantic_Observation {
     int user;
 
     @JsonProperty("payload")
-    TPayload location;
+    TPayload payload;
 
     @JsonProperty("confidence")
     float confidence;
@@ -30,14 +30,18 @@ public class Semantic_Observation {
     @JsonProperty("virtual_sensor_id")
     int virtual_sensor_id;
 
-    public Semantic_Observation(int id, int user, TPayload location, float confidence, Calendar timeStamp, int so_type_id, int virtual_sensor_id) {
+    public SemanticObservation(int id, int user, TPayload payload, float confidence, Calendar timeStamp, int so_type_id, int virtual_sensor_id) {
         this.id = id;
         this.user = user;
-        this.location = location;
+        this.payload = payload;
         this.confidence = confidence;
         this.timeStamp = timeStamp;
         this.so_type_id = so_type_id;
         this.virtual_sensor_id = virtual_sensor_id;
+    }
+
+    public SemanticObservation(){
+
     }
 
     public int getId() {
@@ -56,12 +60,12 @@ public class Semantic_Observation {
         this.user = user;
     }
 
-    public TPayload getLocation() {
-        return location;
+    public TPayload getPayload() {
+        return payload;
     }
 
-    public void setLocation(TPayload location) {
-        this.location = location;
+    public void setPayload(TPayload payload) {
+        this.payload = payload;
     }
 
     public float getConfidence() {
@@ -94,5 +98,18 @@ public class Semantic_Observation {
 
     public void setVirtual_sensor_id(int virtual_sensor_id) {
         this.virtual_sensor_id = virtual_sensor_id;
+    }
+
+    @Override
+    public String toString() {
+        return "SemanticObservation{" +
+                "id=" + id +
+                ", user=" + user +
+                ", payload=" + payload +
+                ", confidence=" + confidence +
+                ", timeStamp=" + timeStamp +
+                ", so_type_id=" + so_type_id +
+                ", virtual_sensor_id=" + virtual_sensor_id +
+                '}';
     }
 }

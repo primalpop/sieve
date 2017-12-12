@@ -17,6 +17,14 @@ public class PolicyConstants {
 
     public static final int BATCH_SIZE_INSERTION = 50000;
 
-    public static int LOG_LIMIT = 100000;
+    public static final int LOG_LIMIT = 100000;
+
+    public static final float LOW_TEMPERATURE = 55;
+
+    public static final float HIGH_TEMPERATURE = 75;
+
+    public static final float LOW_WEMO = 0;
+
+    public static final float HIGH_WEMO = 100;
 
 }

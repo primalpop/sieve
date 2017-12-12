@@ -30,7 +30,7 @@ public class Semantic_Observation {
 
     @Override
     public String toString() {
-        return "Semantic_Observation{" +
+        return "SemanticObservation{" +
                 "id=" + id +
                 ", user_id=" + user_id +
                 ", location=" + location +

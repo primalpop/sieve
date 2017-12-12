@@ -7,11 +7,9 @@ import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.common.PolicyEngineException;
 import edu.uci.ics.tippers.db.MySQLConnectionManager;
 import edu.uci.ics.tippers.model.tippers.Infrastructure;
+import edu.uci.ics.tippers.model.tippers.SemanticObservation;
 import edu.uci.ics.tippers.model.tippers.User;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import java.io.*;
 import java.sql.Connection;
@@ -20,6 +18,9 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by cygnus on 12/7/17.
@@ -80,7 +81,7 @@ public class DataGeneration {
 
         try{
             insert = "INSERT INTO INFRASTRUCTURE " +
-                    "(ID, INFRASTRUCTURE_TYPE, NAME, FLOOR, REGION_NAME) VALUES (?, ?, ?, ?, ?)";
+                    "(INFRASTRUCTURE_TYPE, NAME, FLOOR, REGION_NAME) VALUES (?, ?, ?, ?)";
 
 
             ObjectMapper objectMapper = new ObjectMapper();
@@ -94,11 +95,10 @@ public class DataGeneration {
 
             stmt = connection.prepareStatement(insert);
             for(int i =0;i<infrastructures.size();i++){
-                stmt.setString(1, String.valueOf(infrastructures.get(i).getLocation_id()));
-                stmt.setString(2, infrastructures.get(i).getType());
-                stmt.setString(3, infrastructures.get(i).getName());
-                stmt.setInt(4, Integer.parseInt(infrastructures.get(i).getName().substring(0,1)));
-                stmt.setString(5, (String) infrastructures.get(i).getRegion_name());
+                stmt.setString(1, infrastructures.get(i).getType());
+                stmt.setString(2, infrastructures.get(i).getName());
+                stmt.setInt(3, Integer.parseInt(infrastructures.get(i).getName().substring(0,1)));
+                stmt.setString(4, (String) infrastructures.get(i).getRegion_name());
                 stmt.executeUpdate();
             }
 
@@ -133,6 +133,9 @@ public class DataGeneration {
         }
     }
 
+    /**
+     * Update users to add dummy names, emails and random offices from infrastructure if it doesn't exist in the JSON object
+     */
     public void generateUsers() {
 
         String jsonData = edu.uci.ics.tippers.fileop.Reader.readFile(dataDir + DataFiles.USER.getPath());
@@ -177,11 +180,73 @@ public class DataGeneration {
         //Adding user group memberships
     }
 
+//    public void generateSemanticObservations(){
+//
+//        String jsonData = edu.uci.ics.tippers.fileop.Reader.readFile(dataDir + DataFiles.SO_FULL.getPath());
+//        jsonData = jsonData.replace("\uFEFF", "");
+//
+//        Random r = new Random();
+//        int lowTemp = 55;
+//        int highTemp = 75;
+//        int lowWemo = 0;
+//        int highWemo = 100;
+//
+//        String soInsert = "INSERT INTO SEMANTIC_OBSERVATION " +
+//                "(ID, USER_ID, LOCATION_ID, TEMPERATURE, ENERGY, ACTIVITY, TIMESTAMP) " +
+//                "VALUES (?, ?, ?, ?, ?, ?, ?)";
+//
+//
+//        try {
+//
+//            PreparedStatement presenceStmt = connection.prepareStatement(soInsert);
+//            int presenceCount = 0;
+//
+//            ObjectMapper objectMapper = new ObjectMapper();
+//            List<SemanticObservation> semObs = null;
+//            try {
+//                semObs = objectMapper.readValue(jsonData,
+//                        new TypeReference<List<SemanticObservation>>(){});
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//
+//
+//            for (SemanticObservation sobs: semObs) {
+//                presenceStmt.setString(1, String.valueOf(sobs.getId()));
+//                presenceStmt.setString(2, String.valueOf(sobs.getUser()));
+//                if(sobs.getPayload().getLocation().length() == 18)
+//                    presenceStmt.setString(3, sobs.getPayload().getLocation().substring(13, 17));
+//                else
+//                    presenceStmt.setString(3, sobs.getPayload().getLocation().substring(13, 19));
+//                presenceStmt.setString(4, String.valueOf(r.nextInt(highTemp - lowTemp) + lowTemp));
+//                presenceStmt.setString(5, String.valueOf(r.nextInt(highWemo - lowWemo) + lowWemo));
+//                presenceStmt.setString(6, "empty");
+//                presenceStmt.setTimestamp(7, new Timestamp(sobs.getTimeStamp().getTimeInMillis()));
+//                presenceStmt.addBatch();
+//                presenceCount ++;
+//
+//                if (presenceCount % PolicyConstants.BATCH_SIZE_INSERTION == 0){
+//                    presenceStmt.executeBatch();
+//                    System.out.println("# inserted: " + presenceCount );
+//                }
+//
+//            }
+//
+//            presenceStmt.executeBatch();
+//
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+
 
     public void generateSemanticObservations(){
 
-        String jsonData = edu.uci.ics.tippers.fileop.Reader.readFile(dataDir + DataFiles.SO.getPath());
-        jsonData = jsonData.replace("\uFEFF", "");
+
+        Random r = new Random();
+        int lowTemp = 55;
+        int highTemp = 75;
+        int lowWemo = 0;
+        int highWemo = 100;
 
         String soInsert = "INSERT INTO SEMANTIC_OBSERVATION " +
                 "(ID, USER_ID, LOCATION_ID, TEMPERATURE, ENERGY, ACTIVITY, TIMESTAMP) " +
@@ -189,31 +254,32 @@ public class DataGeneration {
 
         try {
 
-            PreparedStatement userStmt = connection.prepareStatement(soInsert);
-            int userCount = 0;
+            PreparedStatement presenceStmt = connection.prepareStatement(soInsert);
+            int presenceCount = 0;
 
-            ObjectMapper objectMapper = new ObjectMapper();
-            List<User> users = null;
-            try {
-                users = objectMapper.readValue(jsonData,
-                        new TypeReference<List<User>>(){});
-            } catch (IOException e) {
-                e.printStackTrace();
+            BigJsonReader<SemanticObservation> reader = new BigJsonReader<>(dataDir + DataFiles.SO.getPath(),
+                    SemanticObservation.class);
+            SemanticObservation sobs = null;
+
+
+            while ((sobs = reader.readNext()) != null) {
+
+                presenceStmt.setString(1, String.valueOf(sobs.getId()));
+                presenceStmt.setString(2, String.valueOf(sobs.getUser()));
+                presenceStmt.setString(3, sobs.getPayload().getLocation());
+                presenceStmt.setString(4, String.valueOf(r.nextInt(highTemp - lowTemp) + lowTemp));
+                presenceStmt.setString(5, String.valueOf(r.nextInt(highWemo - lowWemo) + lowWemo));
+                presenceStmt.setString(6, "empty");
+                presenceStmt.setTimestamp(7, new Timestamp(sobs.getTimeStamp().getTimeInMillis()));
+                presenceStmt.addBatch();
+                presenceCount ++;
+
+                if (presenceCount % PolicyConstants.BATCH_SIZE_INSERTION == 0)
+                    presenceStmt.executeBatch();
+
             }
 
-            for (User user: users) {
-                userStmt.setString(2, user.getEmail());
-                userStmt.setString(3, user.getName());
-                userStmt.setInt(1, user.getUser_id());
-                userStmt.setString(4, user.getOffice());
-                userStmt.addBatch();
-                userCount++;
-                if (userCount % PolicyConstants.BATCH_SIZE_INSERTION == 0) {
-                    userStmt.executeBatch();
-                    System.out.println("Inserted " + userCount + " records");
-                }
-            }
-            userStmt.executeBatch();
+            presenceStmt.executeBatch();
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -226,7 +292,7 @@ public class DataGeneration {
 
     public static void main (String [] args){
         DataGeneration dataGeneration = new DataGeneration("/data/");
-        dataGeneration.runScript("mysql/schema.sql");
+//        dataGeneration.runScript("mysql/schema.sql");
         dataGeneration.generateAll();
 //        dataGeneration.runScript("mysql/drop.sql");
     }
