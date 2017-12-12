@@ -8,7 +8,9 @@ public enum DataFiles {
     INFRA ("infrastructure.json") ,
     GROUP ("group.json"),
     USER ("user.json"),
-    SO ("semanticObservation.json");
+    SO ("semanticObservation.json"),
+    SO_FULL ("semanticObservationFull.json");
+
 
     private final String path;
 

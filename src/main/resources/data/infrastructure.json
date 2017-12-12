@@ -816,14 +816,6 @@
 		"capacity" : 0
 	},
 	{
-		"name" : "5082",
-		"type" : "conference_room",
-		"SEMANTIC_ENTITY_ID" : 107,
-		"REGION_ID" : 107,
-		"REGION_NAME" : "Informatics South East",
-		"capacity" : 10
-	},
-	{
 		"name" : "5100_3",
 		"type" : "corridor",
 		"SEMANTIC_ENTITY_ID" : 108,
