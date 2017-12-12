@@ -1,5 +1,7 @@
 package edu.uci.ics.tippers.model.query;
 
+import java.sql.Timestamp;
+
 /**
  * Created by cygnus on 7/7/17.
  *
@@ -7,16 +9,49 @@ package edu.uci.ics.tippers.model.query;
  */
 public class BasicQuery {
 
-    public static final String [] queryList = {
-            "SELECT count(*) FROM SEMANTIC_OBSERVATION where ",
-            "Select from SEMANTIC_OBSERVATION where user_id = 2564 and ",
-            "Select * from SEMANTIC_OBSERVATION where location = 2028",
-            "Select user from SEMANTIC_OBSERVATION where timeStamp between " +
-                    "\"0003-07-17 02:13:00\" and \"0003-08-17 18:06:00\" and ",
-            "Select so.user_id from SEMANTIC_OBSERVATION as so, " +
-                    "INFRASTRUCTURE as i, USER as u where so.user_id = u.user_id and " +
-                    "i.name = so.location and u.group_name = \"ISG\" and i.type = \"lab\" and "
-    };
+    private String user_id;
 
+    private String location_id;
 
+    private Timestamp timestamp;
+
+    private float temperature;
+
+    private float wemo;
+
+    public BasicQuery(String user_id, String location_id, Timestamp timestamp, float temperature, float wemo) {
+        this.user_id = user_id;
+        this.location_id = location_id;
+        this.timestamp = timestamp;
+        this.temperature = temperature;
+        this.wemo = wemo;
+    }
+
+    public BasicQuery(){
+
+    }
+
+    public String getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(String user_id) {
+        this.user_id = user_id;
+    }
+
+    public String getLocation_id() {
+        return location_id;
+    }
+
+    public void setLocation_id(String location_id) {
+        this.location_id = location_id;
+    }
+
+    public Timestamp getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Timestamp timestamp) {
+        this.timestamp = timestamp;
+    }
 }

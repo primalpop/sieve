@@ -15,21 +15,15 @@ import java.io.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Random;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Created by cygnus on 12/7/17.
  */
 public class DataGeneration {
-
-
-    private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
+    
     private Connection connection;
 
     private JSONParser parser;
@@ -179,65 +173,7 @@ public class DataGeneration {
 
         //Adding user group memberships
     }
-
-//    public void generateSemanticObservations(){
-//
-//        String jsonData = edu.uci.ics.tippers.fileop.Reader.readFile(dataDir + DataFiles.SO_FULL.getPath());
-//        jsonData = jsonData.replace("\uFEFF", "");
-//
-//        Random r = new Random();
-//        int lowTemp = 55;
-//        int highTemp = 75;
-//        int lowWemo = 0;
-//        int highWemo = 100;
-//
-//        String soInsert = "INSERT INTO SEMANTIC_OBSERVATION " +
-//                "(ID, USER_ID, LOCATION_ID, TEMPERATURE, ENERGY, ACTIVITY, TIMESTAMP) " +
-//                "VALUES (?, ?, ?, ?, ?, ?, ?)";
-//
-//
-//        try {
-//
-//            PreparedStatement presenceStmt = connection.prepareStatement(soInsert);
-//            int presenceCount = 0;
-//
-//            ObjectMapper objectMapper = new ObjectMapper();
-//            List<SemanticObservation> semObs = null;
-//            try {
-//                semObs = objectMapper.readValue(jsonData,
-//                        new TypeReference<List<SemanticObservation>>(){});
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//
-//
-//            for (SemanticObservation sobs: semObs) {
-//                presenceStmt.setString(1, String.valueOf(sobs.getId()));
-//                presenceStmt.setString(2, String.valueOf(sobs.getUser()));
-//                if(sobs.getPayload().getLocation().length() == 18)
-//                    presenceStmt.setString(3, sobs.getPayload().getLocation().substring(13, 17));
-//                else
-//                    presenceStmt.setString(3, sobs.getPayload().getLocation().substring(13, 19));
-//                presenceStmt.setString(4, String.valueOf(r.nextInt(highTemp - lowTemp) + lowTemp));
-//                presenceStmt.setString(5, String.valueOf(r.nextInt(highWemo - lowWemo) + lowWemo));
-//                presenceStmt.setString(6, "empty");
-//                presenceStmt.setTimestamp(7, new Timestamp(sobs.getTimeStamp().getTimeInMillis()));
-//                presenceStmt.addBatch();
-//                presenceCount ++;
-//
-//                if (presenceCount % PolicyConstants.BATCH_SIZE_INSERTION == 0){
-//                    presenceStmt.executeBatch();
-//                    System.out.println("# inserted: " + presenceCount );
-//                }
-//
-//            }
-//
-//            presenceStmt.executeBatch();
-//
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-
+    
 
     public void generateSemanticObservations(){
 
@@ -263,19 +199,21 @@ public class DataGeneration {
 
 
             while ((sobs = reader.readNext()) != null) {
-
+                System.out.println(sobs.toString());
                 presenceStmt.setString(1, String.valueOf(sobs.getId()));
-                presenceStmt.setString(2, String.valueOf(sobs.getUser()));
-                presenceStmt.setString(3, sobs.getPayload().getLocation());
+                presenceStmt.setString(2, String.valueOf(sobs.getSemantic_entity_id()));
+                presenceStmt.setString(3, sobs.getPayload());
                 presenceStmt.setString(4, String.valueOf(r.nextInt(highTemp - lowTemp) + lowTemp));
                 presenceStmt.setString(5, String.valueOf(r.nextInt(highWemo - lowWemo) + lowWemo));
                 presenceStmt.setString(6, "empty");
-                presenceStmt.setTimestamp(7, new Timestamp(sobs.getTimeStamp().getTimeInMillis()));
+                presenceStmt.setTimestamp(7, sobs.getTimeStamp());
                 presenceStmt.addBatch();
                 presenceCount ++;
 
-                if (presenceCount % PolicyConstants.BATCH_SIZE_INSERTION == 0)
+                if (presenceCount % PolicyConstants.BATCH_SIZE_INSERTION == 0) {
                     presenceStmt.executeBatch();
+                    System.out.println("# " + presenceCount + " inserted");
+                }
 
             }
 

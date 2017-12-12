@@ -2,7 +2,7 @@ package edu.uci.ics.tippers.model.tippers;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.Calendar;
+import java.sql.Timestamp;
 
 /**
  * Created by cygnus on 7/5/17.
@@ -13,16 +13,16 @@ public class SemanticObservation {
     int id;
 
     @JsonProperty("semantic_entity_id")
-    int user;
+    int semantic_entity_id;
 
     @JsonProperty("payload")
-    TPayload payload;
+    String payload;
 
     @JsonProperty("confidence")
     float confidence;
 
-    @JsonProperty("timeStamp")
-    Calendar timeStamp;
+    @JsonProperty("timestamp")
+    Timestamp timeStamp;
 
     @JsonProperty("so_type_id")
     int so_type_id;
@@ -30,9 +30,9 @@ public class SemanticObservation {
     @JsonProperty("virtual_sensor_id")
     int virtual_sensor_id;
 
-    public SemanticObservation(int id, int user, TPayload payload, float confidence, Calendar timeStamp, int so_type_id, int virtual_sensor_id) {
+    public SemanticObservation(int id, int semantic_entity_id, String payload, float confidence, Timestamp timeStamp, int so_type_id, int virtual_sensor_id) {
         this.id = id;
-        this.user = user;
+        this.semantic_entity_id = semantic_entity_id;
         this.payload = payload;
         this.confidence = confidence;
         this.timeStamp = timeStamp;
@@ -52,19 +52,22 @@ public class SemanticObservation {
         this.id = id;
     }
 
-    public int getUser() {
-        return user;
+    public int getSemantic_entity_id() {
+        return semantic_entity_id;
     }
 
-    public void setUser(int user) {
-        this.user = user;
+    public void setSemantic_entity_id(int semantic_entity_id) {
+        this.semantic_entity_id = semantic_entity_id;
     }
 
-    public TPayload getPayload() {
-        return payload;
+    public String getPayload() {
+        if(this.payload.length() == 18)
+            return payload.substring(13, 17);
+        else
+            return payload.substring(13, 19);
     }
 
-    public void setPayload(TPayload payload) {
+    public void setPayload(String payload) {
         this.payload = payload;
     }
 
@@ -76,11 +79,11 @@ public class SemanticObservation {
         this.confidence = confidence;
     }
 
-    public Calendar getTimeStamp() {
+    public Timestamp getTimeStamp() {
         return timeStamp;
     }
 
-    public void setTimeStamp(Calendar timeStamp) {
+    public void setTimeStamp(Timestamp timeStamp) {
         this.timeStamp = timeStamp;
     }
 
@@ -104,7 +107,7 @@ public class SemanticObservation {
     public String toString() {
         return "SemanticObservation{" +
                 "id=" + id +
-                ", user=" + user +
+                ", semantic_entity_id=" + semantic_entity_id +
                 ", payload=" + payload +
                 ", confidence=" + confidence +
                 ", timeStamp=" + timeStamp +
