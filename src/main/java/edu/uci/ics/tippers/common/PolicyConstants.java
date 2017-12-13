@@ -35,4 +35,6 @@ public class PolicyConstants {
 
     public static final String POLICY_DIR = "policies/";
 
+    public static final long HOUR_IN_MILLISECONDS = 3600000;
+
 }
