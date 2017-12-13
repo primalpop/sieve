@@ -282,7 +282,6 @@ public class DataGeneration {
                     presenceStmt.executeBatch();
                     System.out.println("# " + presenceCount + " inserted");
                 }
-
             }
 
             presenceStmt.executeBatch();
