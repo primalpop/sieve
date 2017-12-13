@@ -1,5 +1,7 @@
 package edu.uci.ics.tippers.common;
 
+import java.time.Duration;
+
 /**
  * Author primpap
  */
@@ -26,5 +28,11 @@ public class PolicyConstants {
     public static final float LOW_WEMO = 0;
 
     public static final float HIGH_WEMO = 100;
+
+    public static final Duration MAX_DURATION = Duration.ofSeconds(10000000, 0);
+
+    public static final long SHUTDOWN_WAIT = 1000;
+
+    public static final String POLICY_DIR = "policies/";
 
 }

@@ -16,8 +16,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Stream;
 
 /**
  * Created by cygnus on 12/7/17.
@@ -28,10 +30,9 @@ public class DataGeneration {
 
     private JSONParser parser;
 
-    private String dataDir;
+    private static String dataDir = "/data/";
 
-    public DataGeneration(String dataDir){
-        this.dataDir = dataDir;
+    public DataGeneration(){
         this.connection = MySQLConnectionManager.getInstance().getConnection();
         this.parser = new JSONParser();
     }
@@ -51,18 +52,70 @@ public class DataGeneration {
     }
 
 
-    public void generateAll() throws PolicyEngineException{
+    public static List<Infrastructure> getAllInfra(){
+        String jsonData = edu.uci.ics.tippers.fileop.Reader.readFile(dataDir + DataFiles.INFRA.getPath());
+        jsonData = jsonData.replace("\uFEFF", "");
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<Infrastructure> infrastructures = null;
         try {
-            connection.setAutoCommit(false);
-//            generateInfrastructure();
-//            generateUserGroups();
-//            generateUsers();
-            generateSemanticObservations();
-            connection.commit();
-            connection.setAutoCommit(true);
-        } catch (SQLException e) {
+            infrastructures = objectMapper.readValue(jsonData,
+                    new TypeReference<List<Infrastructure>>() {
+                    });
+        } catch (IOException e) {
             e.printStackTrace();
         }
+        return infrastructures;
+    }
+
+    public static List<User> getAllUser() {
+        String jsonData = edu.uci.ics.tippers.fileop.Reader.readFile(dataDir + DataFiles.USER.getPath());
+        jsonData = jsonData.replace("\uFEFF", "");
+
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<User> users = null;
+        try {
+            users = objectMapper.readValue(jsonData,
+                    new TypeReference<List<User>>() {
+                    });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return users;
+    }
+
+
+    public static HashMap<String, String> createActivity(List<Infrastructure> infrastructures){
+
+        HashMap activityMap = new HashMap<String, String>();
+
+        String activity = null;
+        for (Infrastructure infra: infrastructures) {
+            if (Stream.of("classroom", "class_room").anyMatch(infra.getType()::equalsIgnoreCase)){
+                activity = "class";
+            }
+            else if (Stream.of("lounge", "meeting_room", "conference_room").anyMatch(infra.getType()::equalsIgnoreCase)) {
+                activity = "meeting";
+            }
+            else if (Stream.of("lab", "faculty_office", "office").anyMatch(infra.getType()::equalsIgnoreCase)){
+                activity = "work";
+            }
+            else if (Stream.of("male_restroom", "female_restroom", "kitchen").anyMatch(infra.getType()::equalsIgnoreCase)){
+                activity = "private";
+            }
+            else if ((Stream.of("corridor", "utilities", "mail_room", "reception").anyMatch(infra.getType()::equalsIgnoreCase))) {
+                activity = "walking";
+            }
+            else if ((Stream.of("seminar_room").anyMatch(infra.getType()::equalsIgnoreCase))) {
+                activity = "seminar";
+            }
+            else{
+                activity = "unknown";
+            }
+            activityMap.put(infra.getName(), activity);
+        }
+        return activityMap;
     }
 
     public void generateInfrastructure(){
@@ -153,11 +206,25 @@ public class DataGeneration {
                 e.printStackTrace();
             }
 
+            List<Infrastructure> infras = getAllInfra();
+
             for (User user: users) {
-                userStmt.setString(2, user.getEmail());
-                userStmt.setString(3, user.getName());
+                userStmt.setString(2, user.getEmail() == null || user.getEmail().isEmpty() ? "virt"+userCount+"@tippers.com": user.getEmail());
+                userStmt.setString(3, user.getName() == null || user.getName().isEmpty() ? "virt"+userCount: user.getName());
                 userStmt.setInt(1, user.getUser_id());
-                userStmt.setString(4, user.getOffice());
+                Random rand = new Random();
+                Infrastructure randomOffice = infras.get(rand.nextInt(infras.size()));
+                String office = null;
+                if(user.getOffice() != null) {
+                    office = infras.stream()
+                            .filter(x -> user.getOffice().equals(x.getLocation_id()))
+                            .map(Infrastructure::getName)
+                            .findAny().toString();
+                }
+                else{
+                    office = randomOffice.getName();
+                }
+                userStmt.setString(4, office);
                 userStmt.addBatch();
                 userCount++;
                 if (userCount % PolicyConstants.BATCH_SIZE_INSERTION == 0) {
@@ -184,6 +251,8 @@ public class DataGeneration {
         int lowWemo = 0;
         int highWemo = 100;
 
+        HashMap<String, String> activityMap = createActivity(getAllInfra());
+
         String soInsert = "INSERT INTO SEMANTIC_OBSERVATION " +
                 "(ID, USER_ID, LOCATION_ID, TEMPERATURE, ENERGY, ACTIVITY, TIMESTAMP) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -193,19 +262,18 @@ public class DataGeneration {
             PreparedStatement presenceStmt = connection.prepareStatement(soInsert);
             int presenceCount = 0;
 
-            BigJsonReader<SemanticObservation> reader = new BigJsonReader<>(dataDir + DataFiles.SO.getPath(),
+            BigJsonReader<SemanticObservation> reader = new BigJsonReader<>(dataDir + DataFiles.SO_FULL.getPath(),
                     SemanticObservation.class);
             SemanticObservation sobs = null;
 
 
             while ((sobs = reader.readNext()) != null) {
-                System.out.println(sobs.toString());
                 presenceStmt.setString(1, String.valueOf(sobs.getId()));
                 presenceStmt.setString(2, String.valueOf(sobs.getSemantic_entity_id()));
                 presenceStmt.setString(3, sobs.getPayload());
                 presenceStmt.setString(4, String.valueOf(r.nextInt(highTemp - lowTemp) + lowTemp));
                 presenceStmt.setString(5, String.valueOf(r.nextInt(highWemo - lowWemo) + lowWemo));
-                presenceStmt.setString(6, "empty");
+                presenceStmt.setString(6, activityMap.get(sobs.getPayload()));
                 presenceStmt.setTimestamp(7, sobs.getTimeStamp());
                 presenceStmt.addBatch();
                 presenceCount ++;
@@ -222,15 +290,25 @@ public class DataGeneration {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
 
-
-
-
+    public void generateAll() throws PolicyEngineException{
+        try {
+            connection.setAutoCommit(false);
+//            generateInfrastructure();
+//            generateUserGroups();
+//            generateUsers();
+            generateSemanticObservations();
+            connection.commit();
+            connection.setAutoCommit(true);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main (String [] args){
-        DataGeneration dataGeneration = new DataGeneration("/data/");
-//        dataGeneration.runScript("mysql/schema.sql");
+        DataGeneration dataGeneration = new DataGeneration();
+        dataGeneration.runScript("mysql/schema.sql");
         dataGeneration.generateAll();
 //        dataGeneration.runScript("mysql/drop.sql");
     }
