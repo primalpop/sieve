@@ -4,23 +4,20 @@ import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import edu.uci.ics.tippers.common.PolicyConstants;
-import edu.uci.ics.tippers.common.PolicyEngineException;
 import edu.uci.ics.tippers.model.query.BasicQuery;
 import edu.uci.ics.tippers.model.tippers.Infrastructure;
 import edu.uci.ics.tippers.model.tippers.User;
 
+import java.io.File;
 import java.io.IOException;
-import java.sql.*;
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Duration;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
-import java.io.File;
 
 /**
  * Author primpap
@@ -41,6 +38,8 @@ public class PolicyGeneration {
 
     DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
+    private static final int[] hours = { 1, 2, 3, 4, 5, 6, 8, 10, 12, 24, 48, 72, 168, 336};
+    
 
     public PolicyGeneration() {
 
@@ -76,6 +75,44 @@ public class PolicyGeneration {
         return new Timestamp(cal.getTimeInMillis());
     }
 
+
+    public Timestamp getEndingTimeInterval(Timestamp timestamp){
+
+        int hourIndex = new Random().nextInt(hours.length);
+        int rHour = hours[hourIndex];
+
+        Random random = new Random();
+        int noise = random.nextInt(1001) / 1000;
+
+        rHour *= noise;
+        Long milliseconds = Long.valueOf(rHour * 60 * 60 * 1000);
+        return new Timestamp(timestamp.getTime() + milliseconds);
+    }
+
+
+    public int getEndingTemperature(int temperature){
+        Random random = new Random();
+        int noise =  ((int) (1 + Math.random() * (4)));
+        
+        if (temperature + noise <PolicyConstants.HIGH_TEMPERATURE){
+            return temperature + noise;
+        }
+        else
+            return temperature;
+    }
+
+    public int getEndingEnergy(int energy){
+        Random random = new Random();
+        int noise =  ((int) (1 + Math.random() * (20)));
+
+        if (energy + noise <PolicyConstants.HIGH_WEMO){
+            return energy + noise;
+        }
+        else
+            return energy;
+    }
+
+
     public void writeJSONToFile(List<BasicQuery> basicQueries, int numberOfPolicies, int numberOfAttributes){
         ObjectMapper mapper = new ObjectMapper();
         mapper.setDateFormat(formatter);
@@ -104,5 +141,10 @@ public class PolicyGeneration {
             basicQueries.add(bq);
         }
         writeJSONToFile(basicQueries, numberOfPolicies, numberOfAttributes);
+    }
+
+
+    public void generateRangePolicy(int numberOfPolicies, int numberOfAttributes){
+
     }
 }
