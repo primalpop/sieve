@@ -16,4 +16,4 @@ log/
 target/
 
 *.json
-policies/
+*_policies/

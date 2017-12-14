@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.model.query.BasicQuery;
+import edu.uci.ics.tippers.model.query.RangeQuery;
 import edu.uci.ics.tippers.model.tippers.Infrastructure;
 import edu.uci.ics.tippers.model.tippers.User;
 
@@ -39,7 +40,8 @@ public class PolicyGeneration {
     DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     private static final int[] hours = { 1, 2, 3, 4, 5, 6, 8, 10, 12, 24, 48, 72, 168, 336};
-    
+
+    Random r = new Random();
 
     public PolicyGeneration() {
 
@@ -58,7 +60,7 @@ public class PolicyGeneration {
 
     }
 
-    public Timestamp getRandomTimeStamp() {
+    private Timestamp getRandomTimeStamp() {
         Calendar cal = Calendar.getInstance();
 
         try {
@@ -76,7 +78,7 @@ public class PolicyGeneration {
     }
 
 
-    public Timestamp getEndingTimeInterval(Timestamp timestamp){
+    private Timestamp getEndingTimeInterval(Timestamp timestamp){
 
         int hourIndex = new Random().nextInt(hours.length);
         int rHour = hours[hourIndex];
@@ -90,43 +92,39 @@ public class PolicyGeneration {
     }
 
 
-    public int getEndingTemperature(int temperature){
-        Random random = new Random();
+    private int getEndingTemperature(int temperature){
         int noise =  ((int) (1 + Math.random() * (4)));
-        
-        if (temperature + noise <PolicyConstants.HIGH_TEMPERATURE){
+
+        if (temperature + noise < PolicyConstants.HIGH_TEMPERATURE){
             return temperature + noise;
         }
         else
-            return temperature;
+            return temperature + 1;
     }
 
-    public int getEndingEnergy(int energy){
-        Random random = new Random();
+    private int getEndingEnergy(int energy){
         int noise =  ((int) (1 + Math.random() * (20)));
 
-        if (energy + noise <PolicyConstants.HIGH_WEMO){
+        if (energy + noise < PolicyConstants.HIGH_WEMO){
             return energy + noise;
         }
         else
-            return energy;
+            return energy + 1;
     }
 
 
-    public void writeJSONToFile(List<BasicQuery> basicQueries, int numberOfPolicies, int numberOfAttributes){
+    private void writeJSONToFile(List<BasicQuery> basicQueries, int numberOfPolicies, int numberOfAttributes){
         ObjectMapper mapper = new ObjectMapper();
         mapper.setDateFormat(formatter);
         ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter());
         try {
-            writer.writeValue(new File(PolicyConstants.POLICY_DIR + "policy"+numberOfPolicies+".json"), basicQueries);
+            writer.writeValue(new File(PolicyConstants.BASIC_POLICY_DIR + "policy"+numberOfPolicies+".json"), basicQueries);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void generateRandomPolicy(int numberOfPolicies, int numberOfAttributes) {
-
-        Random r = new Random();
+    public void generateBasicPolicy(int numberOfPolicies, int numberOfAttributes) {
 
         List<BasicQuery> basicQueries = new ArrayList<BasicQuery>();
 
@@ -144,7 +142,69 @@ public class PolicyGeneration {
     }
 
 
-    public void generateRangePolicy(int numberOfPolicies, int numberOfAttributes){
+    private void writeJSONToFileRangePolicy(List<RangeQuery> rangeQueries, int numberOfPolicies){
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.setDateFormat(formatter);
+        ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter());
+        try {
+            writer.writeValue(new File(PolicyConstants.RANGE_POLICY_DIR + "policyR-"+numberOfPolicies+".json"), rangeQueries);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private boolean coinFlip(){
+        int result = r.nextInt(2);
+        if(result == 0) {
+            return true;
+        }
+        else
+            return false;
+    }
+
+    /**
+     * Attributes are added to the policy based on a coin toss
+     * @param numberOfPolicies
+     */
+    public void generateRangePolicy(int numberOfPolicies){
+
+        List<RangeQuery> rangeQueries = new ArrayList<RangeQuery>();
+
+        for (int i = 0; i < numberOfPolicies; i++) {
+            User user = coinFlip()? users.get(new Random().nextInt(users.size())) : null;
+            Infrastructure infra = coinFlip()? infras.get(new Random().nextInt(infras.size())) : null;
+            String activity = coinFlip()? activities.get(new Random().nextInt(activities.size())) : null;
+            Timestamp sTS = coinFlip()? getRandomTimeStamp() : null;
+            Timestamp eTS = coinFlip()? (sTS != null ? getEndingTimeInterval(sTS): getRandomTimeStamp()):  null;
+            Integer start_temp = coinFlip()? (r.nextInt(highTemp - lowTemp) + lowTemp): null;
+            Integer end_temp = coinFlip()? (start_temp != null  ? getEndingTemperature(start_temp): r.nextInt(highTemp - lowTemp) + lowTemp): null;
+            Integer start_wemo = coinFlip() ? (r.nextInt(highWemo - lowWemo) + lowWemo): null;
+            Integer end_wemo = coinFlip()? (start_wemo != null ? getEndingEnergy(start_wemo): r.nextInt(highWemo - lowWemo) + lowWemo): null;
+
+            RangeQuery rq = new RangeQuery();
+            if(user != null)
+                rq.setUser_id(String.valueOf(user.getUser_id()));
+            if(infra != null)
+                rq.setLocation_id(infra.getName());
+            if (activity != null)
+                rq.setActivity(activity);
+            if(sTS != null)
+                rq.setStart_timestamp(sTS);
+            if(eTS != null)
+                rq.setEnd_timestamp(eTS);
+            if(start_temp != null)
+                rq.setStart_temp(String.valueOf(start_temp));
+            if(end_temp != null)
+                rq.setEnd_temp(String.valueOf(end_temp));
+            if(start_wemo != null)
+                rq.setStart_wemo(String.valueOf(start_wemo));
+            if(end_wemo != null)
+                rq.setEnd_wemo(String.valueOf(end_wemo));
+
+            rangeQueries.add(rq);
+        }
+
+        writeJSONToFileRangePolicy(rangeQueries, numberOfPolicies);
 
     }
 }

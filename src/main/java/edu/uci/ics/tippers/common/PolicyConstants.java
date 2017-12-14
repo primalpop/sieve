@@ -33,7 +33,9 @@ public class PolicyConstants {
 
     public static final long SHUTDOWN_WAIT = 1000;
 
-    public static final String POLICY_DIR = "policies/";
+    public static final String BASIC_POLICY_DIR = "basic_policies/";
+
+    public static final String RANGE_POLICY_DIR = "range_policies/";
 
     public static final long HOUR_IN_MILLISECONDS = 3600000;
 
