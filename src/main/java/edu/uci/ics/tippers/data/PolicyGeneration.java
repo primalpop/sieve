@@ -39,7 +39,7 @@ public class PolicyGeneration {
 
     DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-    private static final int[] hours = { 1, 2, 3, 4, 5, 6, 8, 10, 12, 24, 48, 72, 168, 336};
+    private static final double[] hours = { 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 8.0, 10.0, 12.0, 24.0, 48.0, 72.0, 168.0, 336.0};
 
     Random r = new Random();
 
@@ -81,13 +81,10 @@ public class PolicyGeneration {
     private Timestamp getEndingTimeInterval(Timestamp timestamp){
 
         int hourIndex = new Random().nextInt(hours.length);
-        int rHour = hours[hourIndex];
-
-        Random random = new Random();
-        int noise = random.nextInt(1001) / 1000;
-
-        rHour *= noise;
-        Long milliseconds = Long.valueOf(rHour * 60 * 60 * 1000);
+        double rHour = hours[hourIndex];
+        
+        rHour = rHour * Math.random();
+        Long milliseconds = (long)(rHour * 60.0 * 60.0 * 1000.0);
         return new Timestamp(timestamp.getTime() + milliseconds);
     }
 
