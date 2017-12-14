@@ -1,8 +1,11 @@
 package edu.uci.ics.tippers.data;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.common.PolicyEngineException;
 import edu.uci.ics.tippers.db.MySQLConnectionManager;
+import edu.uci.ics.tippers.model.query.RangeQuery;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -30,17 +33,19 @@ import java.util.stream.IntStream;
  */
 public class PolicyExecution {
 
-    private long timeout = 10000000;
+    private long timeout = 50000;
 
     private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     private Connection connection;
 
-    private static final int[] policyNumbers = { 50, 500, 5000, 50000};
+    private static final int[] policyNumbers = {10, 100, 1000, 5000, 10000};
+
+    private PolicyGeneration policyGen;
 
     public PolicyExecution(){
         this.connection = MySQLConnectionManager.getInstance().getConnection();
-
+        policyGen = new PolicyGeneration();
     }
 
 
@@ -86,7 +91,7 @@ public class PolicyExecution {
         }
     }
 
-    public Map<String, Duration> runQueries(String policyDir) {
+    public Map<String, Duration> runBasicQueries(String policyDir) {
 
         Map<String, Duration> policyRunTimes = new HashMap<>();
 
@@ -127,7 +132,7 @@ public class PolicyExecution {
             Duration runTime = Duration.ofSeconds(0);
 
             try {
-                runTime = runTime.plus(runWithThread(() -> runQuery(users, locations, timeStamps, temperatures, wemos, activities)));
+                runTime = runTime.plus(runWithThread(() -> runBasicQuery(users, locations, timeStamps, temperatures, wemos, activities)));
                 numQueries++;
                 policyRunTimes.put(file.getName(), runTime.dividedBy(numQueries));
 
@@ -141,7 +146,7 @@ public class PolicyExecution {
 
     }
 
-    public Duration runQuery(List<String> users, List<String> locations, List<Date> timeStamps,
+    public Duration runBasicQuery(List<String> users, List<String> locations, List<Date> timeStamps,
                               List<String> temperatures, List<String> wemos, List<String> activities){
 
         String query = "SELECT * FROM SEMANTIC_OBSERVATION " +
@@ -157,13 +162,73 @@ public class PolicyExecution {
             e.printStackTrace();
             throw new PolicyEngineException("Error Running Query");
         }
-
     }
 
-    private void createTextReport(Map<String, Duration> runTimes) {
+
+    public Map<String, Duration> runRangeQueries(String policyDir) {
+
+        Map<String, Duration> policyRunTimes = new HashMap<>();
+
+        File[] policyFiles = new File(policyDir).listFiles();
+
+        String values = null;
+
+        for (File file : policyFiles) {
+
+            try {
+                values = new String(Files.readAllBytes(Paths.get(policyDir + file.getName())),
+                        StandardCharsets.UTF_8);
+            } catch (IOException e) {
+                e.printStackTrace();
+                throw new PolicyEngineException("Error Reading Data Files");
+            }
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.setDateFormat(sdf);
+            List<RangeQuery> rangeQueries = new ArrayList<RangeQuery>();
+            try {
+                rangeQueries.addAll(objectMapper.readValue(values,
+                        new TypeReference<List<RangeQuery>>() {
+                        }));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            int numQueries = 0;
+            Duration runTime = Duration.ofSeconds(0);
+
+            try {
+                runTime = runTime.plus(runWithThread(() -> runRangeQuery(rangeQueries)));
+                numQueries++;
+                policyRunTimes.put(file.getName(), runTime.dividedBy(numQueries));
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                policyRunTimes.put(file.getName(), PolicyConstants.MAX_DURATION);
+            }
+        }
+
+        return policyRunTimes;
+    }
+
+
+    public Duration runRangeQuery(List<RangeQuery> rangeQueries){
+        String query = "SELECT * FROM SEMANTIC_OBSERVATION " +
+                "WHERE " + IntStream.range(0, rangeQueries.size()-1 ).mapToObj(i-> rangeQueries.get(i).createPredicate())
+                .collect(Collectors.joining(" OR "));
+        try {
+            return runTimedQuery(query);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new PolicyEngineException("Error Running Query");
+        }
+    }
+
+
+    private void createTextReport(Map<String, Duration> runTimes, String fileDir) {
         BufferedWriter writer;
         try {
-            writer = new BufferedWriter(new FileWriter( PolicyConstants.POLICY_DIR + "results.txt"));
+            writer = new BufferedWriter(new FileWriter( fileDir + "results.txt"));
 
             writer.write("Number of Policies     Time taken (in ms)");
             writer.write("\n\n");
@@ -183,20 +248,33 @@ public class PolicyExecution {
         }
     }
 
-    public static void main (String args[]){
-
-        PolicyExecution pe = new PolicyExecution();
-
-        PolicyGeneration pg = new PolicyGeneration();
-        int numberOfAttributes = 6; //Not used
-
+    private void basicQueryExperiments(){
         for (int i = 0; i < policyNumbers.length ; i++) {
-            pg.generateRandomPolicy(policyNumbers[i], numberOfAttributes);
+            policyGen.generateBasicPolicy(policyNumbers[i], 6);
+        }
+        Map<String, Duration> runTimes = new HashMap<>();
+        runTimes.putAll(runBasicQueries(PolicyConstants.BASIC_POLICY_DIR));
+        createTextReport(runTimes, PolicyConstants.BASIC_POLICY_DIR);
+
+    }
+
+
+    private void rangeQueryExperiments(){
+        for (int i = 0; i < policyNumbers.length ; i++) {
+            policyGen.generateRangePolicy(policyNumbers[i]);
         }
 
         Map<String, Duration> runTimes = new HashMap<>();
-        runTimes.putAll(pe.runQueries(PolicyConstants.POLICY_DIR));
+        runTimes.putAll(runRangeQueries(PolicyConstants.RANGE_POLICY_DIR));
+        createTextReport(runTimes, PolicyConstants.RANGE_POLICY_DIR);
+    }
 
-        pe.createTextReport(runTimes);
+
+
+    public static void main (String args[]){
+        PolicyExecution pe = new PolicyExecution();
+        pe.basicQueryExperiments();
+//        pe.rangeQueryExperiments();
+
     }
 }
