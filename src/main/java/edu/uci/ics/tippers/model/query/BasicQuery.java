@@ -1,6 +1,9 @@
 package edu.uci.ics.tippers.model.query;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Objects;
+import java.util.stream.Stream;
 
 /**
  * Created by cygnus on 7/7/17.
@@ -92,4 +95,53 @@ public class BasicQuery {
                 ", activity='" + activity + '\'' +
                 '}';
     }
+
+
+    public boolean checkAllNull(){
+        return Stream.of(timestamp, wemo,
+                temperature, user_id, location_id, activity)
+                .allMatch(Objects::isNull);
+    }
+
+    public String createPredicate(){
+
+        if(checkAllNull()) return "(user_id = 10000)";
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        StringBuilder sqlPredicate = new StringBuilder();
+        sqlPredicate.append("(");
+        if(user_id != null) {
+            sqlPredicate.append("user_id = ");
+            sqlPredicate.append("\'").append(user_id).append("\'");
+        }
+        if(location_id != null) {
+            if(sqlPredicate.length() > 1) sqlPredicate.append(" AND ");
+            sqlPredicate.append("location_id = ");
+            sqlPredicate.append("\'").append(location_id).append("\'");
+        }
+        if(temperature != null) {
+            if(sqlPredicate.length() > 1) sqlPredicate.append(" AND ");
+            sqlPredicate.append("temperature = ");
+            sqlPredicate.append("\'").append(temperature).append("\'");
+        }
+        if(wemo != null) {
+            if(sqlPredicate.length() > 1) sqlPredicate.append(" AND ");
+            sqlPredicate.append("energy = ");
+            sqlPredicate.append("\'").append(wemo).append("\'");
+        }
+        if(activity != null) {
+            if(sqlPredicate.length() > 1) sqlPredicate.append(" AND ");
+            sqlPredicate.append("activity = ");
+            sqlPredicate.append("\'").append(activity).append("\'");
+        }
+        if(timestamp != null) {
+            if(sqlPredicate.length() > 1) sqlPredicate.append(" AND ");
+            sqlPredicate.append("timeStamp = ");
+            sqlPredicate.append("\'").append( sdf.format(timestamp)).append("\'");
+        }
+        sqlPredicate.append(")");
+        return sqlPredicate.toString();
+    }
+
+
 }

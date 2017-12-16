@@ -5,9 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.common.PolicyEngineException;
 import edu.uci.ics.tippers.db.MySQLConnectionManager;
+import edu.uci.ics.tippers.model.query.BasicQuery;
 import edu.uci.ics.tippers.model.query.RangeQuery;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -39,7 +38,7 @@ public class PolicyExecution {
 
     private Connection connection;
 
-    private static final int[] policyNumbers = {10, 100, 1000, 5000, 10000};
+    private static final int[] policyNumbers = {5, 10, 100, 500, 1000};
 
     private PolicyGeneration policyGen;
 
@@ -54,13 +53,6 @@ public class PolicyExecution {
             Instant start = Instant.now();
             Statement stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery(query);
-            ResultSetMetaData rsmd = rs.getMetaData();
-            int columnsNumber = rsmd.getColumnCount();
-            while (rs.next()) {
-                StringBuilder line = new StringBuilder("");
-                for (int i = 1; i <= columnsNumber; i++)
-                    line.append(rs.getString(i)).append("\t");
-            }
             rs.close();
             Instant end = Instant.now();
             return Duration.between(start, end);
@@ -97,9 +89,10 @@ public class PolicyExecution {
 
         File[] policyFiles = new File(policyDir).listFiles();
 
+        String values = null;
+
         for (File file : policyFiles) {
 
-            String values = null;
             try {
                 values = new String(Files.readAllBytes(Paths.get(policyDir + file.getName())),
                         StandardCharsets.UTF_8);
@@ -107,32 +100,23 @@ public class PolicyExecution {
                 e.printStackTrace();
                 throw new PolicyEngineException("Error Reading Data Files");
             }
-            List<String> users = new ArrayList<>();
-            List<String> locations = new ArrayList<>();
-            List<Date> timeStamps = new ArrayList<>();
-            List<String> temperatures = new ArrayList<>();
-            List<String> wemos = new ArrayList<>();
-            List<String> activities = new ArrayList<>();
 
-            JSONArray jsonArray = new JSONArray(values);
-            jsonArray.forEach(e->{
-                users.add(((JSONObject)e).getString("user_id"));
-                locations.add(((JSONObject)e).getString("location_id"));
-                try {
-                    timeStamps.add(sdf.parse(((JSONObject)e).getString("timestamp")));
-                } catch (ParseException e1) {
-                    e1.printStackTrace();
-                }
-                temperatures.add(((JSONObject)e).getString("temperature"));
-                wemos.add(((JSONObject)e).getString("wemo"));
-                activities.add(((JSONObject)e).getString("activity"));
-            });
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.setDateFormat(sdf);
+            List<BasicQuery> basicQueries = new ArrayList<BasicQuery>();
+            try {
+                basicQueries.addAll(objectMapper.readValue(values,
+                        new TypeReference<List<BasicQuery>>() {
+                        }));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
             int numQueries = 0;
             Duration runTime = Duration.ofSeconds(0);
 
             try {
-                runTime = runTime.plus(runWithThread(() -> runBasicQuery(users, locations, timeStamps, temperatures, wemos, activities)));
+                runTime = runTime.plus(runWithThread(() -> runBasicQuery(basicQueries)));
                 numQueries++;
                 policyRunTimes.put(file.getName(), runTime.dividedBy(numQueries));
 
@@ -143,19 +127,12 @@ public class PolicyExecution {
         }
 
         return policyRunTimes;
-
     }
 
-    public Duration runBasicQuery(List<String> users, List<String> locations, List<Date> timeStamps,
-                              List<String> temperatures, List<String> wemos, List<String> activities){
-
+    public Duration runBasicQuery(List<BasicQuery> basicQueries){
         String query = "SELECT * FROM SEMANTIC_OBSERVATION " +
-                "WHERE " +
-                IntStream.range(0, users.size()-1).mapToObj(i->
-                        String.format("(USER_ID = '%s' AND LOCATION_ID = '%s' AND timeStamp = '%s' AND temperature = '%s' AND energy = '%s' AND activity = '%s')",
-                                users.get(i), locations.get(i), sdf.format(timeStamps.get(i)), temperatures.get(i), wemos.get(i), activities.get(i)))
-                        .collect(Collectors.joining(" OR "))
-                + ";";
+                "WHERE " + IntStream.range(0, basicQueries.size()-1 ).mapToObj(i-> basicQueries.get(i).createPredicate())
+                .collect(Collectors.joining(" OR "));
         try {
             return runTimedQuery(query);
         } catch (Exception e) {
@@ -163,7 +140,6 @@ public class PolicyExecution {
             throw new PolicyEngineException("Error Running Query");
         }
     }
-
 
     public Map<String, Duration> runRangeQueries(String policyDir) {
 
@@ -248,33 +224,41 @@ public class PolicyExecution {
         }
     }
 
-    private void basicQueryExperiments(){
+    private void basicQueryExperiments(String policyDir){
         for (int i = 0; i < policyNumbers.length ; i++) {
-            policyGen.generateBasicPolicy(policyNumbers[i], 6);
+            if(policyDir.equalsIgnoreCase(PolicyConstants.BASIC_POLICY_1_DIR))
+                policyGen.generateBasicPolicy1(policyNumbers[i]);
+            else
+                policyGen.generateBasicPolicy2(policyNumbers[i]);
         }
         Map<String, Duration> runTimes = new HashMap<>();
-        runTimes.putAll(runBasicQueries(PolicyConstants.BASIC_POLICY_DIR));
-        createTextReport(runTimes, PolicyConstants.BASIC_POLICY_DIR);
+        runTimes.putAll(runBasicQueries(policyDir));
+        createTextReport(runTimes, policyDir);
 
     }
 
 
-    private void rangeQueryExperiments(){
+    private void rangeQueryExperiments(String policyDir){
         for (int i = 0; i < policyNumbers.length ; i++) {
-            policyGen.generateRangePolicy(policyNumbers[i]);
+            if(policyDir.equalsIgnoreCase(PolicyConstants.RANGE_POLICY_1_DIR))
+                policyGen.generateRangePolicy1(policyNumbers[i]);
+            else
+                policyGen.generateRangePolicy2(policyNumbers[i]);
         }
 
         Map<String, Duration> runTimes = new HashMap<>();
-        runTimes.putAll(runRangeQueries(PolicyConstants.RANGE_POLICY_DIR));
-        createTextReport(runTimes, PolicyConstants.RANGE_POLICY_DIR);
+        runTimes.putAll(runRangeQueries(policyDir));
+        createTextReport(runTimes, policyDir);
     }
 
 
 
     public static void main (String args[]){
         PolicyExecution pe = new PolicyExecution();
-        pe.basicQueryExperiments();
-//        pe.rangeQueryExperiments();
+//        pe.basicQueryExperiments(PolicyConstants.BASIC_POLICY_1_DIR);
+//        pe.basicQueryExperiments(PolicyConstants.BASIC_POLICY_2_DIR);
+//        pe.rangeQueryExperiments(PolicyConstants.RANGE_POLICY_1_DIR);
+        pe.rangeQueryExperiments(PolicyConstants.RANGE_POLICY_2_DIR);
 
     }
 }
