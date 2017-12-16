@@ -33,10 +33,14 @@ public class PolicyConstants {
 
     public static final long SHUTDOWN_WAIT = 1000;
 
-    public static final String BASIC_POLICY_DIR = "basic_policies/";
-
-    public static final String RANGE_POLICY_DIR = "range_policies/";
-
     public static final long HOUR_IN_MILLISECONDS = 3600000;
+
+    public static final String BASIC_POLICY_1_DIR = "results/basic_policies_1/";
+
+    public static final String BASIC_POLICY_2_DIR = "results/basic_policies_2/";
+
+    public static final String RANGE_POLICY_1_DIR = "results/range_policies_1/";
+
+    public static final String RANGE_POLICY_2_DIR = "results/range_policies_2/";
 
 }

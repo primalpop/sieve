@@ -110,18 +110,18 @@ public class PolicyGeneration {
     }
 
 
-    private void writeJSONToFile(List<BasicQuery> basicQueries, int numberOfPolicies, int numberOfAttributes){
+    private void writeJSONToFile(List<BasicQuery> basicQueries, int numberOfPolicies, String policyDir){
         ObjectMapper mapper = new ObjectMapper();
         mapper.setDateFormat(formatter);
         ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter());
         try {
-            writer.writeValue(new File(PolicyConstants.BASIC_POLICY_DIR + "policy"+numberOfPolicies+".json"), basicQueries);
+            writer.writeValue(new File(policyDir + "policy"+numberOfPolicies+".json"), basicQueries);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void generateBasicPolicy(int numberOfPolicies, int numberOfAttributes) {
+    public void generateBasicPolicy1(int numberOfPolicies) {
 
         List<BasicQuery> basicQueries = new ArrayList<BasicQuery>();
 
@@ -135,16 +135,48 @@ public class PolicyGeneration {
             BasicQuery bq = new BasicQuery(String.valueOf(user.getUser_id()), infra.getName(), ts, temperature, wemo, activity);
             basicQueries.add(bq);
         }
-        writeJSONToFile(basicQueries, numberOfPolicies, numberOfAttributes);
+        writeJSONToFile(basicQueries, numberOfPolicies, PolicyConstants.BASIC_POLICY_1_DIR);
+    }
+
+    public void generateBasicPolicy2(int numberOfPolicies){
+
+        List<BasicQuery> basicQueries = new ArrayList<BasicQuery>();
+
+        for (int i = 0; i < numberOfPolicies; i++) {
+            User user = coinFlip()? users.get(new Random().nextInt(users.size())) : null;
+            Infrastructure infra = coinFlip()? infras.get(new Random().nextInt(infras.size())): null;
+            String temperature = coinFlip()? String.valueOf(r.nextInt(highTemp - lowTemp) + lowTemp): null;
+            String wemo = coinFlip()? String.valueOf(r.nextInt(highWemo - lowWemo) + lowWemo): null;
+            Timestamp ts = coinFlip()? getRandomTimeStamp(): null;
+            String activity = coinFlip()? activities.get(new Random().nextInt(activities.size())): null;
+
+            BasicQuery bq = new BasicQuery();
+            if(user != null)
+                bq.setUser_id(String.valueOf(user.getUser_id()));
+            if(infra != null)
+                bq.setLocation_id(infra.getName());
+            if (activity != null)
+                bq.setActivity(activity);
+            if(ts != null)
+                bq.setTimestamp(ts);
+            if(temperature != null)
+                bq.setTemperature(String.valueOf(temperature));
+            if(wemo != null)
+                bq.setWemo(String.valueOf(wemo));
+
+            basicQueries.add(bq);
+        }
+        writeJSONToFile(basicQueries, numberOfPolicies, PolicyConstants.BASIC_POLICY_2_DIR);
+
     }
 
 
-    private void writeJSONToFileRangePolicy(List<RangeQuery> rangeQueries, int numberOfPolicies){
+    private void writeJSONToFileRangePolicy(List<RangeQuery> rangeQueries, int numberOfPolicies, String policyDir){
         ObjectMapper mapper = new ObjectMapper();
         mapper.setDateFormat(formatter);
         ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter());
         try {
-            writer.writeValue(new File(PolicyConstants.RANGE_POLICY_DIR + "policyR-"+numberOfPolicies+".json"), rangeQueries);
+            writer.writeValue(new File(policyDir + "policyR-"+numberOfPolicies+".json"), rangeQueries);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -159,11 +191,36 @@ public class PolicyGeneration {
             return false;
     }
 
+    public void generateRangePolicy1(int numberOfPolicies){
+
+        List<RangeQuery> rangeQueries = new ArrayList<RangeQuery>();
+
+        for (int i = 0; i < numberOfPolicies; i++) {
+            User user = users.get(new Random().nextInt(users.size()));
+            Infrastructure infra = infras.get(new Random().nextInt(infras.size()));
+            String activity = activities.get(new Random().nextInt(activities.size()));
+            Timestamp sTS = getRandomTimeStamp();
+            Timestamp eTS = getEndingTimeInterval(sTS);
+            Integer start_temp = r.nextInt(highTemp - lowTemp) + lowTemp;
+            Integer end_temp = getEndingTemperature(start_temp);
+            Integer start_wemo =  r.nextInt(highWemo - lowWemo) + lowWemo;
+            Integer end_wemo = getEndingEnergy(start_wemo);
+
+            RangeQuery rq = new RangeQuery(sTS, eTS, String.valueOf(start_wemo), String.valueOf(end_wemo), String.valueOf(start_temp),
+                    String.valueOf(end_temp), String.valueOf(user.getUser_id()), infra.getName(), activity);
+
+            rangeQueries.add(rq);
+        }
+
+        writeJSONToFileRangePolicy(rangeQueries, numberOfPolicies, PolicyConstants.RANGE_POLICY_1_DIR);
+
+    }
+
     /**
      * Attributes are added to the policy based on a coin toss
      * @param numberOfPolicies
      */
-    public void generateRangePolicy(int numberOfPolicies){
+    public void generateRangePolicy2(int numberOfPolicies){
 
         List<RangeQuery> rangeQueries = new ArrayList<RangeQuery>();
 
@@ -201,7 +258,7 @@ public class PolicyGeneration {
             rangeQueries.add(rq);
         }
 
-        writeJSONToFileRangePolicy(rangeQueries, numberOfPolicies);
+        writeJSONToFileRangePolicy(rangeQueries, numberOfPolicies, PolicyConstants.RANGE_POLICY_2_DIR);
 
     }
 }

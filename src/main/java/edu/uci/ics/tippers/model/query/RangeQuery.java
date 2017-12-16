@@ -142,6 +142,26 @@ public class RangeQuery {
             sqlPredicate.append("location_id = ");
             sqlPredicate.append("\'").append(location_id).append("\'");
         }
+        if(start_temp != null) {
+            if(sqlPredicate.length() > 1) sqlPredicate.append(" AND ");
+            sqlPredicate.append("temperature >= ");
+            sqlPredicate.append("\'").append(start_temp).append("\'");
+        }
+        if(end_temp != null) {
+            if(sqlPredicate.length() > 1) sqlPredicate.append(" AND ");
+            sqlPredicate.append("temperature <= ");
+            sqlPredicate.append("\'").append(end_temp).append("\'");
+        }
+        if(start_wemo != null) {
+            if(sqlPredicate.length() > 1) sqlPredicate.append(" AND ");
+            sqlPredicate.append("energy >= ");
+            sqlPredicate.append("\'").append(start_wemo).append("\'");
+        }
+        if(end_wemo != null) {
+            if(sqlPredicate.length() > 1) sqlPredicate.append(" AND ");
+            sqlPredicate.append("energy <= ");
+            sqlPredicate.append("\'").append(end_wemo).append("\'");
+        }
         if(activity != null) {
             if(sqlPredicate.length() > 1) sqlPredicate.append(" AND ");
             sqlPredicate.append("activity = ");
@@ -156,26 +176,6 @@ public class RangeQuery {
             if(sqlPredicate.length() > 1) sqlPredicate.append(" AND ");
             sqlPredicate.append("timeStamp <= ");
             sqlPredicate.append("\'").append( sdf.format(end_timestamp)).append("\'");
-        }
-        if(start_wemo != null) {
-            if(sqlPredicate.length() > 1) sqlPredicate.append(" AND ");
-            sqlPredicate.append("energy >= ");
-            sqlPredicate.append("\'").append(start_wemo).append("\'");
-        }
-        if(end_wemo != null) {
-            if(sqlPredicate.length() > 1) sqlPredicate.append(" AND ");
-            sqlPredicate.append("energy <= ");
-            sqlPredicate.append("\'").append(end_wemo).append("\'");
-        }
-        if(start_temp != null) {
-            if(sqlPredicate.length() > 1) sqlPredicate.append(" AND ");
-            sqlPredicate.append("temperature >= ");
-            sqlPredicate.append("\'").append(start_temp).append("\'");
-        }
-        if(end_temp != null) {
-            if(sqlPredicate.length() > 1) sqlPredicate.append(" AND ");
-            sqlPredicate.append("temperature <= ");
-            sqlPredicate.append("\'").append(end_temp).append("\'");
         }
         sqlPredicate.append(")");
         return sqlPredicate.toString();
