@@ -17,3 +17,6 @@ target/
 
 *.json
 *_policies/
+*results/
+db2*
+results.txt
