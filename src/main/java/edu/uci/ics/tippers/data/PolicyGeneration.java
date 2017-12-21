@@ -261,4 +261,43 @@ public class PolicyGeneration {
         writeJSONToFileRangePolicy(rangeQueries, numberOfPolicies, PolicyConstants.RANGE_POLICY_2_DIR);
 
     }
+
+
+    /**
+     * Guard based only indexed attributes: {<user_id, timeStamp, location_id>, <user_id, timeStamp>}
+     * @param rangeQueries
+     * @return
+     */
+    public String generateGuard(List<RangeQuery> rangeQueries){
+
+        StringBuilder guard = new StringBuilder();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        for (RangeQuery rq: rangeQueries) {
+            if(rq.getUser_id() != null && (rq.getStart_timestamp() != null || rq.getEnd_timestamp() != null)){
+                if(guard.length() > 1) guard.append(" OR ");
+                guard.append("(");
+                guard.append("user_id = ");
+                guard.append("\'").append(rq.getUser_id()).append("\'");
+                if(rq.getStart_timestamp()!= null) {
+                    guard.append(" AND ");
+                    guard.append("timeStamp >= ");
+                    guard.append("\'").append(rq.getStart_timestamp()).append("\'");
+                }
+                if (rq.getEnd_timestamp()!= null) {
+                    guard.append(" AND ");
+                    guard.append("timeStamp <= ");
+                    guard.append("\'").append(rq.getEnd_timestamp()).append("\'");
+                }
+                if(rq.getLocation_id() != null){
+                    guard.append(" AND ");
+                    guard.append("location_id = ");
+                    guard.append("\'").append(rq.getLocation_id()).append("\'");
+                }
+                guard.append(")");
+            }
+        }
+
+        return guard.toString();
+    }
 }

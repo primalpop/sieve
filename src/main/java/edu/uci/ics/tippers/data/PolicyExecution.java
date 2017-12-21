@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.common.PolicyEngineException;
 import edu.uci.ics.tippers.db.MySQLConnectionManager;
+import edu.uci.ics.tippers.fileop.Writer;
 import edu.uci.ics.tippers.model.query.BasicQuery;
 import edu.uci.ics.tippers.model.query.RangeQuery;
 
@@ -40,11 +41,15 @@ public class PolicyExecution {
 
     private static final int[] policyNumbers = {5, 10, 100, 500, 1000};
 
-    private PolicyGeneration policyGen;
+    private static PolicyGeneration policyGen;
+
+    Writer mWriter;
+
 
     public PolicyExecution(){
         this.connection = MySQLConnectionManager.getInstance().getConnection();
         policyGen = new PolicyGeneration();
+        mWriter = new Writer();
     }
 
 
@@ -119,7 +124,6 @@ public class PolicyExecution {
                 runTime = runTime.plus(runWithThread(() -> runBasicQuery(basicQueries)));
                 numQueries++;
                 policyRunTimes.put(file.getName(), runTime.dividedBy(numQueries));
-
             } catch (Exception e) {
                 e.printStackTrace();
                 policyRunTimes.put(file.getName(), PolicyConstants.MAX_DURATION);
@@ -141,7 +145,7 @@ public class PolicyExecution {
         }
     }
 
-    public Map<String, Duration> runRangeQueries(String policyDir) {
+    public Map<String, Duration> runRangeQueries(String policyDir, boolean guard) {
 
         Map<String, Duration> policyRunTimes = new HashMap<>();
 
@@ -170,14 +174,17 @@ public class PolicyExecution {
                 e.printStackTrace();
             }
 
-            int numQueries = 0;
             Duration runTime = Duration.ofSeconds(0);
 
             try {
-                runTime = runTime.plus(runWithThread(() -> runRangeQuery(rangeQueries)));
-                numQueries++;
-                policyRunTimes.put(file.getName(), runTime.dividedBy(numQueries));
-
+                if(!guard){
+                    runTime = runTime.plus(runWithThread(() -> runRangeQuery(rangeQueries)));
+                    policyRunTimes.put(file.getName(), runTime);
+                }
+                else{
+                    runTime = runTime.plus(runWithThread(() -> runRangeQueryWithGuard(rangeQueries)));
+                    policyRunTimes.put(file.getName() + "guard", runTime);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
                 policyRunTimes.put(file.getName(), PolicyConstants.MAX_DURATION);
@@ -187,10 +194,23 @@ public class PolicyExecution {
         return policyRunTimes;
     }
 
-
     public Duration runRangeQuery(List<RangeQuery> rangeQueries){
         String query = "SELECT * FROM SEMANTIC_OBSERVATION " +
-                "WHERE " + IntStream.range(0, rangeQueries.size()-1 ).mapToObj(i-> rangeQueries.get(i).createPredicate())
+                "WHERE " + IntStream.range(0, rangeQueries.size() ).mapToObj(i-> rangeQueries.get(i).createPredicate())
+                .collect(Collectors.joining(" OR "));
+
+        try {
+            return runTimedQuery(query);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new PolicyEngineException("Error Running Query");
+        }
+    }
+
+
+    public Duration runRangeQueryWithGuard(List<RangeQuery> rangeQueries){
+        String query = "SELECT * FROM SEMANTIC_OBSERVATION " +
+                "WHERE (" + policyGen.generateGuard(rangeQueries) + ") AND " + IntStream.range(0, rangeQueries.size()).mapToObj(i-> rangeQueries.get(i).createPredicate())
                 .collect(Collectors.joining(" OR "));
         try {
             return runTimedQuery(query);
@@ -224,13 +244,21 @@ public class PolicyExecution {
         }
     }
 
-    private void basicQueryExperiments(String policyDir){
+
+    private void generatePolicies(String policyDir){
         for (int i = 0; i < policyNumbers.length ; i++) {
             if(policyDir.equalsIgnoreCase(PolicyConstants.BASIC_POLICY_1_DIR))
                 policyGen.generateBasicPolicy1(policyNumbers[i]);
-            else
+            else if(policyDir.equalsIgnoreCase(PolicyConstants.BASIC_POLICY_2_DIR))
                 policyGen.generateBasicPolicy2(policyNumbers[i]);
+            else if(policyDir.equalsIgnoreCase(PolicyConstants.RANGE_POLICY_1_DIR))
+                policyGen.generateRangePolicy1(policyNumbers[i]);
+            else if(policyDir.equalsIgnoreCase(PolicyConstants.RANGE_POLICY_2_DIR))
+                policyGen.generateRangePolicy2(policyNumbers[i]);
         }
+    }
+
+    private void basicQueryExperiments(String policyDir){
         Map<String, Duration> runTimes = new HashMap<>();
         runTimes.putAll(runBasicQueries(policyDir));
         createTextReport(runTimes, policyDir);
@@ -239,15 +267,8 @@ public class PolicyExecution {
 
 
     private void rangeQueryExperiments(String policyDir){
-        for (int i = 0; i < policyNumbers.length ; i++) {
-            if(policyDir.equalsIgnoreCase(PolicyConstants.RANGE_POLICY_1_DIR))
-                policyGen.generateRangePolicy1(policyNumbers[i]);
-            else
-                policyGen.generateRangePolicy2(policyNumbers[i]);
-        }
-
         Map<String, Duration> runTimes = new HashMap<>();
-        runTimes.putAll(runRangeQueries(policyDir));
+        runTimes.putAll(runRangeQueries(policyDir, false));
         createTextReport(runTimes, policyDir);
     }
 
@@ -255,10 +276,14 @@ public class PolicyExecution {
 
     public static void main (String args[]){
         PolicyExecution pe = new PolicyExecution();
+        pe.generatePolicies(PolicyConstants.BASIC_POLICY_1_DIR);
 //        pe.basicQueryExperiments(PolicyConstants.BASIC_POLICY_1_DIR);
+//        pe.generatePolicies(PolicyConstants.BASIC_POLICY_2_DIR);
 //        pe.basicQueryExperiments(PolicyConstants.BASIC_POLICY_2_DIR);
+//        pe.generatePolicies(PolicyConstants.RANGE_POLICY_1_DIR);
 //        pe.rangeQueryExperiments(PolicyConstants.RANGE_POLICY_1_DIR);
-        pe.rangeQueryExperiments(PolicyConstants.RANGE_POLICY_2_DIR);
+//        pe.generatePolicies(PolicyConstants.RANGE_POLICY_2_DIR);
+//        pe.rangeQueryExperiments(PolicyConstants.RANGE_POLICY_2_DIR);
 
     }
 }
