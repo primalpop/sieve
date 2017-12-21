@@ -282,6 +282,9 @@ public class DataGeneration {
                     presenceStmt.executeBatch();
                     System.out.println("# " + presenceCount + " inserted");
                 }
+
+                if(presenceCount == 100000)
+                    break;
             }
 
             presenceStmt.executeBatch();

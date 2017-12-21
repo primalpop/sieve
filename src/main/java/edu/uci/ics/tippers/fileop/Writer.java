@@ -11,11 +11,11 @@ import java.sql.SQLException;
  */
 public class Writer {
 
-    private void writeResultsToCSV(ResultSet rs, int queryIndex){
+    public void writeResultsToCSV(ResultSet rs, String fileName ){
         Boolean includeHeaders = false;
         CSVWriter writer = null;
         try {
-            writer = new CSVWriter(new FileWriter("query" + queryIndex + ".csv"), '\t');
+            writer = new CSVWriter(new FileWriter(fileName + ".csv"), '\t');
             writer.writeAll(rs, includeHeaders);
             writer.close();
         } catch (IOException e) {

@@ -8,6 +8,8 @@ import edu.uci.ics.tippers.db.MySQLConnectionManager;
 import edu.uci.ics.tippers.fileop.Writer;
 import edu.uci.ics.tippers.model.query.BasicQuery;
 import edu.uci.ics.tippers.model.query.RangeQuery;
+import org.apache.commons.dbutils.DbUtils;
+import org.apache.log4j.spi.LoggerFactory;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -33,18 +35,17 @@ import java.util.stream.IntStream;
  */
 public class PolicyExecution {
 
-    private long timeout = 50000;
+    private long timeout = 25000;
 
     private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     private Connection connection;
 
-    private static final int[] policyNumbers = {5, 10, 100, 500, 1000};
+    private static final int[] policyNumbers = {5, 10, 100, 500, 1000, 2000, 5000};
 
     private static PolicyGeneration policyGen;
 
     Writer mWriter;
-
 
     public PolicyExecution(){
         this.connection = MySQLConnectionManager.getInstance().getConnection();
@@ -54,18 +55,73 @@ public class PolicyExecution {
 
 
     public Duration runTimedQuery(String query) {
+        Statement stmt = null;
         try {
             Instant start = Instant.now();
-            Statement stmt = connection.createStatement();
+            stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery(query);
             rs.close();
             Instant end = Instant.now();
             return Duration.between(start, end);
         } catch (SQLException e) {
+            cancelStatement(stmt, e);
             e.printStackTrace();
             throw new PolicyEngineException("Error Running Query");
         }
     }
+
+    public Duration query(String query) {
+
+        Statement statement = null;
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Future<Duration> future = null;
+        try {
+            statement = connection.createStatement();
+            QueryExecutor queryExecutor = new QueryExecutor(statement, query);
+            future = executor.submit(queryExecutor);
+            Duration timeTaken = future.get(timeout, TimeUnit.SECONDS);
+            executor.shutdown();
+            return timeTaken;
+        } catch (SQLException | InterruptedException | ExecutionException ex) {
+            cancelStatement(statement, ex);
+            throw new PolicyEngineException("Failed to query the database. " + ex);
+        } catch (TimeoutException ex) {
+            cancelStatement(statement, ex);
+            future.cancel(true);
+            throw new PolicyEngineException("Timeout exception occurred. Increase the timeout limit.");
+        } finally {
+            DbUtils.closeQuietly(statement);
+            executor.shutdownNow();
+        }
+    }
+
+    private class QueryExecutor implements  Callable<Duration>{
+
+        Statement statement;
+        String query;
+
+        public QueryExecutor(Statement statement, String query) {
+
+            this.statement = statement;
+            this.query = query;
+        }
+
+        @Override
+        public Duration call() throws Exception {
+            try {
+                Instant start = Instant.now();
+                ResultSet rs = statement.executeQuery(query);
+                rs.close();
+                Instant end = Instant.now();
+                return Duration.between(start, end);
+            } catch (SQLException e) {
+                cancelStatement(statement, e);
+                e.printStackTrace();
+                throw new PolicyEngineException("Error Running Query");
+            }
+        }
+    }
+
 
     private Duration runWithThread(Callable<Duration> query) {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
@@ -74,6 +130,7 @@ public class PolicyExecution {
             return future.get(timeout, TimeUnit.MILLISECONDS);
         }catch (TimeoutException e) {
             e.printStackTrace();
+            future.cancel(true);
             return PolicyConstants.MAX_DURATION;
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
@@ -88,49 +145,60 @@ public class PolicyExecution {
         }
     }
 
-    public Map<String, Duration> runBasicQueries(String policyDir) {
+    private void cancelStatement(Statement statement, Exception ex) {
+        System.out.println("Cancelling the current query statement. Timeout occurred" + ex);
+        try {
+            statement.cancel();
+        } catch (SQLException exception) {
+            throw new PolicyEngineException("Calling cancel() on the Statement issued exception. Details are: " + exception);
+        }
+    }
 
-        Map<String, Duration> policyRunTimes = new HashMap<>();
 
-        File[] policyFiles = new File(policyDir).listFiles();
-
-        String values = null;
-
-        for (File file : policyFiles) {
-
-            try {
-                values = new String(Files.readAllBytes(Paths.get(policyDir + file.getName())),
-                        StandardCharsets.UTF_8);
-            } catch (IOException e) {
-                e.printStackTrace();
-                throw new PolicyEngineException("Error Reading Data Files");
-            }
-
-            ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.setDateFormat(sdf);
-            List<BasicQuery> basicQueries = new ArrayList<BasicQuery>();
-            try {
-                basicQueries.addAll(objectMapper.readValue(values,
-                        new TypeReference<List<BasicQuery>>() {
-                        }));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            int numQueries = 0;
-            Duration runTime = Duration.ofSeconds(0);
-
-            try {
-                runTime = runTime.plus(runWithThread(() -> runBasicQuery(basicQueries)));
-                numQueries++;
-                policyRunTimes.put(file.getName(), runTime.dividedBy(numQueries));
-            } catch (Exception e) {
-                e.printStackTrace();
-                policyRunTimes.put(file.getName(), PolicyConstants.MAX_DURATION);
-            }
+    private List<BasicQuery> readBasicPolicy(String fileName){
+        String values;
+        try {
+            values = new String(Files.readAllBytes(Paths.get(fileName)),
+                    StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new PolicyEngineException("Error Reading Data Files");
         }
 
-        return policyRunTimes;
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.setDateFormat(sdf);
+        List<BasicQuery> basicQueries = new ArrayList<BasicQuery>();
+        try {
+            basicQueries.addAll(objectMapper.readValue(values,
+                    new TypeReference<List<BasicQuery>>() {
+                    }));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return basicQueries;
+    }
+
+    private List<RangeQuery> readRangePolicy(String fileName){
+        String values;
+        try {
+            values = new String(Files.readAllBytes(Paths.get(fileName)),
+                    StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new PolicyEngineException("Error Reading Data Files");
+        }
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.setDateFormat(sdf);
+        List<RangeQuery> rangeQueries = new ArrayList<RangeQuery>();
+        try {
+            rangeQueries.addAll(objectMapper.readValue(values,
+                    new TypeReference<List<RangeQuery>>() {
+                    }));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return rangeQueries;
     }
 
     public Duration runBasicQuery(List<BasicQuery> basicQueries){
@@ -244,6 +312,23 @@ public class PolicyExecution {
         }
     }
 
+    private void addToReport(String toWrite, String fileDir){
+        BufferedWriter writer;
+        try {
+            writer = new BufferedWriter(new FileWriter(  "results.txt" , true));
+
+            if(Files.size(Paths.get("results.txt")) == 0) {
+                writer.write("Number of Policies     Time taken (in ms)");
+                writer.write("\n\n");
+            }
+            toWrite += "\n";
+            writer.write(toWrite);
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private void generatePolicies(String policyDir){
         for (int i = 0; i < policyNumbers.length ; i++) {
@@ -259,10 +344,28 @@ public class PolicyExecution {
     }
 
     private void basicQueryExperiments(String policyDir){
-        Map<String, Duration> runTimes = new HashMap<>();
-        runTimes.putAll(runBasicQueries(policyDir));
-        createTextReport(runTimes, policyDir);
 
+        File[] policyFiles = new File(policyDir).listFiles();
+        for (File file : policyFiles) {
+            List<BasicQuery> basicQueries = readBasicPolicy(policyDir + file.getName());
+            String toWrite = "";
+            Duration runTime = Duration.ZERO;
+            int numQueries = 0;
+            try {
+                runTime = runTime.plus(runWithThread(() -> runBasicQuery(basicQueries)));
+                numQueries++;
+                toWrite = String.format("%s %s", file.getName(), runTime.dividedBy(numQueries).toMillis());
+            } catch (Exception e) {
+                e.printStackTrace();
+                toWrite = String.format("%s %s", file.getName(), PolicyConstants.MAX_DURATION);
+            }
+            addToReport(toWrite, policyDir);
+            try {
+                TimeUnit.SECONDS.sleep(30);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 
@@ -276,8 +379,8 @@ public class PolicyExecution {
 
     public static void main (String args[]){
         PolicyExecution pe = new PolicyExecution();
-        pe.generatePolicies(PolicyConstants.BASIC_POLICY_1_DIR);
-//        pe.basicQueryExperiments(PolicyConstants.BASIC_POLICY_1_DIR);
+//        pe.generatePolicies(PolicyConstants.BASIC_POLICY_1_DIR);
+        pe.basicQueryExperiments(PolicyConstants.BASIC_POLICY_1_DIR);
 //        pe.generatePolicies(PolicyConstants.BASIC_POLICY_2_DIR);
 //        pe.basicQueryExperiments(PolicyConstants.BASIC_POLICY_2_DIR);
 //        pe.generatePolicies(PolicyConstants.RANGE_POLICY_1_DIR);
