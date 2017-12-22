@@ -47,6 +47,70 @@ CREATE TABLE IF NOT EXISTS SEMANTIC_OBSERVATION  (
 ) ;
 
 
---CREATE INDEX IF NOT EXISTS semantic_observation_timestamp_idx ON SEMANTIC_OBSERVATION(timeStamp);
---CREATE INDEX semantic_observation_user_idx ON SEMANTIC_OBSERVATION(user_id);
---CREATE INDEX semantic_observation_location_idx ON SEMANTIC_OBSERVATION(location_id);
+CREATE INDEX so_ts ON SEMANTIC_OBSERVATION(timeStamp);
+CREATE INDEX so_u ON SEMANTIC_OBSERVATION(user_id);
+CREATE INDEX so_l ON SEMANTIC_OBSERVATION(location_id);
+CREATE INDEX so_e ON SEMANTIC_OBSERVATION (energy);
+CREATE INDEX so_t ON SEMANTIC_OBSERVATION (temperature);
+CREATE INDEX so_a ON SEMANTIC_OBSERVATION (activity);
+CREATE INDEX so_ul ON SEMANTIC_OBSERVATION (user_id,location_id);
+CREATE INDEX so_utS ON SEMANTIC_OBSERVATION (user_id,timeStamp);
+CREATE INDEX so_ue ON SEMANTIC_OBSERVATION (user_id,energy);
+CREATE INDEX so_ut ON SEMANTIC_OBSERVATION (user_id,temperature);
+CREATE INDEX so_ua ON SEMANTIC_OBSERVATION (user_id,activity);
+CREATE INDEX so_ltS ON SEMANTIC_OBSERVATION (location_id,timeStamp);
+CREATE INDEX so_le ON SEMANTIC_OBSERVATION (location_id,energy);
+CREATE INDEX so_lt ON SEMANTIC_OBSERVATION (location_id,temperature);
+CREATE INDEX so_la ON SEMANTIC_OBSERVATION (location_id,activity);
+CREATE INDEX so_tSe ON SEMANTIC_OBSERVATION (timeStamp,energy);
+CREATE INDEX so_tSt ON SEMANTIC_OBSERVATION (timeStamp,temperature);
+CREATE INDEX so_tSa ON SEMANTIC_OBSERVATION (timeStamp,activity);
+CREATE INDEX so_et ON SEMANTIC_OBSERVATION (energy,temperature);
+CREATE INDEX so_ea ON SEMANTIC_OBSERVATION (energy,activity);
+CREATE INDEX so_ta ON SEMANTIC_OBSERVATION (temperature,activity);
+CREATE INDEX so_ule ON SEMANTIC_OBSERVATION (user_id,location_id,energy);
+CREATE INDEX so_ult ON SEMANTIC_OBSERVATION(user_id, location_id, timeStamp);
+CREATE INDEX so_ultemp ON SEMANTIC_OBSERVATION (user_id,location_id,temperature);
+CREATE INDEX so_ula ON SEMANTIC_OBSERVATION (user_id,location_id,activity);
+CREATE INDEX so_utSe ON SEMANTIC_OBSERVATION (user_id,timeStamp,energy);
+CREATE INDEX so_utSt ON SEMANTIC_OBSERVATION (user_id,timeStamp,temperature);
+CREATE INDEX so_utSa ON SEMANTIC_OBSERVATION (user_id,timeStamp,activity);
+CREATE INDEX so_uet ON SEMANTIC_OBSERVATION (user_id,energy,temperature);
+CREATE INDEX so_uea ON SEMANTIC_OBSERVATION (user_id,energy,activity);
+CREATE INDEX so_uta ON SEMANTIC_OBSERVATION (user_id,temperature,activity);
+CREATE INDEX so_ltSe ON SEMANTIC_OBSERVATION (location_id,timeStamp,energy);
+CREATE INDEX so_ltSt ON SEMANTIC_OBSERVATION (location_id,timeStamp,temperature);
+CREATE INDEX so_ltSa ON SEMANTIC_OBSERVATION (location_id,timeStamp,activity);
+CREATE INDEX so_let ON SEMANTIC_OBSERVATION (location_id,energy,temperature);
+CREATE INDEX so_lea ON SEMANTIC_OBSERVATION (location_id,energy,activity);
+CREATE INDEX so_lta ON SEMANTIC_OBSERVATION (location_id,temperature,activity);
+CREATE INDEX so_tSet ON SEMANTIC_OBSERVATION (timeStamp,energy,temperature);
+CREATE INDEX so_tSea ON SEMANTIC_OBSERVATION (timeStamp,energy,activity);
+CREATE INDEX so_tSta ON SEMANTIC_OBSERVATION (timeStamp,temperature,activity);
+CREATE INDEX so_eta ON SEMANTIC_OBSERVATION (energy,temperature,activity);
+CREATE INDEX so_ultSe ON SEMANTIC_OBSERVATION (user_id,location_id,timeStamp,energy);
+CREATE INDEX so_ultSt ON SEMANTIC_OBSERVATION (user_id,location_id,timeStamp,temperature);
+CREATE INDEX so_ultSa ON SEMANTIC_OBSERVATION (user_id,location_id,timeStamp,activity);
+CREATE INDEX so_ulet ON SEMANTIC_OBSERVATION (user_id,location_id,energy,temperature);
+CREATE INDEX so_ulea ON SEMANTIC_OBSERVATION (user_id,location_id,energy,activity);
+CREATE INDEX so_ulta ON SEMANTIC_OBSERVATION (user_id,location_id,temperature,activity);
+CREATE INDEX so_utSet ON SEMANTIC_OBSERVATION (user_id,timeStamp,energy,temperature);
+CREATE INDEX so_utSea ON SEMANTIC_OBSERVATION (user_id,timeStamp,energy,activity);
+CREATE INDEX so_utSta ON SEMANTIC_OBSERVATION (user_id,timeStamp,temperature,activity);
+CREATE INDEX so_ueta ON SEMANTIC_OBSERVATION (user_id,energy,temperature,activity);
+CREATE INDEX so_ltSet ON SEMANTIC_OBSERVATION (location_id,timeStamp,energy,temperature);
+CREATE INDEX so_ltSea ON SEMANTIC_OBSERVATION (location_id,timeStamp,energy,activity);
+CREATE INDEX so_ltSta ON SEMANTIC_OBSERVATION (location_id,timeStamp,temperature,activity);
+CREATE INDEX so_leta ON SEMANTIC_OBSERVATION (location_id,energy,temperature,activity);
+CREATE INDEX so_tSeta ON SEMANTIC_OBSERVATION (timeStamp,energy,temperature,activity);
+CREATE INDEX so_ultSet ON SEMANTIC_OBSERVATION (user_id,location_id,timeStamp,energy,temperature);
+CREATE INDEX so_ultSea ON SEMANTIC_OBSERVATION (user_id,location_id,timeStamp,energy,activity);
+CREATE INDEX so_ultSta ON SEMANTIC_OBSERVATION (user_id,location_id,timeStamp,temperature,activity);
+CREATE INDEX so_uleta ON SEMANTIC_OBSERVATION (user_id,location_id,energy,temperature,activity);
+CREATE INDEX so_utSeta ON SEMANTIC_OBSERVATION (user_id,timeStamp,energy,temperature,activity);
+CREATE INDEX so_ltSeta ON SEMANTIC_OBSERVATION (location_id,timeStamp,energy,temperature,activity);
+CREATE INDEX so_ultSeta ON SEMANTIC_OBSERVATION (user_id,location_id,timeStamp,energy,temperature,activity);
+
+
+
+

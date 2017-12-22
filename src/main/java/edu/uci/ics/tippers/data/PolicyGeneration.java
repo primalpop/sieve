@@ -8,17 +8,17 @@ import edu.uci.ics.tippers.model.query.BasicQuery;
 import edu.uci.ics.tippers.model.query.RangeQuery;
 import edu.uci.ics.tippers.model.tippers.Infrastructure;
 import edu.uci.ics.tippers.model.tippers.User;
+import org.apache.commons.beanutils.PropertyUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Author primpap
@@ -138,36 +138,50 @@ public class PolicyGeneration {
         writeJSONToFile(basicQueries, numberOfPolicies, PolicyConstants.BASIC_POLICY_1_DIR);
     }
 
-    public void generateBasicPolicy2(int numberOfPolicies){
+
+    public void generateBasicPolicy2(int numberOfPolicies) {
 
         List<BasicQuery> basicQueries = new ArrayList<BasicQuery>();
 
         for (int i = 0; i < numberOfPolicies; i++) {
-            User user = coinFlip()? users.get(new Random().nextInt(users.size())) : null;
-            Infrastructure infra = coinFlip()? infras.get(new Random().nextInt(infras.size())): null;
-            String temperature = coinFlip()? String.valueOf(r.nextInt(highTemp - lowTemp) + lowTemp): null;
-            String wemo = coinFlip()? String.valueOf(r.nextInt(highWemo - lowWemo) + lowWemo): null;
-            Timestamp ts = coinFlip()? getRandomTimeStamp(): null;
-            String activity = coinFlip()? activities.get(new Random().nextInt(activities.size())): null;
-
+            int attrCount = (int) (r.nextGaussian() * 1 + 4); //mean -4, SD - 1
+            if(attrCount <= 0 || attrCount > 6) attrCount = 4;
             BasicQuery bq = new BasicQuery();
-            if(user != null)
-                bq.setUser_id(String.valueOf(user.getUser_id()));
-            if(infra != null)
-                bq.setLocation_id(infra.getName());
-            if (activity != null)
-                bq.setActivity(activity);
-            if(ts != null)
-                bq.setTimestamp(ts);
-            if(temperature != null)
-                bq.setTemperature(String.valueOf(temperature));
-            if(wemo != null)
-                bq.setWemo(String.valueOf(wemo));
-
+            Field[] attributes = bq.getClass().getDeclaredFields();
+            ArrayList<Field> attrList = new ArrayList<Field>();
+            try {
+                for (int j = 0; j < attrCount; j++) {
+                    Field attribute = attributes[r.nextInt(attributes.length)];
+                    if(attrList.contains(attribute)) {
+                        j--;
+                        continue;
+                    }
+                    if (attribute.getName().equalsIgnoreCase("user_id")) {
+                        PropertyUtils.setSimpleProperty(bq, attribute.getName(), String.valueOf(users.get(new Random().nextInt(users.size())).getUser_id()));
+                    } else if (attribute.getName().equalsIgnoreCase("location_id")) {
+                        PropertyUtils.setSimpleProperty(bq, attribute.getName(), infras.get(new Random().nextInt(infras.size())).getName());
+                    } else if (attribute.getName().equalsIgnoreCase("timestamp")) {
+                        PropertyUtils.setSimpleProperty(bq, attribute.getName(), getRandomTimeStamp());
+                    } else if (attribute.getName().equalsIgnoreCase("wemo")) {
+                        PropertyUtils.setSimpleProperty(bq, attribute.getName(), String.valueOf(r.nextInt(highWemo - lowWemo) + lowWemo));
+                    } else if (attribute.getName().equalsIgnoreCase("activity")) {
+                        PropertyUtils.setSimpleProperty(bq, attribute.getName(), activities.get(new Random().nextInt(activities.size())));
+                    } else if (attribute.getName().equalsIgnoreCase("temperature")) {
+                        PropertyUtils.setSimpleProperty(bq, attribute.getName(), String.valueOf(r.nextInt(highTemp - lowTemp) + lowTemp));
+                    }
+                    attrList.add(attribute);
+                }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            }
             basicQueries.add(bq);
         }
-        writeJSONToFile(basicQueries, numberOfPolicies, PolicyConstants.BASIC_POLICY_2_DIR);
 
+        writeJSONToFile(basicQueries, numberOfPolicies, PolicyConstants.BASIC_POLICY_2_DIR);
     }
 
 
@@ -225,36 +239,46 @@ public class PolicyGeneration {
         List<RangeQuery> rangeQueries = new ArrayList<RangeQuery>();
 
         for (int i = 0; i < numberOfPolicies; i++) {
-            User user = coinFlip()? users.get(new Random().nextInt(users.size())) : null;
-            Infrastructure infra = coinFlip()? infras.get(new Random().nextInt(infras.size())) : null;
-            String activity = coinFlip()? activities.get(new Random().nextInt(activities.size())) : null;
-            Timestamp sTS = coinFlip()? getRandomTimeStamp() : null;
-            Timestamp eTS = coinFlip()? (sTS != null ? getEndingTimeInterval(sTS): getRandomTimeStamp()):  null;
-            Integer start_temp = coinFlip()? (r.nextInt(highTemp - lowTemp) + lowTemp): null;
-            Integer end_temp = coinFlip()? (start_temp != null  ? getEndingTemperature(start_temp): r.nextInt(highTemp - lowTemp) + lowTemp): null;
-            Integer start_wemo = coinFlip() ? (r.nextInt(highWemo - lowWemo) + lowWemo): null;
-            Integer end_wemo = coinFlip()? (start_wemo != null ? getEndingEnergy(start_wemo): r.nextInt(highWemo - lowWemo) + lowWemo): null;
-
+            int attrCount = (int) (r.nextGaussian() * 2 + 6); //mean -6, SD - 2
+            if(attrCount <= 0 || attrCount > 9) attrCount = 6;
             RangeQuery rq = new RangeQuery();
-            if(user != null)
-                rq.setUser_id(String.valueOf(user.getUser_id()));
-            if(infra != null)
-                rq.setLocation_id(infra.getName());
-            if (activity != null)
-                rq.setActivity(activity);
-            if(sTS != null)
-                rq.setStart_timestamp(sTS);
-            if(eTS != null)
-                rq.setEnd_timestamp(eTS);
-            if(start_temp != null)
-                rq.setStart_temp(String.valueOf(start_temp));
-            if(end_temp != null)
-                rq.setEnd_temp(String.valueOf(end_temp));
-            if(start_wemo != null)
-                rq.setStart_wemo(String.valueOf(start_wemo));
-            if(end_wemo != null)
-                rq.setEnd_wemo(String.valueOf(end_wemo));
-
+            Field[] attributes = rq.getClass().getDeclaredFields();
+            ArrayList<Field> attrList = new ArrayList<Field>();
+            try {
+                for (int j = 0; j < attrCount; j++) {
+                    Field attribute = attributes[r.nextInt(attributes.length)];
+                    if(attrList.contains(attribute)) {
+                        j--;
+                        continue;
+                    }
+                    if (attribute.getName().equalsIgnoreCase("user_id")) {
+                        PropertyUtils.setSimpleProperty(rq, attribute.getName(), String.valueOf(users.get(new Random().nextInt(users.size())).getUser_id()));
+                    } else if (attribute.getName().equalsIgnoreCase("location_id")) {
+                        PropertyUtils.setSimpleProperty(rq, attribute.getName(), infras.get(new Random().nextInt(infras.size())).getName());
+                    } else if (attribute.getName().equalsIgnoreCase("start_timestamp")) {
+                        PropertyUtils.setSimpleProperty(rq, attribute.getName(), getRandomTimeStamp());
+                    } else if (attribute.getName().equalsIgnoreCase("end_timestamp")) {
+                        PropertyUtils.setSimpleProperty(rq, attribute.getName(), getRandomTimeStamp());
+                    } else if (attribute.getName().equalsIgnoreCase("start_wemo")) {
+                        PropertyUtils.setSimpleProperty(rq, attribute.getName(), String.valueOf(r.nextInt(highWemo - lowWemo) + lowWemo));
+                    } else if (attribute.getName().equalsIgnoreCase("end_wemo")) {
+                        PropertyUtils.setSimpleProperty(rq, attribute.getName(), String.valueOf(r.nextInt(highWemo - lowWemo) + lowWemo));
+                    } else if (attribute.getName().equalsIgnoreCase("activity")) {
+                        PropertyUtils.setSimpleProperty(rq, attribute.getName(), activities.get(new Random().nextInt(activities.size())));
+                    } else if (attribute.getName().equalsIgnoreCase("start_temp")) {
+                        PropertyUtils.setSimpleProperty(rq, attribute.getName(), String.valueOf(r.nextInt(highTemp - lowTemp) + lowTemp));
+                    } else if (attribute.getName().equalsIgnoreCase("end_temp")) {
+                        PropertyUtils.setSimpleProperty(rq, attribute.getName(), String.valueOf(r.nextInt(highTemp - lowTemp) + lowTemp));
+                    }
+                    attrList.add(attribute);
+                }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            }
             rangeQueries.add(rq);
         }
 
