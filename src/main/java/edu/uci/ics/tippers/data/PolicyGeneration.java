@@ -23,6 +23,8 @@ import java.util.*;
 /**
  * Author primpap
  */
+
+
 public class PolicyGeneration {
 
     List<Infrastructure> infras;
@@ -80,6 +82,9 @@ public class PolicyGeneration {
 
     private Timestamp getEndingTimeInterval(Timestamp timestamp){
 
+        if (timestamp == null)
+            return getRandomTimeStamp();
+
         int hourIndex = new Random().nextInt(hours.length);
         double rHour = hours[hourIndex];
         
@@ -89,7 +94,14 @@ public class PolicyGeneration {
     }
 
 
-    private int getEndingTemperature(int temperature){
+    private int getTemperature(String temp){
+
+        int temperature;
+        if(temp == null)
+            return r.nextInt(highTemp - lowTemp) + lowTemp;
+        else
+            temperature = Integer.parseInt(temp);
+
         int noise =  ((int) (1 + Math.random() * (4)));
 
         if (temperature + noise < PolicyConstants.HIGH_TEMPERATURE){
@@ -99,7 +111,14 @@ public class PolicyGeneration {
             return temperature + 1;
     }
 
-    private int getEndingEnergy(int energy){
+    private int getEnergy(String wemo){
+
+        int energy;
+        if(wemo == null)
+            return r.nextInt(highWemo - lowWemo) + lowWemo;
+        else
+            energy = Integer.parseInt(wemo);
+
         int noise =  ((int) (1 + Math.random() * (20)));
 
         if (energy + noise < PolicyConstants.HIGH_WEMO){
@@ -216,9 +235,9 @@ public class PolicyGeneration {
             Timestamp sTS = getRandomTimeStamp();
             Timestamp eTS = getEndingTimeInterval(sTS);
             Integer start_temp = r.nextInt(highTemp - lowTemp) + lowTemp;
-            Integer end_temp = getEndingTemperature(start_temp);
+            Integer end_temp = getTemperature(String.valueOf(start_temp));
             Integer start_wemo =  r.nextInt(highWemo - lowWemo) + lowWemo;
-            Integer end_wemo = getEndingEnergy(start_wemo);
+            Integer end_wemo = getEnergy(String.valueOf(start_wemo));
 
             RangeQuery rq = new RangeQuery(sTS, eTS, String.valueOf(start_wemo), String.valueOf(end_wemo), String.valueOf(start_temp),
                     String.valueOf(end_temp), String.valueOf(user.getUser_id()), infra.getName(), activity);
@@ -234,54 +253,46 @@ public class PolicyGeneration {
      * Attributes are added to the policy based on a coin toss
      * @param numberOfPolicies
      */
-    public void generateRangePolicy2(int numberOfPolicies){
+    public void generateRangePolicy2(int numberOfPolicies) {
 
         List<RangeQuery> rangeQueries = new ArrayList<RangeQuery>();
 
         for (int i = 0; i < numberOfPolicies; i++) {
             int attrCount = (int) (r.nextGaussian() * 2 + 6); //mean -6, SD - 2
-            if(attrCount <= 0 || attrCount > 9) attrCount = 6;
+            if (attrCount <= 0 || attrCount > 9) attrCount = 6;
             RangeQuery rq = new RangeQuery();
             Field[] attributes = rq.getClass().getDeclaredFields();
             ArrayList<Field> attrList = new ArrayList<Field>();
-            try {
-                for (int j = 0; j < attrCount; j++) {
-                    Field attribute = attributes[r.nextInt(attributes.length)];
-                    if(attrList.contains(attribute)) {
-                        j--;
-                        continue;
-                    }
-                    if (attribute.getName().equalsIgnoreCase("user_id")) {
-                        PropertyUtils.setSimpleProperty(rq, attribute.getName(), String.valueOf(users.get(new Random().nextInt(users.size())).getUser_id()));
-                    } else if (attribute.getName().equalsIgnoreCase("location_id")) {
-                        PropertyUtils.setSimpleProperty(rq, attribute.getName(), infras.get(new Random().nextInt(infras.size())).getName());
-                    } else if (attribute.getName().equalsIgnoreCase("start_timestamp")) {
-                        PropertyUtils.setSimpleProperty(rq, attribute.getName(), getRandomTimeStamp());
-                    } else if (attribute.getName().equalsIgnoreCase("end_timestamp")) {
-                        PropertyUtils.setSimpleProperty(rq, attribute.getName(), getRandomTimeStamp());
-                    } else if (attribute.getName().equalsIgnoreCase("start_wemo")) {
-                        PropertyUtils.setSimpleProperty(rq, attribute.getName(), String.valueOf(r.nextInt(highWemo - lowWemo) + lowWemo));
-                    } else if (attribute.getName().equalsIgnoreCase("end_wemo")) {
-                        PropertyUtils.setSimpleProperty(rq, attribute.getName(), String.valueOf(r.nextInt(highWemo - lowWemo) + lowWemo));
-                    } else if (attribute.getName().equalsIgnoreCase("activity")) {
-                        PropertyUtils.setSimpleProperty(rq, attribute.getName(), activities.get(new Random().nextInt(activities.size())));
-                    } else if (attribute.getName().equalsIgnoreCase("start_temp")) {
-                        PropertyUtils.setSimpleProperty(rq, attribute.getName(), String.valueOf(r.nextInt(highTemp - lowTemp) + lowTemp));
-                    } else if (attribute.getName().equalsIgnoreCase("end_temp")) {
-                        PropertyUtils.setSimpleProperty(rq, attribute.getName(), String.valueOf(r.nextInt(highTemp - lowTemp) + lowTemp));
-                    }
-                    attrList.add(attribute);
+
+            for (int j = 0; j < attrCount; j++) {
+                Field attribute = attributes[r.nextInt(attributes.length)];
+                if (attrList.contains(attribute)) {
+                    j--;
+                    continue;
                 }
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();
+                if (attribute.getName().equalsIgnoreCase("user_id")) {
+                    rq.setUser_id(String.valueOf(users.get(new Random().nextInt(users.size())).getUser_id()));
+                } else if (attribute.getName().equalsIgnoreCase("location_id")) {
+                    rq.setLocation_id(infras.get(new Random().nextInt(infras.size())).getName());
+                } else if (attribute.getName().equalsIgnoreCase("start_timestamp")) {
+                    rq.setStart_timestamp(getRandomTimeStamp());
+                } else if (attribute.getName().equalsIgnoreCase("end_timestamp")) {
+                    rq.setEnd_timestamp(getEndingTimeInterval(rq.getStart_timestamp()));
+                } else if (attribute.getName().equalsIgnoreCase("start_wemo")) {
+                    rq.setStart_wemo(String.valueOf(getEnergy(null)));
+                } else if (attribute.getName().equalsIgnoreCase("end_wemo")) {
+                    rq.setEnd_wemo(String.valueOf(getEnergy(rq.getStart_wemo())));
+                } else if (attribute.getName().equalsIgnoreCase("activity")) {
+                    rq.setActivity(activities.get(new Random().nextInt(activities.size())));
+                } else if (attribute.getName().equalsIgnoreCase("start_temp")) {
+                    rq.setStart_temp(String.valueOf(getTemperature(null)));
+                } else if (attribute.getName().equalsIgnoreCase("end_temp")) {
+                    rq.setEnd_temp(String.valueOf(getTemperature(rq.getStart_temp())));
+                }
+                attrList.add(attribute);
             }
             rangeQueries.add(rq);
         }
-
         writeJSONToFileRangePolicy(rangeQueries, numberOfPolicies, PolicyConstants.RANGE_POLICY_2_DIR);
 
     }
