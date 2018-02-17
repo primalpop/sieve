@@ -15,7 +15,9 @@ public enum AttributeType {
     @JsonProperty("TIMESTAMP")
     TIMESTAMP(2),
     @JsonProperty("DOUBLE")
-    DOUBLE(3);
+    DOUBLE(3),
+    @JsonProperty("INTEGER")
+    INTEGER(4);
 
     private final int id;
 
