@@ -50,8 +50,6 @@ public class PolicyExecution {
         mWriter = new Writer();
     }
 
-
-
     public Duration runWithThread(String query) {
 
         Statement statement = null;
@@ -83,7 +81,6 @@ public class PolicyExecution {
         String query;
 
         public QueryExecutor(Statement statement, String query) {
-
             this.statement = statement;
             this.query = query;
         }
@@ -195,7 +192,7 @@ public class PolicyExecution {
         return policyRunTimes;
     }
 
-    public Map<String, Duration> runRangeQueries(String policyDir, boolean guard) {
+    public Map<String, Duration> runRangeQueries(String policyDir) {
 
         Map<String, Duration> policyRunTimes = new HashMap<>();
 
@@ -227,14 +224,8 @@ public class PolicyExecution {
             Duration runTime = Duration.ofSeconds(0);
 
             try {
-                if(!guard){
-                    runTime = runTime.plus(runRangeQuery(rangeQueries));
-                    policyRunTimes.put(file.getName(), runTime);
-                }
-                else{
-                    runTime = runTime.plus(runRangeQueryWithGuard(rangeQueries));
-                    policyRunTimes.put(file.getName() + "guard", runTime);
-                }
+                runTime = runTime.plus(runRangeQuery(rangeQueries));
+                policyRunTimes.put(file.getName(), runTime);
             } catch (Exception e) {
                 e.printStackTrace();
                 policyRunTimes.put(file.getName(), PolicyConstants.MAX_DURATION);
@@ -257,18 +248,6 @@ public class PolicyExecution {
         }
     }
 
-
-    public Duration runRangeQueryWithGuard(List<RangeQuery> rangeQueries){
-        String query = "SELECT * FROM SEMANTIC_OBSERVATION " +
-                "WHERE (" + policyGen.generateGuard(rangeQueries) + ") AND " + IntStream.range(0, rangeQueries.size()).mapToObj(i-> rangeQueries.get(i).createPredicate())
-                .collect(Collectors.joining(" OR "));
-        try {
-            return runWithThread(query);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new PolicyEngineException("Error Running Query");
-        }
-    }
 
 
     private void createTextReport(Map<String, Duration> runTimes, String fileDir) {
@@ -316,7 +295,7 @@ public class PolicyExecution {
 
     private void rangeQueryExperiments(String policyDir){
         Map<String, Duration> runTimes = new HashMap<>();
-        runTimes.putAll(runRangeQueries(policyDir, false));
+        runTimes.putAll(runRangeQueries(policyDir));
         createTextReport(runTimes, policyDir);
     }
 
@@ -326,11 +305,11 @@ public class PolicyExecution {
         PolicyExecution pe = new PolicyExecution();
 //        pe.generatePolicies(PolicyConstants.BASIC_POLICY_1_DIR);
 //        pe.basicQueryExperiments(PolicyConstants.BASIC_POLICY_1_DIR);
-        pe.generatePolicies(PolicyConstants.BASIC_POLICY_2_DIR);
+//        pe.generatePolicies(PolicyConstants.BASIC_POLICY_2_DIR);
 //        pe.basicQueryExperiments(PolicyConstants.BASIC_POLICY_2_DIR);
 //        pe.generatePolicies(PolicyConstants.RANGE_POLICY_1_DIR);
 //        pe.rangeQueryExperiments(PolicyConstants.RANGE_POLICY_1_DIR);
-//        pe.generatePolicies(PolicyConstants.RANGE_POLICY_2_DIR);
+        pe.generatePolicies(PolicyConstants.RANGE_POLICY_2_DIR);
 //        pe.rangeQueryExperiments(PolicyConstants.RANGE_POLICY_2_DIR);
 
     }
