@@ -14,17 +14,21 @@ public class RunMe {
 
     public static void main(String args[]){
 
-//        BEExpression beExpression = new BEExpression();
-//        beExpression.parseJSONList(Reader.readFile("/policies/policy2.json"));
-//
-//
-//        System.out.println(beExpression.createQueryFromPolices());
+        BEExpression beExpression = new BEExpression();
+        beExpression.parseJSONList(Reader.readFile("/policies/policy2.json"));
+
+
+        System.out.println(beExpression.createQueryFromPolices());
+
+
+
+
 //        ExactFactor ef = new ExactFactor(beExpression);
 //        ef.greedyFactorization();
 //        System.out.println(ef.createQueryFromExactFactor());
 
 
-        Connection conn = DB2ConnectionManager.getInstance().getConnection();
+//        Connection conn = DB2ConnectionManager.getInstance().getConnection();
 
 
     }
