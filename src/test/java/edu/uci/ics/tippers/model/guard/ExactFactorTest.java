@@ -33,10 +33,10 @@ public class ExactFactorTest {
         beExpression = new BEExpression();
         ef = new ExactFactor();
         policies = new ArrayList<String>();
-        policies.add(readTxt("src/test/resources/ExactFactor/policy0.txt"));
-        policies.add(readTxt("src/test/resources/ExactFactor/policy1.txt"));
-        policies.add(readTxt("src/test/resources/ExactFactor/policy2_1.txt"));
-        policies.add(readTxt("src/test/resources/ExactFactor/policy2_2.txt"));
+        policies.add(Reader.readTxt("src/test/resources/ExactFactor/policy0.txt"));
+        policies.add(Reader.readTxt("src/test/resources/ExactFactor/policy1.txt"));
+        policies.add(Reader.readTxt("src/test/resources/ExactFactor/policy2_1.txt"));
+        policies.add(Reader.readTxt("src/test/resources/ExactFactor/policy2_2.txt"));
 
     }
 
@@ -75,15 +75,5 @@ public class ExactFactorTest {
         ExactFactor ef = new ExactFactor(beExpression);
         ef.greedyFactorization();
         return ef;
-    }
-
-    String readTxt(String filename){
-        String txt = null;
-        try {
-            txt = new String(Files.readAllBytes(Paths.get(filename)));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return txt;
     }
 }
