@@ -1,5 +1,7 @@
 package edu.uci.ics.tippers.model.guard;
 
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.ListMultimap;
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.common.PolicyEngineException;
 import edu.uci.ics.tippers.db.MySQLQueryManager;
@@ -78,7 +80,7 @@ public class Factorization {
     private long computeF(BEPolicy factorized, BEPolicy original){
         long lfact = computeL(factorized);
         long lorg = computeL(original);
-        return lfact -lorg;
+        return lorg - lfact;
     }
 
     private boolean overlaps(ObjectCondition o1, ObjectCondition o2){
@@ -87,7 +89,7 @@ public class Factorization {
             int end1 = Integer.parseInt(o1.getBooleanPredicates().get(1).getValue());
             int start2 = Integer.parseInt(o2.getBooleanPredicates().get(0).getValue());
             int end2 = Integer.parseInt(o2.getBooleanPredicates().get(1).getValue());
-            if (start1 <= end2 && end1 <= start2)
+            if (start1 <= end2 && end1 >= start2)
                 return true;
         }
         else if(o1.getType().getID() == 2) { //Timestamp
@@ -105,52 +107,107 @@ public class Factorization {
         return false;
     }
 
-
-    private Set<ObjectCondition> getPredicates (String attribute){
-        Set<ObjectCondition> predSet = new HashSet<>();
+    /**
+     * returns a map with key as object condition and value as the list of policies it appears in (assuming duplicate
+     * object conditions can exist).
+     * TODO: Change to a multimap from Guava
+     * @param attribute
+     * @return
+     */
+    private HashMap<ObjectCondition, List<BEPolicy>> getPredicatesOnAttr(String attribute){
+        HashMap<ObjectCondition, List<BEPolicy>> predMap = new HashMap<>();
         for (int i = 0; i < expression.getPolicies().size(); i++) {
             BEPolicy pol = expression.getPolicies().get(i);
             for (int j = 0; j < pol.getObject_conditions().size(); j++) {
-                ObjectCondition oc = pol.getObject_conditions().get(i);
+                ObjectCondition oc = pol.getObject_conditions().get(j);
                 if(oc.getAttribute().equalsIgnoreCase(attribute)){
-                    if(!predSet.contains(oc))
-                        predSet.add(oc);
-                }
-            }
-        }
-        return predSet;
-    }
-
-
-    private HashMap<BEPolicy, ObjectCondition> getPredicatesOnAttr(String attribute){
-        HashMap<BEPolicy, ObjectCondition> predMap = new HashMap<>();
-        for (int i = 0; i < expression.getPolicies().size(); i++) {
-            BEPolicy pol = expression.getPolicies().get(i);
-            for (int j = 0; j < pol.getObject_conditions().size(); j++) {
-                ObjectCondition oc = pol.getObject_conditions().get(i);
-                if(oc.getAttribute().equalsIgnoreCase(attribute)){
-                    predMap.put(pol, oc);
-                    continue;
+                    if(predMap.containsKey(oc)){
+                        predMap.get(oc).add(pol);
+                    }
+                    else{
+                        List<BEPolicy> bePolicies = new ArrayList<>();
+                        bePolicies.add(pol);
+                        predMap.put(oc, bePolicies);
+                    }
                 }
             }
         }
         return predMap;
     }
 
-    private void approximateFactorization(){
-        List<String> attributes = new ArrayList<>();
-        attributes.add("USER_ID");
-        attributes.add("LOCATION_ID");
-        attributes.add("TIMESTAMP");
-        for (int i = 0; i < attributes.size(); i++) {
-            HashMap<BEPolicy, ObjectCondition> predOnAttr = getPredicatesOnAttr(attributes.get(i));
-
+    /**
+     * If the predicate that overlaps with another predicate exists in many policies, we choose the one with least
+     * number of false positives to merge.
+     * @param objectCondition
+     * @param bePolicies
+     * @return
+     */
+    private BEPolicy choosePolicyToMerge(ObjectCondition objectCondition, List<BEPolicy> bePolicies){
+        long minFalsePositives = PolicyConstants.INFINTIY;
+        int chosen = 0;
+        for (int i = 0; i < bePolicies.size(); i++) {
+            bePolicies.get(i).deleteObjCond(objectCondition);
+            long fp = computeL(bePolicies.get(i));
+            if(fp < minFalsePositives ){
+                minFalsePositives = fp;
+                chosen = i;
+            }
         }
-
-
+        return bePolicies.get(chosen);
     }
 
+    /**
+     * Algorithm Steps
+     * 1) Iterates through different attributes
+     * 2) For each attribute, it builds a map of the form {predicate | [list of policies predicate appears in}
+     * 3) It sorts the predicates by the begin range attribute of the predicates
+     * 4) For each of the object conditions, if there's an overlap with any other predicate, it checks if the gain is
+     * positive
+     * 5) If it's positive, it merges them and stores the association between the merged and original predicates in a map
+     * of the form {original | merged }
+     * 6) TODO: Rewrite the original expression with the merged policies
+     */
+    public void approximateFactorization(){
+        List<String> attributes = new ArrayList<>();
+        attributes.add("SEMANTIC_OBSERVATION.USER_ID");
+        attributes.add("SEMANTIC_OBSERVATION.temperature");
+        ListMultimap<ObjectCondition, ObjectCondition> replacementMap = ArrayListMultimap.create();
+        for (int i = 0; i < attributes.size(); i++) {
+            HashMap<ObjectCondition, List<BEPolicy>> predOnAttr = getPredicatesOnAttr(attributes.get(i));
+            if(predOnAttr.isEmpty())
+                continue;
+            List<ObjectCondition> objectConditions = new ArrayList<>();
+            objectConditions.addAll(predOnAttr.keySet());
+            Collections.sort(objectConditions);
+            Stack<ObjectCondition> stack = new Stack<>();
+            stack.push(objectConditions.get(0));
+            for (int j = 1; j < objectConditions.size(); j++) {
+                ObjectCondition top = stack.peek();
+                if(!overlaps(top, objectConditions.get(j)))
+                    stack.push(objectConditions.get(j));
+                else {
+                    List<BEPolicy> policy_a1_list = predOnAttr.get(objectConditions.get(j));
+                    BEPolicy policy_a1_factorized = new BEPolicy(policy_a1_list.get(0));
+                    policy_a1_factorized.deleteObjCond(objectConditions.get(j));
+                    long F_a1 = computeF(policy_a1_factorized, policy_a1_list.get(0));
+                    List<BEPolicy> policy_a2_list = predOnAttr.get(top);
+                    BEPolicy policy_a2_factorized = new BEPolicy(policy_a2_list.get(0));
+                    policy_a2_factorized.deleteObjCond(top);
+                    long F_a2 = computeF(policy_a2_factorized, policy_a2_list.get(0));
+                    BEPolicy intersection = new BEPolicy();
+                    intersection.getObject_conditions().add(top);
+                    intersection.getObject_conditions().add(objectConditions.get(j));
+                    long l_intersection = computeL(intersection);
+                    if((l_intersection + F_a1 + F_a2) > 0){
+                        top.getBooleanPredicates().get(1).setValue(objectConditions.get(j).getBooleanPredicates().get(1).getValue());
+                        replacementMap.put(stack.pop(), top);
+                        replacementMap.put(objectConditions.get(j), top);
+                        stack.push(top);
+                    }
+                }
+            }
+            //Rewriting the original expression
 
-
-
+        }
+    }
 }

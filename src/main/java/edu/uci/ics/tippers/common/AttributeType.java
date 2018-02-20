@@ -7,7 +7,8 @@ import java.util.Map;
 
 /**
  * Author primpap
- */
+ *
+ * */
 public enum AttributeType {
 
     @JsonProperty("STRING")
