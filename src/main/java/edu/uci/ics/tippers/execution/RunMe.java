@@ -3,6 +3,7 @@ package edu.uci.ics.tippers.execution;
 import edu.uci.ics.tippers.db.DB2ConnectionManager;
 import edu.uci.ics.tippers.fileop.Reader;
 import edu.uci.ics.tippers.model.guard.ExactFactor;
+import edu.uci.ics.tippers.model.guard.Factorization;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 
 import java.sql.Connection;
@@ -15,13 +16,14 @@ public class RunMe {
     public static void main(String args[]){
 
         BEExpression beExpression = new BEExpression();
-        beExpression.parseJSONList(Reader.readFile("/policies/policy2.json"));
+        beExpression.parseJSONList(Reader.readFile("/policies/policy4.json"));
 
 
         System.out.println(beExpression.createQueryFromPolices());
 
 
-
+        Factorization f = new Factorization(beExpression);
+        f.approximateFactorization();
 
 //        ExactFactor ef = new ExactFactor(beExpression);
 //        ef.greedyFactorization();

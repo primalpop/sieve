@@ -115,7 +115,7 @@ public class BEExpression implements Comparable<BEExpression> {
     public void checkAgainstPolicies(ObjectCondition objectCondition){
         List<BEPolicy> polConPred = new ArrayList<BEPolicy>();
         for (int i = 0; i < this.policies.size(); i++) {
-            if(this.policies.get(i).containsObjCond(objectCondition))
+            if(objectCondition.containedInList(this.policies.get(i).getObject_conditions()))
                 polConPred.add(this.policies.get(i));
         }
         this.policies = polConPred;
@@ -160,7 +160,7 @@ public class BEExpression implements Comparable<BEExpression> {
         String delim = "";
         for (int i = 0; i < this.policies.size(); i++) {
             query.append(delim);
-            query.append(this.policies.get(i).createQueryFromObjectConditions());
+            query.append("(" + this.policies.get(i).createQueryFromObjectConditions() + ")");
             delim = PolicyConstants.DISJUNCTION;
         }
         return query.toString();

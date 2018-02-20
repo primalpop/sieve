@@ -5,7 +5,10 @@ import edu.uci.ics.tippers.common.AttributeType;
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.common.PolicyEngineException;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 
@@ -87,6 +90,8 @@ public class BooleanCondition  implements Comparable<BooleanCondition>  {
                 return value;
             case 3: //Double
                 return value;
+            case 4:
+                return value;
             default:
                 throw new PolicyEngineException("Unknown Type error");
         }
@@ -149,37 +154,47 @@ public class BooleanCondition  implements Comparable<BooleanCondition>  {
         return false;
     }
 
-    /**
-     * @param bps
-     * @return true if they are equal, false if not
-     */
-
-    public boolean compareBooleanPredicates(List<BooleanPredicate> bps){
-        if (bps.size() != this.getBooleanPredicates().size())
-            return false;
-        int count = 0;
-        for (int i = 0; i < bps.size(); i++) {
-            for (int j = 0; j < this.getBooleanPredicates().size() ; j++) {
-                int flag = bps.get(i).compareTo(this.getBooleanPredicates().get(j));
-                if (bps.get(i).compareTo(this.getBooleanPredicates().get(j)) == 0){
-                    count++;
-                }
-            }
+    public static Calendar timestampStrToCal(String timestamp) {
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat(PolicyConstants.TIMESTAMP_FORMAT);
+        try {
+            cal.setTime(sdf.parse(timestamp));
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
-        if (count == bps.size()) return true;
-        return false;
+        return cal;
     }
 
+
+    /**
+     * 0 if they are equal, negative if start predicate of first boolean condition
+     * is less than start predicate of second boolean condition, positive if vice versa.
+     * @param booleanCondition
+     * @return
+     */
     @Override
     public int compareTo(BooleanCondition booleanCondition) {
-        if(this.getAttribute().equals(booleanCondition.getAttribute())) {
-            if (this.getType().equals(booleanCondition.getType())) {
-                if (this.compareBooleanPredicates(booleanCondition.getBooleanPredicates())) {
-                    return 0;
-                }
+        if(booleanCondition.getType().getID() == 4){ //Integer
+            int start1 = Integer.parseInt(this.getBooleanPredicates().get(0).getValue());
+            int end1 = Integer.parseInt(this.getBooleanPredicates().get(1).getValue());
+            int start2 = Integer.parseInt(booleanCondition.getBooleanPredicates().get(0).getValue());
+            int end2 = Integer.parseInt(booleanCondition.getBooleanPredicates().get(1).getValue());
+            if(start1 != start2){
+                return start1 - start2;
             }
+            else
+                return end1- end2;
         }
-        return -1;
+        else if(booleanCondition.getType().getID() == 2) { //Timestamp
+            Calendar start1 = timestampStrToCal(this.getBooleanPredicates().get(0).getValue());
+            Calendar end1 = timestampStrToCal(this.getBooleanPredicates().get(1).getValue());
+            Calendar start2 = timestampStrToCal(booleanCondition.getBooleanPredicates().get(0).getValue());
+            Calendar end2 = timestampStrToCal(booleanCondition.getBooleanPredicates().get(1).getValue());
+            return start1.compareTo(start2);
+        }
+        else{
+            throw new PolicyEngineException("Incompatible Attribute Type");
+        }
     }
 
     @Override

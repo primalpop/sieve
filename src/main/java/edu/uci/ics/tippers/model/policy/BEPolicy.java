@@ -8,6 +8,7 @@ import edu.uci.ics.tippers.common.PolicyConstants;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -58,7 +59,8 @@ public class BEPolicy implements Comparable<BEPolicy> {
     private String action;
 
     public BEPolicy(){
-
+        this.object_conditions = new ArrayList<ObjectCondition>();
+        this.querier_conditions = new ArrayList<QuerierCondition>();
     }
 
     public BEPolicy(BEPolicy bePolicy){
@@ -198,24 +200,6 @@ public class BEPolicy implements Comparable<BEPolicy> {
         );
     }
 
-    /**
-     * Check if a boolean condition is contained within the policy
-     * @param oc
-     * @return
-     */
-    public boolean containsObjCond(ObjectCondition oc){
-        List<ObjectCondition> ocs = this.getObject_conditions();
-        for (int i = 0; i < ocs.size(); i++) {
-            if(oc.getAttribute().equals(ocs.get(i).getAttribute())){
-                if(oc.getType().equals(ocs.get(i).getType())){
-                    if(oc.compareBooleanPredicates(ocs.get(i).getBooleanPredicates())){
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
 
     /**
      * Check if a set of object conditions is contained in a policy
@@ -225,7 +209,7 @@ public class BEPolicy implements Comparable<BEPolicy> {
     public boolean containsCombination(Set<ObjectCondition> objectConditionSet){
         Boolean contained = true;
         for (ObjectCondition oc: objectConditionSet) {
-            if (!this.containsObjCond(oc))
+            if (!oc.containedInList(this.getObject_conditions()))
                 contained = false;
         }
         return contained;
@@ -263,18 +247,9 @@ public class BEPolicy implements Comparable<BEPolicy> {
     }
 
     public boolean compareBooleanConditions(List<ObjectCondition> objectConditions){
-        if (objectConditions.size() != this.getObject_conditions().size())
-            return false;
-        int count = 0;
-        for (int i = 0; i < objectConditions.size(); i++) {
-            for (int j = 0; j < this.getObject_conditions().size() ; j++) {
-                if (objectConditions.get(i).compareTo(this.getObject_conditions().get(j)) == 0){
-                    count++;
-                }
-            }
-        }
-        if (count == objectConditions.size()) return true;
-        return false;
+        Collections.sort(objectConditions);
+        Collections.sort(this.getObject_conditions());
+        return this.getObject_conditions().equals(objectConditions);
     }
 
     /**
