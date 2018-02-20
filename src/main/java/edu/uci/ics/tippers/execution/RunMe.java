@@ -16,14 +16,12 @@ public class RunMe {
     public static void main(String args[]){
 
         BEExpression beExpression = new BEExpression();
-        beExpression.parseJSONList(Reader.readFile("/policies/policy4.json"));
-
-
+        beExpression.parseJSONList(Reader.readFile("/policies/policy5.json"));
         System.out.println(beExpression.createQueryFromPolices());
-
 
         Factorization f = new Factorization(beExpression);
         f.approximateFactorization();
+        System.out.println(f.getExpression().createQueryFromPolices());
 
 //        ExactFactor ef = new ExactFactor(beExpression);
 //        ef.greedyFactorization();

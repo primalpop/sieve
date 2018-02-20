@@ -2,15 +2,13 @@ package edu.uci.ics.tippers.model.policy;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.davidmoten.guavamini.Lists;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import edu.uci.ics.tippers.common.PolicyConstants;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -145,14 +143,12 @@ public class BEPolicy implements Comparable<BEPolicy> {
         this.action = action;
     }
 
-    public List<String> objectConditionAttributes(){
-        List<String> attrs = new ArrayList<String>();
+    public List<String> getObjCondAttributes(){
+        Set<String> attrs = new HashSet<>();
         for(ObjectCondition oc: object_conditions) {
-            if(!attrs.contains(oc.getAttribute())){
-                attrs.add(oc.getAttribute());
-            }
+            attrs.add(oc.getAttribute());
         }
-        return attrs;
+        return Lists.newArrayList(attrs);
     }
 
 

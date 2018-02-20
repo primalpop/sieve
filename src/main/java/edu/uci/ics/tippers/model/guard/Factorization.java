@@ -35,6 +35,47 @@ public class Factorization {
     //Cost of evaluating the expression
     Long cost;
 
+
+    public BEExpression getExpression() {
+        return expression;
+    }
+
+    public void setExpression(BEExpression expression) {
+        this.expression = expression;
+    }
+
+    public List<ObjectCondition> getMultiplier() {
+        return multiplier;
+    }
+
+    public void setMultiplier(List<ObjectCondition> multiplier) {
+        this.multiplier = multiplier;
+    }
+
+    public Factorization getQuotient() {
+        return quotient;
+    }
+
+    public void setQuotient(Factorization quotient) {
+        this.quotient = quotient;
+    }
+
+    public Factorization getReminder() {
+        return reminder;
+    }
+
+    public void setReminder(Factorization reminder) {
+        this.reminder = reminder;
+    }
+
+    public Long getCost() {
+        return cost;
+    }
+
+    public void setCost(Long cost) {
+        this.cost = cost;
+    }
+
     public Factorization(){
         this.expression = new BEExpression();
         this.multiplier = new ArrayList<ObjectCondition>();
@@ -165,15 +206,12 @@ public class Factorization {
      * positive
      * 5) If it's positive, it merges them and stores the association between the merged and original predicates in a map
      * of the form {original | merged }
-     * 6) TODO: Rewrite the original expression with the merged policies
+     * 6) Rewrite the original expression with the merged policies
      */
     public void approximateFactorization(){
-        List<String> attributes = new ArrayList<>();
-        attributes.add("SEMANTIC_OBSERVATION.USER_ID");
-        attributes.add("SEMANTIC_OBSERVATION.temperature");
-        ListMultimap<ObjectCondition, ObjectCondition> replacementMap = ArrayListMultimap.create();
-        for (int i = 0; i < attributes.size(); i++) {
-            HashMap<ObjectCondition, List<BEPolicy>> predOnAttr = getPredicatesOnAttr(attributes.get(i));
+        Map<ObjectCondition, ObjectCondition> replacementMap = new HashMap<>();
+        for (int i = 0; i < this.expression.getPolAttributes().size(); i++) {
+            HashMap<ObjectCondition, List<BEPolicy>> predOnAttr = getPredicatesOnAttr(this.expression.getPolAttributes().get(i));
             if(predOnAttr.isEmpty())
                 continue;
             List<ObjectCondition> objectConditions = new ArrayList<>();
@@ -207,7 +245,9 @@ public class Factorization {
                 }
             }
             //Rewriting the original expression
-
+            for (ObjectCondition pred: replacementMap.keySet()) {
+                this.expression.replaceFromPolicies(pred, replacementMap.get(pred));
+            }
         }
     }
 }

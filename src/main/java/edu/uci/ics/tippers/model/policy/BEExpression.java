@@ -2,6 +2,7 @@ package edu.uci.ics.tippers.model.policy;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.davidmoten.guavamini.Lists;
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.common.PolicyEngineException;
 import edu.uci.ics.tippers.db.MySQLQueryManager;
@@ -45,6 +46,19 @@ public class BEExpression implements Comparable<BEExpression> {
     public void setPolicies(List<BEPolicy> policies) {
         this.policies = policies;
     }
+
+    /**
+     * Get a list of attributes from the policies in the expression
+     * @return
+     */
+    public List<String> getPolAttributes(){
+        Set<String> attrs = new HashSet<>();
+        for(BEPolicy bp: policies) {
+            attrs.addAll(bp.getObjCondAttributes());
+        }
+        return Lists.newArrayList(attrs);
+    }
+
 
     /**
      * Get all the object conditions from a list of policies
@@ -142,11 +156,25 @@ public class BEExpression implements Comparable<BEExpression> {
      * @return
      */
     public void removeFromPolicies(ObjectCondition objectCondition){
-        List<BEPolicy> polRemPred = new ArrayList<BEPolicy>(this.policies);
         for (int i = 0; i < this.policies.size(); i++) {
-            polRemPred.get(i).deleteObjCond(objectCondition);
+            this.policies.get(i).deleteObjCond(objectCondition);
         }
-        this.policies = polRemPred;
+    }
+
+    /**
+     * Replaces the existing object condition (oc1) in Policy Expression with new object condition (oc2)
+     * @param oc1
+     * @param oc2
+     */
+    public void replaceFromPolicies(ObjectCondition oc1, ObjectCondition oc2){
+        for (int i = 0; i < this.policies.size(); i++) {
+            int prev = this.policies.get(i).getObject_conditions().size();
+            this.policies.get(i).deleteObjCond(oc1);
+            int after = this.policies.get(i).getObject_conditions().size();
+            if(prev != after){ //deleted so replace
+                this.policies.get(i).getObject_conditions().add(oc2);
+            }
+        }
     }
 
     /**
