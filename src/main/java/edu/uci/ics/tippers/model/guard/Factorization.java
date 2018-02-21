@@ -1,7 +1,6 @@
 package edu.uci.ics.tippers.model.guard;
 
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.ListMultimap;
+import com.rits.cloning.Cloner;
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.common.PolicyEngineException;
 import edu.uci.ics.tippers.db.MySQLQueryManager;
@@ -20,21 +19,9 @@ public class Factorization {
 
     MySQLQueryManager queryManager = new MySQLQueryManager();
 
-    //Original expression
+    Cloner cloner = new Cloner();
+
     BEExpression expression;
-
-    // Chosen multiplier
-    List<ObjectCondition> multiplier;
-
-    // Polices from the original expression that contain the multiplier
-    Factorization quotient;
-
-    // Polices from the original expression that does not contain the multiplier
-    Factorization reminder;
-
-    //Cost of evaluating the expression
-    Long cost;
-
 
     public BEExpression getExpression() {
         return expression;
@@ -44,48 +31,12 @@ public class Factorization {
         this.expression = expression;
     }
 
-    public List<ObjectCondition> getMultiplier() {
-        return multiplier;
-    }
-
-    public void setMultiplier(List<ObjectCondition> multiplier) {
-        this.multiplier = multiplier;
-    }
-
-    public Factorization getQuotient() {
-        return quotient;
-    }
-
-    public void setQuotient(Factorization quotient) {
-        this.quotient = quotient;
-    }
-
-    public Factorization getReminder() {
-        return reminder;
-    }
-
-    public void setReminder(Factorization reminder) {
-        this.reminder = reminder;
-    }
-
-    public Long getCost() {
-        return cost;
-    }
-
-    public void setCost(Long cost) {
-        this.cost = cost;
-    }
-
     public Factorization(){
         this.expression = new BEExpression();
-        this.multiplier = new ArrayList<ObjectCondition>();
-        this. cost = PolicyConstants.INFINTIY;
     }
 
     public Factorization(BEExpression expression){
         this.expression = new BEExpression(expression);
-        this.multiplier = new ArrayList<ObjectCondition>();
-        this.cost = PolicyConstants.INFINTIY;
     }
 
 
@@ -186,7 +137,7 @@ public class Factorization {
 
     /**
      * If the predicate that overlaps with another predicate exists in many policies, we choose the one with least
-     * number of false positives to merge.
+     * number of false positives to check if it can be merged.
      * @param objectCondition
      * @param bePolicies
      * @return
@@ -195,14 +146,29 @@ public class Factorization {
         long minFalsePositives = PolicyConstants.INFINTIY;
         int chosen = 0;
         for (int i = 0; i < bePolicies.size(); i++) {
-            bePolicies.get(i).deleteObjCond(objectCondition);
-            long fp = computeL(bePolicies.get(i));
+            BEPolicy candidate = cloner.deepClone(bePolicies.get(i));
+            candidate.deleteObjCond(objectCondition);
+            long fp = computeL(candidate);
             if(fp < minFalsePositives ){
                 minFalsePositives = fp;
                 chosen = i;
             }
         }
         return bePolicies.get(chosen);
+    }
+
+    private boolean canBeMerged(BEPolicy pa1, ObjectCondition a1, BEPolicy pa2, ObjectCondition a2){
+        BEPolicy policy_a1_factorized = cloner.deepClone(pa1);
+        policy_a1_factorized.deleteObjCond(a1);
+        long F_a1 = computeF(policy_a1_factorized, pa1);
+        BEPolicy policy_a2_factorized = cloner.deepClone(pa2);
+        policy_a2_factorized.deleteObjCond(a2);
+        long F_a2 = computeF(policy_a2_factorized, pa2);
+        BEPolicy intersection = new BEPolicy();
+        intersection.getObject_conditions().add(a1);
+        intersection.getObject_conditions().add(a2);
+        long l_intersection = computeL(intersection);
+        return (l_intersection + F_a1 + F_a2) > 0;
     }
 
     /**
@@ -229,27 +195,20 @@ public class Factorization {
             stack.push(objectConditions.get(0));
             for (int j = 1; j < objectConditions.size(); j++) {
                 ObjectCondition top = stack.peek();
-                if(!overlaps(top, objectConditions.get(j)))
-                    stack.push(objectConditions.get(j));
+                ObjectCondition next = objectConditions.get(j);
+                if(!overlaps(top, next))
+                    stack.push(next);
                 else {
-                    List<BEPolicy> policy_a1_list = predOnAttr.get(objectConditions.get(j));
-                    BEPolicy policy_a1_factorized = new BEPolicy(policy_a1_list.get(0));
-                    policy_a1_factorized.deleteObjCond(objectConditions.get(j));
-                    long F_a1 = computeF(policy_a1_factorized, policy_a1_list.get(0));
+                    List<BEPolicy> policy_a1_list = predOnAttr.get(next);
                     List<BEPolicy> policy_a2_list = predOnAttr.get(top);
-                    BEPolicy policy_a2_factorized = new BEPolicy(policy_a2_list.get(0));
-                    policy_a2_factorized.deleteObjCond(top);
-                    long F_a2 = computeF(policy_a2_factorized, policy_a2_list.get(0));
-                    BEPolicy intersection = new BEPolicy();
-                    intersection.getObject_conditions().add(top);
-                    intersection.getObject_conditions().add(objectConditions.get(j));
-                    long l_intersection = computeL(intersection);
-                    if((l_intersection + F_a1 + F_a2) > 0){
-                        if(objectConditions.get(j).getBooleanPredicates().get(1).getValue().compareTo(top.getBooleanPredicates().get(1).getValue()) > 0){
-                            top.getBooleanPredicates().get(1).setValue(objectConditions.get(j).getBooleanPredicates().get(1).getValue());
+                    BEPolicy policy_a1 = new BEPolicy(choosePolicyToMerge(next, policy_a1_list));
+                    BEPolicy policy_a2 = new BEPolicy(choosePolicyToMerge(top, policy_a2_list));
+                    if(canBeMerged(policy_a1, next, policy_a2, top)){
+                        if(next.getBooleanPredicates().get(1).getValue().compareTo(top.getBooleanPredicates().get(1).getValue()) > 0){
+                            top.getBooleanPredicates().get(1).setValue(next.getBooleanPredicates().get(1).getValue());
                         }
                         replacementMap.put(stack.pop(), top);
-                        replacementMap.put(objectConditions.get(j), top);
+                        replacementMap.put(next, top);
                         stack.push(top);
                     }
                 }

@@ -12,7 +12,7 @@ public class RunMe {
     public static void main(String args[]){
 
         BEExpression beExpression = new BEExpression();
-        beExpression.parseJSONList(Reader.readFile("/policies/policy9.json"));
+        beExpression.parseJSONList(Reader.readFile("/policies/policy4.json"));
         System.out.println(beExpression.createQueryFromPolices());
 
         Factorization f = new Factorization(beExpression);

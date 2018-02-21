@@ -12,7 +12,6 @@ import java.util.List;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.*;
-
 /**
  * Created by cygnus on 2/20/18.
  */
@@ -31,6 +30,7 @@ public class FactorizationTest {
         output.add(Reader.readTxt("src/test/resources/ApproximateFactor/policy4.txt"));
         output.add(Reader.readTxt("src/test/resources/ApproximateFactor/policy5_2.txt"));
         output.add(Reader.readTxt("src/test/resources/ApproximateFactor/policy6.txt"));
+        output.add(Reader.readTxt("src/test/resources/ApproximateFactor/policy7.txt"));
     }
 
     @Test
@@ -57,7 +57,7 @@ public class FactorizationTest {
     }
 
     @Test
-    @DisplayName("Test using policy5.json with timestamps")
+    @DisplayName("Test using policy6.json with timestamps")
     public void approximateFactorization2() throws Exception {
         beExpression.parseJSONList(Reader.readFile("/policies/policy6.json"));
         f = new Factorization(beExpression);
@@ -65,5 +65,16 @@ public class FactorizationTest {
         assertThat(
                 f.getExpression().createQueryFromPolices(),
                 equalTo(output.get(2)));
+    }
+
+    @Test
+    @DisplayName("Test using policy7.json with timestamps and integer(energy)")
+    public void approximateFactorization3() throws Exception {
+        beExpression.parseJSONList(Reader.readFile("/policies/policy7.json"));
+        f = new Factorization(beExpression);
+        f.approximateFactorization();
+        assertThat(
+                f.getExpression().createQueryFromPolices(),
+                equalTo(output.get(3)));
     }
 }

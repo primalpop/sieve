@@ -130,32 +130,6 @@ public class ExactFactor{
         }
     }
 
-    /**
-     * For a given expression, finds the combination of object condition with lowest number of false positives and drops it
-     * TODO: Knapsack algorithm formulation where combination of object conditions can be dropped from different policies
-     * till the budget for false positives is exhausted.
-     * TODO: For factorized expression, combination of object conditions from multiplier and quotient
-     * TODO: The complete exact factor where it combines both of them recursively
-     *
-     * @param false_positives
-     */
-    public void dropBounded(long false_positives) {
-        if (multiplier.size() == 0) { // not factorized, only expression
-            for (int i = 0; i < expression.getPolicies().size(); i++) {
-                long max_false_positive = Long.MAX_VALUE;
-                Set<ObjectCondition> dropSet = new HashSet<ObjectCondition>();
-                BEPolicy bp = expression.getPolicies().get(i);
-                Set<Set<ObjectCondition>> powerSet = bp.calculatePowerSet();
-                for (Set<ObjectCondition> objSet : powerSet) {
-                    if (objSet.size() == 0 || objSet.size() == bp.getObject_conditions().size()) continue;
-                }
-                for (ObjectCondition dObj: dropSet) {
-                    bp.deleteObjCond(dObj);
-                }
-            }
-        }
-    }
-
     
     /**
      * Creates a query string from Exact Factor by
