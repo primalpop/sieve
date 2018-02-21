@@ -214,6 +214,7 @@ public class BEPolicy implements Comparable<BEPolicy> {
 
     public void deleteObjCond(ObjectCondition oc){
         List<ObjectCondition> toRemove = this.object_conditions.stream()
+                .filter(objCond -> objCond.getType() == oc.getType())
                 .filter(objCond -> objCond.compareTo(oc) == 0)
                 .collect(Collectors.toList());
         this.object_conditions.removeAll(toRemove);

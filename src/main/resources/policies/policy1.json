@@ -9,11 +9,11 @@
         "type": "TIMESTAMP",
         "predicates": [
           {
-            "value": "15",
+            "value": "2017-08-29 15:39:24",
             "operator": ">="
           },
           {
-            "value": "19",
+            "value": "2017-08-29 18:39:24",
             "operator": "<="
           }
         ]
@@ -23,7 +23,7 @@
         "type": "STRING",
         "predicates": [
           {
-            "value": "10",
+            "value": "10001",
             "operator": "="
           }
         ]
@@ -68,11 +68,11 @@
         "type": "TIMESTAMP",
         "predicates": [
           {
-            "value": "17",
+            "value": "2017-08-30 05:32:01",
             "operator": ">="
           },
           {
-            "value": "19",
+            "value": "2017-08-30 15:32:01",
             "operator": "<="
           }
         ]
@@ -82,7 +82,7 @@
         "type": "STRING",
         "predicates": [
           {
-            "value": "10",
+            "value": "1005",
             "operator": "="
           }
         ]

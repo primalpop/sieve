@@ -138,7 +138,16 @@ public class Factorization {
             Calendar end1 = timestampStrToCal(o1.getBooleanPredicates().get(1).getValue());
             Calendar start2 = timestampStrToCal(o2.getBooleanPredicates().get(0).getValue());
             Calendar end2 = timestampStrToCal(o2.getBooleanPredicates().get(1).getValue());
-            if (start1.compareTo(end2) < 0 && end1.compareTo(start2) < 0) {
+            if (start1.compareTo(end2) < 0 && end1.compareTo(start2) > 0) {
+                return true;
+            }
+        }
+        else if (o1.getType().getID() == 1){
+            String start1 = o1.getBooleanPredicates().get(0).getValue();
+            String end1 = o1.getBooleanPredicates().get(1).getValue();
+            String start2 = o2.getBooleanPredicates().get(0).getValue();
+            String end2 = o2.getBooleanPredicates().get(1).getValue();
+            if(start1.compareTo(end2) < 0 && end1.compareTo(start2) > 0){
                 return true;
             }
         }
@@ -151,7 +160,6 @@ public class Factorization {
     /**
      * returns a map with key as object condition and value as the list of policies it appears in (assuming duplicate
      * object conditions can exist).
-     * TODO: Change to a multimap from Guava
      * @param attribute
      * @return
      */
@@ -237,7 +245,9 @@ public class Factorization {
                     intersection.getObject_conditions().add(objectConditions.get(j));
                     long l_intersection = computeL(intersection);
                     if((l_intersection + F_a1 + F_a2) > 0){
-                        top.getBooleanPredicates().get(1).setValue(objectConditions.get(j).getBooleanPredicates().get(1).getValue());
+                        if(objectConditions.get(j).getBooleanPredicates().get(1).getValue().compareTo(top.getBooleanPredicates().get(1).getValue()) > 0){
+                            top.getBooleanPredicates().get(1).setValue(objectConditions.get(j).getBooleanPredicates().get(1).getValue());
+                        }
                         replacementMap.put(stack.pop(), top);
                         replacementMap.put(objectConditions.get(j), top);
                         stack.push(top);
