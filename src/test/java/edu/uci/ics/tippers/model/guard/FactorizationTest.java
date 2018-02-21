@@ -29,11 +29,12 @@ public class FactorizationTest {
         f = new Factorization();
         output = new ArrayList<String>();
         output.add(Reader.readTxt("src/test/resources/ApproximateFactor/policy4.txt"));
-        output.add(Reader.readTxt("src/test/resources/ApproximateFactor/policy5.txt"));
+        output.add(Reader.readTxt("src/test/resources/ApproximateFactor/policy5_2.txt"));
+        output.add(Reader.readTxt("src/test/resources/ApproximateFactor/policy6.txt"));
     }
 
     @Test
-    @DisplayName("Test using policy4.json")
+    @DisplayName("Test using policy4.json with integer(temperature)")
     public void approximateFactorization() throws Exception {
         beExpression.parseJSONList(Reader.readFile("/policies/policy4.json"));
         f = new Factorization(beExpression);
@@ -45,13 +46,24 @@ public class FactorizationTest {
 
 
     @Test
-    @DisplayName("Test using policy5.json")
+    @DisplayName("Test using policy5.json with integers(temperature and energy)")
     public void approximateFactorization1() throws Exception {
-        beExpression.parseJSONList(Reader.readFile("/policies/policy5.json"));
+        beExpression.parseJSONList(Reader.readFile("/policies/policy5_2.json"));
         f = new Factorization(beExpression);
         f.approximateFactorization();
         assertThat(
                 f.getExpression().createQueryFromPolices(),
                 equalTo(output.get(1)));
+    }
+
+    @Test
+    @DisplayName("Test using policy5.json with timestamps")
+    public void approximateFactorization2() throws Exception {
+        beExpression.parseJSONList(Reader.readFile("/policies/policy6.json"));
+        f = new Factorization(beExpression);
+        f.approximateFactorization();
+        assertThat(
+                f.getExpression().createQueryFromPolices(),
+                equalTo(output.get(2)));
     }
 }
