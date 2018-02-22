@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Created by cygnus on 11/1/17.
@@ -114,11 +115,8 @@ public class BEExpression implements Comparable<BEExpression> {
      * @return
      */
     public BEPolicy searchFor(BEPolicy bePolicy){
-        for (BEPolicy bp: this.getPolicies()) {
-            if(bp.compareTo(bePolicy) == 0)
-                return bp;
-        }
-        return null;
+        return this.getPolicies().stream()
+                .filter(bp -> bp.equals(bePolicy)).findFirst().orElse(null);
     }
 
     /**
@@ -129,7 +127,7 @@ public class BEExpression implements Comparable<BEExpression> {
     public void checkAgainstPolicies(ObjectCondition objectCondition){
         List<BEPolicy> polConPred = new ArrayList<BEPolicy>();
         for (int i = 0; i < this.policies.size(); i++) {
-            if(objectCondition.containedInList(this.policies.get(i).getObject_conditions()))
+            if(this.policies.get(i).containsObjCond(objectCondition))
                 polConPred.add(this.policies.get(i));
         }
         this.policies = polConPred;
