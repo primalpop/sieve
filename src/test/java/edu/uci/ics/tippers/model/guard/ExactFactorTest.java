@@ -45,7 +45,6 @@ public class ExactFactorTest {
     public void tearDown() {
     }
 
-    @Ignore("Policy input and output not correct")
     @Test
     public void greedyFactorization1(){
         ef = returnBestFactor("/policies/policy0.json");
@@ -55,7 +54,6 @@ public class ExactFactorTest {
                 Matchers.hasSize(0));
     }
 
-    @Ignore("Policy input and output not correct")
     @Test
     public void greedyFactorization2(){
         ef = returnBestFactor("/policies/policy1.json");
@@ -64,13 +62,13 @@ public class ExactFactorTest {
                 equalTo(policies.get(1)));
     }
 
-    @Ignore("Policy input and output not correct")
+    @Ignore
     @Test
     public void greedyFactorization3(){
         ef = returnBestFactor("/policies/policy2.json");
         assertThat(
                 ef.createQueryFromExactFactor(),
-                anyOf(equalTo(policies.get(2)), equalTo(policies.get(3))));
+                anyOf(equalTo(policies.get(3))));
     }
 
 
