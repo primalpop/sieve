@@ -1,15 +1,12 @@
 package edu.uci.ics.tippers.model.guard;
 
-import com.sun.corba.se.spi.ior.ObjectKey;
 import edu.uci.ics.tippers.common.PolicyConstants;
-import edu.uci.ics.tippers.common.PolicyEngineException;
 import edu.uci.ics.tippers.db.MySQLQueryManager;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
 import edu.uci.ics.tippers.model.policy.ObjectCondition;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -91,21 +88,39 @@ public class ExactFactor{
         this.cost = cost;
     }
 
+    /**
+     * Factorization using the collection of Object conditions
+     * ------------------------------------------------------
+     * 1) Checks if more than 1 policy in the expression contains the set of object conditions
+     * 2) If yes, the set is chosen as multiplier and
+     *    quotient is the list of policies after removing the set from the matched policies and
+     *    reminder is rest of the expression after deleting policies
+     * 3) Cost is assigned as the run time of the factorized expression
+     * @param objSet
+     */
     public void factorizeSet(Set<ObjectCondition> objSet){
         BEExpression qoutientWithMultiplier = new BEExpression(this.getExpression());
         qoutientWithMultiplier.checkAgainstPolices(objSet);
         if(qoutientWithMultiplier.getPolicies().size() > 1 ) { //was able to factorize
-            this.multiplier = new ArrayList<ObjectCondition>(objSet);
+            this.multiplier = new ArrayList<>(objSet);
             this.quotient = new ExactFactor(qoutientWithMultiplier);
-            this.quotient.getExpression().removeSetFromPolicies(objSet);
+            this.quotient.getExpression().removeFromPolicies(objSet);
             this.reminder = new ExactFactor(this.getExpression());
-            this.reminder.getExpression().removePolicies(qoutientWithMultiplier.getPolicies());
+            this.reminder.getExpression().getPolicies().removeAll(qoutientWithMultiplier.getPolicies());
             this.cost = queryManager.runTimedQuery(this.createQueryFromExactFactor());
         }
     }
 
     /**
-     * Factorization using set of object conditions
+     * Recursive algorithm to (exact) factorize the expression
+     * -------------------------------------------------------
+     * 1) For each policy in the expression, generate a power set of all the object conditions
+     * 2) For each element in the power set, factorize the expression
+     * 3) After factorizing, if the multiplier is non-empty and
+     *    cost of the factorized expression is lower than the previous factorization
+     * 4) Assign it as the best factor
+     * 5) Recursively factorize the quotient and reminder
+     * 6) If no more policies left to factorize, break
      * TODO: Add a boolean flag to factorization after one step to return the best single factor
      */
     public void greedyFactorization(){

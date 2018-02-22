@@ -202,8 +202,8 @@ public class BEPolicy {
      * @param objectConditionSet
      * @return true if all object conditions are contained in the policy, false otherwise
      */
-    public boolean containsCombination(Set<ObjectCondition> objectConditionSet){
-       return Collections.indexOfSubList(this.object_conditions, Lists.newArrayList(objectConditionSet)) != 1;
+    public boolean containsObjCond(Set<ObjectCondition> objectConditionSet){
+       return Sets.newHashSet(this.object_conditions).containsAll(objectConditionSet);
     }
 
     public boolean containsObjCond(ObjectCondition oc){

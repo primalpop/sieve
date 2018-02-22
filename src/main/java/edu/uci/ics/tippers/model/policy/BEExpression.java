@@ -6,19 +6,15 @@ import com.github.davidmoten.guavamini.Lists;
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.common.PolicyEngineException;
 import edu.uci.ics.tippers.db.MySQLQueryManager;
-import edu.uci.ics.tippers.model.guard.ExactFactor;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
  * Created by cygnus on 11/1/17.
  */
-public class BEExpression implements Comparable<BEExpression> {
+public class BEExpression{
 
     MySQLQueryManager queryManager = new MySQLQueryManager();
 
@@ -62,51 +58,19 @@ public class BEExpression implements Comparable<BEExpression> {
 
 
     /**
-     * Get all the object conditions from a list of policies
+     * Get all the distinct object conditions from a list of policies
      * @return
      */
-    public List<ObjectCondition> getAll(){
-        List<ObjectCondition> objConds = new ArrayList<ObjectCondition>();
+    public List<ObjectCondition> getPolObjCond(){
+        Set<ObjectCondition> distinctObjCond = new HashSet<>();
         for (int i = 0; i < this.policies.size(); i++) {
             List<ObjectCondition> policyCond = this.policies.get(i).getObject_conditions();
             for (int j = 0; j < policyCond.size(); j ++){
-                objConds.add(policyCond.get(j));
+                distinctObjCond.add(policyCond.get(j));
 
             }
         }
-        return objConds;
-    }
-
-    /**
-     * Get the unique set of object conditions from a list of policies
-     * Currently only identifies a single object condition as factor <-- to be extended to multiple object condition
-     * @return
-     */
-    public List<ObjectCondition> getUnique(){
-        List<ObjectCondition> objConds = new ArrayList<ObjectCondition>();
-        Set<ObjectCondition> objSet = new HashSet<ObjectCondition>(this.getAll());
-        objConds.clear();
-        objConds.addAll(objSet);
-        return objConds;
-    }
-
-    /**
-     * Get the repeating set of object conditions from a list of policies
-     * Currently only identifies a single object condition as factor <-- to be extended to multiple object condition
-     * @return
-     */
-    public List<ObjectCondition> getRepeating() {
-        final Set<ObjectCondition> setToReturn = new HashSet();
-        List<ObjectCondition> objConds = new ArrayList<ObjectCondition>();
-        final Set<ObjectCondition> set = new HashSet();
-
-        for (ObjectCondition objC : this.getAll()) {
-            if (!set.add(objC)) {
-                setToReturn.add(objC);
-            }
-        }
-        objConds.addAll(setToReturn);
-        return objConds;
+        return Lists.newArrayList(distinctObjCond);
     }
 
     /**
@@ -120,42 +84,48 @@ public class BEExpression implements Comparable<BEExpression> {
     }
 
     /**
-     * Given a predicate and list of policies, identify the list of policies containing that predicate
+     * Given a object condition and list of policies, identify the list of policies containing that object condition
      * @param objectCondition
      * @return
      */
     public void checkAgainstPolicies(ObjectCondition objectCondition){
-        List<BEPolicy> polConPred = new ArrayList<BEPolicy>();
-        for (int i = 0; i < this.policies.size(); i++) {
-            if(this.policies.get(i).containsObjCond(objectCondition))
-                polConPred.add(this.policies.get(i));
-        }
-        this.policies = polConPred;
+        List<BEPolicy> matchingPolicies = this.policies.stream()
+                .filter(pol -> pol.containsObjCond(objectCondition))
+                .collect(Collectors.toList());
+        this.policies = matchingPolicies;
     }
 
 
     /**
-     * Given a collection of object conditions and policies, identify the list of policies containing the collection
+     * Given a collection of object conditions and policies, identify the list of policies in
+     * the expression containing the collection
      */
     public void checkAgainstPolices(Set<ObjectCondition> objectConditionSet){
-        List<BEPolicy> polConPredSet = new ArrayList<BEPolicy>();
-        for (int i = 0; i < this.policies.size(); i++) {
-            if(this.policies.get(i).containsCombination(objectConditionSet))
-                polConPredSet.add(this.policies.get(i));
-        }
-        this.policies = polConPredSet;
+        List<BEPolicy> matchingPolicies = this.policies.stream()
+                .filter(pol -> pol.containsObjCond(objectConditionSet))
+                .collect(Collectors.toList());
+        this.policies = matchingPolicies;
     }
 
-
-
     /**
-     * Deletes the given predicate from the policies that contain it
+     * Deletes the object condition from the policies
      * @param objectCondition
      * @return
      */
     public void removeFromPolicies(ObjectCondition objectCondition){
         for (int i = 0; i < this.policies.size(); i++) {
             this.policies.get(i).deleteObjCond(objectCondition);
+        }
+    }
+
+    /**
+     * Removes a set of object condition from policies
+     * TODO: What happens when a policy only contains one of the object condition and not the other?
+     * @param objSet
+     */
+    public void removeFromPolicies(Set<ObjectCondition> objSet) {
+        for (ObjectCondition obj: objSet) {
+            this.removeFromPolicies(obj);
         }
     }
 
@@ -192,21 +162,6 @@ public class BEExpression implements Comparable<BEExpression> {
         return query.toString();
     }
 
-    /**
-     * Removes the list of policies from the expression
-     * @param policies
-     */
-    public void removePolicies(List<BEPolicy> policies) {
-        List<BEPolicy> polRem = new ArrayList<BEPolicy>();
-        for (int i = 0; i < policies.size(); i++) {
-            BEPolicy bp = searchFor(policies.get(i));
-            if (bp != null)
-                this.getPolicies().remove(bp);
-            else
-                throw new PolicyEngineException("Policy doesn't exist in the expression");
-        }
-    }
-
     public long computeCost(){
         return queryManager.runTimedQuery(createQueryFromPolices());
     }
@@ -227,28 +182,16 @@ public class BEExpression implements Comparable<BEExpression> {
     }
 
 
-    /**
-     * Comparator for BEExpression
-     * @param be
-     * @return
-     */
     @Override
-    public int compareTo(BEExpression be) {
-        int count = 0;
-        for (BEPolicy bp: be.policies) {
-            BEPolicy search = searchFor(bp);
-            if(search != null) count ++;
-        }
-        return count == be.getPolicies().size()? 0: -1;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BEExpression that = (BEExpression) o;
+        return Objects.equals(policies, that.policies);
     }
 
-    /**
-     * Removes a set of object condition from policies
-     * @param objSet
-     */
-    public void removeSetFromPolicies(Set<ObjectCondition> objSet) {
-        for (ObjectCondition obj: objSet) {
-            this.removeFromPolicies(obj);
-        }
+    @Override
+    public int hashCode() {
+        return Objects.hash(policies);
     }
 }

@@ -9,11 +9,11 @@
         "type": "TIMESTAMP",
         "predicates": [
           {
-            "value": "15",
+            "value": "2017-08-30 04:32:01",
             "operator": ">="
           },
           {
-            "value": "19",
+            "value": "2017-08-30 14:32:01",
             "operator": "<="
           }
         ]
@@ -23,7 +23,11 @@
         "type": "STRING",
         "predicates": [
           {
-            "value": "10",
+            "value": "10001",
+            "operator": "="
+          },
+          {
+            "value": "10001",
             "operator": "="
           }
         ]
@@ -68,11 +72,11 @@
         "type": "TIMESTAMP",
         "predicates": [
           {
-            "value": "17",
+            "value": "2017-09-30 14:32:01",
             "operator": ">="
           },
           {
-            "value": "19",
+            "value": "2017-08-30 18:32:01",
             "operator": "<="
           }
         ]
@@ -82,7 +86,11 @@
         "type": "STRING",
         "predicates": [
           {
-            "value": "10",
+            "value": "10001",
+            "operator": "="
+          },
+          {
+            "value": "10001",
             "operator": "="
           }
         ]
@@ -127,11 +135,11 @@
         "type": "TIMESTAMP",
         "predicates": [
           {
-            "value": "20",
+            "value": "2017-10-01 10:32:01",
             "operator": ">="
           },
           {
-            "value": "22",
+            "value": "2017-10-01 20:32:01",
             "operator": "<="
           }
         ]
@@ -141,7 +149,11 @@
         "type": "STRING",
         "predicates": [
           {
-            "value": "11",
+            "value": "990",
+            "operator": "="
+          },
+          {
+            "value": "990",
             "operator": "="
           }
         ]
@@ -186,11 +198,11 @@
         "type": "TIMESTAMP",
         "predicates": [
           {
-            "value": "20",
+            "value": "2017-10-01 10:32:01",
             "operator": ">="
           },
           {
-            "value": "22",
+            "value": "2017-10-01 20:32:01",
             "operator": "<="
           }
         ]
@@ -200,7 +212,11 @@
         "type": "STRING",
         "predicates": [
           {
-            "value": "15",
+            "value": "58395",
+            "operator": "="
+          },
+          {
+            "value": "58395",
             "operator": "="
           }
         ]
@@ -245,11 +261,11 @@
         "type": "TIMESTAMP",
         "predicates": [
           {
-            "value": "20",
+            "value": "2017-10-01 10:32:01",
             "operator": ">="
           },
           {
-            "value": "22",
+            "value": "2017-10-01 20:32:01",
             "operator": "<="
           }
         ]
@@ -259,7 +275,11 @@
         "type": "STRING",
         "predicates": [
           {
-            "value": "16",
+            "value": "556",
+            "operator": "="
+          },
+          {
+            "value": "556",
             "operator": "="
           }
         ]

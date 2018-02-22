@@ -86,11 +86,11 @@
         "type": "STRING",
         "predicates": [
           {
-            "value": "1005",
+            "value": "10001",
             "operator": "="
           },
           {
-            "value": "1005",
+            "value": "10001",
             "operator": "="
           }
         ]
@@ -117,69 +117,6 @@
         "predicates": [
           {
             "value": "12",
-            "operator": "="
-          }
-        ]
-      }
-    ],
-    "purpose": "",
-    "action": ""
-  },
-  {
-    "id": "003",
-    "description": "Policy example 3",
-    "metadata": "",
-    "object_conditions": [
-      {
-        "attribute": "SEMANTIC_OBSERVATION.timeStamp",
-        "type": "TIMESTAMP",
-        "predicates": [
-          {
-            "value": "2017-09-30 05:32:01",
-            "operator": ">="
-          },
-          {
-            "value": "2017-09-30 15:32:01",
-            "operator": "<="
-          }
-        ]
-      },
-      {
-        "attribute": "SEMANTIC_OBSERVATION.user_id",
-        "type": "STRING",
-        "predicates": [
-          {
-            "value": "10001",
-            "operator": "="
-          },
-          {
-            "value": "10001",
-            "operator": "="
-          }
-        ]
-      }
-    ],
-    "querier_conditions": [
-      {
-        "attribute": "Query.timeStamp",
-        "type": "TIMESTAMP",
-        "predicates": [
-          {
-            "value": "6 pm",
-            "operator": ">="
-          },
-          {
-            "value": "8 pm",
-            "operator": "<="
-          }
-        ]
-      },
-      {
-        "attribute": "Query.user_name",
-        "type": "STRING",
-        "predicates": [
-          {
-            "value": "John",
             "operator": "="
           }
         ]
