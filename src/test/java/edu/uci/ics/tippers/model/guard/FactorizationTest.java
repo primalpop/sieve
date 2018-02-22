@@ -31,6 +31,7 @@ public class FactorizationTest {
         output.add(Reader.readTxt("src/test/resources/ApproximateFactor/policy5_2.txt"));
         output.add(Reader.readTxt("src/test/resources/ApproximateFactor/policy6.txt"));
         output.add(Reader.readTxt("src/test/resources/ApproximateFactor/policy7.txt"));
+        output.add(Reader.readTxt("src/test/resources/ApproximateFactor/policy10.txt"));
     }
 
     @Test
@@ -76,5 +77,16 @@ public class FactorizationTest {
         assertThat(
                 f.getExpression().createQueryFromPolices(),
                 equalTo(output.get(3)));
+    }
+
+    @Test
+    @DisplayName("Test using policy10.json with timestamps and integer(energy) and repeating predicates")
+    public void approximateFactorization4() throws Exception {
+        beExpression.parseJSONList(Reader.readFile("/policies/policy10.json"));
+        f = new Factorization(beExpression);
+        f.approximateFactorization();
+        assertThat(
+                f.getExpression().createQueryFromPolices(),
+                equalTo(output.get(4)));
     }
 }

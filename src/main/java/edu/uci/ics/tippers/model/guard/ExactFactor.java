@@ -163,6 +163,4 @@ public class ExactFactor{
         }
         return query.toString();
     }
-
-
 }

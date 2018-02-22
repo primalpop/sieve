@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 /**
  * Created by cygnus on 9/25/17.
  */
-public class BEPolicy implements Comparable<BEPolicy> {
+public class BEPolicy {
 
     @JsonProperty("id")
     private String id;
@@ -203,14 +203,14 @@ public class BEPolicy implements Comparable<BEPolicy> {
      * @return true if all object conditions are contained in the policy, false otherwise
      */
     public boolean containsCombination(Set<ObjectCondition> objectConditionSet){
-        Boolean contained = true;
-        for (ObjectCondition oc: objectConditionSet) {
-            if (!oc.containedInList(this.getObject_conditions()))
-                contained = false;
-        }
-        return contained;
+       return Collections.indexOfSubList(this.object_conditions, Lists.newArrayList(objectConditionSet)) != 1;
     }
 
+    public boolean containsObjCond(ObjectCondition oc){
+        return this.object_conditions.stream()
+                .filter(objCond -> objCond.getType() == oc.getType())
+                .anyMatch(objCond -> objCond.compareTo(oc) == 0);
+    }
 
     public void deleteObjCond(ObjectCondition oc){
         List<ObjectCondition> toRemove = this.object_conditions.stream()
@@ -233,20 +233,18 @@ public class BEPolicy implements Comparable<BEPolicy> {
 
     }
 
-    /**
-     * TODO: Check rest of the policy parameters, currently only check policy id and object conditions
-     * @param bePolicy
-     * @return
-     */
     @Override
-    public int compareTo(BEPolicy bePolicy) {
-        return this.getId().equals(bePolicy.getId()) && compareBooleanConditions(bePolicy.getObject_conditions())? 0: -1;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BEPolicy bePolicy = (BEPolicy) o;
+        return Objects.equals(id, bePolicy.id) &&
+                Objects.equals(new HashSet<>(object_conditions), new HashSet<>(bePolicy.object_conditions));
     }
 
-    public boolean compareBooleanConditions(List<ObjectCondition> objectConditions){
-        Collections.sort(objectConditions);
-        Collections.sort(this.getObject_conditions());
-        return this.getObject_conditions().equals(objectConditions);
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, object_conditions);
     }
 
     /**

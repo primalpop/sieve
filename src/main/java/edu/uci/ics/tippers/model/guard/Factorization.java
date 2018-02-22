@@ -177,10 +177,12 @@ public class Factorization {
      * 2) For each attribute, it builds a map of the form {predicate | [list of policies predicate appears in}
      * 3) It sorts the predicates by the begin range attribute of the predicates
      * 4) For each of the object conditions, if there's an overlap with any other predicate, it checks if the gain is
-     * positive
+     * positive. In case the predicate appears in multiple policies, it chooses the predicate from the policy which
+     * results in lowest number of false positives
      * 5) If it's positive, it merges them and stores the association between the merged and original predicates in a map
      * of the form {original | merged }
-     * 6) Rewrite the original expression with the merged policies
+     * 6) Rewrite the original expression with the merged predicate. In case, the same predicate appears in multiple
+     * policies all of them are merged.
      */
     public void approximateFactorization(){
         Map<ObjectCondition, ObjectCondition> replacementMap = new HashMap<>();

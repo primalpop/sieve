@@ -141,19 +141,6 @@ public class BooleanCondition  implements Comparable<BooleanCondition>  {
         return false;
     }
 
-    /**
-     * Check if a boolean condition is contained within a list
-     * @param bcs
-     * @return
-     */
-    public boolean containedInList(List<ObjectCondition> bcs){
-        for (int i = 0; i < bcs.size(); i++) {
-            if (this.compareTo(bcs.get(i)) == 0)
-                return true;
-        }
-        return false;
-    }
-
     public static Calendar timestampStrToCal(String timestamp) {
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat(PolicyConstants.TIMESTAMP_FORMAT);
