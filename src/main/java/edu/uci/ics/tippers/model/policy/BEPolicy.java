@@ -87,6 +87,11 @@ public class BEPolicy {
         this.action = action;
     }
 
+    public BEPolicy(List<ObjectCondition> objectConditions){
+
+        this.object_conditions = objectConditions;
+    }
+
     public String getId() {
         return id;
     }

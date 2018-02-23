@@ -30,7 +30,7 @@ public class BooleanPredicate {
         this.operator = operator;
     }
 
-    public BooleanPredicate(String value, String operator) {
+    public BooleanPredicate(String operator, String value) {
         this.value = value;
         this.operator = operator;
     }
