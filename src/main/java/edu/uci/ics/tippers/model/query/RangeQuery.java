@@ -1,14 +1,22 @@
 package edu.uci.ics.tippers.model.query;
 
+import edu.uci.ics.tippers.common.AttributeType;
+import edu.uci.ics.tippers.common.PolicyConstants;
+import edu.uci.ics.tippers.model.policy.BooleanCondition;
+import edu.uci.ics.tippers.model.policy.BooleanPredicate;
+import edu.uci.ics.tippers.model.policy.ObjectCondition;
+
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
 
 /**
  * Author primpap
  */
-
 
 public class RangeQuery {
 
@@ -179,5 +187,32 @@ public class RangeQuery {
         }
         sqlPredicate.append(")");
         return sqlPredicate.toString();
+    }
+
+    public List<ObjectCondition> createObjectCondition(){
+        List<ObjectCondition> objectConditions = new ArrayList<>();
+        if(checkAllNull()) return objectConditions;
+
+        if(user_id != null) {
+            objectConditions.add(new ObjectCondition("user_id", AttributeType.STRING, "=", user_id, "=", user_id));
+        }
+        if(location_id != null) {
+            objectConditions.add(new ObjectCondition("location_id", AttributeType.STRING, "=", location_id, "=", location_id));
+        }
+        if(start_temp != null && end_temp != null) {
+            objectConditions.add(new ObjectCondition("temperature", AttributeType.INTEGER, ">=", start_temp, "<=", end_temp));
+        }
+        if(start_wemo != null && end_wemo != null) {
+            objectConditions.add(new ObjectCondition("energy", AttributeType.INTEGER, ">=", start_wemo, "<=", end_wemo));
+        }
+        if(activity != null) {
+            objectConditions.add(new ObjectCondition("activity", AttributeType.STRING, "=", activity, "=", activity));
+        }
+        if(start_timestamp != null && end_timestamp != null) {
+            SimpleDateFormat sdf = new SimpleDateFormat(PolicyConstants.TIMESTAMP_FORMAT);
+            objectConditions.add(new ObjectCondition("timeStamp", AttributeType.TIMESTAMP, ">=",
+                    sdf.format(start_timestamp), "=", sdf.format(end_timestamp)));
+        }
+        return  objectConditions;
     }
 }

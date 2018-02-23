@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import edu.uci.ics.tippers.common.PolicyConstants;
+import edu.uci.ics.tippers.model.policy.BEPolicy;
+import edu.uci.ics.tippers.model.policy.ObjectCondition;
 import edu.uci.ics.tippers.model.query.BasicQuery;
 import edu.uci.ics.tippers.model.query.RangeQuery;
 import edu.uci.ics.tippers.model.tippers.Infrastructure;
@@ -295,6 +297,51 @@ public class PolicyGeneration {
         }
         writeJSONToFileRangePolicy(rangeQueries, numberOfPolicies, PolicyConstants.RANGE_POLICY_2_DIR);
 
+    }
+
+    /**
+     * Same as generateRangePolicy2, except only closed ranges are allowed e.g., if start_timestamp is chosen,
+     * then end_timestamp is included too.
+     * @param numberOfPolicies
+     */
+    public List<BEPolicy> generateRangePolicy3(int numberOfPolicies){
+        List<BEPolicy> bePolicies = new ArrayList<>();
+
+        for (int i = 0; i < numberOfPolicies; i++) {
+            int attrCount = (int) (r.nextGaussian() * 2 + 6); //mean -6, SD - 2
+            if (attrCount <= 0 || attrCount > 9) attrCount = 6;
+            RangeQuery rq = new RangeQuery();
+            Field[] attributes = rq.getClass().getDeclaredFields();
+            ArrayList<Field> attrList = new ArrayList<Field>();
+
+            for (int j = 0; j < attrCount; j++) {
+                Field attribute = attributes[r.nextInt(attributes.length)];
+                if (attrList.contains(attribute)) {
+                    j--;
+                    continue;
+                }
+                if (attribute.getName().equalsIgnoreCase("user_id")) {
+                    rq.setUser_id(String.valueOf(users.get(new Random().nextInt(users.size())).getUser_id()));
+                } else if (attribute.getName().equalsIgnoreCase("location_id")) {
+                    rq.setLocation_id(infras.get(new Random().nextInt(infras.size())).getName());
+                } else if (attribute.getName().equalsIgnoreCase("start_timestamp")) {
+                    rq.setStart_timestamp(getRandomTimeStamp());
+                    rq.setEnd_timestamp(getEndingTimeInterval(rq.getStart_timestamp()));
+                } else if (attribute.getName().equalsIgnoreCase("start_wemo")) {
+                    rq.setStart_wemo(String.valueOf(getEnergy(null)));
+                    rq.setEnd_wemo(String.valueOf(getEnergy(rq.getStart_wemo())));
+                } else if (attribute.getName().equalsIgnoreCase("activity")) {
+                    rq.setActivity(activities.get(new Random().nextInt(activities.size())));
+                } else if (attribute.getName().equalsIgnoreCase("start_temp")) {
+                    rq.setStart_temp(String.valueOf(getTemperature(null)));
+                    rq.setEnd_temp(String.valueOf(getTemperature(rq.getStart_temp())));
+                }
+                attrList.add(attribute);
+            }
+            List<ObjectCondition> objectConditions = rq.createObjectCondition();
+            bePolicies.add(new BEPolicy("" +i+"", "Generated Policy " + i, "", objectConditions, null, "", ""));
+        }
+        writeJSONToFileRangePolicy(rangeQueries, numberOfPolicies, PolicyConstants.RANGE_POLICY_2_DIR);
     }
 
 }

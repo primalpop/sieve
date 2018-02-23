@@ -43,9 +43,6 @@ public class BooleanCondition  implements Comparable<BooleanCondition>  {
     @JsonProperty("predicates")
     protected List<BooleanPredicate> booleanPredicates;
 
-    public BooleanCondition(BooleanCondition oc) {
-    }
-
     public String getAttribute() {
         return attribute;
     }
@@ -71,14 +68,9 @@ public class BooleanCondition  implements Comparable<BooleanCondition>  {
         this.type = type;
     }
 
-    public BooleanCondition(String attribute, List<BooleanPredicate> booleanPredicates) {
-        this.attribute = attribute;
-        this.booleanPredicates = booleanPredicates;
-    }
-
 
     public BooleanCondition() {
-        this.booleanPredicates = new ArrayList<BooleanPredicate>();
+        this.booleanPredicates = new ArrayList<>();
     }
 
 
@@ -108,37 +100,6 @@ public class BooleanCondition  implements Comparable<BooleanCondition>  {
             delim = PolicyConstants.CONJUNCTION;
         }
         return r.toString();
-    }
-
-    public double getStart(){
-        return Double.parseDouble(this.booleanPredicates.stream()
-                .filter(x -> x.getOperator().equals(RelOperator.EQUALS.getName()) || x.getOperator().equals(RelOperator.GEQ.getName()))
-                .map(BooleanPredicate::getValue)
-                .findAny()
-                .orElse(String.valueOf(Double.NEGATIVE_INFINITY)));
-    }
-
-
-    public double getEnd(){
-        return Double.parseDouble(this.booleanPredicates.stream()
-                .filter((x) -> x.getOperator().equals(RelOperator.EQUALS.getName()) || x.getOperator().equals(RelOperator.LEQ.getName()))
-                .map(BooleanPredicate::getValue)
-                .findFirst()
-                .orElse(String.valueOf(Double.POSITIVE_INFINITY)));
-    }
-
-
-    public boolean checkOverlap(BooleanCondition bc) {
-        if (! (this.getEnd() < bc.getStart() || this.getStart() > bc.getEnd())){
-            return true;
-        }
-        return false;
-    }
-
-    public boolean checkSame(BooleanCondition bc) {
-        if (this.getStart() == bc.getStart() && this.getEnd() == bc.getEnd())
-            return true;
-        return false;
     }
 
     public static Calendar timestampStrToCal(String timestamp) {

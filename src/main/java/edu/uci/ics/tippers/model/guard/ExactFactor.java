@@ -178,4 +178,35 @@ public class ExactFactor{
         }
         return query.toString();
     }
+
+    public String printExactFactor(int n){
+        if (multiplier.isEmpty()){
+            if(expression != null) {
+                return this.expression.createQueryFromPolices();
+            }
+            else
+                return "";
+        }
+        StringBuilder query = new StringBuilder();
+        for (ObjectCondition mul: multiplier) {
+            query.append("multiplier " + n + ":");
+            query.append(mul.print());
+            query.append(PolicyConstants.CONJUNCTION);
+            query.append("\n");
+        }
+        query.append("quotient "+ n + ":");
+        query.append("(");
+        query.append(this.quotient.printExactFactor(n+1));
+        query.append(")");
+        query.append("\n");
+        if(!this.reminder.expression.getPolicies().isEmpty())  {
+            query.append("reminder " + n + ":");
+            query.append(PolicyConstants.DISJUNCTION);
+            query.append("(");
+            query.append(this.reminder.printExactFactor(n+1));
+            query.append(")");
+            query.append("\n");
+        }
+        return query.toString();
+    }
 }
