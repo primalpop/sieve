@@ -1,6 +1,11 @@
 package edu.uci.ics.tippers.common;
 
+import com.google.common.collect.ImmutableList;
+import edu.uci.ics.tippers.model.policy.QuerierCondition;
+
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Author primpap
@@ -44,5 +49,11 @@ public class PolicyConstants {
     public static final String RANGE_POLICY_1_DIR = "results/range_policies_1/";
 
     public static final String RANGE_POLICY_2_DIR = "results/range_policies_2/";
+
+    public static final String BE_POLICY_DIR = "results/be_policies/";
+
+    public static final ImmutableList<QuerierCondition> DEFAULT_QC = ImmutableList.
+            of(new QuerierCondition("user_name",AttributeType.STRING, "=","John Doe", "=", "John Doe"));
+
 
 }

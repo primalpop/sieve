@@ -69,10 +69,6 @@ public class BEPolicy {
         for(ObjectCondition oc: bePolicy.getObject_conditions()){
             this.object_conditions.add(new ObjectCondition(oc));
         }
-        this.querier_conditions = new ArrayList<QuerierCondition>(bePolicy.getQuerier_conditions().size());
-        for(QuerierCondition qc: bePolicy.getQuerier_conditions()){
-            this.querier_conditions.add(new QuerierCondition(qc));
-        }
         this.action = bePolicy.getAction();
         this.purpose = bePolicy.getPurpose();
 
@@ -148,7 +144,7 @@ public class BEPolicy {
         this.action = action;
     }
 
-    public List<String> getObjCondAttributes(){
+    public List<String> retrieveObjCondAttributes(){
         Set<String> attrs = new HashSet<>();
         for(ObjectCondition oc: object_conditions) {
             attrs.add(oc.getAttribute());

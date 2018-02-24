@@ -211,7 +211,7 @@ public class RangeQuery {
         if(start_timestamp != null && end_timestamp != null) {
             SimpleDateFormat sdf = new SimpleDateFormat(PolicyConstants.TIMESTAMP_FORMAT);
             objectConditions.add(new ObjectCondition("timeStamp", AttributeType.TIMESTAMP, ">=",
-                    sdf.format(start_timestamp), "=", sdf.format(end_timestamp)));
+                    sdf.format(start_timestamp), "<=", sdf.format(end_timestamp)));
         }
         return  objectConditions;
     }
