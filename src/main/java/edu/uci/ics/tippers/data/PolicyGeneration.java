@@ -131,12 +131,12 @@ public class PolicyGeneration {
     }
 
 
-    private void writeJSONToFile(List<BasicQuery> basicQueries, int numberOfPolicies, String policyDir){
+    private void writeJSONToFile(List<?> policies, int numberOfPolicies, String policyDir){
         ObjectMapper mapper = new ObjectMapper();
         mapper.setDateFormat(formatter);
         ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter());
         try {
-            writer.writeValue(new File(policyDir + "policy"+numberOfPolicies+".json"), basicQueries);
+            writer.writeValue(new File(policyDir + "policy"+numberOfPolicies+".json"), policies);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -206,7 +206,7 @@ public class PolicyGeneration {
     }
 
 
-    private void writeJSONToFileRangePolicy(List<RangeQuery> rangeQueries, int numberOfPolicies, String policyDir){
+    private void writeJSONToFileRangeQuery(List<RangeQuery> rangeQueries, int numberOfPolicies, String policyDir){
         ObjectMapper mapper = new ObjectMapper();
         mapper.setDateFormat(formatter);
         ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter());
@@ -247,7 +247,7 @@ public class PolicyGeneration {
             rangeQueries.add(rq);
         }
 
-        writeJSONToFileRangePolicy(rangeQueries, numberOfPolicies, PolicyConstants.RANGE_POLICY_1_DIR);
+        writeJSONToFileRangeQuery(rangeQueries, numberOfPolicies, PolicyConstants.RANGE_POLICY_1_DIR);
 
     }
 
@@ -295,16 +295,15 @@ public class PolicyGeneration {
             }
             rangeQueries.add(rq);
         }
-        writeJSONToFileRangePolicy(rangeQueries, numberOfPolicies, PolicyConstants.RANGE_POLICY_2_DIR);
+        writeJSONToFileRangeQuery(rangeQueries, numberOfPolicies, PolicyConstants.RANGE_POLICY_2_DIR);
 
     }
 
     /**
-     * Same as generateRangePolicy2, except only closed ranges are allowed e.g., if start_timestamp is chosen,
-     * then end_timestamp is included too.
+     * Only closed ranges are allowed e.g., if start_timestamp is chosen, then end_timestamp is included too.
      * @param numberOfPolicies
      */
-    public List<BEPolicy> generateRangePolicy3(int numberOfPolicies){
+    public void generateBEPolicy(int numberOfPolicies){
         List<BEPolicy> bePolicies = new ArrayList<>();
 
         for (int i = 0; i < numberOfPolicies; i++) {
@@ -339,9 +338,9 @@ public class PolicyGeneration {
                 attrList.add(attribute);
             }
             List<ObjectCondition> objectConditions = rq.createObjectCondition();
-            bePolicies.add(new BEPolicy("" +i+"", "Generated Policy " + i, "", objectConditions, null, "", ""));
+            bePolicies.add(new BEPolicy(String.valueOf(i), "Generated Policy " + i, objectConditions, PolicyConstants.DEFAULT_QC.asList(), "", ""));
         }
-        writeJSONToFileRangePolicy(rangeQueries, numberOfPolicies, PolicyConstants.RANGE_POLICY_2_DIR);
+        writeJSONToFile(bePolicies, numberOfPolicies, PolicyConstants.BE_POLICY_DIR);
     }
 
 }

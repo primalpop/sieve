@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.davidmoten.guavamini.Lists;
 import edu.uci.ics.tippers.common.PolicyConstants;
-import edu.uci.ics.tippers.common.PolicyEngineException;
 import edu.uci.ics.tippers.db.MySQLQueryManager;
 
 import java.io.IOException;
@@ -51,7 +50,7 @@ public class BEExpression{
     public List<String> getPolAttributes(){
         Set<String> attrs = new HashSet<>();
         for(BEPolicy bp: policies) {
-            attrs.addAll(bp.getObjCondAttributes());
+            attrs.addAll(bp.retrieveObjCondAttributes());
         }
         return Lists.newArrayList(attrs);
     }

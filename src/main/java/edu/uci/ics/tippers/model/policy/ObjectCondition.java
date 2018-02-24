@@ -29,5 +29,6 @@ public class ObjectCondition extends BooleanCondition {
         List<BooleanPredicate> booleanPredicates = new ArrayList<>();
         booleanPredicates.add(new BooleanPredicate(o1, v1));
         booleanPredicates.add(new BooleanPredicate(o2, v2));
+        this.booleanPredicates = booleanPredicates;
     }
 }
