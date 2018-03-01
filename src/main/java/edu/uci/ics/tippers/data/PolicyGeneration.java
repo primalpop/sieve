@@ -206,17 +206,6 @@ public class PolicyGeneration {
     }
 
 
-    private void writeJSONToFileRangeQuery(List<RangeQuery> rangeQueries, int numberOfPolicies, String policyDir){
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.setDateFormat(formatter);
-        ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter());
-        try {
-            writer.writeValue(new File(policyDir + "policyR-"+numberOfPolicies+".json"), rangeQueries);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     private boolean coinFlip(){
         int result = r.nextInt(2);
         if(result == 0) {
@@ -247,7 +236,7 @@ public class PolicyGeneration {
             rangeQueries.add(rq);
         }
 
-        writeJSONToFileRangeQuery(rangeQueries, numberOfPolicies, PolicyConstants.RANGE_POLICY_1_DIR);
+        writeJSONToFile(rangeQueries, numberOfPolicies, PolicyConstants.RANGE_POLICY_1_DIR);
 
     }
 
@@ -295,7 +284,7 @@ public class PolicyGeneration {
             }
             rangeQueries.add(rq);
         }
-        writeJSONToFileRangeQuery(rangeQueries, numberOfPolicies, PolicyConstants.RANGE_POLICY_2_DIR);
+        writeJSONToFile(rangeQueries, numberOfPolicies, PolicyConstants.RANGE_POLICY_2_DIR);
 
     }
 
@@ -323,15 +312,18 @@ public class PolicyGeneration {
                     rq.setUser_id(String.valueOf(users.get(new Random().nextInt(users.size())).getUser_id()));
                 } else if (attribute.getName().equalsIgnoreCase("location_id")) {
                     rq.setLocation_id(infras.get(new Random().nextInt(infras.size())).getName());
-                } else if (attribute.getName().equalsIgnoreCase("start_timestamp")) {
+                } else if (attribute.getName().equalsIgnoreCase("start_timestamp") ||
+                        attribute.getName().equalsIgnoreCase("end_timestamp")) {
                     rq.setStart_timestamp(getRandomTimeStamp());
                     rq.setEnd_timestamp(getEndingTimeInterval(rq.getStart_timestamp()));
-                } else if (attribute.getName().equalsIgnoreCase("start_wemo")) {
+                } else if (attribute.getName().equalsIgnoreCase("start_wemo") ||
+                        attribute.getName().equalsIgnoreCase("end_wemo")) {
                     rq.setStart_wemo(String.valueOf(getEnergy(null)));
                     rq.setEnd_wemo(String.valueOf(getEnergy(rq.getStart_wemo())));
                 } else if (attribute.getName().equalsIgnoreCase("activity")) {
                     rq.setActivity(activities.get(new Random().nextInt(activities.size())));
-                } else if (attribute.getName().equalsIgnoreCase("start_temp")) {
+                } else if (attribute.getName().equalsIgnoreCase("start_temp") ||
+                        attribute.getName().equalsIgnoreCase("end_temp")) {
                     rq.setStart_temp(String.valueOf(getTemperature(null)));
                     rq.setEnd_temp(String.valueOf(getTemperature(rq.getStart_temp())));
                 }
