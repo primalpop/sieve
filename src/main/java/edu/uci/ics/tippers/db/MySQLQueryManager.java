@@ -12,11 +12,7 @@ import java.time.Instant;
  */
 public class MySQLQueryManager {
 
-    private Connection connection;
-
-    public MySQLQueryManager(){
-        connection = MySQLConnectionManager.getInstance().getConnection();
-    }
+    private static final Connection connection = MySQLConnectionManager.getInstance().getConnection();
 
     /**
      * Compute the cost by execution time of the query
@@ -25,7 +21,7 @@ public class MySQLQueryManager {
      * @throws PolicyEngineException
      */
 
-    public long runTimedQuery(String predicates) throws PolicyEngineException {
+    public static long runTimedQuery(String predicates) throws PolicyEngineException {
         String query = PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS + " where " +  predicates;
         try {
             PreparedStatement stmt = connection.prepareStatement(query);
@@ -43,7 +39,7 @@ public class MySQLQueryManager {
     }
 
 
-    public long runCountingQuery(String query){
+    public static long runCountingQuery(String query){
         long count = 0;
         try{
             PreparedStatement stmtQ = connection.prepareStatement(query);
@@ -51,6 +47,7 @@ public class MySQLQueryManager {
             while(rsQ.next())
                 count =rsQ.getInt(1);
         } catch (SQLException e) {
+            System.out.println(query);
             e.printStackTrace();
         }
         return count;
@@ -60,7 +57,7 @@ public class MySQLQueryManager {
     /**
      * Compute the number of false positives by counting the number of results
      */
-    public long computeFalsePositives(String original, String modified){
+    public static long computeFalsePositives(String original, String modified){
         String original_query = PolicyConstants.SELECT_COUNT_STAR_SEMANTIC_OBSERVATIONS + " where " +  original;
         String modified_query = PolicyConstants.SELECT_COUNT_STAR_SEMANTIC_OBSERVATIONS + " where " + original;
         return runCountingQuery(modified_query) - runCountingQuery(original_query);

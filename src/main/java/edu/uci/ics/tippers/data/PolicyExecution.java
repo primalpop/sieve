@@ -7,8 +7,7 @@ import edu.uci.ics.tippers.common.PolicyEngineException;
 import edu.uci.ics.tippers.db.MySQLConnectionManager;
 import edu.uci.ics.tippers.fileop.Reader;
 import edu.uci.ics.tippers.fileop.Writer;
-import edu.uci.ics.tippers.model.guard.ExactFactor;
-import edu.uci.ics.tippers.model.guard.Factorization;
+import edu.uci.ics.tippers.model.guard.ApproxFactorization;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.query.BasicQuery;
 import edu.uci.ics.tippers.model.query.RangeQuery;
@@ -18,9 +17,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
@@ -42,7 +38,7 @@ public class PolicyExecution {
 
     private Connection connection;
 
-    private static final int[] policyNumbers = {5, 10, 50, 100};
+    private static final int[] policyNumbers = {5, 10, 50, 100, 1000, 5000};
 
     private static PolicyGeneration policyGen;
 
@@ -119,7 +115,6 @@ public class PolicyExecution {
             throw new PolicyEngineException("Calling cancel() on the Statement issued exception. Details are: " + exception);
         }
     }
-
 
     private List<BasicQuery> readBasicPolicy(String fileName){
         String values = Reader.readTxt(fileName);
@@ -244,12 +239,6 @@ public class PolicyExecution {
 
             beExpression.parseJSONList(Reader.readTxt(policyDir + file.getName()));
 
-            Factorization f = new Factorization(beExpression);
-            f.approximateFactorization();
-
-            ExactFactor ef = new ExactFactor(f.getExpression());
-            ef.greedyFactorization();
-
             Duration runTime = Duration.ofSeconds(0);
 
             try {
@@ -257,12 +246,17 @@ public class PolicyExecution {
                 policyRunTimes.put(file.getName(), runTime);
 
                 runTime = Duration.ofSeconds(0);
+                ApproxFactorization f = new ApproxFactorization(beExpression);
+                f.approximateFactorization();
                 runTime = runTime.plus(runQuery(f.getExpression().createQueryFromPolices()));
                 policyRunTimes.put(file.getName() + "-af", runTime);
 
-                runTime = Duration.ofSeconds(0);
-                runTime = runTime.plus(runQuery(ef.createQueryFromExactFactor()));
-                policyRunTimes.put(file.getName() + "-ef", runTime);
+//
+//                runTime = Duration.ofSeconds(0);
+//                NaiveExactFactorization ef = new NaiveExactFactorization(f.getExpression());
+//                ef.greedyFactorization();
+//                runTime = runTime.plus(runQuery(ef.createQueryFromExactFactor()));
+//                policyRunTimes.put(file.getName() + "-ef", runTime);
 
             } catch (Exception e) {
                 e.printStackTrace();
