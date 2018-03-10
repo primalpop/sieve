@@ -9,11 +9,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,21 +18,21 @@ import static org.hamcrest.Matchers.*;
 /**
  * Author primpap
  */
-public class ExactFactorTest {
+public class NaiveExactFactorizationTest {
 
     BEExpression beExpression;
-    ExactFactor ef;
+    NaiveExactFactorization ef;
     List <String> policies;
 
     @Before
     public void setUp() {
         beExpression = new BEExpression();
-        ef = new ExactFactor();
+        ef = new NaiveExactFactorization();
         policies = new ArrayList<String>();
-        policies.add(Reader.readTxt("src/test/resources/ExactFactor/policy0.txt"));
-        policies.add(Reader.readTxt("src/test/resources/ExactFactor/policy1.txt"));
-        policies.add(Reader.readTxt("src/test/resources/ExactFactor/policy2_1.txt"));
-        policies.add(Reader.readTxt("src/test/resources/ExactFactor/policy2_2.txt"));
+        policies.add(Reader.readTxt("src/test/resources/NaiveExactFactorization/policy0.txt"));
+        policies.add(Reader.readTxt("src/test/resources/NaiveExactFactorization/policy1.txt"));
+        policies.add(Reader.readTxt("src/test/resources/NaiveExactFactorization/policy2_1.txt"));
+        policies.add(Reader.readTxt("src/test/resources/NaiveExactFactorization/policy2_2.txt"));
 
     }
 
@@ -72,9 +67,9 @@ public class ExactFactorTest {
     }
 
 
-    ExactFactor returnBestFactor(String filename) {
+    NaiveExactFactorization returnBestFactor(String filename) {
         beExpression.parseJSONList(Reader.readFile(filename));
-        ExactFactor ef = new ExactFactor(beExpression);
+        NaiveExactFactorization ef = new NaiveExactFactorization(beExpression);
         ef.greedyFactorization();
         return ef;
     }

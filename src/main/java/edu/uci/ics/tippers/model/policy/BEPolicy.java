@@ -6,6 +6,7 @@ import com.github.davidmoten.guavamini.Lists;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import edu.uci.ics.tippers.common.PolicyConstants;
+import edu.uci.ics.tippers.db.MySQLQueryManager;
 
 import java.io.IOException;
 import java.util.*;
@@ -256,6 +257,10 @@ public class BEPolicy {
         Set<ObjectCondition> objectConditionSet = ImmutableSet.copyOf(this.getObject_conditions());
         Set<Set<ObjectCondition>> result = Sets.powerSet(objectConditionSet);
         return result;
+    }
+
+    public long computeCost(){
+        return MySQLQueryManager.runTimedQuery(createQueryFromObjectConditions());
     }
 
 

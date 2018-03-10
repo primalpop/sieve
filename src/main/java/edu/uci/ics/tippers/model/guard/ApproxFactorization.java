@@ -11,13 +11,13 @@ import edu.uci.ics.tippers.model.policy.ObjectCondition;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Created by cygnus on 2/14/18.
  */
-public class Factorization {
-
-    MySQLQueryManager queryManager = new MySQLQueryManager();
+public class ApproxFactorization {
 
     Cloner cloner = new Cloner();
 
@@ -31,11 +31,11 @@ public class Factorization {
         this.expression = expression;
     }
 
-    public Factorization(){
+    public ApproxFactorization(){
         this.expression = new BEExpression();
     }
 
-    public Factorization(BEExpression expression){
+    public ApproxFactorization(BEExpression expression){
         this.expression = new BEExpression(expression);
     }
 
@@ -53,12 +53,12 @@ public class Factorization {
 
     private long computeL(BEPolicy bePolicy){
         String query = PolicyConstants.SELECT_COUNT_STAR_SEMANTIC_OBSERVATIONS + " where " +  bePolicy.createQueryFromObjectConditions();
-        return queryManager.runCountingQuery(query);
+        return MySQLQueryManager.runCountingQuery(query);
     }
 
     private long computeL(ObjectCondition objectCondition){
         String query = PolicyConstants.SELECT_COUNT_STAR_SEMANTIC_OBSERVATIONS + " where " +  objectCondition.print();
-        return queryManager.runCountingQuery(query);
+        return MySQLQueryManager.runCountingQuery(query);
 
     }
 
@@ -148,6 +148,9 @@ public class Factorization {
         for (int i = 0; i < bePolicies.size(); i++) {
             BEPolicy candidate = cloner.deepClone(bePolicies.get(i));
             candidate.deleteObjCond(objectCondition);
+            if(candidate.getObject_conditions().size() == 0){
+                System.out.println(bePolicies.get(i).createQueryFromObjectConditions());
+            }
             long fp = computeL(candidate);
             if(fp < minFalsePositives ){
                 minFalsePositives = fp;
@@ -187,6 +190,7 @@ public class Factorization {
     public void approximateFactorization(){
         Map<ObjectCondition, ObjectCondition> replacementMap = new HashMap<>();
         for (int i = 0; i < this.expression.getPolAttributes().size(); i++) {
+            System.out.println("attribute : " + this.expression.getPolAttributes().get(i));
             HashMap<ObjectCondition, List<BEPolicy>> predOnAttr = getPredicatesOnAttr(this.expression.getPolAttributes().get(i));
             if(predOnAttr.isEmpty())
                 continue;
@@ -212,6 +216,8 @@ public class Factorization {
                         replacementMap.put(stack.pop(), top);
                         replacementMap.put(next, top);
                         stack.push(top);
+                        predOnAttr.put(top, Stream.concat(policy_a1_list.stream(), policy_a2_list.stream())
+                                .collect(Collectors.toList()));
                     }
                 }
             }

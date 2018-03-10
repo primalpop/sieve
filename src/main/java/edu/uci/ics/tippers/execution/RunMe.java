@@ -1,11 +1,9 @@
 package edu.uci.ics.tippers.execution;
 
-import edu.uci.ics.tippers.common.PolicyConstants;
-import edu.uci.ics.tippers.data.PolicyExecution;
-import edu.uci.ics.tippers.data.PolicyGeneration;
 import edu.uci.ics.tippers.fileop.Reader;
-import edu.uci.ics.tippers.model.guard.ExactFactor;
-import edu.uci.ics.tippers.model.guard.Factorization;
+import edu.uci.ics.tippers.model.guard.ApproxFactorization;
+import edu.uci.ics.tippers.model.guard.ExactFactorization;
+import edu.uci.ics.tippers.model.guard.NaiveExactFactorization;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 
 /**
@@ -16,16 +14,20 @@ public class RunMe {
     public static void main(String args[]){
 
         BEExpression beExpression = new BEExpression();
-        beExpression.parseJSONList(Reader.readFile("/policies/policy5-gen.json"));
+        beExpression.parseJSONList(Reader.readFile("/policies/policyef.json"));
         System.out.println(beExpression.createQueryFromPolices());
 
-        Factorization f = new Factorization(beExpression);
-        f.approximateFactorization();
-        System.out.println(f.getExpression().createQueryFromPolices());
+        ExactFactorization ef = new ExactFactorization();
+        ef.memoize(beExpression);
+        ef.printfMap();
 
-        ExactFactor ef = new ExactFactor(f.getExpression());
-        ef.greedyFactorization();
-        System.out.println(ef.createQueryFromExactFactor());
+//        ApproxFactorization f = new ApproxFactorization(beExpression);
+//        f.approximateFactorization();
+//        System.out.println(f.getExpression().createQueryFromPolices());
+//
+//        NaiveExactFactorization ef = new NaiveExactFactorization(f.getExpression());
+//        ef.greedyFactorization();
+//        System.out.println(ef.createQueryFromExactFactor());
 
 //
 //        PolicyGeneration pg = new PolicyGeneration();
