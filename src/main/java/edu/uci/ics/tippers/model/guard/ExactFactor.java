@@ -12,13 +12,18 @@ public class ExactFactor {
     //Stores the different factorization possible
     List<Factorino> possibleFactz;
 
-    //Cost of executing the complete expression: Factorino + Reminder
+    //Best cost of executing the complete expression: (Best) Factorino + Reminder. Reminder is the same for all factorinos.
     long cost;
 
-    public ExactFactor() {
-        possibleFactz = new ArrayList<>();
+
+    public ExactFactor(List<Factorino> factorinos){
+        this.possibleFactz = factorinos;
     }
 
+    /**
+     * Bad factorization algorithm because it generates all the possible subsets
+     * @param beExpression
+     */
     public void factorize(BEExpression beExpression) {
         Set<Set<ObjectCondition>> powerSet = beExpression.getPolicies().get(0).calculatePowerSet();
         for (int i = 1; i < beExpression.getPolicies().size(); i++) {
