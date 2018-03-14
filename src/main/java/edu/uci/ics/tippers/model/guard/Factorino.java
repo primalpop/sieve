@@ -19,10 +19,9 @@ public class Factorino {
     long cost;
 
 
-    public Factorino(List<ObjectCondition> multiplier, BEExpression quotient, long cost) {
+    public Factorino(List<ObjectCondition> multiplier, BEExpression quotient) {
         this.multiplier = multiplier;
         this.quotient = quotient;
-        this.cost = cost;
     }
 
     public Factorino() {

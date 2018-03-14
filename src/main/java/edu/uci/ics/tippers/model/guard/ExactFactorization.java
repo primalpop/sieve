@@ -3,11 +3,9 @@ package edu.uci.ics.tippers.model.guard;
 import com.github.davidmoten.guavamini.Lists;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
+import edu.uci.ics.tippers.model.policy.ObjectCondition;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ExactFactorization {
 
@@ -21,15 +19,28 @@ public class ExactFactorization {
     public void memoize(BEExpression beExpression){
         List<BEPolicy> policyList = beExpression.getPolicies();
         for (int i = 0; i < policyList.size(); i++) {
+            List<Factorino> factz = new ArrayList<>();
             BEExpression policyExp = new BEExpression();
             policyExp.setPolicies(Collections.singletonList(policyList.get(i)));
-            ExactFactor ef = new ExactFactor(null, beExpression.computeCost());
+            BEExpression remainder = new BEExpression(beExpression);
+            remainder.getPolicies().removeAll(policyExp.getPolicies());
+            Set<Set<ObjectCondition>> powerSet = policyList.get(i).calculatePowerSet();
+            for (Set<ObjectCondition> objSet: powerSet) {
+                if(objSet.size() == 0) continue;
+                List<ObjectCondition> multiplier = new ArrayList<>(objSet);
+                BEExpression quotient = new BEExpression(policyExp);
+                quotient.removeFromPolicies(objSet);
+                Factorino factorino = new Factorino(multiplier, quotient);
+                factorino.setCost();
+                factz.add(factorino);
+            }
+            ExactFactor ef = new ExactFactor(factz);
+            long cost = ef.getMinByCost().getCost() + remainder.computeCost();
+            ef.setCost(cost);
             fMap.put(policyExp, ef);
         }
-
-        boolean roll = true;
         List<BEExpression> nextLevel = Lists.newArrayList(fMap.keySet());
-        while(roll){
+        while(true){
             for (int i = 0; i < nextLevel.size(); i++) {
                 for (int j = 1; j < nextLevel.size(); j++) {
 

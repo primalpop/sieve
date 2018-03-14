@@ -144,6 +144,7 @@ public class BEExpression{
         }
     }
 
+
     /**
      * Given a list of policies, it creates a query by
      * AND'ing object conditions that belong to the same policy
