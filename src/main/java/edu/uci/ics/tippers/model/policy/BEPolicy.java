@@ -254,8 +254,8 @@ public class BEPolicy {
      * @return Set of object condition sets
      */
     public Set<Set<ObjectCondition>> calculatePowerSet() {
-        Set<ObjectCondition> objectConditionSet = ImmutableSet.copyOf(this.getObject_conditions());
-        Set<Set<ObjectCondition>> result = Sets.powerSet(objectConditionSet);
+        Set<ObjectCondition> objectConditionSet = new HashSet<>(this.getObject_conditions());
+        Set<Set<ObjectCondition>> result =  Sets.powerSet(objectConditionSet);
         return result;
     }
 

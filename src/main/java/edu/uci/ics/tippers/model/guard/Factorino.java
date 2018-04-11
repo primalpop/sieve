@@ -5,7 +5,7 @@ import edu.uci.ics.tippers.db.MySQLQueryManager;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.policy.ObjectCondition;
 
-import java.util.List;
+import java.util.*;
 
 public class Factorino {
 
@@ -25,7 +25,8 @@ public class Factorino {
     }
 
     public Factorino() {
-
+        multiplier = new ArrayList<>();
+        quotient = new BEExpression();
     }
 
 
@@ -67,5 +68,10 @@ public class Factorino {
         sb.append(quotient.createQueryFromPolices());
         sb.append(")");
         return sb.toString();
+    }
+
+    public boolean sameMultiplier(Factorino factorino){
+        Set<ObjectCondition> set = new HashSet<>(this.multiplier);
+        return set.size() == factorino.getMultiplier().size() && set.containsAll(factorino.getMultiplier());
     }
 }

@@ -8,6 +8,7 @@ import edu.uci.ics.tippers.db.MySQLConnectionManager;
 import edu.uci.ics.tippers.fileop.Reader;
 import edu.uci.ics.tippers.fileop.Writer;
 import edu.uci.ics.tippers.model.guard.ApproxFactorization;
+import edu.uci.ics.tippers.model.guard.GreedyExact;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.query.BasicQuery;
 import edu.uci.ics.tippers.model.query.RangeQuery;
@@ -38,7 +39,7 @@ public class PolicyExecution {
 
     private Connection connection;
 
-    private static final int[] policyNumbers = {5, 10, 50, 100, 1000, 5000};
+    private static final int[] policyNumbers = {5, 10, 50, 100, 500, 1000, 5000};
 
     private static PolicyGeneration policyGen;
 
@@ -239,24 +240,29 @@ public class PolicyExecution {
 
             beExpression.parseJSONList(Reader.readTxt(policyDir + file.getName()));
 
-            Duration runTime = Duration.ofSeconds(0);
+            Duration runTime = Duration.ofMillis(0);
 
             try {
                 runTime = runTime.plus(runQuery(beExpression.createQueryFromPolices()));
                 policyRunTimes.put(file.getName(), runTime);
 
-                runTime = Duration.ofSeconds(0);
-                ApproxFactorization f = new ApproxFactorization(beExpression);
-                f.approximateFactorization();
-                runTime = runTime.plus(runQuery(f.getExpression().createQueryFromPolices()));
-                policyRunTimes.put(file.getName() + "-af", runTime);
-
-//
 //                runTime = Duration.ofSeconds(0);
-//                NaiveExactFactorization ef = new NaiveExactFactorization(f.getExpression());
-//                ef.greedyFactorization();
-//                runTime = runTime.plus(runQuery(ef.createQueryFromExactFactor()));
-//                policyRunTimes.put(file.getName() + "-ef", runTime);
+//                ApproxFactorization f = new ApproxFactorization(beExpression);
+//                f.approximateFactorization();
+//                runTime = runTime.plus(runQuery(f.getExpression().createQueryFromPolices()));
+//                policyRunTimes.put(file.getName() + "-af", runTime);
+
+                //TODO: Change it to executor service so that method can be timed out
+                Instant startFact = Instant.now();
+                GreedyExact gf = new GreedyExact(beExpression);
+                gf.GFactorize();
+                Instant stopFact = Instant.now();
+                Duration fTime = Duration.ofMillis(0);
+                fTime.plus(Duration.between( startFact , stopFact ));
+                policyRunTimes.put(file.getName() + "-fact", fTime);
+                runTime = Duration.ofMillis(0);
+                runTime = runTime.plus(runQuery(gf.createQueryFromExactFactor()));
+                policyRunTimes.put(file.getName() + "-gf", runTime);
 
             } catch (Exception e) {
                 e.printStackTrace();

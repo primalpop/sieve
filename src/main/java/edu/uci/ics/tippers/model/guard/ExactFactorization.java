@@ -7,6 +7,13 @@ import edu.uci.ics.tippers.model.policy.ObjectCondition;
 
 import java.util.*;
 
+/**
+ * Incomplete
+ *
+ * Memoization based implementation of exact factorization
+ *
+ */
+
 public class ExactFactorization {
 
 
@@ -18,18 +25,20 @@ public class ExactFactorization {
 
     public void memoize(BEExpression beExpression){
         List<BEPolicy> policyList = beExpression.getPolicies();
+        // Creating the first level in the map by going through the policies and generating
+        // elementary factorizations that cen be used in the next level
         for (int i = 0; i < policyList.size(); i++) {
             List<Factorino> factz = new ArrayList<>();
             BEExpression policyExp = new BEExpression();
             policyExp.setPolicies(Collections.singletonList(policyList.get(i)));
             BEExpression remainder = new BEExpression(beExpression);
             remainder.getPolicies().removeAll(policyExp.getPolicies());
-            Set<Set<ObjectCondition>> powerSet = policyList.get(i).calculatePowerSet();
-            for (Set<ObjectCondition> objSet: powerSet) {
-                if(objSet.size() == 0) continue;
-                List<ObjectCondition> multiplier = new ArrayList<>(objSet);
+            List<ObjectCondition> polObj = policyList.get(i).getObject_conditions();
+            for (int j = 0; j < polObj.size(); j++) {
+                List<ObjectCondition> multiplier = new ArrayList<>();
+                multiplier.add(polObj.get(j));
                 BEExpression quotient = new BEExpression(policyExp);
-                quotient.removeFromPolicies(objSet);
+                quotient.removeFromPolicies(polObj.get(j));
                 Factorino factorino = new Factorino(multiplier, quotient);
                 factorino.setCost();
                 factz.add(factorino);
@@ -39,24 +48,52 @@ public class ExactFactorization {
             ef.setCost(cost);
             fMap.put(policyExp, ef);
         }
-        List<BEExpression> nextLevel = Lists.newArrayList(fMap.keySet());
+
+        List<BEExpression> currentLevel = Lists.newArrayList(fMap.keySet());
         while(true){
-            for (int i = 0; i < nextLevel.size(); i++) {
-                for (int j = 1; j < nextLevel.size(); j++) {
+            List<BEExpression> nextLevel = new ArrayList<>();
+            for (int i = 0; i < currentLevel.size(); i++) {
+                for (int j = 1; j < currentLevel.size(); j++) {
+
 
                 }
             }
         }
     }
 
-    public Factorino checkCommon(BEExpression b1, BEExpression b2){
-        Factorino factorino = new Factorino();
-        for (int i = 0; i < b1.getPolicies().size(); i++) {
-            for (int j = 0; j < b2.getPolicies().size(); j++){
-
+    public List<BEExpression> checkCommon(BEExpression b1, BEExpression b2, int level){
+        List<Factorino> b1F = fMap.get(b1).getPossibleFactz();
+        List<Factorino> b2F = fMap.get(b2).getPossibleFactz();
+        List<BEExpression> cList = new ArrayList<>();
+        ExactFactor cEf = new ExactFactor();
+        for (int i = 0; i < b1F.size(); i++) {
+            for (int j = 0; j < b2F.size(); j++){
+                BEExpression cExp = new BEExpression();
+                Factorino cFactorino = new Factorino();
+                if(b1F.get(i).sameMultiplier(b2F.get(j))){
+                    if (level == 1){
+                        cExp.getPolicies().addAll(b1.getPolicies());
+                        cExp.getPolicies().addAll(b2.getPolicies());
+                        cFactorino.setMultiplier(b1F.get(i).getMultiplier());
+                        cFactorino.getQuotient().getPolicies().addAll(b1F.get(i).getQuotient().getPolicies());
+                        cFactorino.getQuotient().getPolicies().addAll(b2F.get(j).getQuotient().getPolicies());
+                        cList.add(cExp);
+                        cEf.getPossibleFactz().add(cFactorino);
+                    }
+                }
             }
         }
+        if(cList.size() > 1){ //More than one factorization was possible and can be combined. e.g., ABC + ACD. Assumption: there are no duplicates
+            Factorino mFactorino = new Factorino();
+            for (int i = 0; i < cEf.getPossibleFactz().size(); i++) {
+                mFactorino.getMultiplier().addAll(cEf.getPossibleFactz().get(i).getMultiplier());
+            }
+
+        }
+        //Incomplete algorithm; temporary fix
+        return null;
     }
+
 
 
 

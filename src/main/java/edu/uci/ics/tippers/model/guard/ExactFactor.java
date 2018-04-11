@@ -20,6 +20,10 @@ public class ExactFactor {
         this.possibleFactz = factorinos;
     }
 
+    public ExactFactor() {
+        this.possibleFactz = new ArrayList<>();
+    }
+
     /**
      * Bad factorization algorithm because it generates all the possible subsets
      * @param beExpression

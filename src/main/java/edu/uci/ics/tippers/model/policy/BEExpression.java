@@ -15,8 +15,6 @@ import java.util.stream.Collectors;
  */
 public class BEExpression{
 
-    MySQLQueryManager queryManager = new MySQLQueryManager();
-
     List<BEPolicy> policies;
 
     public BEExpression(){
@@ -119,7 +117,8 @@ public class BEExpression{
 
     /**
      * Removes a set of object condition from policies
-     * TODO: What happens when a policy only contains one of the object condition and not the other?
+     * TODO: When a policy only contains one of the object condition and not the other?
+     * TODO: When objSet is the entire policy, i.e quotient is empty after factorization
      * @param objSet
      */
     public void removeFromPolicies(Set<ObjectCondition> objSet) {
@@ -163,11 +162,11 @@ public class BEExpression{
     }
 
     public long computeCost(){
-        return queryManager.runTimedQuery(createQueryFromPolices());
+        return MySQLQueryManager.runTimedQuery(createQueryFromPolices());
     }
 
     public double computeFalsePositives() {
-        return queryManager.runCountingQuery(createQueryFromPolices());
+        return MySQLQueryManager.runCountingQuery(createQueryFromPolices());
     }
 
     public void parseJSONList(String jsonData) {

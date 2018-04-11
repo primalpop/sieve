@@ -18,8 +18,6 @@ import java.util.Set;
  */
 public class NaiveExactFactorization {
 
-    MySQLQueryManager queryManager = new MySQLQueryManager();
-
     //Original expression
     BEExpression expression;
 
@@ -102,13 +100,13 @@ public class NaiveExactFactorization {
     public void factorizeSet(Set<ObjectCondition> objSet){
         BEExpression qoutientWithMultiplier = new BEExpression(this.getExpression());
         qoutientWithMultiplier.checkAgainstPolices(objSet);
-        if(qoutientWithMultiplier.getPolicies().size() > 1 ) { //was able to factorino
+        if(qoutientWithMultiplier.getPolicies().size() > 1 ) { //was able to factorize
             this.multiplier = new ArrayList<>(objSet);
             this.quotient = new NaiveExactFactorization(qoutientWithMultiplier);
             this.quotient.getExpression().removeFromPolicies(objSet);
             this.reminder = new NaiveExactFactorization(this.getExpression());
             this.reminder.getExpression().getPolicies().removeAll(qoutientWithMultiplier.getPolicies());
-            this.cost = queryManager.runTimedQuery(this.createQueryFromExactFactor());
+            this.cost = MySQLQueryManager.runTimedQuery(this.createQueryFromExactFactor());
         }
     }
 
@@ -116,12 +114,12 @@ public class NaiveExactFactorization {
      * Recursive algorithm to (exact) factorino the expression
      * -------------------------------------------------------
      * 1) For each policy in the expression, generate a power set of all the object conditions
-     * 2) For each element in the power set, factorino the expression
+     * 2) For each element in the power set, factorize the expression
      * 3) After factorizing, if the multiplier is non-empty and
      *    cost of the factorized expression is lower than the previous factorization
      * 4) Assign it as the best factor
-     * 5) Recursively factorino the quotient and reminder
-     * 6) If no more policies left to factorino, break
+     * 5) Recursively factorize the quotient and reminder
+     * 6) If no more policies left to factorize, break
      * TODO: Add a boolean flag to factorization after one step to return the best single factor
      */
     public void greedyFactorization(){
@@ -140,7 +138,7 @@ public class NaiveExactFactorization {
                     this.quotient.greedyFactorization();;
                     this.reminder = currentFactor.getReminder();
                     this.reminder.greedyFactorization();
-                    this.cost = queryManager.runTimedQuery(this.createQueryFromExactFactor());
+                    this.cost = MySQLQueryManager.runTimedQuery(this.createQueryFromExactFactor());
                 }
             }
         }
