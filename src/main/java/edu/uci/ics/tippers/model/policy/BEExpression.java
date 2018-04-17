@@ -17,6 +17,8 @@ public class BEExpression{
 
     List<BEPolicy> policies;
 
+    MySQLQueryManager mySQLQueryManager = new MySQLQueryManager();
+
     public BEExpression(){
         this.policies = new ArrayList<BEPolicy>();
     }
@@ -117,13 +119,19 @@ public class BEExpression{
 
     /**
      * Removes a set of object condition from policies
-     * TODO: When a policy only contains one of the object condition and not the other?
-     * TODO: When objSet is the entire policy, i.e quotient is empty after factorization
      * @param objSet
      */
     public void removeFromPolicies(Set<ObjectCondition> objSet) {
-        for (ObjectCondition obj: objSet) {
-            this.removeFromPolicies(obj);
+        for(int i = 0; i < this.policies.size(); i++){
+            //Checking if the policy contains all the object conditions in the multiplier
+            if(this.policies.get(i).containsObjCond(objSet)){
+                //When objSet is the entire policy, i.e quotient is empty after factorization
+                if(this.policies.get(i).getObject_conditions().size() == objSet.size())
+                    continue;
+                for(ObjectCondition obj: objSet){
+                    this.policies.get(i).deleteObjCond(obj);
+                }
+            }
         }
     }
 
@@ -162,11 +170,11 @@ public class BEExpression{
     }
 
     public long computeCost(){
-        return MySQLQueryManager.runTimedQuery(createQueryFromPolices());
+        return mySQLQueryManager.runTimedQuery(createQueryFromPolices()).toMillis();
     }
 
     public double computeFalsePositives() {
-        return MySQLQueryManager.runCountingQuery(createQueryFromPolices());
+        return mySQLQueryManager.runCountingQuery(createQueryFromPolices());
     }
 
     public void parseJSONList(String jsonData) {

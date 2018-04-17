@@ -59,7 +59,6 @@ public class ApproxFactorization {
     private long computeL(ObjectCondition objectCondition){
         String query = PolicyConstants.SELECT_COUNT_STAR_SEMANTIC_OBSERVATIONS + " where " +  objectCondition.print();
         return MySQLQueryManager.runCountingQuery(query);
-
     }
 
     /**

@@ -310,8 +310,8 @@ public class DataGeneration {
 
     public static void main (String [] args){
         DataGeneration dataGeneration = new DataGeneration();
-        dataGeneration.runScript("mysql/schema.sql");
-//        dataGeneration.generateAll();
+//        dataGeneration.runScript("mysql/schema.sql");
+        dataGeneration.generateAll();
 //        dataGeneration.runScript("mysql/drop.sql");
     }
 
