@@ -104,9 +104,8 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.39</version>
+            <version>8.0.9-rc</version>
         </dependency>
-
 
 
         <!-- For powersets, multisets, multimaps and other cool stuff -->

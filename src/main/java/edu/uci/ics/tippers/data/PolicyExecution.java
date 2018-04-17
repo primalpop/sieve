@@ -33,13 +33,13 @@ import java.util.stream.IntStream;
  */
 public class PolicyExecution {
 
-    private long timeout = 25000;
+    private long timeout = 250000;
 
     private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     private Connection connection;
 
-    private static final int[] policyNumbers = {5, 10, 50, 100, 500, 1000, 5000};
+    private static final int[] policyNumbers = {2000, 3000, 4000, 10000, 50000, 100000};
 
     private static PolicyGeneration policyGen;
 
@@ -236,6 +236,8 @@ public class PolicyExecution {
 
         for (File file : policyFiles) {
 
+            System.out.println(file.getName() + " being processed........");
+
             BEExpression beExpression = new BEExpression();
 
             beExpression.parseJSONList(Reader.readTxt(policyDir + file.getName()));
@@ -252,22 +254,24 @@ public class PolicyExecution {
 //                runTime = runTime.plus(runQuery(f.getExpression().createQueryFromPolices()));
 //                policyRunTimes.put(file.getName() + "-af", runTime);
 
-                //TODO: Change it to executor service so that method can be timed out
-                Instant startFact = Instant.now();
-                GreedyExact gf = new GreedyExact(beExpression);
-                gf.GFactorize();
-                Instant stopFact = Instant.now();
-                Duration fTime = Duration.ofMillis(0);
-                fTime.plus(Duration.between( startFact , stopFact ));
-                policyRunTimes.put(file.getName() + "-fact", fTime);
-                runTime = Duration.ofMillis(0);
-                runTime = runTime.plus(runQuery(gf.createQueryFromExactFactor()));
-                policyRunTimes.put(file.getName() + "-gf", runTime);
+//                TODO: Change it to executor service so that method can be timed out
+//                Instant startFact = Instant.now();
+//                GreedyExact gf = new GreedyExact(beExpression);
+//                gf.GFactorize();
+//                Instant stopFact = Instant.now();
+//                Duration fTime = Duration.ofMillis(0);
+//                fTime.plus(Duration.between( startFact , stopFact ));
+//                policyRunTimes.put(file.getName() + "-fact", fTime);
+//                runTime = Duration.ofMillis(0);
+//                runTime = runTime.plus(runQuery(gf.createQueryFromExactFactor()));
+//                policyRunTimes.put(file.getName() + "-gf", runTime);
 
             } catch (Exception e) {
                 e.printStackTrace();
                 policyRunTimes.put(file.getName(), PolicyConstants.MAX_DURATION);
             }
+
+            System.out.println(file.getName() + " completed and took " + runTime);
 
         }
         return policyRunTimes;
@@ -348,6 +352,5 @@ public class PolicyExecution {
 
 //        pe.generatePolicies(PolicyConstants.BE_POLICY_DIR);
         pe.bePolicyExperiments(PolicyConstants.BE_POLICY_DIR);
-
     }
 }

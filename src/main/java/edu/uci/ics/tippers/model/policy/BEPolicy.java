@@ -56,6 +56,7 @@ public class BEPolicy {
      */
     @JsonProperty("action")
     private String action;
+    private MySQLQueryManager mySQLQueryManager = new MySQLQueryManager();
 
     public BEPolicy(){
         this.object_conditions = new ArrayList<ObjectCondition>();
@@ -260,7 +261,7 @@ public class BEPolicy {
     }
 
     public long computeCost(){
-        return MySQLQueryManager.runTimedQuery(createQueryFromObjectConditions());
+        return mySQLQueryManager.runTimedQuery(createQueryFromObjectConditions()).toMillis();
     }
 
 

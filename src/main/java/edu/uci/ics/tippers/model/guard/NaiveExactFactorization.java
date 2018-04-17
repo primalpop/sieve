@@ -33,6 +33,8 @@ public class NaiveExactFactorization {
     //Cost of evaluating the expression
     Long cost;
 
+    MySQLQueryManager mySQLQueryManager = new MySQLQueryManager();
+
     public NaiveExactFactorization(){
         this.expression = new BEExpression();
         this.multiplier = new ArrayList<ObjectCondition>();
@@ -106,7 +108,7 @@ public class NaiveExactFactorization {
             this.quotient.getExpression().removeFromPolicies(objSet);
             this.reminder = new NaiveExactFactorization(this.getExpression());
             this.reminder.getExpression().getPolicies().removeAll(qoutientWithMultiplier.getPolicies());
-            this.cost = MySQLQueryManager.runTimedQuery(this.createQueryFromExactFactor());
+            this.cost = mySQLQueryManager.runTimedQuery(this.createQueryFromExactFactor()).toMillis();
         }
     }
 
@@ -138,7 +140,7 @@ public class NaiveExactFactorization {
                     this.quotient.greedyFactorization();;
                     this.reminder = currentFactor.getReminder();
                     this.reminder.greedyFactorization();
-                    this.cost = MySQLQueryManager.runTimedQuery(this.createQueryFromExactFactor());
+                    this.cost = mySQLQueryManager.runTimedQuery(this.createQueryFromExactFactor()).toMillis();
                 }
             }
         }

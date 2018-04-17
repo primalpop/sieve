@@ -285,7 +285,6 @@ public class PolicyGeneration {
             rangeQueries.add(rq);
         }
         writeJSONToFile(rangeQueries, numberOfPolicies, PolicyConstants.RANGE_POLICY_2_DIR);
-
     }
 
     /**

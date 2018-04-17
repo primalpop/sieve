@@ -17,6 +17,7 @@ public class Factorino {
 
     //Cost of evaluating the expression
     long cost;
+    private MySQLQueryManager mySQLQueryManager = new MySQLQueryManager();
 
 
     public Factorino(List<ObjectCondition> multiplier, BEExpression quotient) {
@@ -54,7 +55,7 @@ public class Factorino {
         if (multiplier == null || quotient == null)
             this.cost = PolicyConstants.INFINTIY;
         else
-            this.cost = MySQLQueryManager.runTimedQuery(this.toString());
+            this.cost = mySQLQueryManager.runTimedQuery(this.toString()).toMillis();
     }
 
     @Override
