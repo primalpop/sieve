@@ -79,12 +79,21 @@ public class Bucket {
         this.numberOfItems = numberOfItems;
     }
 
-    @Override
-    public String toString() {
+    public String toStringSingleton() {
         return "Bucket{" +
                 "value='" + value + '\'' +
                 ", cumulfreq=" + cumulfreq +
                 ", freq=" + freq +
+                '}';
+    }
+
+
+    public String toStringEH() {
+        return "Bucket{" +
+                "lower='" + lower + '\'' +
+                ", upper='" + upper + '\'' +
+                ", cumulfreq=" + cumulfreq +
+                ", numberOfItems=" + numberOfItems +
                 '}';
     }
 }

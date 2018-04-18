@@ -1,14 +1,19 @@
 package edu.uci.ics.tippers.model.guard;
 
 import edu.uci.ics.tippers.common.PolicyConstants;
+import edu.uci.ics.tippers.common.PolicyEngineException;
 import edu.uci.ics.tippers.db.MySQLConnectionManager;
 import edu.uci.ics.tippers.db.MySQLQueryManager;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
 import edu.uci.ics.tippers.model.policy.ObjectCondition;
+import jdk.nashorn.internal.runtime.JSONFunctions;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.*;
 
@@ -33,17 +38,17 @@ public class GreedyExact {
 
     private java.sql.Connection conn;
 
-    public GreedyExact(){
+    public GreedyExact() {
         this.expression = new BEExpression();
         this.multiplier = new ArrayList<ObjectCondition>();
-        this. cost = PolicyConstants.INFINTIY;
+        this.cost = PolicyConstants.INFINTIY;
         this.conn = MySQLConnectionManager.getInstance().getConnection();
     }
 
-    public GreedyExact(BEExpression beExpression){
+    public GreedyExact(BEExpression beExpression) {
         this.expression = new BEExpression(beExpression);
         this.multiplier = new ArrayList<ObjectCondition>();
-        this. cost = PolicyConstants.INFINTIY;
+        this.cost = PolicyConstants.INFINTIY;
         this.conn = MySQLConnectionManager.getInstance().getConnection();
     }
 
@@ -88,11 +93,10 @@ public class GreedyExact {
         this.cost = cost;
     }
 
-    //TODO: Add support for equi-height histograms
-    public List<Bucket> getHistogram(String attribute, String attribute_type, String histogram_type){
+    public List<Bucket> getHistogram(String attribute, String attribute_type, String histogram_type) {
         List<Bucket> hBuckets = new ArrayList<>();
-        if(attribute_type.equalsIgnoreCase("String") && histogram_type.equalsIgnoreCase("singleton")) {
-            PreparedStatement ps = null;
+        PreparedStatement ps = null;
+        if (attribute_type.equalsIgnoreCase("String") && histogram_type.equalsIgnoreCase("singleton")) {
             try {
                 ps = conn.prepareStatement(
                         "SELECT FROM_BASE64(SUBSTRING_INDEX(v, ':', -1)) value, concat(round(c*100,1),'%') cumulfreq, " +
@@ -115,27 +119,75 @@ public class GreedyExact {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+        } else if (attribute_type.equalsIgnoreCase("String") && histogram_type.equalsIgnoreCase("equiheight")) {
+            try {
+                ps = conn.prepareStatement("SELECT FROM_BASE64(SUBSTRING_INDEX(v1, ':', -1)) lvalue, " +
+                        "FROM_BASE64(SUBSTRING_INDEX(v2, ':', -1)) uvalue, concat(round(c*100,1),'%') cumulfreq, " +
+                        "CONCAT(round((c - LAG(c, 1, 0) over()) * 100,1), '%') freq, numItems FROM information_schema.column_statistics, " +
+                        "JSON_TABLE(histogram->'$.buckets',       '$[*]' COLUMNS(v1 VARCHAR(60) PATH '$[0]', v2 VARCHAR(60) PATH '$[1]'," +
+                        " c double PATH '$[2]', numItems integer PATH '$[3]')) hist  where column_name = ?;");
+                ps.setString(1, attribute);
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    Bucket bucket = new Bucket();
+                    bucket.setLower(rs.getString("lvalue"));
+                    bucket.setUpper(rs.getString("uvalue"));
+                    bucket.setCumulfreq(Double.parseDouble(rs.getString("cumulfreq").replaceAll("[^\\d.]", "")));
+                    bucket.setFreq(Double.parseDouble(rs.getString("freq").replaceAll("[^\\d.]", "")));
+                    bucket.setNumberOfItems(rs.getInt("numItems"));
+                    hBuckets.add(bucket);
+                }
+                rs.close();
+                ps.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } else if (attribute_type.equalsIgnoreCase("DateTime") && histogram_type.equalsIgnoreCase("equiheight")) {
+            try {
+                ps = conn.prepareStatement("SELECT lvalue, uvalue, concat(round(c*100,1),'%') cumulfreq, " +
+                        "CONCAT(round((c - LAG(c, 1, 0) over()) * 100,1), '%') freq, numItems " +
+                        "FROM information_schema.column_statistics, JSON_TABLE(histogram->'$.buckets',       " +
+                        "'$[*]' COLUMNS(lvalue VARCHAR(60) PATH '$[0]', uvalue VARCHAR(60) PATH '$[1]', c double PATH '$[2]', " +
+                        "numItems integer PATH '$[3]')) hist  where column_name = ?;");
+                ps.setString(1, attribute);
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    Bucket bucket = new Bucket();
+                    bucket.setLower(rs.getString("lvalue"));
+                    bucket.setUpper(rs.getString("uvalue"));
+                    bucket.setCumulfreq(Double.parseDouble(rs.getString("cumulfreq").replaceAll("[^\\d.]", "")));
+                    bucket.setFreq(Double.parseDouble(rs.getString("freq").replaceAll("[^\\d.]", "")));
+                    bucket.setNumberOfItems(rs.getInt("numItems"));
+                    hBuckets.add(bucket);
+                }
+                rs.close();
+                ps.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } else {
+            throw new PolicyEngineException("Unknown Histogram type");
         }
         return hBuckets;
     }
 
-    private long computeL(BEPolicy bePolicy){
-        String query = PolicyConstants.SELECT_COUNT_STAR_SEMANTIC_OBSERVATIONS + " where " +  bePolicy.createQueryFromObjectConditions();
+    private long computeL(BEPolicy bePolicy) {
+        String query = PolicyConstants.SELECT_COUNT_STAR_SEMANTIC_OBSERVATIONS + " where " + bePolicy.createQueryFromObjectConditions();
         return MySQLQueryManager.runCountingQuery(query);
     }
 
-    private long computeL(ObjectCondition objectCondition){
-        String query = PolicyConstants.SELECT_COUNT_STAR_SEMANTIC_OBSERVATIONS + " where " +  objectCondition.print();
+    private long computeL(ObjectCondition objectCondition) {
+        String query = PolicyConstants.SELECT_COUNT_STAR_SEMANTIC_OBSERVATIONS + " where " + objectCondition.print();
         return MySQLQueryManager.runCountingQuery(query);
     }
 
     //TODO: complete it
-    public long computeGain(Set<ObjectCondition> objSet){
+    public long computeGain(Set<ObjectCondition> objSet) {
         return 0;
     }
 
     public void GFactorize() {
-        if(this.expression.getPolicies().isEmpty()) return;
+        if (this.expression.getPolicies().isEmpty()) return;
         Set<Set<ObjectCondition>> powerSet = new HashSet<Set<ObjectCondition>>();
         for (int i = 0; i < this.expression.getPolicies().size(); i++) {
             BEPolicy bp = this.expression.getPolicies().get(i);
@@ -145,7 +197,7 @@ public class GreedyExact {
         }
         GreedyExact currentFactor = new GreedyExact(this.expression);
         for (Set<ObjectCondition> objSet : powerSet) {
-            if(objSet.size() == 0) continue;
+            if (objSet.size() == 0) continue;
             BEExpression temp = new BEExpression(this.expression);
             temp.checkAgainstPolices(objSet);
             if (temp.getPolicies().size() > 1) { //was able to factorize
@@ -156,7 +208,7 @@ public class GreedyExact {
                 currentFactor.reminder.expression.getPolicies().removeAll(temp.getPolicies());
                 currentFactor.cost = ((long) Math.random());
 //                currentFactor.cost = mySQLQueryManager.runTimedQuery(this.createQueryFromExactFactor()).toMillis();
-                if(this.cost > currentFactor.cost){
+                if (this.cost > currentFactor.cost) {
                     this.multiplier = currentFactor.getMultiplier();
                     this.quotient = currentFactor.getQuotient();
                     this.reminder = currentFactor.getReminder();
@@ -168,23 +220,22 @@ public class GreedyExact {
     }
 
 
-    public String createQueryFromExactFactor(){
-        if (multiplier.isEmpty()){
-            if(expression != null) {
+    public String createQueryFromExactFactor() {
+        if (multiplier.isEmpty()) {
+            if (expression != null) {
                 return this.expression.createQueryFromPolices();
-            }
-            else
+            } else
                 return "";
         }
         StringBuilder query = new StringBuilder();
-        for (ObjectCondition mul: multiplier) {
+        for (ObjectCondition mul : multiplier) {
             query.append(mul.print());
             query.append(PolicyConstants.CONJUNCTION);
         }
         query.append("(");
         query.append(this.quotient.createQueryFromExactFactor());
         query.append(")");
-        if(!this.reminder.expression.getPolicies().isEmpty())  {
+        if (!this.reminder.expression.getPolicies().isEmpty()) {
             query.append(PolicyConstants.DISJUNCTION);
             query.append("(");
             query.append(this.reminder.createQueryFromExactFactor());
