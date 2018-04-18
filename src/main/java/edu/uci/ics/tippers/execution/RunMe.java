@@ -42,9 +42,9 @@ public class RunMe {
 
 
         GreedyExact ge = new GreedyExact();
-        List<Bucket> bucs = ge.getHistogram("temperature", "String", "singleton");
+        List<Bucket> bucs = ge.getHistogram("user_id", "String", "equiheight");
         for (Bucket b: bucs) {
-            System.out.println(b.toString());
+            System.out.println(b.toStringEH());
         }
     }
 }
