@@ -247,6 +247,8 @@ public class PolicyExecution {
             try {
                 runTime = runTime.plus(runQuery(beExpression.createQueryFromPolices()));
                 policyRunTimes.put(file.getName(), runTime);
+                System.out.println(file.getName() + " completed and took " + runTime);
+
 
 //                runTime = Duration.ofSeconds(0);
 //                ApproxFactorization f = new ApproxFactorization(beExpression);
@@ -262,17 +264,16 @@ public class PolicyExecution {
                 Duration fTime = Duration.ofMillis(0);
                 fTime.plus(Duration.between( startFact , stopFact ));
                 policyRunTimes.put(file.getName() + "-fact", fTime);
+                System.out.println("Greedy Factorization complete amd took " + fTime);
                 runTime = Duration.ofMillis(0);
                 runTime = runTime.plus(runQuery(gf.createQueryFromExactFactor()));
                 policyRunTimes.put(file.getName() + "-gf", runTime);
+                System.out.println(file.getName() + "_greedy_factorized completed and took " + runTime);
 
             } catch (Exception e) {
                 e.printStackTrace();
                 policyRunTimes.put(file.getName(), PolicyConstants.MAX_DURATION);
             }
-
-            System.out.println(file.getName() + " completed and took " + runTime);
-
         }
         return policyRunTimes;
     }

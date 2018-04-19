@@ -18,7 +18,6 @@ public class RunMe {
         System.out.println(beExpression.createQueryFromPolices());
 
         GreedyExact gf = new GreedyExact(beExpression);
-        gf.fillBuckets();
         gf.GFactorize();
         System.out.println(gf.createQueryFromExactFactor());
 
