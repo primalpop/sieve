@@ -255,16 +255,16 @@ public class PolicyExecution {
 //                policyRunTimes.put(file.getName() + "-af", runTime);
 
 //                TODO: Change it to executor service so that method can be timed out
-//                Instant startFact = Instant.now();
-//                GreedyExact gf = new GreedyExact(beExpression);
-//                gf.GFactorize();
-//                Instant stopFact = Instant.now();
-//                Duration fTime = Duration.ofMillis(0);
-//                fTime.plus(Duration.between( startFact , stopFact ));
-//                policyRunTimes.put(file.getName() + "-fact", fTime);
-//                runTime = Duration.ofMillis(0);
-//                runTime = runTime.plus(runQuery(gf.createQueryFromExactFactor()));
-//                policyRunTimes.put(file.getName() + "-gf", runTime);
+                Instant startFact = Instant.now();
+                GreedyExact gf = new GreedyExact(beExpression);
+                gf.GFactorize();
+                Instant stopFact = Instant.now();
+                Duration fTime = Duration.ofMillis(0);
+                fTime.plus(Duration.between( startFact , stopFact ));
+                policyRunTimes.put(file.getName() + "-fact", fTime);
+                runTime = Duration.ofMillis(0);
+                runTime = runTime.plus(runQuery(gf.createQueryFromExactFactor()));
+                policyRunTimes.put(file.getName() + "-gf", runTime);
 
             } catch (Exception e) {
                 e.printStackTrace();

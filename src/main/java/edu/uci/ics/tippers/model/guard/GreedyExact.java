@@ -48,7 +48,6 @@ public class GreedyExact {
         this.multiplier = new ArrayList<ObjectCondition>();
         this.cost = -1L;
         this.conn = MySQLConnectionManager.getInstance().getConnection();
-        fillBuckets();
     }
 
     public GreedyExact(BEExpression beExpression) {
@@ -56,7 +55,6 @@ public class GreedyExact {
         this.multiplier = new ArrayList<ObjectCondition>();
         this.cost = -1L;
         this.conn = MySQLConnectionManager.getInstance().getConnection();
-        fillBuckets();
     }
 
 
@@ -199,20 +197,6 @@ public class GreedyExact {
         return hBuckets;
     }
 
-    private List<Bucket> inBuckets(ObjectCondition objectCondition){
-        List mBuckets = new ArrayList<Bucket>();
-
-        mBuckets = bucketMap.get(objectCondition.getAttribute()).stream()
-                .filter(b -> Integer.parseInt(b.getValue()) >
-                        Integer.parseInt(objectCondition.getBooleanPredicates().get(0).getValue())
-                        && Integer.parseInt(b.getValue()) <
-                        Integer.parseInt(objectCondition.getBooleanPredicates().get(1).getValue()))
-                .collect(Collectors.toList());
-
-        return mBuckets;
-    }
-
-
     public double computeL(ObjectCondition objectCondition){
         List mBuckets = null;
         double selectivity = 0.0001;
@@ -250,16 +234,16 @@ public class GreedyExact {
             //TODO: Overestimates the selectivity as the partially contained buckets are completely counted
             selectivity += bucketMap.get(objectCondition.getAttribute()).stream()
                     .filter(b -> timestampStrToCal(b.getLower())
-                            .compareTo(timestampStrToCal(objectCondition.getBooleanPredicates().get(0).getValue())) < 0
+                            .compareTo(timestampStrToCal(objectCondition.getBooleanPredicates().get(1).getValue())) < 0
                             && timestampStrToCal(b.getUpper())
-                            .compareTo(timestampStrToCal(objectCondition.getBooleanPredicates().get(1).getValue())) > 0)
+                            .compareTo(timestampStrToCal(objectCondition.getBooleanPredicates().get(0).getValue())) > 0)
                     .mapToDouble(b -> b.getFreq())
                     .sum();
         }
         else {
             throw new PolicyEngineException("Unknown attribute");
         }
-        return selectivity;
+        return selectivity/100; //As the frequency is in percentage, to convert it to ratio
     }
 
     /**
@@ -270,7 +254,7 @@ public class GreedyExact {
      * @return
      */
     public double computeL(Collection<ObjectCondition> objectConditions){
-        double selectivity = 0.0001;
+        double selectivity = 1;
         for (ObjectCondition obj: objectConditions) {
             selectivity *= computeL(obj);
         }
@@ -285,15 +269,13 @@ public class GreedyExact {
      * @return
      */
     public double computeL(BEExpression beExpression){
-        double selectivity = 0.0001;
+        double selectivity = 1;
         for (BEPolicy bePolicy: beExpression.getPolicies()) {
             selectivity *= (1 - computeL(bePolicy.getObject_conditions()));
         }
         return 1 - selectivity;
     }
 
-
-    //TODO: DEBUG ITT!!!
     public long computeGain(BEExpression original, Set<ObjectCondition> objSet, BEExpression quotient) {
         long gain = (long) ((quotient.getPolicies().size() - 1)* computeL(objSet) * PolicyConstants.NUMBER_OR_TUPLES);
         for (BEPolicy bePolicy: original.getPolicies()) {
@@ -323,7 +305,7 @@ public class GreedyExact {
                 currentFactor.quotient.expression.removeFromPolicies(objSet);
                 currentFactor.reminder = new GreedyExact(this.expression);
                 currentFactor.reminder.expression.getPolicies().removeAll(temp.getPolicies());
-                currentFactor.cost = computeGain(this.expression, objSet, temp);
+                currentFactor.cost = computeGain(temp, objSet, currentFactor.quotient.expression);
                 if (this.cost < currentFactor.cost) {
                     this.multiplier = currentFactor.getMultiplier();
                     this.quotient = currentFactor.getQuotient();
@@ -359,6 +341,4 @@ public class GreedyExact {
         }
         return query.toString();
     }
-
-
 }
