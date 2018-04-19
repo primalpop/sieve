@@ -15,7 +15,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class GreedyExact {
 
@@ -36,20 +39,24 @@ public class GreedyExact {
 
     MySQLQueryManager mySQLQueryManager = new MySQLQueryManager();
 
+    Map<String, List<Bucket>> bucketMap;
+
     private java.sql.Connection conn;
 
     public GreedyExact() {
         this.expression = new BEExpression();
         this.multiplier = new ArrayList<ObjectCondition>();
-        this.cost = PolicyConstants.INFINTIY;
+        this.cost = -1L;
         this.conn = MySQLConnectionManager.getInstance().getConnection();
+        fillBuckets();
     }
 
     public GreedyExact(BEExpression beExpression) {
         this.expression = new BEExpression(beExpression);
         this.multiplier = new ArrayList<ObjectCondition>();
-        this.cost = PolicyConstants.INFINTIY;
+        this.cost = -1L;
         this.conn = MySQLConnectionManager.getInstance().getConnection();
+        fillBuckets();
     }
 
 
@@ -91,6 +98,27 @@ public class GreedyExact {
 
     public void setCost(Long cost) {
         this.cost = cost;
+    }
+
+    public static Calendar timestampStrToCal(String timestamp) {
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat(PolicyConstants.TIMESTAMP_FORMAT);
+        try {
+            cal.setTime(sdf.parse(timestamp));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return cal;
+    }
+
+    public void fillBuckets(){
+        bucketMap = new HashMap<>();
+        this.bucketMap.put(PolicyConstants.USERID_ATTR, getHistogram("user_id", "String", "equiheight"));
+        this.bucketMap.put(PolicyConstants.TIMESTAMP_ATTR, getHistogram("timeStamp", "DateTime", "equiheight"));
+        this.bucketMap.put(PolicyConstants.LOCATIONID_ATTR, getHistogram("location_id", "String", "singleton"));
+        this.bucketMap.put(PolicyConstants.ENERGY_ATTR, getHistogram("energy", "String", "singleton"));
+        this.bucketMap.put(PolicyConstants.TEMPERATURE_ATTR, getHistogram("temperature", "String", "singleton"));
+        this.bucketMap.put(PolicyConstants.ACTIVITY_ATTR, getHistogram("activity", "String", "singleton"));
     }
 
     public List<Bucket> getHistogram(String attribute, String attribute_type, String histogram_type) {
@@ -171,19 +199,108 @@ public class GreedyExact {
         return hBuckets;
     }
 
-    private long computeL(BEPolicy bePolicy) {
-        String query = PolicyConstants.SELECT_COUNT_STAR_SEMANTIC_OBSERVATIONS + " where " + bePolicy.createQueryFromObjectConditions();
-        return MySQLQueryManager.runCountingQuery(query);
+    private List<Bucket> inBuckets(ObjectCondition objectCondition){
+        List mBuckets = new ArrayList<Bucket>();
+
+        mBuckets = bucketMap.get(objectCondition.getAttribute()).stream()
+                .filter(b -> Integer.parseInt(b.getValue()) >
+                        Integer.parseInt(objectCondition.getBooleanPredicates().get(0).getValue())
+                        && Integer.parseInt(b.getValue()) <
+                        Integer.parseInt(objectCondition.getBooleanPredicates().get(1).getValue()))
+                .collect(Collectors.toList());
+
+        return mBuckets;
     }
 
-    private long computeL(ObjectCondition objectCondition) {
-        String query = PolicyConstants.SELECT_COUNT_STAR_SEMANTIC_OBSERVATIONS + " where " + objectCondition.print();
-        return MySQLQueryManager.runCountingQuery(query);
+
+    public double computeL(ObjectCondition objectCondition){
+        List mBuckets = null;
+        double selectivity = 0.0001;
+        if(objectCondition.getAttribute().equalsIgnoreCase(PolicyConstants.TEMPERATURE_ATTR) ||
+                objectCondition.getAttribute().equalsIgnoreCase(PolicyConstants.ENERGY_ATTR)){
+            selectivity += bucketMap.get(objectCondition.getAttribute()).stream()
+                    .filter(b -> Integer.parseInt(b.getValue()) >=
+                            Integer.parseInt(objectCondition.getBooleanPredicates().get(0).getValue())
+                            && Integer.parseInt(b.getValue()) <=
+                            Integer.parseInt(objectCondition.getBooleanPredicates().get(1).getValue()))
+                    .mapToDouble(b -> b.getFreq())
+                    .sum();
+        }
+        else if (objectCondition.getAttribute().equalsIgnoreCase(PolicyConstants.LOCATIONID_ATTR) ||
+                objectCondition.getAttribute().equalsIgnoreCase(PolicyConstants.ACTIVITY_ATTR)){
+            Bucket bucket = bucketMap.get(objectCondition.getAttribute()).stream()
+                    .filter(b -> b.getValue().equalsIgnoreCase(objectCondition.getBooleanPredicates().get(0).getValue()))
+                    .findFirst()
+                    .orElse(null);
+            selectivity += bucket.getFreq();
+
+        }
+        else if (objectCondition.getAttribute().equalsIgnoreCase(PolicyConstants.USERID_ATTR)){
+            Bucket bucket = bucketMap.get(objectCondition.getAttribute()).stream()
+                    .filter(b -> Integer.parseInt(b.getLower()) >=
+                            Integer.parseInt(objectCondition.getBooleanPredicates().get(0).getValue())
+                            && Integer.parseInt(b.getUpper()) <=
+                            Integer.parseInt(objectCondition.getBooleanPredicates().get(1).getValue()))
+                    .findFirst()
+                    .orElse(null);
+            selectivity += bucket.getFreq()/bucket.getNumberOfItems();
+
+        }
+        else if (objectCondition.getAttribute().equalsIgnoreCase(PolicyConstants.TIMESTAMP_ATTR)){
+            //TODO: Overestimates the selectivity as the partially contained buckets are completely counted
+            selectivity += bucketMap.get(objectCondition.getAttribute()).stream()
+                    .filter(b -> timestampStrToCal(b.getLower())
+                            .compareTo(timestampStrToCal(objectCondition.getBooleanPredicates().get(0).getValue())) < 0
+                            && timestampStrToCal(b.getUpper())
+                            .compareTo(timestampStrToCal(objectCondition.getBooleanPredicates().get(1).getValue())) > 0)
+                    .mapToDouble(b -> b.getFreq())
+                    .sum();
+        }
+        else {
+            throw new PolicyEngineException("Unknown attribute");
+        }
+        return selectivity;
     }
 
-    //TODO: complete it
-    public long computeGain(Set<ObjectCondition> objSet) {
-        return 0;
+    /**
+     * Selectivity of a conjunctive expression
+     * e.g., A = u and B = v
+     * sel = set (A) * sel (B)
+     * @param objectConditions
+     * @return
+     */
+    public double computeL(Collection<ObjectCondition> objectConditions){
+        double selectivity = 0.0001;
+        for (ObjectCondition obj: objectConditions) {
+            selectivity *= computeL(obj);
+        }
+        return selectivity;
+    }
+
+    /**
+     * Selectivity of a disjunctive expression
+     * e.g., A = u or B = v
+     * sel = 1 - ((1 - sel(A)) * (1 - sel (B)))
+     * @param beExpression
+     * @return
+     */
+    public double computeL(BEExpression beExpression){
+        double selectivity = 0.0001;
+        for (BEPolicy bePolicy: beExpression.getPolicies()) {
+            selectivity *= (1 - computeL(bePolicy.getObject_conditions()));
+        }
+        return 1 - selectivity;
+    }
+
+
+    //TODO: DEBUG ITT!!!
+    public long computeGain(BEExpression original, Set<ObjectCondition> objSet, BEExpression quotient) {
+        long gain = (long) ((quotient.getPolicies().size() - 1)* computeL(objSet) * PolicyConstants.NUMBER_OR_TUPLES);
+        for (BEPolicy bePolicy: original.getPolicies()) {
+            gain += (computeL(bePolicy.getObject_conditions()) * PolicyConstants.NUMBER_OR_TUPLES);
+        }
+        gain -= computeL(quotient) * PolicyConstants.NUMBER_OR_TUPLES;
+        return gain;
     }
 
     public void GFactorize() {
@@ -206,9 +323,8 @@ public class GreedyExact {
                 currentFactor.quotient.expression.removeFromPolicies(objSet);
                 currentFactor.reminder = new GreedyExact(this.expression);
                 currentFactor.reminder.expression.getPolicies().removeAll(temp.getPolicies());
-                currentFactor.cost = ((long) Math.random());
-//                currentFactor.cost = mySQLQueryManager.runTimedQuery(this.createQueryFromExactFactor()).toMillis();
-                if (this.cost > currentFactor.cost) {
+                currentFactor.cost = computeGain(this.expression, objSet, temp);
+                if (this.cost < currentFactor.cost) {
                     this.multiplier = currentFactor.getMultiplier();
                     this.quotient = currentFactor.getQuotient();
                     this.reminder = currentFactor.getReminder();
