@@ -37,24 +37,16 @@ public class GreedyExact {
     //Cost of evaluating the expression
     Long cost;
 
-    MySQLQueryManager mySQLQueryManager = new MySQLQueryManager();
-
-    Map<String, List<Bucket>> bucketMap;
-
-    private java.sql.Connection conn;
-
     public GreedyExact() {
         this.expression = new BEExpression();
         this.multiplier = new ArrayList<ObjectCondition>();
         this.cost = -1L;
-        this.conn = MySQLConnectionManager.getInstance().getConnection();
     }
 
     public GreedyExact(BEExpression beExpression) {
         this.expression = new BEExpression(beExpression);
         this.multiplier = new ArrayList<ObjectCondition>();
         this.cost = -1L;
-        this.conn = MySQLConnectionManager.getInstance().getConnection();
     }
 
 
@@ -109,100 +101,12 @@ public class GreedyExact {
         return cal;
     }
 
-    public void fillBuckets(){
-        bucketMap = new HashMap<>();
-        this.bucketMap.put(PolicyConstants.USERID_ATTR, getHistogram("user_id", "String", "equiheight"));
-        this.bucketMap.put(PolicyConstants.TIMESTAMP_ATTR, getHistogram("timeStamp", "DateTime", "equiheight"));
-        this.bucketMap.put(PolicyConstants.LOCATIONID_ATTR, getHistogram("location_id", "String", "singleton"));
-        this.bucketMap.put(PolicyConstants.ENERGY_ATTR, getHistogram("energy", "String", "singleton"));
-        this.bucketMap.put(PolicyConstants.TEMPERATURE_ATTR, getHistogram("temperature", "String", "singleton"));
-        this.bucketMap.put(PolicyConstants.ACTIVITY_ATTR, getHistogram("activity", "String", "singleton"));
-    }
-
-    public List<Bucket> getHistogram(String attribute, String attribute_type, String histogram_type) {
-        List<Bucket> hBuckets = new ArrayList<>();
-        PreparedStatement ps = null;
-        if (attribute_type.equalsIgnoreCase("String") && histogram_type.equalsIgnoreCase("singleton")) {
-            try {
-                ps = conn.prepareStatement(
-                        "SELECT FROM_BASE64(SUBSTRING_INDEX(v, ':', -1)) value, concat(round(c*100,1),'%') cumulfreq, " +
-                                "CONCAT(round((c - LAG(c, 1, 0) over()) * 100,1), '%') freq " +
-                                "FROM information_schema.column_statistics, JSON_TABLE(histogram->'$.buckets', " +
-                                "'$[*]' COLUMNS(v VARCHAR(60) PATH '$[0]', c double PATH '$[1]')) hist  " +
-                                "where column_name = ?;");
-
-                ps.setString(1, attribute);
-                ResultSet rs = ps.executeQuery();
-                while (rs.next()) {
-                    Bucket bucket = new Bucket();
-                    bucket.setValue(rs.getString("value"));
-                    bucket.setCumulfreq(Double.parseDouble(rs.getString("cumulfreq").replaceAll("[^\\d.]", "")));
-                    bucket.setFreq(Double.parseDouble(rs.getString("freq").replaceAll("[^\\d.]", "")));
-                    hBuckets.add(bucket);
-                }
-                rs.close();
-                ps.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        } else if (attribute_type.equalsIgnoreCase("String") && histogram_type.equalsIgnoreCase("equiheight")) {
-            try {
-                ps = conn.prepareStatement("SELECT FROM_BASE64(SUBSTRING_INDEX(v1, ':', -1)) lvalue, " +
-                        "FROM_BASE64(SUBSTRING_INDEX(v2, ':', -1)) uvalue, concat(round(c*100,1),'%') cumulfreq, " +
-                        "CONCAT(round((c - LAG(c, 1, 0) over()) * 100,1), '%') freq, numItems FROM information_schema.column_statistics, " +
-                        "JSON_TABLE(histogram->'$.buckets',       '$[*]' COLUMNS(v1 VARCHAR(60) PATH '$[0]', v2 VARCHAR(60) PATH '$[1]'," +
-                        " c double PATH '$[2]', numItems integer PATH '$[3]')) hist  where column_name = ?;");
-                ps.setString(1, attribute);
-                ResultSet rs = ps.executeQuery();
-                while (rs.next()) {
-                    Bucket bucket = new Bucket();
-                    bucket.setLower(rs.getString("lvalue"));
-                    bucket.setUpper(rs.getString("uvalue"));
-                    bucket.setCumulfreq(Double.parseDouble(rs.getString("cumulfreq").replaceAll("[^\\d.]", "")));
-                    bucket.setFreq(Double.parseDouble(rs.getString("freq").replaceAll("[^\\d.]", "")));
-                    bucket.setNumberOfItems(rs.getInt("numItems"));
-                    hBuckets.add(bucket);
-                }
-                rs.close();
-                ps.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        } else if (attribute_type.equalsIgnoreCase("DateTime") && histogram_type.equalsIgnoreCase("equiheight")) {
-            try {
-                ps = conn.prepareStatement("SELECT lvalue, uvalue, concat(round(c*100,1),'%') cumulfreq, " +
-                        "CONCAT(round((c - LAG(c, 1, 0) over()) * 100,1), '%') freq, numItems " +
-                        "FROM information_schema.column_statistics, JSON_TABLE(histogram->'$.buckets',       " +
-                        "'$[*]' COLUMNS(lvalue VARCHAR(60) PATH '$[0]', uvalue VARCHAR(60) PATH '$[1]', c double PATH '$[2]', " +
-                        "numItems integer PATH '$[3]')) hist  where column_name = ?;");
-                ps.setString(1, attribute);
-                ResultSet rs = ps.executeQuery();
-                while (rs.next()) {
-                    Bucket bucket = new Bucket();
-                    bucket.setLower(rs.getString("lvalue"));
-                    bucket.setUpper(rs.getString("uvalue"));
-                    bucket.setCumulfreq(Double.parseDouble(rs.getString("cumulfreq").replaceAll("[^\\d.]", "")));
-                    bucket.setFreq(Double.parseDouble(rs.getString("freq").replaceAll("[^\\d.]", "")));
-                    bucket.setNumberOfItems(rs.getInt("numItems"));
-                    hBuckets.add(bucket);
-                }
-                rs.close();
-                ps.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        } else {
-            throw new PolicyEngineException("Unknown Histogram type");
-        }
-        return hBuckets;
-    }
-
     public double computeL(ObjectCondition objectCondition){
         List mBuckets = null;
         double selectivity = 0.0001;
         if(objectCondition.getAttribute().equalsIgnoreCase(PolicyConstants.TEMPERATURE_ATTR) ||
                 objectCondition.getAttribute().equalsIgnoreCase(PolicyConstants.ENERGY_ATTR)){
-            selectivity += bucketMap.get(objectCondition.getAttribute()).stream()
+            selectivity += Histogram.getBucketMap().get(objectCondition.getAttribute()).stream()
                     .filter(b -> Integer.parseInt(b.getValue()) >=
                             Integer.parseInt(objectCondition.getBooleanPredicates().get(0).getValue())
                             && Integer.parseInt(b.getValue()) <=
@@ -212,27 +116,27 @@ public class GreedyExact {
         }
         else if (objectCondition.getAttribute().equalsIgnoreCase(PolicyConstants.LOCATIONID_ATTR) ||
                 objectCondition.getAttribute().equalsIgnoreCase(PolicyConstants.ACTIVITY_ATTR)){
-            Bucket bucket = bucketMap.get(objectCondition.getAttribute()).stream()
+            Bucket bucket = Histogram.getBucketMap().get(objectCondition.getAttribute()).stream()
                     .filter(b -> b.getValue().equalsIgnoreCase(objectCondition.getBooleanPredicates().get(0).getValue()))
                     .findFirst()
                     .orElse(null);
-            selectivity += bucket.getFreq();
+            if (bucket != null) selectivity += bucket.getFreq();
 
         }
         else if (objectCondition.getAttribute().equalsIgnoreCase(PolicyConstants.USERID_ATTR)){
-            Bucket bucket = bucketMap.get(objectCondition.getAttribute()).stream()
+            Bucket bucket = Histogram.getBucketMap().get(objectCondition.getAttribute()).stream()
                     .filter(b -> Integer.parseInt(b.getLower()) >=
                             Integer.parseInt(objectCondition.getBooleanPredicates().get(0).getValue())
                             && Integer.parseInt(b.getUpper()) <=
                             Integer.parseInt(objectCondition.getBooleanPredicates().get(1).getValue()))
                     .findFirst()
                     .orElse(null);
-            selectivity += bucket.getFreq()/bucket.getNumberOfItems();
+            if(bucket != null) selectivity += bucket.getFreq()/bucket.getNumberOfItems();
 
         }
         else if (objectCondition.getAttribute().equalsIgnoreCase(PolicyConstants.TIMESTAMP_ATTR)){
             //TODO: Overestimates the selectivity as the partially contained buckets are completely counted
-            selectivity += bucketMap.get(objectCondition.getAttribute()).stream()
+            selectivity += Histogram.getBucketMap().get(objectCondition.getAttribute()).stream()
                     .filter(b -> timestampStrToCal(b.getLower())
                             .compareTo(timestampStrToCal(objectCondition.getBooleanPredicates().get(1).getValue())) < 0
                             && timestampStrToCal(b.getUpper())
@@ -286,7 +190,7 @@ public class GreedyExact {
     }
 
     public void GFactorize() {
-        if (this.expression.getPolicies().isEmpty()) return;
+        Boolean factorized = false;
         Set<Set<ObjectCondition>> powerSet = new HashSet<Set<ObjectCondition>>();
         for (int i = 0; i < this.expression.getPolicies().size(); i++) {
             BEPolicy bp = this.expression.getPolicies().get(i);
@@ -310,11 +214,13 @@ public class GreedyExact {
                     this.multiplier = currentFactor.getMultiplier();
                     this.quotient = currentFactor.getQuotient();
                     this.reminder = currentFactor.getReminder();
-//                    this.reminder.GFactorize();
+                    factorized = true;
                 }
                 currentFactor = new GreedyExact(this.expression);
             }
         }
+        if(!factorized || (this.reminder.getExpression().getPolicies().size() <= 0.5 * (this.expression.getPolicies().size()))) return;
+        this.reminder.GFactorize();
     }
 
 

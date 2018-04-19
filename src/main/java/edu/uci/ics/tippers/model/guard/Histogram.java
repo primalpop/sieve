@@ -14,33 +14,27 @@ import java.util.Map;
 
 public class Histogram {
 
-    private java.sql.Connection conn;
+    private static java.sql.Connection conn = MySQLConnectionManager.getInstance().getConnection();
 
-    Map<String, List<Bucket>> bucketMap;
+    private static Map<String, List<Bucket>> bucketMap;
 
-    public Histogram(){
-        this.conn = MySQLConnectionManager.getInstance().getConnection();
-        bucketMap = new HashMap<>();
-        fillBuckets();
-    }
-
-    public Map<String, List<Bucket>> getBucketMap() {
-        if(bucketMap.size() == 0 )
+    public static Map<String, List<Bucket>> getBucketMap() {
+        if(bucketMap == null || bucketMap.size() == 0)
             fillBuckets();
         return bucketMap;
     }
 
-    public void fillBuckets(){
+    public static void fillBuckets(){
         bucketMap = new HashMap<>();
-        this.bucketMap.put(PolicyConstants.USERID_ATTR, getHistogram("user_id", "String", "equiheight"));
-        this.bucketMap.put(PolicyConstants.TIMESTAMP_ATTR, getHistogram("timeStamp", "DateTime", "equiheight"));
-        this.bucketMap.put(PolicyConstants.LOCATIONID_ATTR, getHistogram("location_id", "String", "singleton"));
-        this.bucketMap.put(PolicyConstants.ENERGY_ATTR, getHistogram("energy", "String", "singleton"));
-        this.bucketMap.put(PolicyConstants.TEMPERATURE_ATTR, getHistogram("temperature", "String", "singleton"));
-        this.bucketMap.put(PolicyConstants.ACTIVITY_ATTR, getHistogram("activity", "String", "singleton"));
+        bucketMap.put(PolicyConstants.USERID_ATTR, getHistogram("user_id", "String", "equiheight"));
+        bucketMap.put(PolicyConstants.TIMESTAMP_ATTR, getHistogram("timeStamp", "DateTime", "equiheight"));
+        bucketMap.put(PolicyConstants.LOCATIONID_ATTR, getHistogram("location_id", "String", "singleton"));
+        bucketMap.put(PolicyConstants.ENERGY_ATTR, getHistogram("energy", "String", "singleton"));
+        bucketMap.put(PolicyConstants.TEMPERATURE_ATTR, getHistogram("temperature", "String", "singleton"));
+        bucketMap.put(PolicyConstants.ACTIVITY_ATTR, getHistogram("activity", "String", "singleton"));
     }
 
-    public List<Bucket> getHistogram(String attribute, String attribute_type, String histogram_type) {
+    public static List<Bucket> getHistogram(String attribute, String attribute_type, String histogram_type) {
         List<Bucket> hBuckets = new ArrayList<>();
         PreparedStatement ps = null;
         if (attribute_type.equalsIgnoreCase("String") && histogram_type.equalsIgnoreCase("singleton")) {

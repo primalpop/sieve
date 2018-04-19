@@ -90,7 +90,7 @@ public class NaiveExactFactorization {
 
 
     /**
-     * ApproxFactorization using the collection of Object conditions
+     * NaiveExactFactorization using the collection of Object conditions
      * ------------------------------------------------------
      * 1) Checks if more than 1 policy in the expression contains the set of object conditions
      * 2) If yes, the set is chosen as multiplier and
