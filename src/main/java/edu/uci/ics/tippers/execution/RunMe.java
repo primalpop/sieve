@@ -13,14 +13,14 @@ public class RunMe {
 
     public static void main(String args[]) {
 
-//        BEExpression beExpression = new BEExpression();
-//        beExpression.parseJSONList(Reader.readFile("/policies/policy2.json"));
-//        System.out.println(beExpression.createQueryFromPolices());
+        BEExpression beExpression = new BEExpression();
+        beExpression.parseJSONList(Reader.readFile("/policies/policy2.json"));
+        System.out.println(beExpression.createQueryFromPolices());
 
-//        GreedyExact gf = new GreedyExact(beExpression);
-//        gf.GFactorize();
-//        System.out.println(gf.createQueryFromExactFactor());
-
+        GreedyExact gf = new GreedyExact(beExpression);
+        gf.fillBuckets();
+        gf.GFactorize();
+        System.out.println(gf.createQueryFromExactFactor());
 
 //        ExactFactorization ef = new ExactFactorization();
 //        ef.memoize(beExpression);
@@ -40,11 +40,5 @@ public class RunMe {
 
 //        Connection conn = DB2ConnectionManager.getInstance().getConnection();
 
-
-        GreedyExact ge = new GreedyExact();
-        List<Bucket> bucs = ge.getHistogram("user_id", "String", "equiheight");
-        for (Bucket b: bucs) {
-            System.out.println(b.toStringEH());
-        }
     }
 }
