@@ -11,6 +11,8 @@ import java.util.List;
  * Author primpap
  */
 public class PolicyConstants {
+    //TODO: Initialize this from the database
+    public static final int NUMBER_OR_TUPLES = 100000;
 
     public static final String TIMESTAMP_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
@@ -54,6 +56,19 @@ public class PolicyConstants {
 
     public static final ImmutableList<QuerierCondition> DEFAULT_QC = ImmutableList.
             of(new QuerierCondition("user_name",AttributeType.STRING, "=","John Doe", "=", "John Doe"));
+
+
+    public static final String TIMESTAMP_ATTR = "SEMANTIC_OBSERVATION.timeStamp";
+
+    public static final String LOCATIONID_ATTR = "SEMANTIC_OBSERVATION.location_id";
+
+    public static final String USERID_ATTR = "SEMANTIC_OBSERVATION.user_id";
+
+    public static final String ENERGY_ATTR = "SEMANTIC_OBSERVATION.energy";
+
+    public static final String TEMPERATURE_ATTR = "SEMANTIC_OBSERVATION.temperature";
+
+    public static final String ACTIVITY_ATTR = "SEMANTIC_OBSERVATION.activity";
 
 
 }
