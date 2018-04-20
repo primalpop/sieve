@@ -161,4 +161,6 @@ public class BooleanCondition  implements Comparable<BooleanCondition>  {
         BooleanCondition bc = (BooleanCondition) obj;
         return bc.attribute.equals(attribute) && bc.type.equals(type) && bc.booleanPredicates.equals(booleanPredicates);
     }
+
+
 }

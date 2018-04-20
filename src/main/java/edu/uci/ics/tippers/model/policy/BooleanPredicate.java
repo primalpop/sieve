@@ -57,4 +57,12 @@ public class BooleanPredicate {
         BooleanPredicate bp = (BooleanPredicate) obj;
         return bp.value.equals(value) && bp.operator.equals(operator);
     }
+
+    @Override
+    public String toString() {
+        return "BooleanPredicate{" +
+                "value='" + value + '\'' +
+                ", operator='" + operator + '\'' +
+                '}';
+    }
 }

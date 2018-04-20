@@ -1,7 +1,9 @@
 package edu.uci.ics.tippers.data;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.common.PolicyEngineException;
 import edu.uci.ics.tippers.db.MySQLConnectionManager;
@@ -10,6 +12,8 @@ import edu.uci.ics.tippers.fileop.Writer;
 import edu.uci.ics.tippers.model.guard.ApproxFactorization;
 import edu.uci.ics.tippers.model.guard.GreedyExact;
 import edu.uci.ics.tippers.model.policy.BEExpression;
+import edu.uci.ics.tippers.model.policy.BEPolicy;
+import edu.uci.ics.tippers.model.policy.ObjectCondition;
 import edu.uci.ics.tippers.model.query.BasicQuery;
 import edu.uci.ics.tippers.model.query.RangeQuery;
 import org.apache.commons.dbutils.DbUtils;
@@ -19,6 +23,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.*;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.Instant;
@@ -97,8 +102,16 @@ public class PolicyExecution {
             try {
                 Instant start = Instant.now();
                 ResultSet rs = statement.executeQuery(query);
+                int size = 0;
+                if (rs != null)
+                {
+                    rs.beforeFirst();
+                    rs.last();
+                    size = rs.getRow();
+                }
                 rs.close();
                 Instant end = Instant.now();
+                System.out.println("Result set size " + size);
                 return Duration.between(start, end);
             } catch (SQLException e) {
                 cancelStatement(statement, e);
@@ -228,6 +241,7 @@ public class PolicyExecution {
     }
 
 
+
     public Map<String, Duration> runBEPolicies(String policyDir) {
 
         Map<String, Duration> policyRunTimes = new HashMap<>();
@@ -242,6 +256,14 @@ public class PolicyExecution {
 
             beExpression.parseJSONList(Reader.readTxt(policyDir + file.getName()));
 
+            int pred_count = beExpression.getPolicies().stream()
+                    .map(BEPolicy::getObject_conditions)
+                    .filter(objectConditions ->  objectConditions != null)
+                    .mapToInt(List::size)
+                    .sum();
+
+            System.out.println("Original number of Predicates :" + pred_count);
+
             Duration runTime = Duration.ofMillis(0);
 
             try {
@@ -249,17 +271,18 @@ public class PolicyExecution {
                 policyRunTimes.put(file.getName(), runTime);
                 System.out.println(file.getName() + " completed and took " + runTime);
 
-
                 runTime = Duration.ofSeconds(0);
                 ApproxFactorization f = new ApproxFactorization(beExpression);
                 f.approximateFactorization();
                 runTime = runTime.plus(runQuery(f.getExpression().createQueryFromPolices()));
                 policyRunTimes.put(file.getName() + "-af", runTime);
                 System.out.println("Approx Factorization complete amd took " + runTime);
-
+                writeJSONToFile(f.getExpression().getPolicies(), file.getName() + "-af");
 
 //                TODO: Change it to executor service so that method can be timed out
-                GreedyExact gf = new GreedyExact(beExpression);
+//                BEExpression approxExpression = new BEExpression();
+//                approxExpression.parseJSONList(Reader.readTxt(policyDir + file.getName()));
+                GreedyExact gf = new GreedyExact(f.getExpression());
                 gf.GFactorize(0);
                 System.out.println("Greedy Factorization complete ");
                 runTime = Duration.ofMillis(0);
@@ -272,10 +295,23 @@ public class PolicyExecution {
                 policyRunTimes.put(file.getName(), PolicyConstants.MAX_DURATION);
             }
         }
+
         return policyRunTimes;
     }
 
-
+    //TODO: Clean up and have a common method for writing to files
+    //For writing policies to BE_POLICY_DIR
+    private void writeJSONToFile(List<?> policies, String fileName){
+        ObjectMapper mapper = new ObjectMapper();
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        mapper.setDateFormat(formatter);
+        ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter());
+        try {
+            writer.writeValue(new File(PolicyConstants.BE_POLICY_DIR + fileName), policies);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 
     private void createTextReport(Map<String, Duration> runTimes, String fileDir) {
