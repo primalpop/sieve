@@ -188,6 +188,19 @@ public class BEExpression{
         this.policies = bePolicies;
     }
 
+    /**
+     * Selectivity of a disjunctive expression
+     * e.g., A = u or B = v
+     * sel = 1 - ((1 - sel(A)) * (1 - sel (B)))
+     * @return
+     */
+    public double computeL(){
+        double selectivity = 1;
+        for (BEPolicy bePolicy: this.getPolicies()) {
+            selectivity *= (1 - bePolicy.computeL(bePolicy.getObject_conditions()));
+        }
+        return 1 - selectivity;
+    }
 
     @Override
     public boolean equals(Object o) {

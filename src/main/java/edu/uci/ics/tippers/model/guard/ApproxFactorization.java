@@ -51,16 +51,6 @@ public class ApproxFactorization {
         return cal;
     }
 
-    private long computeL(BEPolicy bePolicy){
-        String query = PolicyConstants.SELECT_COUNT_STAR_SEMANTIC_OBSERVATIONS + " where " +  bePolicy.createQueryFromObjectConditions();
-        return MySQLQueryManager.runCountingQuery(query);
-    }
-
-    private long computeL(ObjectCondition objectCondition){
-        String query = PolicyConstants.SELECT_COUNT_STAR_SEMANTIC_OBSERVATIONS + " where " +  objectCondition.print();
-        return MySQLQueryManager.runCountingQuery(query);
-    }
-
     /**
      * Computing incremental function F of Policy of a single predicate of the form axyz to a(xyz)
      * F(ax) = -l(x) + l(ax)
@@ -68,9 +58,9 @@ public class ApproxFactorization {
      * @param factorized
      * @return
      */
-    private long computeF(BEPolicy factorized, BEPolicy original){
-        long lfact = computeL(factorized);
-        long lorg = computeL(original);
+    private double computeF(BEPolicy factorized, BEPolicy original){
+        double lfact = BEPolicy.computeL(factorized.getObject_conditions());
+        double lorg = BEPolicy.computeL(original.getObject_conditions());
         return lorg - lfact;
     }
 
@@ -142,7 +132,7 @@ public class ApproxFactorization {
      * @return
      */
     private BEPolicy choosePolicyToMerge(ObjectCondition objectCondition, List<BEPolicy> bePolicies){
-        long minFalsePositives = PolicyConstants.INFINTIY;
+        double minFalsePositives = PolicyConstants.INFINTIY;
         int chosen = 0;
         for (int i = 0; i < bePolicies.size(); i++) {
             BEPolicy candidate = cloner.deepClone(bePolicies.get(i));
@@ -150,7 +140,7 @@ public class ApproxFactorization {
             if(candidate.getObject_conditions().size() == 0){
                 System.out.println(bePolicies.get(i).createQueryFromObjectConditions());
             }
-            long fp = computeL(candidate);
+            double fp = BEPolicy.computeL(candidate.getObject_conditions());
             if(fp < minFalsePositives ){
                 minFalsePositives = fp;
                 chosen = i;
@@ -162,14 +152,14 @@ public class ApproxFactorization {
     private boolean canBeMerged(BEPolicy pa1, ObjectCondition a1, BEPolicy pa2, ObjectCondition a2){
         BEPolicy policy_a1_factorized = cloner.deepClone(pa1);
         policy_a1_factorized.deleteObjCond(a1);
-        long F_a1 = computeF(policy_a1_factorized, pa1);
+        double F_a1 = computeF(policy_a1_factorized, pa1);
         BEPolicy policy_a2_factorized = cloner.deepClone(pa2);
         policy_a2_factorized.deleteObjCond(a2);
-        long F_a2 = computeF(policy_a2_factorized, pa2);
+        double F_a2 = computeF(policy_a2_factorized, pa2);
         BEPolicy intersection = new BEPolicy();
         intersection.getObject_conditions().add(a1);
         intersection.getObject_conditions().add(a2);
-        long l_intersection = computeL(intersection);
+        double l_intersection = BEPolicy.computeL(intersection.getObject_conditions());
         return (l_intersection + F_a1 + F_a2) > 0;
     }
 
@@ -189,7 +179,6 @@ public class ApproxFactorization {
     public void approximateFactorization(){
         Map<ObjectCondition, ObjectCondition> replacementMap = new HashMap<>();
         for (int i = 0; i < this.expression.getPolAttributes().size(); i++) {
-            System.out.println("attribute : " + this.expression.getPolAttributes().get(i));
             HashMap<ObjectCondition, List<BEPolicy>> predOnAttr = getPredicatesOnAttr(this.expression.getPolAttributes().get(i));
             if(predOnAttr.isEmpty())
                 continue;

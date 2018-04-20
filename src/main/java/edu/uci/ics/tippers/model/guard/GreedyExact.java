@@ -101,95 +101,23 @@ public class GreedyExact {
         return cal;
     }
 
-    public double computeL(ObjectCondition objectCondition){
-        List mBuckets = null;
-        double selectivity = 0.0001;
-        if(objectCondition.getAttribute().equalsIgnoreCase(PolicyConstants.TEMPERATURE_ATTR) ||
-                objectCondition.getAttribute().equalsIgnoreCase(PolicyConstants.ENERGY_ATTR)){
-            selectivity += Histogram.getBucketMap().get(objectCondition.getAttribute()).stream()
-                    .filter(b -> Integer.parseInt(b.getValue()) >=
-                            Integer.parseInt(objectCondition.getBooleanPredicates().get(0).getValue())
-                            && Integer.parseInt(b.getValue()) <=
-                            Integer.parseInt(objectCondition.getBooleanPredicates().get(1).getValue()))
-                    .mapToDouble(b -> b.getFreq())
-                    .sum();
-        }
-        else if (objectCondition.getAttribute().equalsIgnoreCase(PolicyConstants.LOCATIONID_ATTR) ||
-                objectCondition.getAttribute().equalsIgnoreCase(PolicyConstants.ACTIVITY_ATTR)){
-            Bucket bucket = Histogram.getBucketMap().get(objectCondition.getAttribute()).stream()
-                    .filter(b -> b.getValue().equalsIgnoreCase(objectCondition.getBooleanPredicates().get(0).getValue()))
-                    .findFirst()
-                    .orElse(null);
-            if (bucket != null) selectivity += bucket.getFreq();
-
-        }
-        else if (objectCondition.getAttribute().equalsIgnoreCase(PolicyConstants.USERID_ATTR)){
-            Bucket bucket = Histogram.getBucketMap().get(objectCondition.getAttribute()).stream()
-                    .filter(b -> Integer.parseInt(b.getLower()) >=
-                            Integer.parseInt(objectCondition.getBooleanPredicates().get(0).getValue())
-                            && Integer.parseInt(b.getUpper()) <=
-                            Integer.parseInt(objectCondition.getBooleanPredicates().get(1).getValue()))
-                    .findFirst()
-                    .orElse(null);
-            if(bucket != null) selectivity += bucket.getFreq()/bucket.getNumberOfItems();
-
-        }
-        else if (objectCondition.getAttribute().equalsIgnoreCase(PolicyConstants.TIMESTAMP_ATTR)){
-            //TODO: Overestimates the selectivity as the partially contained buckets are completely counted
-            selectivity += Histogram.getBucketMap().get(objectCondition.getAttribute()).stream()
-                    .filter(b -> timestampStrToCal(b.getLower())
-                            .compareTo(timestampStrToCal(objectCondition.getBooleanPredicates().get(1).getValue())) < 0
-                            && timestampStrToCal(b.getUpper())
-                            .compareTo(timestampStrToCal(objectCondition.getBooleanPredicates().get(0).getValue())) > 0)
-                    .mapToDouble(b -> b.getFreq())
-                    .sum();
-        }
-        else {
-            throw new PolicyEngineException("Unknown attribute");
-        }
-        return selectivity/100; //As the frequency is in percentage, to convert it to ratio
-    }
-
     /**
-     * Selectivity of a conjunctive expression
-     * e.g., A = u and B = v
-     * sel = set (A) * sel (B)
-     * @param objectConditions
+     * Computing gain for Exact Factorization
+     * @param original
+     * @param objSet
+     * @param quotient
      * @return
      */
-    public double computeL(Collection<ObjectCondition> objectConditions){
-        double selectivity = 1;
-        for (ObjectCondition obj: objectConditions) {
-            selectivity *= computeL(obj);
-        }
-        return selectivity;
-    }
-
-    /**
-     * Selectivity of a disjunctive expression
-     * e.g., A = u or B = v
-     * sel = 1 - ((1 - sel(A)) * (1 - sel (B)))
-     * @param beExpression
-     * @return
-     */
-    public double computeL(BEExpression beExpression){
-        double selectivity = 1;
-        for (BEPolicy bePolicy: beExpression.getPolicies()) {
-            selectivity *= (1 - computeL(bePolicy.getObject_conditions()));
-        }
-        return 1 - selectivity;
-    }
-
     public long computeGain(BEExpression original, Set<ObjectCondition> objSet, BEExpression quotient) {
-        long gain = (long) ((quotient.getPolicies().size() - 1)* computeL(objSet) * PolicyConstants.NUMBER_OR_TUPLES);
+        long gain = (long) ((quotient.getPolicies().size() - 1)* BEPolicy.computeL(objSet) * PolicyConstants.NUMBER_OR_TUPLES);
         for (BEPolicy bePolicy: original.getPolicies()) {
-            gain += (computeL(bePolicy.getObject_conditions()) * PolicyConstants.NUMBER_OR_TUPLES);
+            gain += (BEPolicy.computeL(bePolicy.getObject_conditions()) * PolicyConstants.NUMBER_OR_TUPLES);
         }
-        gain -= computeL(quotient) * PolicyConstants.NUMBER_OR_TUPLES;
+        gain -= quotient.computeL() * PolicyConstants.NUMBER_OR_TUPLES;
         return gain;
     }
 
-    public void GFactorize() {
+    public void GFactorize(int rounds) {
         Boolean factorized = false;
         Set<Set<ObjectCondition>> powerSet = new HashSet<Set<ObjectCondition>>();
         for (int i = 0; i < this.expression.getPolicies().size(); i++) {
@@ -219,8 +147,8 @@ public class GreedyExact {
                 currentFactor = new GreedyExact(this.expression);
             }
         }
-        if(!factorized || (this.reminder.getExpression().getPolicies().size() <= 0.5 * (this.expression.getPolicies().size()))) return;
-        this.reminder.GFactorize();
+        if(!factorized || (this.reminder.getExpression().getPolicies().size() <= 1 ) || rounds >=5) return;
+        this.reminder.GFactorize(rounds + 1);
     }
 
 

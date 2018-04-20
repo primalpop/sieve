@@ -18,13 +18,23 @@ public class Histogram {
 
     private static Map<String, List<Bucket>> bucketMap;
 
-    public static Map<String, List<Bucket>> getBucketMap() {
-        if(bucketMap == null || bucketMap.size() == 0)
-            fillBuckets();
+    private static Histogram _instance;
+
+    private Histogram(){
+        fillBuckets();
+    }
+
+    public static Histogram getInstance(){
+        if (_instance == null)
+            _instance = new Histogram();
+        return _instance;
+    }
+
+    public Map<String, List<Bucket>> getBucketMap(){
         return bucketMap;
     }
 
-    public static void fillBuckets(){
+    private void fillBuckets(){
         bucketMap = new HashMap<>();
         bucketMap.put(PolicyConstants.USERID_ATTR, getHistogram("user_id", "String", "equiheight"));
         bucketMap.put(PolicyConstants.TIMESTAMP_ATTR, getHistogram("timeStamp", "DateTime", "equiheight"));
@@ -34,7 +44,7 @@ public class Histogram {
         bucketMap.put(PolicyConstants.ACTIVITY_ATTR, getHistogram("activity", "String", "singleton"));
     }
 
-    public static List<Bucket> getHistogram(String attribute, String attribute_type, String histogram_type) {
+    private List<Bucket> getHistogram(String attribute, String attribute_type, String histogram_type) {
         List<Bucket> hBuckets = new ArrayList<>();
         PreparedStatement ps = null;
         if (attribute_type.equalsIgnoreCase("String") && histogram_type.equalsIgnoreCase("singleton")) {

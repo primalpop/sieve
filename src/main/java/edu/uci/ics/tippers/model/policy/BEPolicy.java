@@ -220,6 +220,7 @@ public class BEPolicy {
                 .filter(objCond -> objCond.getType() == oc.getType())
                 .filter(objCond -> objCond.compareTo(oc) == 0)
                 .collect(Collectors.toList());
+        if(this.object_conditions.size() == toRemove.size()) return;
         this.object_conditions.removeAll(toRemove);
     }
 
@@ -260,9 +261,19 @@ public class BEPolicy {
         return result;
     }
 
-    public long computeCost(){
-        return mySQLQueryManager.runTimedQuery(createQueryFromObjectConditions()).toMillis();
+    //TODO: Change into a non-static method
+    /**
+     * Selectivity of a conjunctive expression
+     * e.g., A = u and B = v
+     * sel = set (A) * sel (B)
+     * @param objectConditions
+     * @return
+     */
+    public static double computeL(Collection<ObjectCondition> objectConditions){
+        double selectivity = 1;
+        for (ObjectCondition obj: objectConditions) {
+            selectivity *= obj.computeL();
+        }
+        return selectivity;
     }
-
-
 }
