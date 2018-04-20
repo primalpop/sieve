@@ -8,6 +8,7 @@ import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
 import edu.uci.ics.tippers.model.policy.ObjectCondition;
 
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -70,25 +71,53 @@ public class ApproxFactorization {
             int end1 = Integer.parseInt(o1.getBooleanPredicates().get(1).getValue());
             int start2 = Integer.parseInt(o2.getBooleanPredicates().get(0).getValue());
             int end2 = Integer.parseInt(o2.getBooleanPredicates().get(1).getValue());
-            if (start1 <= end2 && end1 >= start2)
-                return true;
+            if(o1.getAttribute().equalsIgnoreCase(PolicyConstants.ENERGY_ATTR)) {
+                if (start1 - 10 <= end2 + 10 && end1 + 10 >= start2 - 10)
+                    return true;
+            }
+            else if (o1.getAttribute().equalsIgnoreCase(PolicyConstants.TEMPERATURE_ATTR)){
+                if (start1 - 5 <= end2 + 5 && end1 + 5 >= start2 - 5)
+                    return true;
+            }
         }
         else if(o1.getType().getID() == 2) { //Timestamp
+            Long extension =  (long)(24 * 60 * 60 * 1000); //24 hours extension
             Calendar start1 = timestampStrToCal(o1.getBooleanPredicates().get(0).getValue());
+            Calendar start1Ext = Calendar.getInstance();
+            start1Ext.setTimeInMillis(start1.getTimeInMillis() - extension);
             Calendar end1 = timestampStrToCal(o1.getBooleanPredicates().get(1).getValue());
+            Calendar end1Ext = Calendar.getInstance();
+            end1Ext.setTimeInMillis(end1.getTimeInMillis() + extension);
             Calendar start2 = timestampStrToCal(o2.getBooleanPredicates().get(0).getValue());
+            Calendar start2Ext = Calendar.getInstance();
+            start2Ext.setTimeInMillis(start2.getTimeInMillis() - extension);
             Calendar end2 = timestampStrToCal(o2.getBooleanPredicates().get(1).getValue());
-            if (start1.compareTo(end2) < 0 && end1.compareTo(start2) > 0) {
+            Calendar end2Ext = Calendar.getInstance();
+            end2Ext.setTimeInMillis(end2.getTimeInMillis() + extension);
+            if (start1Ext.compareTo(end2Ext) < 0 && end1Ext.compareTo(start2Ext) > 0) {
                 return true;
             }
         }
-        else if (o1.getType().getID() == 1){
-            String start1 = o1.getBooleanPredicates().get(0).getValue();
-            String end1 = o1.getBooleanPredicates().get(1).getValue();
-            String start2 = o2.getBooleanPredicates().get(0).getValue();
-            String end2 = o2.getBooleanPredicates().get(1).getValue();
-            if(start1.compareTo(end2) < 0 && end1.compareTo(start2) > 0){
-                return true;
+        else if (o1.getType().getID() == 1){ //String
+            if(o1.getAttribute().equalsIgnoreCase(PolicyConstants.USERID_ATTR)){
+                int start1 = Integer.parseInt(o1.getBooleanPredicates().get(0).getValue());
+                int end1 = Integer.parseInt(o1.getBooleanPredicates().get(1).getValue());
+                int start2 = Integer.parseInt(o2.getBooleanPredicates().get(0).getValue());
+                int end2 = Integer.parseInt(o2.getBooleanPredicates().get(1).getValue());
+                if (start1 - 1000 <= end2 + 1000 && end1 + 1000 >= start2 - 1000)
+                    return true;
+            }
+            else if (o1.getAttribute().equalsIgnoreCase(PolicyConstants.LOCATIONID_ATTR)){
+                int start1 = Integer.parseInt(o1.getBooleanPredicates().get(0).getValue().substring(0,4));
+                int end1 = Integer.parseInt(o1.getBooleanPredicates().get(1).getValue().substring(0,4));
+                int start2 = Integer.parseInt(o2.getBooleanPredicates().get(0).getValue().substring(0,4));
+                int end2 = Integer.parseInt(o2.getBooleanPredicates().get(1).getValue().substring(0,4));
+                if (start1 - 500 <= end2 + 500 && end1 + 500 >= start2 - 500)
+                    return true;
+            }
+            else {
+                //attribute activity
+                return false;
             }
         }
         else{
@@ -177,6 +206,7 @@ public class ApproxFactorization {
      * policies all of them are merged.
      */
     public void approximateFactorization(){
+        int mergeCounter = 0;
         Map<ObjectCondition, ObjectCondition> replacementMap = new HashMap<>();
         for (int i = 0; i < this.expression.getPolAttributes().size(); i++) {
             HashMap<ObjectCondition, List<BEPolicy>> predOnAttr = getPredicatesOnAttr(this.expression.getPolAttributes().get(i));
@@ -193,11 +223,15 @@ public class ApproxFactorization {
                 if(!overlaps(top, next))
                     stack.push(next);
                 else {
+                    mergeCounter += 1;
                     List<BEPolicy> policy_a1_list = predOnAttr.get(next);
                     List<BEPolicy> policy_a2_list = predOnAttr.get(top);
-                    BEPolicy policy_a1 = new BEPolicy(choosePolicyToMerge(next, policy_a1_list));
-                    BEPolicy policy_a2 = new BEPolicy(choosePolicyToMerge(top, policy_a2_list));
-                    if(canBeMerged(policy_a1, next, policy_a2, top)){
+                    BEPolicy policy_a1 = policy_a1_list.get(0);
+                    BEPolicy policy_a2 = policy_a2_list.get(0);
+//                    BEPolicy policy_a1 = new BEPolicy(choosePolicyToMerge(next, policy_a1_list));
+//                    BEPolicy policy_a2 = new BEPolicy(choosePolicyToMerge(top, policy_a2_list));
+                    if(true){
+//                    if(canBeMerged(policy_a1, next, policy_a2, top)){
                         if(next.getBooleanPredicates().get(1).getValue().compareTo(top.getBooleanPredicates().get(1).getValue()) > 0){
                             top.getBooleanPredicates().get(1).setValue(next.getBooleanPredicates().get(1).getValue());
                         }
@@ -214,5 +248,6 @@ public class ApproxFactorization {
                 this.expression.replaceFromPolicies(pred, replacementMap.get(pred));
             }
         }
+        System.out.println("Number of predicates merged: " + mergeCounter);
     }
 }

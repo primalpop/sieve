@@ -1,9 +1,16 @@
 package edu.uci.ics.tippers.model.guard;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.common.PolicyEngineException;
 import edu.uci.ics.tippers.db.MySQLConnectionManager;
+import edu.uci.ics.tippers.fileop.Reader;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -21,7 +28,7 @@ public class Histogram {
     private static Histogram _instance;
 
     private Histogram(){
-        fillBuckets();
+        retrieveBuckets();
     }
 
     public static Histogram getInstance(){
@@ -34,17 +41,17 @@ public class Histogram {
         return bucketMap;
     }
 
-    private void fillBuckets(){
+    private void retrieveBuckets(){
         bucketMap = new HashMap<>();
-        bucketMap.put(PolicyConstants.USERID_ATTR, getHistogram("user_id", "String", "equiheight"));
-        bucketMap.put(PolicyConstants.TIMESTAMP_ATTR, getHistogram("timeStamp", "DateTime", "equiheight"));
-        bucketMap.put(PolicyConstants.LOCATIONID_ATTR, getHistogram("location_id", "String", "singleton"));
-        bucketMap.put(PolicyConstants.ENERGY_ATTR, getHistogram("energy", "String", "singleton"));
-        bucketMap.put(PolicyConstants.TEMPERATURE_ATTR, getHistogram("temperature", "String", "singleton"));
-        bucketMap.put(PolicyConstants.ACTIVITY_ATTR, getHistogram("activity", "String", "singleton"));
+        bucketMap.put(PolicyConstants.USERID_ATTR, parseJSONList(Reader.readTxt(PolicyConstants.HISTOGRAM_DIR + PolicyConstants.USERID_ATTR + ".json")));
+        bucketMap.put(PolicyConstants.TIMESTAMP_ATTR, parseJSONList(Reader.readTxt(PolicyConstants.HISTOGRAM_DIR + PolicyConstants.TIMESTAMP_ATTR + ".json")));
+        bucketMap.put(PolicyConstants.LOCATIONID_ATTR, parseJSONList(Reader.readTxt(PolicyConstants.HISTOGRAM_DIR + PolicyConstants.LOCATIONID_ATTR + ".json")));
+        bucketMap.put(PolicyConstants.ENERGY_ATTR, parseJSONList(Reader.readTxt(PolicyConstants.HISTOGRAM_DIR + PolicyConstants.ENERGY_ATTR + ".json")));
+        bucketMap.put(PolicyConstants.TEMPERATURE_ATTR, parseJSONList(Reader.readTxt(PolicyConstants.HISTOGRAM_DIR + PolicyConstants.TEMPERATURE_ATTR + ".json")));
+        bucketMap.put(PolicyConstants.ACTIVITY_ATTR, parseJSONList(Reader.readTxt(PolicyConstants.HISTOGRAM_DIR + PolicyConstants.ACTIVITY_ATTR + ".json")));
     }
 
-    private List<Bucket> getHistogram(String attribute, String attribute_type, String histogram_type) {
+    private static List<Bucket> getHistogram(String attribute, String attribute_type, String histogram_type) {
         List<Bucket> hBuckets = new ArrayList<>();
         PreparedStatement ps = null;
         if (attribute_type.equalsIgnoreCase("String") && histogram_type.equalsIgnoreCase("singleton")) {
@@ -121,4 +128,37 @@ public class Histogram {
         }
         return hBuckets;
     }
+
+
+    public static void writeBuckets(){
+        writeJSONToFile(getHistogram("user_id", "String", "equiheight"), PolicyConstants.USERID_ATTR);
+        writeJSONToFile(getHistogram("timeStamp", "DateTime", "equiheight"), PolicyConstants.TIMESTAMP_ATTR);
+        writeJSONToFile(getHistogram("location_id", "String", "singleton"), PolicyConstants.LOCATIONID_ATTR);
+        writeJSONToFile(getHistogram("energy", "String", "singleton"), PolicyConstants.ENERGY_ATTR);
+        writeJSONToFile(getHistogram("temperature", "String", "singleton"), PolicyConstants.TEMPERATURE_ATTR);
+        writeJSONToFile(getHistogram("activity", "String", "singleton"), PolicyConstants.ACTIVITY_ATTR);
+    }
+
+    private static void writeJSONToFile(List<Bucket> histogram, String attribute){
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter());
+        try {
+            writer.writeValue(new File(PolicyConstants.HISTOGRAM_DIR + attribute +".json"), histogram);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public List<Bucket> parseJSONList(String jsonData) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<Bucket> buckets = null;
+        try {
+            buckets = objectMapper.readValue(jsonData, new TypeReference<List<Bucket>>(){});
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return buckets;
+    }
+
+
 }

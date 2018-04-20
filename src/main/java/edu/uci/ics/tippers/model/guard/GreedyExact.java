@@ -147,7 +147,7 @@ public class GreedyExact {
                 currentFactor = new GreedyExact(this.expression);
             }
         }
-        if(!factorized || (this.reminder.getExpression().getPolicies().size() <= 1 ) || rounds >=5) return;
+        if(!factorized || (this.reminder.getExpression().getPolicies().size() <= 1 ) || rounds >=2) return;
         this.reminder.GFactorize(rounds + 1);
     }
 

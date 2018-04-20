@@ -54,6 +54,8 @@ public class PolicyConstants {
 
     public static final String BE_POLICY_DIR = "results/be_policies/";
 
+    public static final String HISTOGRAM_DIR = "histogram/";
+
     public static final ImmutableList<QuerierCondition> DEFAULT_QC = ImmutableList.
             of(new QuerierCondition("user_name",AttributeType.STRING, "=","John Doe", "=", "John Doe"));
 

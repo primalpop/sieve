@@ -85,4 +85,12 @@ public class ObjectCondition extends BooleanCondition {
         return selectivity/100; //As the frequency is in percentage, to convert it to ratio
     }
 
+    @Override
+    public String toString() {
+        return "ObjectCondition{" +
+                "attribute='" + attribute + '\'' +
+                ", type=" + type +
+                ", booleanPredicates=" + booleanPredicates +
+                '}';
+    }
 }
