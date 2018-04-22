@@ -283,7 +283,7 @@ public class DataGeneration {
                     System.out.println("# " + presenceCount + " inserted");
                 }
 
-                if(presenceCount == 100000)
+                if(presenceCount == 1000000)
                     break;
             }
 
@@ -311,7 +311,7 @@ public class DataGeneration {
     public static void main (String [] args){
         DataGeneration dataGeneration = new DataGeneration();
 //        dataGeneration.runScript("mysql/schema.sql");
-//        dataGeneration.generateAll();
+        dataGeneration.generateAll();
 //        dataGeneration.runScript("mysql/drop.sql");
     }
 

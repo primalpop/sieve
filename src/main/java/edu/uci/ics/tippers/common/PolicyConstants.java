@@ -22,7 +22,7 @@ public class PolicyConstants {
 
     public static final long INFINTIY = 10000000000000L;
 
-    public static final String SELECT_ALL_SEMANTIC_OBSERVATIONS = "Select * from SEMANTIC_OBSERVATION";
+    public static final String SELECT_ALL_SEMANTIC_OBSERVATIONS = "Select * from SEMANTIC_OBSERVATION WHERE ";
 
     public static final String SELECT_COUNT_STAR_SEMANTIC_OBSERVATIONS = "Select count(*) from SEMANTIC_OBSERVATION";
 
@@ -71,6 +71,8 @@ public class PolicyConstants {
     public static final String TEMPERATURE_ATTR = "temperature";
 
     public static final String ACTIVITY_ATTR = "activity";
+
+    public static final ImmutableList<String> INDEXED_ATTRS = ImmutableList.of("timeStamp");
 
 
 }

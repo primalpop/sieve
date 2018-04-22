@@ -72,16 +72,16 @@ public class ApproxFactorization {
             int start2 = Integer.parseInt(o2.getBooleanPredicates().get(0).getValue());
             int end2 = Integer.parseInt(o2.getBooleanPredicates().get(1).getValue());
             if(o1.getAttribute().equalsIgnoreCase(PolicyConstants.ENERGY_ATTR)) {
-                if (start1 - 10 <= end2 + 10 && end1 + 10 >= start2 - 10)
+                if (start1  <= end2  && end1  >= start2)
                     return true;
             }
             else if (o1.getAttribute().equalsIgnoreCase(PolicyConstants.TEMPERATURE_ATTR)){
-                if (start1 - 5 <= end2 + 5 && end1 + 5 >= start2 - 5)
+                if (start1 <= end2  && end1 >= start2 )
                     return true;
             }
         }
         else if(o1.getType().getID() == 2) { //Timestamp
-            Long extension =  (long)(24 * 60 * 60 * 1000); //24 hours extension
+            Long extension =  (long)(60 * 1000); //1 minute extension
             Calendar start1 = timestampStrToCal(o1.getBooleanPredicates().get(0).getValue());
             Calendar start1Ext = Calendar.getInstance();
             start1Ext.setTimeInMillis(start1.getTimeInMillis() - extension);
@@ -112,7 +112,7 @@ public class ApproxFactorization {
                 int end1 = Integer.parseInt(o1.getBooleanPredicates().get(1).getValue().substring(0,4));
                 int start2 = Integer.parseInt(o2.getBooleanPredicates().get(0).getValue().substring(0,4));
                 int end2 = Integer.parseInt(o2.getBooleanPredicates().get(1).getValue().substring(0,4));
-                if (start1 - 500 <= end2 + 500 && end1 + 500 >= start2 - 500)
+                if (start1 - 100 <= end2 + 100 && end1 + 100 >= start2 - 100)
                     return true;
             }
             else {
@@ -243,9 +243,11 @@ public class ApproxFactorization {
                     }
                 }
             }
+
+
             //Rewriting the original expression
             for (ObjectCondition pred: replacementMap.keySet()) {
-                this.expression.replaceFromPolicies(pred, replacementMap.get(pred));
+                this.expression.replenishFromPolicies(pred, replacementMap.get(pred));
             }
         }
         System.out.println("Number of predicates merged: " + mergeCounter);

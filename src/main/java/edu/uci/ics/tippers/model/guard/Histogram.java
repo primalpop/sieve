@@ -4,13 +4,14 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import com.ibatis.common.jdbc.ScriptRunner;
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.common.PolicyEngineException;
+import edu.uci.ics.tippers.data.DataGeneration;
 import edu.uci.ics.tippers.db.MySQLConnectionManager;
 import edu.uci.ics.tippers.fileop.Reader;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -160,5 +161,24 @@ public class Histogram {
         return buckets;
     }
 
+    //TODO: Duplicated, clean up
+    private static void runScript(String fileName) throws PolicyEngineException {
+        ScriptRunner sr = new ScriptRunner(conn, false, true);
+        sr.setLogWriter(null);
+        java.io.Reader reader;
+        try {
+            InputStream inputStream = DataGeneration.class.getClassLoader().getResourceAsStream(fileName);
+            reader = new BufferedReader(new InputStreamReader(inputStream));
+            sr.runScript(reader);
+        } catch (SQLException | IOException e) {
+            e.printStackTrace();
+            throw new PolicyEngineException("Error Running SQL script");
+        }
+    }
 
+
+    public static void main (String [] args){
+//        runScript("mysql/generate_hist.sql"); //Check it
+//        Histogram.writeBuckets();
+    }
 }

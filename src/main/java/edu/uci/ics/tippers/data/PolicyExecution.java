@@ -233,14 +233,12 @@ public class PolicyExecution {
 
     public Duration runQuery(String query){
         try {
-            return runWithThread(PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS + " WHERE " + query);
+            return runWithThread(PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS  + query);
         } catch (Exception e) {
             e.printStackTrace();
             throw new PolicyEngineException("Error Running Query");
         }
     }
-
-
 
     public Map<String, Duration> runBEPolicies(String policyDir) {
 
@@ -271,19 +269,23 @@ public class PolicyExecution {
                 policyRunTimes.put(file.getName(), runTime);
                 System.out.println(file.getName() + " completed and took " + runTime);
 
+
                 runTime = Duration.ofSeconds(0);
                 ApproxFactorization f = new ApproxFactorization(beExpression);
                 f.approximateFactorization();
+                System.out.print("Approximate number of tuples: ");
+                runQuery(f.getExpression().createQueryFromPolices());
                 runTime = runTime.plus(runQuery(f.getExpression().createQueryFromPolices()));
                 policyRunTimes.put(file.getName() + "-af", runTime);
                 System.out.println("Approx Factorization complete amd took " + runTime);
                 writeJSONToFile(f.getExpression().getPolicies(), file.getName() + "-af");
 
-//                TODO: Change it to executor service so that method can be timed out
+                /** To read approximate expression from the file **/
 //                BEExpression approxExpression = new BEExpression();
 //                approxExpression.parseJSONList(Reader.readTxt(policyDir + file.getName()));
+
                 GreedyExact gf = new GreedyExact(f.getExpression());
-                gf.GFactorize(0);
+                gf.GFactorize();
                 System.out.println("Greedy Factorization complete ");
                 runTime = Duration.ofMillis(0);
                 runTime = runTime.plus(runQuery(gf.createQueryFromExactFactor()));
