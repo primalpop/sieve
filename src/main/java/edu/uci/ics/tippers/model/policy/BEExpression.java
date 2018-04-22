@@ -87,7 +87,7 @@ public class BEExpression{
      * @param objectCondition
      * @return
      */
-    public void checkAgainstPolicies(ObjectCondition objectCondition){
+    public void checkAgainstPolices(ObjectCondition objectCondition){
         List<BEPolicy> matchingPolicies = this.policies.stream()
                 .filter(pol -> pol.containsObjCond(objectCondition))
                 .collect(Collectors.toList());
@@ -150,6 +150,23 @@ public class BEExpression{
             }
         }
     }
+
+
+    /**
+     * Replenishes the existing object condition (oc1) in Policy Expression with new object condition (oc2)
+     * Note: This eliminates the need for post filtering to remove false positives
+     * @param oc1
+     * @param oc2
+     */
+    public void replenishFromPolicies(ObjectCondition oc1, ObjectCondition oc2){
+        for (int i = 0; i < this.policies.size(); i++) {
+            if(this.policies.get(i).containsObjCond(oc1)){
+                if(!this.policies.get(i).containsObjCond(oc2))
+                    this.policies.get(i).getObject_conditions().add(oc2);
+            }
+        }
+    }
+
 
 
     /**

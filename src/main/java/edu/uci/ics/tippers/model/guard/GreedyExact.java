@@ -117,7 +117,7 @@ public class GreedyExact {
         return gain;
     }
 
-    public void GFactorize(int rounds) {
+    public void GFactorizeOptimal(int rounds) {
         Boolean factorized = false;
         Set<Set<ObjectCondition>> powerSet = new HashSet<Set<ObjectCondition>>();
         for (int i = 0; i < this.expression.getPolicies().size(); i++) {
@@ -148,7 +148,43 @@ public class GreedyExact {
             }
         }
         if(!factorized || (this.reminder.getExpression().getPolicies().size() <= 1 ) || rounds >=2) return;
-        this.reminder.GFactorize(rounds + 1);
+        this.reminder.GFactorizeOptimal(rounds + 1);
+    }
+
+    /** TODO: currently exact factorizing only based on whether an attribute is indexed or not (and not based on cost).
+     * It chooses the predicate that appears in the maximum number of policies to factorize **/
+    /**
+     * Factorization based on a single object condition and not all the possible combinations
+     */
+    public void GFactorize() {
+        Boolean factorized = false;
+        List<ObjectCondition> singletonSet = this.expression.getPolicies().stream()
+                .flatMap(p -> p.getObject_conditions().stream())
+                .collect(Collectors.toList());
+        GreedyExact currentFactor = new GreedyExact(this.expression);
+        for (ObjectCondition objectCondition : singletonSet) {
+            if(PolicyConstants.INDEXED_ATTRS.contains(objectCondition.getAttribute())) continue;
+            BEExpression temp = new BEExpression(this.expression);
+            temp.checkAgainstPolices(objectCondition);
+            if (temp.getPolicies().size() > 1) { //was able to factorize
+                currentFactor.multiplier = new ArrayList<>();
+                currentFactor.multiplier.add(objectCondition);
+                currentFactor.quotient = new GreedyExact(temp);
+                currentFactor.quotient.expression.removeFromPolicies(objectCondition);
+                currentFactor.reminder = new GreedyExact(this.expression);
+                currentFactor.reminder.expression.getPolicies().removeAll(temp.getPolicies());
+                currentFactor.cost = Long.valueOf(temp.getPolicies().size());
+                if (this.cost < currentFactor.cost) {
+                    this.multiplier = currentFactor.getMultiplier();
+                    this.quotient = currentFactor.getQuotient();
+                    this.reminder = currentFactor.getReminder();
+                    factorized = true;
+                }
+                currentFactor = new GreedyExact(this.expression);
+            }
+        }
+        if((this.reminder.getExpression().getPolicies().size() <= 1 ) || factorized) return;
+        this.reminder.GFactorize();
     }
 
 

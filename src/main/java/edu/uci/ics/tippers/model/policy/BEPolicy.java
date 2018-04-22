@@ -210,9 +210,11 @@ public class BEPolicy {
     }
 
     public boolean containsObjCond(ObjectCondition oc){
-        return this.object_conditions.stream()
+        List<ObjectCondition> contained = this.object_conditions.stream()
                 .filter(objCond -> objCond.getType() == oc.getType())
-                .anyMatch(objCond -> objCond.compareTo(oc) == 0);
+                .filter(objCond -> objCond.compareTo(oc) == 0)
+                .collect(Collectors.toList());
+        return contained.size() != 0;
     }
 
     public void deleteObjCond(ObjectCondition oc){
