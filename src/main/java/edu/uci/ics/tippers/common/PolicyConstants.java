@@ -4,6 +4,9 @@ import com.google.common.collect.ImmutableList;
 import edu.uci.ics.tippers.model.policy.QuerierCondition;
 
 import java.time.Duration;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.temporal.ChronoField;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +18,11 @@ public class PolicyConstants {
     public static final long NUMBER_OR_TUPLES = 100000;
 
     public static final String TIMESTAMP_FORMAT = "yyyy-MM-dd HH:mm:ss";
+
+    public static final DateTimeFormatter formatter = new DateTimeFormatterBuilder()
+                .appendPattern(TIMESTAMP_FORMAT)
+                .appendFraction(ChronoField.MICRO_OF_SECOND, 0, 6, true)
+                .toFormatter();
 
     public static final String CONJUNCTION = " AND ";
 
@@ -72,7 +80,7 @@ public class PolicyConstants {
 
     public static final String ACTIVITY_ATTR = "activity";
 
-    public static final ImmutableList<String> INDEXED_ATTRS = ImmutableList.of("timeStamp");
+    public static final ImmutableList<String> INDEXED_ATTRS = ImmutableList.of("timeStamp", "location_id");
 
 
 }

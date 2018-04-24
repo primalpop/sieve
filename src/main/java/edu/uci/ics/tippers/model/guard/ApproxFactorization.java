@@ -234,6 +234,8 @@ public class ApproxFactorization {
 //                    if(canBeMerged(policy_a1, next, policy_a2, top)){
                         if(next.getBooleanPredicates().get(1).getValue().compareTo(top.getBooleanPredicates().get(1).getValue()) > 0){
                             top.getBooleanPredicates().get(1).setValue(next.getBooleanPredicates().get(1).getValue());
+                            top.getBooleanPredicates().get(0).setOperator(">=");
+                            top.getBooleanPredicates().get(1).setOperator("<=");
                         }
                         replacementMap.put(stack.pop(), top);
                         replacementMap.put(next, top);

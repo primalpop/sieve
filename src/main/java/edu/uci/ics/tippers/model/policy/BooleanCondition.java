@@ -5,10 +5,11 @@ import edu.uci.ics.tippers.common.AttributeType;
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.common.PolicyEngineException;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.temporal.ChronoField;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 
@@ -102,15 +103,8 @@ public class BooleanCondition  implements Comparable<BooleanCondition>  {
         return r.toString();
     }
 
-    public static Calendar timestampStrToCal(String timestamp) {
-        Calendar cal = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat(PolicyConstants.TIMESTAMP_FORMAT);
-        try {
-            cal.setTime(sdf.parse(timestamp));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return cal;
+    public static LocalDateTime timeStampToLDT(String timestamp) {
+        return LocalDateTime.parse(timestamp, PolicyConstants.formatter);
     }
 
 
@@ -130,11 +124,12 @@ public class BooleanCondition  implements Comparable<BooleanCondition>  {
             return start1 != start2? start1 - start2: end1- end2;
         }
         else if(booleanCondition.getType().getID() == 2) { //Timestamp
-            Calendar start1 = timestampStrToCal(this.getBooleanPredicates().get(0).getValue());
-            Calendar end1 = timestampStrToCal(this.getBooleanPredicates().get(1).getValue());
-            Calendar start2 = timestampStrToCal(booleanCondition.getBooleanPredicates().get(0).getValue());
-            Calendar end2 = timestampStrToCal(booleanCondition.getBooleanPredicates().get(1).getValue());
-            return start1.compareTo(start2);
+            LocalDateTime start1 = timeStampToLDT(this.getBooleanPredicates().get(0).getValue());
+            LocalDateTime end1 = timeStampToLDT(this.getBooleanPredicates().get(1).getValue());
+            LocalDateTime start2 = timeStampToLDT(booleanCondition.getBooleanPredicates().get(0).getValue());
+            LocalDateTime end2 = timeStampToLDT(booleanCondition.getBooleanPredicates().get(1).getValue());
+            if (!start1.equals(start2)) return start1.compareTo(start2);
+            return end1.compareTo(end2);
         }
         else if(booleanCondition.getType().getID() == 1) {
             String start1 = this.getBooleanPredicates().get(0).getValue();

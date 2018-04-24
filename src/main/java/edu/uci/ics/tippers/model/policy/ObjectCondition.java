@@ -36,53 +36,74 @@ public class ObjectCondition extends BooleanCondition {
         this.booleanPredicates = booleanPredicates;
     }
 
+    private double singletonRange(){
+        double selectivity = 0.0001;
+        for (int i = 0; i < Histogram.getInstance().getBucketMap().get(this.getAttribute()).size(); i++) {
+            Bucket b = Histogram.getInstance().getBucketMap().get(this.getAttribute()).get(i);
+            if (Integer.parseInt(b.getValue()) >=
+                    Integer.parseInt(this.getBooleanPredicates().get(0).getValue())){
+                selectivity += b.getFreq();
+            }
+        }
+        return selectivity/100;
+    }
+
+    private double singletonEquality(){
+        double selectivity = 0.0001;
+        Bucket bucket = Histogram.getInstance().getBucketMap().get(this.getAttribute()).stream()
+                .filter(b -> b.getValue().equalsIgnoreCase(this.getBooleanPredicates().get(0).getValue()))
+                .findFirst()
+                .orElse(null);
+        if (bucket != null) selectivity += bucket.getFreq();
+        return selectivity/100;
+    }
+
+    private double equiheightEquality(){
+        double selectivity = 0.0001;
+        Bucket bucket = Histogram.getInstance().getBucketMap().get(this.getAttribute()).stream()
+                .filter(b -> Integer.parseInt(b.getLower()) >=
+                        Integer.parseInt(this.getBooleanPredicates().get(0).getValue())
+                        && Integer.parseInt(b.getUpper()) <=
+                        Integer.parseInt(this.getBooleanPredicates().get(1).getValue()))
+                .findFirst()
+                .orElse(null);
+        if(bucket != null) selectivity += bucket.getFreq()/bucket.getNumberOfItems();
+        return selectivity/100;
+    }
+
+    //TODO: Overestimates the selectivity as the partially contained buckets are completely counted
+    private double equiheightRange(){
+        double selectivity = 0.0001;
+        for (int i = 0; i < Histogram.getInstance().getBucketMap().get(this.getAttribute()).size(); i++) {
+            Bucket b = Histogram.getInstance().getBucketMap().get(this.getAttribute()).get(i);
+            if (timeStampToLDT(b.getLower()).compareTo(timeStampToLDT(this.getBooleanPredicates().get(1).getValue())) < 0
+                    && timeStampToLDT(b.getUpper()).compareTo(timeStampToLDT(this.getBooleanPredicates().get(0).getValue())) > 0){
+                selectivity += b.getFreq();
+            }
+        }
+        return selectivity/100;
+    }
+
+
     public double computeL(){
         List mBuckets = null;
-        double selectivity = 0.0001;
         if(this.getAttribute().equalsIgnoreCase(PolicyConstants.TEMPERATURE_ATTR) ||
                 this.getAttribute().equalsIgnoreCase(PolicyConstants.ENERGY_ATTR)){
-            for (int i = 0; i < Histogram.getInstance().getBucketMap().get(this.getAttribute()).size(); i++) {
-                Bucket b = Histogram.getInstance().getBucketMap().get(this.getAttribute()).get(i);
-                if (Integer.parseInt(b.getValue()) >=
-                        Integer.parseInt(this.getBooleanPredicates().get(0).getValue())){
-                    selectivity += b.getFreq();
-                }
-            }
+            return singletonRange();
         }
         else if (this.getAttribute().equalsIgnoreCase(PolicyConstants.LOCATIONID_ATTR) ||
                 this.getAttribute().equalsIgnoreCase(PolicyConstants.ACTIVITY_ATTR)){
-            Bucket bucket = Histogram.getInstance().getBucketMap().get(this.getAttribute()).stream()
-                    .filter(b -> b.getValue().equalsIgnoreCase(this.getBooleanPredicates().get(0).getValue()))
-                    .findFirst()
-                    .orElse(null);
-            if (bucket != null) selectivity += bucket.getFreq();
-
+            return singletonEquality();
         }
         else if (this.getAttribute().equalsIgnoreCase(PolicyConstants.USERID_ATTR)){
-            Bucket bucket = Histogram.getInstance().getBucketMap().get(this.getAttribute()).stream()
-                    .filter(b -> Integer.parseInt(b.getLower()) >=
-                            Integer.parseInt(this.getBooleanPredicates().get(0).getValue())
-                            && Integer.parseInt(b.getUpper()) <=
-                            Integer.parseInt(this.getBooleanPredicates().get(1).getValue()))
-                    .findFirst()
-                    .orElse(null);
-            if(bucket != null) selectivity += bucket.getFreq()/bucket.getNumberOfItems();
-
+           return equiheightEquality();
         }
         else if (this.getAttribute().equalsIgnoreCase(PolicyConstants.TIMESTAMP_ATTR)){
-            //TODO: Overestimates the selectivity as the partially contained buckets are completely counted
-            for (int i = 0; i < Histogram.getInstance().getBucketMap().get(this.getAttribute()).size(); i++) {
-                Bucket b = Histogram.getInstance().getBucketMap().get(this.getAttribute()).get(i);
-                if (timestampStrToCal(b.getLower()).compareTo(timestampStrToCal(this.getBooleanPredicates().get(1).getValue())) < 0
-                        && timestampStrToCal(b.getUpper()).compareTo(timestampStrToCal(this.getBooleanPredicates().get(0).getValue())) > 0){
-                    selectivity += b.getFreq();
-                }
-            }
+           return equiheightRange();
         }
         else {
             throw new PolicyEngineException("Unknown attribute");
         }
-        return selectivity/100; //As the frequency is in percentage, to convert it to ratio
     }
 
     @Override
