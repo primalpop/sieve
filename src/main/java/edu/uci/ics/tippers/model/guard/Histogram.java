@@ -161,24 +161,7 @@ public class Histogram {
         return buckets;
     }
 
-    //TODO: Duplicated, clean up
-    private static void runScript(String fileName) throws PolicyEngineException {
-        ScriptRunner sr = new ScriptRunner(conn, false, true);
-        sr.setLogWriter(null);
-        java.io.Reader reader;
-        try {
-            InputStream inputStream = DataGeneration.class.getClassLoader().getResourceAsStream(fileName);
-            reader = new BufferedReader(new InputStreamReader(inputStream));
-            sr.runScript(reader);
-        } catch (SQLException | IOException e) {
-            e.printStackTrace();
-            throw new PolicyEngineException("Error Running SQL script");
-        }
-    }
-
-
     public static void main (String [] args){
-//        runScript("mysql/generate_hist.sql"); //Check it
 //        Histogram.writeBuckets();
     }
 }

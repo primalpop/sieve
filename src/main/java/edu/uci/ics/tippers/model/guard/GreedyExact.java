@@ -102,14 +102,14 @@ public class GreedyExact {
     }
 
     /**
-     * Computing gain for Exact Factorization
+     * Computing gain for Exact Factorization based on a single predicate
      * @param original
-     * @param objSet
+     * @param objectCondition
      * @param quotient
      * @return
      */
-    public long computeGain(BEExpression original, Set<ObjectCondition> objSet, BEExpression quotient) {
-        long gain = (long) ((quotient.getPolicies().size() - 1)* BEPolicy.computeL(objSet) * PolicyConstants.NUMBER_OR_TUPLES);
+    public long computeGain(BEExpression original, ObjectCondition objectCondition, BEExpression quotient) {
+        long gain = (long) ((quotient.getPolicies().size() - 1)* objectCondition.computeL() * PolicyConstants.NUMBER_OR_TUPLES);
         for (BEPolicy bePolicy: original.getPolicies()) {
             gain += (BEPolicy.computeL(bePolicy.getObject_conditions()) * PolicyConstants.NUMBER_OR_TUPLES);
         }
@@ -137,7 +137,7 @@ public class GreedyExact {
                 currentFactor.quotient.expression.removeFromPolicies(objSet);
                 currentFactor.reminder = new GreedyExact(this.expression);
                 currentFactor.reminder.expression.getPolicies().removeAll(temp.getPolicies());
-                currentFactor.cost = computeGain(temp, objSet, currentFactor.quotient.expression);
+//                currentFactor.cost = computeGain(temp, objSet, currentFactor.quotient.expression);
                 if (this.cost < currentFactor.cost) {
                     this.multiplier = currentFactor.getMultiplier();
                     this.quotient = currentFactor.getQuotient();
@@ -151,10 +151,9 @@ public class GreedyExact {
         this.reminder.GFactorizeOptimal(rounds + 1);
     }
 
-    /** TODO: currently exact factorizing only based on whether an attribute is indexed or not (and not based on cost).
-     * It chooses the predicate that appears in the maximum number of policies to factorize **/
     /**
      * Factorization based on a single object condition and not all the possible combinations
+     * TODO: How does exact factorization take the aspect of indices available into consideration?
      */
     public void GFactorize() {
         Boolean factorized = false;
@@ -163,7 +162,6 @@ public class GreedyExact {
                 .collect(Collectors.toList());
         GreedyExact currentFactor = new GreedyExact(this.expression);
         for (ObjectCondition objectCondition : singletonSet) {
-            if(PolicyConstants.INDEXED_ATTRS.contains(objectCondition.getAttribute())) continue;
             BEExpression temp = new BEExpression(this.expression);
             temp.checkAgainstPolices(objectCondition);
             if (temp.getPolicies().size() > 1) { //was able to factorize
@@ -173,7 +171,7 @@ public class GreedyExact {
                 currentFactor.quotient.expression.removeFromPolicies(objectCondition);
                 currentFactor.reminder = new GreedyExact(this.expression);
                 currentFactor.reminder.expression.getPolicies().removeAll(temp.getPolicies());
-                currentFactor.cost = Long.valueOf(temp.getPolicies().size());
+                currentFactor.cost = computeGain(temp, objectCondition, currentFactor.quotient.expression);
                 if (this.cost < currentFactor.cost) {
                     this.multiplier = currentFactor.getMultiplier();
                     this.quotient = currentFactor.getQuotient();

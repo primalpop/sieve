@@ -253,38 +253,38 @@ public class PolicyExecution {
             BEExpression beExpression = new BEExpression();
 
             beExpression.parseJSONList(Reader.readTxt(policyDir + file.getName()));
-
-            int pred_count = beExpression.getPolicies().stream()
-                    .map(BEPolicy::getObject_conditions)
-                    .filter(objectConditions ->  objectConditions != null)
-                    .mapToInt(List::size)
-                    .sum();
-
-            System.out.println("Original number of Predicates :" + pred_count);
-
+//
+//            int pred_count = beExpression.getPolicies().stream()
+//                    .map(BEPolicy::getObject_conditions)
+//                    .filter(objectConditions ->  objectConditions != null)
+//                    .mapToInt(List::size)
+//                    .sum();
+//
+//            System.out.println("Original number of Predicates :" + pred_count);
+//
             Duration runTime = Duration.ofMillis(0);
 
             try {
-                runTime = runTime.plus(runQuery(beExpression.createQueryFromPolices()));
-                policyRunTimes.put(file.getName(), runTime);
-                System.out.println(file.getName() + " completed and took " + runTime);
-
-
-                runTime = Duration.ofSeconds(0);
-                ApproxFactorization f = new ApproxFactorization(beExpression);
-                f.approximateFactorization();
-                System.out.print("Approximate number of tuples: ");
-                runQuery(f.getExpression().createQueryFromPolices());
-                runTime = runTime.plus(runQuery(f.getExpression().createQueryFromPolices()));
-                policyRunTimes.put(file.getName() + "-af", runTime);
-                System.out.println("Approx Factorization complete amd took " + runTime);
-                writeJSONToFile(f.getExpression().getPolicies(), file.getName() + "-af");
+//                runTime = runTime.plus(runQuery(beExpression.createQueryFromPolices()));
+//                policyRunTimes.put(file.getName(), runTime);
+//                System.out.println(file.getName() + " completed and took " + runTime);
+//
+//
+//                runTime = Duration.ofSeconds(0);
+//                ApproxFactorization f = new ApproxFactorization(beExpression);
+//                f.approximateFactorization();
+//                System.out.print("Approximate number of tuples: ");
+//                runQuery(f.getExpression().createQueryFromPolices());
+//                runTime = runTime.plus(runQuery(f.getExpression().createQueryFromPolices()));
+//                policyRunTimes.put(file.getName() + "-af", runTime);
+//                System.out.println("Approx Factorization complete amd took " + runTime);
+//                writeJSONToFile(f.getExpression().getPolicies(), file.getName() + "-af");
 
                 /** To read approximate expression from the file **/
 //                BEExpression approxExpression = new BEExpression();
 //                approxExpression.parseJSONList(Reader.readTxt(policyDir + file.getName()));
-
-                GreedyExact gf = new GreedyExact(f.getExpression());
+//                System.out.println(approxExpression.createQueryFromPolices());
+                GreedyExact gf = new GreedyExact(beExpression);
                 gf.GFactorize();
                 System.out.println("Greedy Factorization complete ");
                 runTime = Duration.ofMillis(0);
