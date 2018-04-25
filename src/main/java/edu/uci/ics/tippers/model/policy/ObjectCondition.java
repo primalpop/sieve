@@ -37,29 +37,29 @@ public class ObjectCondition extends BooleanCondition {
     }
 
     private double singletonRange(){
-        double selectivity = 0.0001;
+        double frequency = 0.0001;
         for (int i = 0; i < Histogram.getInstance().getBucketMap().get(this.getAttribute()).size(); i++) {
             Bucket b = Histogram.getInstance().getBucketMap().get(this.getAttribute()).get(i);
             if (Integer.parseInt(b.getValue()) >=
                     Integer.parseInt(this.getBooleanPredicates().get(0).getValue())){
-                selectivity += b.getFreq();
+                frequency += b.getFreq();
             }
         }
-        return selectivity/100;
+        return frequency/100;
     }
 
     private double singletonEquality(){
-        double selectivity = 0.0001;
+        double frequency = 0.0001;
         Bucket bucket = Histogram.getInstance().getBucketMap().get(this.getAttribute()).stream()
                 .filter(b -> b.getValue().equalsIgnoreCase(this.getBooleanPredicates().get(0).getValue()))
                 .findFirst()
                 .orElse(null);
-        if (bucket != null) selectivity += bucket.getFreq();
-        return selectivity/100;
+        if (bucket != null) frequency += bucket.getFreq();
+        return frequency/100;
     }
 
     private double equiheightEquality(){
-        double selectivity = 0.0001;
+        double frequency = 0.0001;
         Bucket bucket = Histogram.getInstance().getBucketMap().get(this.getAttribute()).stream()
                 .filter(b -> Integer.parseInt(b.getLower()) >=
                         Integer.parseInt(this.getBooleanPredicates().get(0).getValue())
@@ -67,21 +67,21 @@ public class ObjectCondition extends BooleanCondition {
                         Integer.parseInt(this.getBooleanPredicates().get(1).getValue()))
                 .findFirst()
                 .orElse(null);
-        if(bucket != null) selectivity += bucket.getFreq()/bucket.getNumberOfItems();
-        return selectivity/100;
+        if(bucket != null) frequency += bucket.getFreq()/bucket.getNumberOfItems();
+        return frequency/100;
     }
 
     //TODO: Overestimates the selectivity as the partially contained buckets are completely counted
     private double equiheightRange(){
-        double selectivity = 0.0001;
+        double frequency = 0.0001;
         for (int i = 0; i < Histogram.getInstance().getBucketMap().get(this.getAttribute()).size(); i++) {
             Bucket b = Histogram.getInstance().getBucketMap().get(this.getAttribute()).get(i);
             if (timeStampToLDT(b.getLower()).compareTo(timeStampToLDT(this.getBooleanPredicates().get(1).getValue())) < 0
                     && timeStampToLDT(b.getUpper()).compareTo(timeStampToLDT(this.getBooleanPredicates().get(0).getValue())) > 0){
-                selectivity += b.getFreq();
+                frequency += b.getFreq();
             }
         }
-        return selectivity/100;
+        return frequency/100;
     }
 
 

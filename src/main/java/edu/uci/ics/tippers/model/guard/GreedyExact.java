@@ -1,20 +1,10 @@
 package edu.uci.ics.tippers.model.guard;
 
 import edu.uci.ics.tippers.common.PolicyConstants;
-import edu.uci.ics.tippers.common.PolicyEngineException;
-import edu.uci.ics.tippers.db.MySQLConnectionManager;
-import edu.uci.ics.tippers.db.MySQLQueryManager;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
 import edu.uci.ics.tippers.model.policy.ObjectCondition;
-import jdk.nashorn.internal.runtime.JSONFunctions;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -35,7 +25,7 @@ public class GreedyExact {
     GreedyExact reminder;
 
     //Cost of evaluating the expression
-    Long cost;
+    double cost;
 
     public GreedyExact() {
         this.expression = new BEExpression();
@@ -82,11 +72,11 @@ public class GreedyExact {
         this.reminder = reminder;
     }
 
-    public Long getCost() {
+    public double getCost() {
         return cost;
     }
 
-    public void setCost(Long cost) {
+    public void setCost(double cost) {
         this.cost = cost;
     }
 
@@ -102,7 +92,8 @@ public class GreedyExact {
     }
 
     /**
-     * Computing gain for Exact Factorization based on a single predicate
+     * Computing gain for Exact Factorization of single predicate
+     * Based on the gain formula from Surajit's paper
      * @param original
      * @param objectCondition
      * @param quotient
@@ -110,13 +101,30 @@ public class GreedyExact {
      */
     public long computeGain(BEExpression original, ObjectCondition objectCondition, BEExpression quotient) {
         long gain = (long) ((quotient.getPolicies().size() - 1)* objectCondition.computeL() * PolicyConstants.NUMBER_OR_TUPLES);
-        for (BEPolicy bePolicy: original.getPolicies()) {
-            gain += (BEPolicy.computeL(bePolicy.getObject_conditions()) * PolicyConstants.NUMBER_OR_TUPLES);
-        }
+        gain += original.computeL() * PolicyConstants.NUMBER_OR_TUPLES;
         gain -= quotient.computeL() * PolicyConstants.NUMBER_OR_TUPLES;
         return gain;
     }
 
+
+    /**
+     * Computing benefit by adding the number of tuples satisfied by guard and difference of tuples
+     * between original and quotient/filter.
+     * @param objectCondition
+     * @param original
+     * @param quotient
+     * @return
+     */
+    public double computeBenefit(ObjectCondition objectCondition, BEExpression original, BEExpression quotient){
+        double guardFreq = objectCondition.computeL();
+        double filterFreq = quotient.computeL() - original.computeL();
+        return guardFreq + filterFreq;
+    }
+
+    /**
+     * Factorization based on set of object conditions
+     * @param rounds
+     */
     public void GFactorizeOptimal(int rounds) {
         Boolean factorized = false;
         Set<Set<ObjectCondition>> powerSet = new HashSet<Set<ObjectCondition>>();
@@ -162,6 +170,7 @@ public class GreedyExact {
                 .collect(Collectors.toList());
         GreedyExact currentFactor = new GreedyExact(this.expression);
         for (ObjectCondition objectCondition : singletonSet) {
+            if(!PolicyConstants.INDEXED_ATTRS.contains(objectCondition.getAttribute())) continue;
             BEExpression temp = new BEExpression(this.expression);
             temp.checkAgainstPolices(objectCondition);
             if (temp.getPolicies().size() > 1) { //was able to factorize
@@ -171,11 +180,12 @@ public class GreedyExact {
                 currentFactor.quotient.expression.removeFromPolicies(objectCondition);
                 currentFactor.reminder = new GreedyExact(this.expression);
                 currentFactor.reminder.expression.getPolicies().removeAll(temp.getPolicies());
-                currentFactor.cost = computeGain(temp, objectCondition, currentFactor.quotient.expression);
+                currentFactor.cost = computeBenefit(objectCondition, temp, currentFactor.quotient.expression);
                 if (this.cost < currentFactor.cost) {
                     this.multiplier = currentFactor.getMultiplier();
                     this.quotient = currentFactor.getQuotient();
                     this.reminder = currentFactor.getReminder();
+                    this.cost = currentFactor.cost;
                     factorized = true;
                 }
                 currentFactor = new GreedyExact(this.expression);
