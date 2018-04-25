@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class PolicyConstants {
     //TODO: Initialize this from the database
-    public static final long NUMBER_OR_TUPLES = 100000;
+    public static final long NUMBER_OR_TUPLES = 1000000;
 
     public static final String TIMESTAMP_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
