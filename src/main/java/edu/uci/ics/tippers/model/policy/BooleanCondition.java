@@ -104,7 +104,7 @@ public class BooleanCondition  implements Comparable<BooleanCondition>  {
     }
 
     public static LocalDateTime timeStampToLDT(String timestamp) {
-        return LocalDateTime.parse(timestamp, PolicyConstants.formatter);
+        return LocalDateTime.parse(timestamp, PolicyConstants.TIME_FORMATTER);
     }
 
 

@@ -1,20 +1,20 @@
-package edu.uci.ics.tippers.model.guard;
+package edu.uci.ics.tippers.db;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-import com.ibatis.common.jdbc.ScriptRunner;
+
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.common.PolicyEngineException;
-import edu.uci.ics.tippers.data.DataGeneration;
-import edu.uci.ics.tippers.db.MySQLConnectionManager;
 import edu.uci.ics.tippers.fileop.Reader;
+import edu.uci.ics.tippers.fileop.Writer;
+import edu.uci.ics.tippers.model.guard.Bucket;
 
 import java.io.*;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,6 +23,8 @@ import java.util.Map;
 public class Histogram {
 
     private static java.sql.Connection conn = MySQLConnectionManager.getInstance().getConnection();
+
+    private static Writer writer = new Writer();
 
     private static Map<String, List<Bucket>> bucketMap;
 
@@ -132,23 +134,14 @@ public class Histogram {
 
 
     public static void writeBuckets(){
-        writeJSONToFile(getHistogram("user_id", "String", "equiheight"), PolicyConstants.USERID_ATTR);
-        writeJSONToFile(getHistogram("timeStamp", "DateTime", "equiheight"), PolicyConstants.TIMESTAMP_ATTR);
-        writeJSONToFile(getHistogram("location_id", "String", "singleton"), PolicyConstants.LOCATIONID_ATTR);
-        writeJSONToFile(getHistogram("energy", "String", "singleton"), PolicyConstants.ENERGY_ATTR);
-        writeJSONToFile(getHistogram("temperature", "String", "singleton"), PolicyConstants.TEMPERATURE_ATTR);
-        writeJSONToFile(getHistogram("activity", "String", "singleton"), PolicyConstants.ACTIVITY_ATTR);
+        writer.writeJSONToFile(getHistogram("user_id", "String", "equiheight"), PolicyConstants.USERID_ATTR);
+        writer.writeJSONToFile(getHistogram("timeStamp", "DateTime", "equiheight"), PolicyConstants.TIMESTAMP_ATTR);
+        writer.writeJSONToFile(getHistogram("location_id", "String", "singleton"), PolicyConstants.LOCATIONID_ATTR);
+        writer.writeJSONToFile(getHistogram("energy", "String", "singleton"), PolicyConstants.ENERGY_ATTR);
+        writer.writeJSONToFile(getHistogram("temperature", "String", "singleton"), PolicyConstants.TEMPERATURE_ATTR);
+        writer.writeJSONToFile(getHistogram("activity", "String", "singleton"), PolicyConstants.ACTIVITY_ATTR);
     }
 
-    private static void writeJSONToFile(List<Bucket> histogram, String attribute){
-        ObjectMapper mapper = new ObjectMapper();
-        ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter());
-        try {
-            writer.writeValue(new File(PolicyConstants.HISTOGRAM_DIR + attribute +".json"), histogram);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     public List<Bucket> parseJSONList(String jsonData) {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -159,9 +152,5 @@ public class Histogram {
             e.printStackTrace();
         }
         return buckets;
-    }
-
-    public static void main (String [] args){
-//        Histogram.writeBuckets();
     }
 }

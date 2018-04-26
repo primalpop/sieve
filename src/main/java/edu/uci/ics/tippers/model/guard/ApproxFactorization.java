@@ -24,14 +24,6 @@ public class ApproxFactorization {
 
     BEExpression expression;
 
-    public BEExpression getExpression() {
-        return expression;
-    }
-
-    public void setExpression(BEExpression expression) {
-        this.expression = expression;
-    }
-
     public ApproxFactorization(){
         this.expression = new BEExpression();
     }
@@ -39,7 +31,6 @@ public class ApproxFactorization {
     public ApproxFactorization(BEExpression expression){
         this.expression = new BEExpression(expression);
     }
-
 
     public static Calendar timestampStrToCal(String timestamp) {
         Calendar cal = Calendar.getInstance();
@@ -50,6 +41,14 @@ public class ApproxFactorization {
             e.printStackTrace();
         }
         return cal;
+    }
+
+    public BEExpression getExpression() {
+        return expression;
+    }
+
+    public void setExpression(BEExpression expression) {
+        this.expression = expression;
     }
 
     /**
@@ -71,14 +70,8 @@ public class ApproxFactorization {
             int end1 = Integer.parseInt(o1.getBooleanPredicates().get(1).getValue());
             int start2 = Integer.parseInt(o2.getBooleanPredicates().get(0).getValue());
             int end2 = Integer.parseInt(o2.getBooleanPredicates().get(1).getValue());
-            if(o1.getAttribute().equalsIgnoreCase(PolicyConstants.ENERGY_ATTR)) {
-                if (start1  <= end2  && end1  >= start2)
-                    return true;
-            }
-            else if (o1.getAttribute().equalsIgnoreCase(PolicyConstants.TEMPERATURE_ATTR)){
-                if (start1 <= end2  && end1 >= start2 )
-                    return true;
-            }
+            if (start1  <= end2  && end1  >= start2)
+                return true;
         }
         else if(o1.getType().getID() == 2) { //Timestamp
             Long extension =  (long)(60 * 1000); //1 minute extension
@@ -206,12 +199,10 @@ public class ApproxFactorization {
      * policies all of them are merged.
      */
     public void approximateFactorization(){
-        int mergeCounter = 0;
         Map<ObjectCondition, ObjectCondition> replacementMap = new HashMap<>();
         for (int i = 0; i < this.expression.getPolAttributes().size(); i++) {
             HashMap<ObjectCondition, List<BEPolicy>> predOnAttr = getPredicatesOnAttr(this.expression.getPolAttributes().get(i));
-            if(predOnAttr.isEmpty())
-                continue;
+            if(predOnAttr.isEmpty()) continue;
             List<ObjectCondition> objectConditions = new ArrayList<>();
             objectConditions.addAll(predOnAttr.keySet());
             Collections.sort(objectConditions);
@@ -223,15 +214,13 @@ public class ApproxFactorization {
                 if(!overlaps(top, next))
                     stack.push(next);
                 else {
-                    mergeCounter += 1;
                     List<BEPolicy> policy_a1_list = predOnAttr.get(next);
                     List<BEPolicy> policy_a2_list = predOnAttr.get(top);
-                    BEPolicy policy_a1 = policy_a1_list.get(0);
-                    BEPolicy policy_a2 = policy_a2_list.get(0);
-//                    BEPolicy policy_a1 = new BEPolicy(choosePolicyToMerge(next, policy_a1_list));
-//                    BEPolicy policy_a2 = new BEPolicy(choosePolicyToMerge(top, policy_a2_list));
-                    if(true){
-//                    if(canBeMerged(policy_a1, next, policy_a2, top)){
+//                    BEPolicy policy_a1 = policy_a1_list.get(0);
+//                    BEPolicy policy_a2 = policy_a2_list.get(0);
+                    BEPolicy policy_a1 = new BEPolicy(choosePolicyToMerge(next, policy_a1_list));
+                    BEPolicy policy_a2 = new BEPolicy(choosePolicyToMerge(top, policy_a2_list));
+                    if(canBeMerged(policy_a1, next, policy_a2, top)){
                         if(next.getBooleanPredicates().get(1).getValue().compareTo(top.getBooleanPredicates().get(1).getValue()) > 0){
                             top.getBooleanPredicates().get(1).setValue(next.getBooleanPredicates().get(1).getValue());
                             top.getBooleanPredicates().get(0).setOperator(">=");
@@ -245,13 +234,10 @@ public class ApproxFactorization {
                     }
                 }
             }
-
-
-            //Rewriting the original expression
-            for (ObjectCondition pred: replacementMap.keySet()) {
-                this.expression.replenishFromPolicies(pred, replacementMap.get(pred));
-            }
         }
-        System.out.println("Number of predicates merged: " + mergeCounter);
+        //Rewriting the original expression
+        for (ObjectCondition pred: replacementMap.keySet()) {
+            this.expression.replenishFromPolicies(pred, replacementMap.get(pred));
+        }
     }
 }

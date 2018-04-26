@@ -4,7 +4,7 @@ import edu.uci.ics.tippers.common.AttributeType;
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.common.PolicyEngineException;
 import edu.uci.ics.tippers.model.guard.Bucket;
-import edu.uci.ics.tippers.model.guard.Histogram;
+import edu.uci.ics.tippers.db.Histogram;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -108,17 +108,17 @@ public class GreedyExact {
 
 
     /**
-     * Computing benefit by adding the number of tuples satisfied by guard and difference of tuples
-     * between original and quotient/filter.
+     * Computing benefit by computing the weighted normalized sum of number of tuples satisfied by guard
+     * and difference of tuples between original and quotient/filter.
      * @param objectCondition
      * @param original
      * @param quotient
      * @return
      */
     public double computeBenefit(ObjectCondition objectCondition, BEExpression original, BEExpression quotient){
-        double guardFreq = objectCondition.computeL();
-        double filterFreq = quotient.computeL() - original.computeL();
-        return guardFreq + filterFreq;
+        double guardFreq = objectCondition.computeL() * PolicyConstants.NUMBER_OR_TUPLES;
+        double filterFreq = quotient.computeL() - original.computeL() * PolicyConstants.NUMBER_OR_TUPLES;
+        return ((0.8 * guardFreq) + (0.2 * filterFreq))/ (guardFreq + filterFreq);
     }
 
     /**

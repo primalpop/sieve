@@ -1,9 +1,7 @@
 package edu.uci.ics.tippers.data;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.common.PolicyEngineException;
 import edu.uci.ics.tippers.db.MySQLConnectionManager;
@@ -13,7 +11,6 @@ import edu.uci.ics.tippers.model.guard.ApproxFactorization;
 import edu.uci.ics.tippers.model.guard.GreedyExact;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
-import edu.uci.ics.tippers.model.policy.ObjectCondition;
 import edu.uci.ics.tippers.model.query.BasicQuery;
 import edu.uci.ics.tippers.model.query.RangeQuery;
 import org.apache.commons.dbutils.DbUtils;
@@ -23,7 +20,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.*;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.Instant;
@@ -50,15 +46,12 @@ public class PolicyExecution {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    private BufferedWriter writer;
-
-
-    Writer mWriter;
+    Writer writer;
 
     public PolicyExecution(){
         this.connection = MySQLConnectionManager.getInstance().getConnection();
         policyGen = new PolicyGeneration();
-        mWriter = new Writer();
+        writer = new Writer();
         objectMapper.setDateFormat(sdf);
     }
 
@@ -253,44 +246,44 @@ public class PolicyExecution {
             BEExpression beExpression = new BEExpression();
 
             beExpression.parseJSONList(Reader.readTxt(policyDir + file.getName()));
-//
-//            int pred_count = beExpression.getPolicies().stream()
-//                    .map(BEPolicy::getObject_conditions)
-//                    .filter(objectConditions ->  objectConditions != null)
-//                    .mapToInt(List::size)
-//                    .sum();
-//
-//            System.out.println("Original number of Predicates :" + pred_count);
-//
+
+            int pred_count = beExpression.getPolicies().stream()
+                    .map(BEPolicy::getObject_conditions)
+                    .filter(objectConditions ->  objectConditions != null)
+                    .mapToInt(List::size)
+                    .sum();
+
+            System.out.println("Original number of Predicates :" + pred_count);
+
             Duration runTime = Duration.ofMillis(0);
 
             try {
-//                runTime = runTime.plus(runQuery(beExpression.createQueryFromPolices()));
-//                policyRunTimes.put(file.getName(), runTime);
-//                System.out.println(file.getName() + " completed and took " + runTime);
-//
-//
-//                runTime = Duration.ofSeconds(0);
-//                ApproxFactorization f = new ApproxFactorization(beExpression);
-//                f.approximateFactorization();
-//                System.out.print("Approximate number of tuples: ");
-//                runQuery(f.getExpression().createQueryFromPolices());
-//                runTime = runTime.plus(runQuery(f.getExpression().createQueryFromPolices()));
-//                policyRunTimes.put(file.getName() + "-af", runTime);
-//                System.out.println("Approx Factorization complete amd took " + runTime);
-//                writeJSONToFile(f.getExpression().getPolicies(), file.getName() + "-af");
+                runTime = runTime.plus(runQuery(beExpression.createQueryFromPolices()));
+                policyRunTimes.put(file.getName(), runTime);
+                System.out.println(file.getName() + " completed and took " + runTime);
+
+
+                runTime = Duration.ofSeconds(0);
+                ApproxFactorization f = new ApproxFactorization(beExpression);
+                f.approximateFactorization();
+                System.out.print("Approximate number of tuples: ");
+                runQuery(f.getExpression().createQueryFromPolices());
+                runTime = runTime.plus(runQuery(f.getExpression().createQueryFromPolices()));
+                policyRunTimes.put(file.getName() + "-af", runTime);
+                System.out.println("Approx Factorization complete amd took " + runTime);
+                writer.writeJSONToFile(f.getExpression().getPolicies(), file.getName() + "-af");
 
                 /** To read approximate expression from the file **/
 //                BEExpression approxExpression = new BEExpression();
 //                approxExpression.parseJSONList(Reader.readTxt(policyDir + file.getName()));
 //                System.out.println(approxExpression.createQueryFromPolices());
-                GreedyExact gf = new GreedyExact(beExpression);
-                gf.GFactorize();
-                System.out.println("Greedy Factorization complete ");
-                runTime = Duration.ofMillis(0);
-                runTime = runTime.plus(runQuery(gf.createQueryFromExactFactor()));
-                policyRunTimes.put(file.getName() + "-gf", runTime);
-                System.out.println(file.getName() + "_greedy_factorized completed and took " + runTime);
+//                GreedyExact gf = new GreedyExact(beExpression);
+//                gf.GFactorize();
+//                System.out.println("Greedy Factorization complete ");
+//                runTime = Duration.ofMillis(0);
+//                runTime = runTime.plus(runQuery(gf.createQueryFromExactFactor()));
+//                policyRunTimes.put(file.getName() + "-gf", runTime);
+//                System.out.println(file.getName() + "_greedy_factorized completed and took " + runTime);
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -299,43 +292,6 @@ public class PolicyExecution {
         }
 
         return policyRunTimes;
-    }
-
-    //TODO: Clean up and have a common method for writing to files
-    //For writing policies to BE_POLICY_DIR
-    private void writeJSONToFile(List<?> policies, String fileName){
-        ObjectMapper mapper = new ObjectMapper();
-        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        mapper.setDateFormat(formatter);
-        ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter());
-        try {
-            writer.writeValue(new File(PolicyConstants.BE_POLICY_DIR + fileName), policies);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    private void createTextReport(Map<String, Duration> runTimes, String fileDir) {
-        try {
-            writer = new BufferedWriter(new FileWriter( fileDir + "results.txt"));
-
-            writer.write("Number of Policies     Time taken (in ms)");
-            writer.write("\n\n");
-
-            String line = "";
-            for (String policy: runTimes.keySet()) {
-                if (runTimes.get(policy).compareTo(PolicyConstants.MAX_DURATION) < 0 )
-                    line +=  String.format("%s %s", policy, runTimes.get(policy).toMillis());
-                else
-                    line +=  String.format("%s  %s", policy, "Timed out" );
-                line += "\n";
-            }
-            writer.write(line);
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     private void generatePolicies(String policyDir){
@@ -356,23 +312,21 @@ public class PolicyExecution {
     private void basicQueryExperiments(String policyDir){
         Map<String, Duration> runTimes = new HashMap<>();
         runTimes.putAll(runBasicQueries(policyDir));
-        createTextReport(runTimes, policyDir);
+        writer.createTextReport(runTimes, policyDir);
     }
 
 
     private void rangeQueryExperiments(String policyDir){
         Map<String, Duration> runTimes = new HashMap<>();
         runTimes.putAll(runRangeQueries(policyDir));
-        createTextReport(runTimes, policyDir);
+        writer.createTextReport(runTimes, policyDir);
     }
 
     private void bePolicyExperiments(String policyDir){
         Map<String, Duration> runTimes = new HashMap<>();
         runTimes.putAll(runBEPolicies(policyDir));
-        createTextReport(runTimes, policyDir);
+        writer.createTextReport(runTimes, policyDir);
     }
-
-
 
 
     public static void main (String args[]){
