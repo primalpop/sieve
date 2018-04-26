@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import edu.uci.ics.tippers.common.PolicyConstants;
+import edu.uci.ics.tippers.fileop.Writer;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
 import edu.uci.ics.tippers.model.policy.ObjectCondition;
 import edu.uci.ics.tippers.model.query.BasicQuery;
@@ -16,11 +17,17 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.security.Policy;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.*;
+
+import static edu.uci.ics.tippers.common.PolicyConstants.START_TS;
 
 /**
  * Author primpap
@@ -31,21 +38,8 @@ public class PolicyGeneration {
 
     List<Infrastructure> infras;
     List<User> users;
-    List<String> activities;
-
-    int lowTemp = 55;
-    int highTemp = 75;
-    int lowWemo = 0;
-    int highWemo = 100;
-
-    String startTS = "2017-03-31 15:10:00 ";
-    String endTS = "2017-10-23 12:40:55";
-
-    DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-    private static final double[] hours = { 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 8.0, 10.0, 12.0, 24.0, 48.0, 72.0, 168.0, 336.0};
-
-    Random r = new Random();
+    Random r;
+    Writer writer;
 
     public PolicyGeneration() {
 
@@ -53,42 +47,28 @@ public class PolicyGeneration {
 
         users = DataGeneration.getAllUser();
 
-        activities = new ArrayList<String>();
-        activities.add("class");
-        activities.add("meeting");
-        activities.add("seminar");
-        activities.add("private");
-        activities.add("walking");
-        activities.add("unknown");
-        activities.add("work");
+        r = new Random();
 
+        writer = new Writer();
+    }
+
+    private long getRandomTimeBetweenTwoDates () {
+        long diff = Timestamp.valueOf(PolicyConstants.END_TS).getTime() -
+                Timestamp.valueOf(PolicyConstants.START_TS).getTime() + 1;
+        return Timestamp.valueOf(PolicyConstants.START_TS).getTime() + (long) (Math.random() * diff);
     }
 
     private Timestamp getRandomTimeStamp() {
-        Calendar cal = Calendar.getInstance();
-
-        try {
-            cal.setTime(formatter.parse(startTS));
-            Long value1 = cal.getTimeInMillis();
-            cal.setTime(formatter.parse(endTS));
-            Long value2 = cal.getTimeInMillis();
-            long value3 = (long) (value1 + Math.random() * (value2 - value1));
-            cal.setTimeInMillis(value3);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        return new Timestamp(cal.getTimeInMillis());
+        Instant instant = Instant.ofEpochSecond(getRandomTimeBetweenTwoDates());
+        LocalDateTime randomDate = LocalDateTime.ofInstant(instant, ZoneId.of("UTC-07:00"));
+        return Timestamp.valueOf(randomDate);
     }
 
-
     private Timestamp getEndingTimeInterval(Timestamp timestamp){
-
         if (timestamp == null)
             return getRandomTimeStamp();
-
-        int hourIndex = new Random().nextInt(hours.length);
-        double rHour = hours[hourIndex];
+        int hourIndex = new Random().nextInt(PolicyConstants.HOUR_EXTENSIONS.size());
+        double rHour = PolicyConstants.HOUR_EXTENSIONS.get(hourIndex);
         
         rHour = rHour * Math.random();
         Long milliseconds = (long)(rHour * 60.0 * 60.0 * 1000.0);
@@ -100,7 +80,7 @@ public class PolicyGeneration {
 
         int temperature;
         if(temp == null)
-            return r.nextInt(highTemp - lowTemp) + lowTemp;
+            return r.nextInt(PolicyConstants.HIGH_TEMPERATURE - PolicyConstants.LOW_TEMPERATURE) + PolicyConstants.LOW_TEMPERATURE;
         else
             temperature = Integer.parseInt(temp);
 
@@ -117,7 +97,7 @@ public class PolicyGeneration {
 
         int energy;
         if(wemo == null)
-            return r.nextInt(highWemo - lowWemo) + lowWemo;
+            return r.nextInt(PolicyConstants.HIGH_WEMO - PolicyConstants.LOW_WEMO) + PolicyConstants.LOW_WEMO;
         else
             energy = Integer.parseInt(wemo);
 
@@ -131,17 +111,6 @@ public class PolicyGeneration {
     }
 
 
-    private void writeJSONToFile(List<?> policies, int numberOfPolicies, String policyDir){
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.setDateFormat(formatter);
-        ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter());
-        try {
-            writer.writeValue(new File(policyDir + "policy"+numberOfPolicies+".json"), policies);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     public void generateBasicPolicy1(int numberOfPolicies) {
 
         List<BasicQuery> basicQueries = new ArrayList<BasicQuery>();
@@ -149,14 +118,16 @@ public class PolicyGeneration {
         for (int i = 0; i < numberOfPolicies; i++) {
             User user = users.get(new Random().nextInt(users.size()));
             Infrastructure infra = infras.get(new Random().nextInt(infras.size()));
-            String temperature = String.valueOf(r.nextInt(highTemp - lowTemp) + lowTemp);
-            String wemo = String.valueOf(r.nextInt(highWemo - lowWemo) + lowWemo);
+            String temperature = String.valueOf(r.nextInt(PolicyConstants.HIGH_TEMPERATURE - PolicyConstants.LOW_TEMPERATURE)
+                    + PolicyConstants.LOW_TEMPERATURE);
+            String wemo = String.valueOf(r.nextInt(PolicyConstants.HIGH_WEMO - PolicyConstants.LOW_WEMO)
+                    + PolicyConstants.LOW_WEMO);
             Timestamp ts = getRandomTimeStamp();
-            String activity = activities.get(new Random().nextInt(activities.size()));
+            String activity = PolicyConstants.ACTIVITIES.get(new Random().nextInt(PolicyConstants.ACTIVITIES.size()));
             BasicQuery bq = new BasicQuery(String.valueOf(user.getUser_id()), infra.getName(), ts, temperature, wemo, activity);
             basicQueries.add(bq);
         }
-        writeJSONToFile(basicQueries, numberOfPolicies, PolicyConstants.BASIC_POLICY_1_DIR);
+        writer.writeJSONToFile(basicQueries, PolicyConstants.BASIC_POLICY_1_DIR);
     }
 
 
@@ -184,11 +155,13 @@ public class PolicyGeneration {
                     } else if (attribute.getName().equalsIgnoreCase("timestamp")) {
                         PropertyUtils.setSimpleProperty(bq, attribute.getName(), getRandomTimeStamp());
                     } else if (attribute.getName().equalsIgnoreCase("wemo")) {
-                        PropertyUtils.setSimpleProperty(bq, attribute.getName(), String.valueOf(r.nextInt(highWemo - lowWemo) + lowWemo));
+                        PropertyUtils.setSimpleProperty(bq, attribute.getName(), String.valueOf(r.nextInt(PolicyConstants.HIGH_WEMO - PolicyConstants.LOW_WEMO)
+                                + PolicyConstants.LOW_WEMO));
                     } else if (attribute.getName().equalsIgnoreCase("activity")) {
-                        PropertyUtils.setSimpleProperty(bq, attribute.getName(), activities.get(new Random().nextInt(activities.size())));
+                        PropertyUtils.setSimpleProperty(bq, attribute.getName(), PolicyConstants.ACTIVITIES.get(new Random().nextInt(PolicyConstants.ACTIVITIES.size())));
                     } else if (attribute.getName().equalsIgnoreCase("temperature")) {
-                        PropertyUtils.setSimpleProperty(bq, attribute.getName(), String.valueOf(r.nextInt(highTemp - lowTemp) + lowTemp));
+                        PropertyUtils.setSimpleProperty(bq, attribute.getName(), String.valueOf(r.nextInt(PolicyConstants.HIGH_TEMPERATURE
+                                - PolicyConstants.LOW_TEMPERATURE) + PolicyConstants.LOW_TEMPERATURE));
                     }
                     attrList.add(attribute);
                 }
@@ -202,7 +175,7 @@ public class PolicyGeneration {
             basicQueries.add(bq);
         }
 
-        writeJSONToFile(basicQueries, numberOfPolicies, PolicyConstants.BASIC_POLICY_2_DIR);
+        writer.writeJSONToFile(basicQueries, PolicyConstants.BASIC_POLICY_2_DIR);
     }
 
 
@@ -222,12 +195,14 @@ public class PolicyGeneration {
         for (int i = 0; i < numberOfPolicies; i++) {
             User user = users.get(new Random().nextInt(users.size()));
             Infrastructure infra = infras.get(new Random().nextInt(infras.size()));
-            String activity = activities.get(new Random().nextInt(activities.size()));
+            String activity = PolicyConstants.ACTIVITIES.get(new Random().nextInt(PolicyConstants.ACTIVITIES.size()));
             Timestamp sTS = getRandomTimeStamp();
             Timestamp eTS = getEndingTimeInterval(sTS);
-            Integer start_temp = r.nextInt(highTemp - lowTemp) + lowTemp;
+            Integer start_temp = r.nextInt((PolicyConstants.HIGH_TEMPERATURE - PolicyConstants.LOW_TEMPERATURE)
+                    + (PolicyConstants.LOW_TEMPERATURE));
             Integer end_temp = getTemperature(String.valueOf(start_temp));
-            Integer start_wemo =  r.nextInt(highWemo - lowWemo) + lowWemo;
+            Integer start_wemo =  r.nextInt(PolicyConstants.HIGH_WEMO - PolicyConstants.LOW_WEMO)
+                    + PolicyConstants.LOW_WEMO;
             Integer end_wemo = getEnergy(String.valueOf(start_wemo));
 
             RangeQuery rq = new RangeQuery(sTS, eTS, String.valueOf(start_wemo), String.valueOf(end_wemo), String.valueOf(start_temp),
@@ -236,7 +211,7 @@ public class PolicyGeneration {
             rangeQueries.add(rq);
         }
 
-        writeJSONToFile(rangeQueries, numberOfPolicies, PolicyConstants.RANGE_POLICY_1_DIR);
+        writer.writeJSONToFile(rangeQueries, PolicyConstants.RANGE_POLICY_1_DIR);
 
     }
 
@@ -274,7 +249,7 @@ public class PolicyGeneration {
                 } else if (attribute.getName().equalsIgnoreCase("end_wemo")) {
                     rq.setEnd_wemo(String.valueOf(getEnergy(rq.getStart_wemo())));
                 } else if (attribute.getName().equalsIgnoreCase("activity")) {
-                    rq.setActivity(activities.get(new Random().nextInt(activities.size())));
+                    rq.setActivity(PolicyConstants.ACTIVITIES.get(new Random().nextInt(PolicyConstants.ACTIVITIES.size())));
                 } else if (attribute.getName().equalsIgnoreCase("start_temp")) {
                     rq.setStart_temp(String.valueOf(getTemperature(null)));
                 } else if (attribute.getName().equalsIgnoreCase("end_temp")) {
@@ -284,7 +259,7 @@ public class PolicyGeneration {
             }
             rangeQueries.add(rq);
         }
-        writeJSONToFile(rangeQueries, numberOfPolicies, PolicyConstants.RANGE_POLICY_2_DIR);
+        writer.writeJSONToFile(rangeQueries, PolicyConstants.RANGE_POLICY_2_DIR);
     }
 
     /**
@@ -320,7 +295,7 @@ public class PolicyGeneration {
                     rq.setStart_wemo(String.valueOf(getEnergy(null)));
                     rq.setEnd_wemo(String.valueOf(getEnergy(rq.getStart_wemo())));
                 } else if (attribute.getName().equalsIgnoreCase("activity")) {
-                    rq.setActivity(activities.get(new Random().nextInt(activities.size())));
+                    rq.setActivity(PolicyConstants.ACTIVITIES.get(new Random().nextInt(PolicyConstants.ACTIVITIES.size())));
                 } else if (attribute.getName().equalsIgnoreCase("start_temp") ||
                         attribute.getName().equalsIgnoreCase("end_temp")) {
                     rq.setStart_temp(String.valueOf(getTemperature(null)));
@@ -331,7 +306,7 @@ public class PolicyGeneration {
             List<ObjectCondition> objectConditions = rq.createObjectCondition();
             bePolicies.add(new BEPolicy(String.valueOf(i), "Generated Policy " + i, objectConditions, PolicyConstants.DEFAULT_QC.asList(), "", ""));
         }
-        writeJSONToFile(bePolicies, numberOfPolicies, PolicyConstants.BE_POLICY_DIR);
+        writer.writeJSONToFile(bePolicies, PolicyConstants.BE_POLICY_DIR);
     }
 
 }

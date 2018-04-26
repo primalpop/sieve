@@ -1,5 +1,6 @@
 package edu.uci.ics.tippers.execution;
 
+import edu.uci.ics.tippers.db.Histogram;
 import edu.uci.ics.tippers.fileop.Reader;
 import edu.uci.ics.tippers.model.guard.*;
 import edu.uci.ics.tippers.model.policy.BEExpression;
@@ -37,8 +38,6 @@ public class RunMe {
 //
 //        PolicyGeneration pg = new PolicyGeneration();
 //        pg.generateBEPolicy(5);
-
-//        Connection conn = DB2ConnectionManager.getInstance().getConnection();
 
     }
 }
