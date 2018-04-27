@@ -7,6 +7,7 @@ import edu.uci.ics.tippers.model.guard.Bucket;
 import edu.uci.ics.tippers.db.Histogram;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -74,13 +75,31 @@ public class ObjectCondition extends BooleanCondition {
     //TODO: Overestimates the selectivity as the partially contained buckets are completely counted
     private double equiheightRange(){
         double frequency = 0.0001;
-        for (int i = 0; i < Histogram.getInstance().getBucketMap().get(this.getAttribute()).size(); i++) {
-            Bucket b = Histogram.getInstance().getBucketMap().get(this.getAttribute()).get(i);
-            if (timeStampToLDT(b.getLower()).compareTo(timeStampToLDT(this.getBooleanPredicates().get(1).getValue())) < 0
-                    && timeStampToLDT(b.getUpper()).compareTo(timeStampToLDT(this.getBooleanPredicates().get(0).getValue())) > 0){
-                frequency += b.getFreq();
+        List<Bucket> buckets = Histogram.getInstance().getBucketMap().get(this.attribute);
+        Bucket searchKey = new Bucket();
+        searchKey.setAttribute(PolicyConstants.TIMESTAMP_ATTR);
+        searchKey.setLower(this.getBooleanPredicates().get(0).getValue());
+        int searchIndex = Collections.binarySearch(buckets, searchKey);
+        if (searchIndex < 0) { // no exact match
+            if(-searchIndex > 2) {
+                searchIndex = -searchIndex - 2;
+                frequency += buckets.get(searchIndex).getFreq();
+            }
+            else {//first bucket
+                searchIndex = -searchIndex - 1;
+                frequency += buckets.get(searchIndex).getFreq();
             }
         }
+        else frequency += buckets.get(searchIndex).getFreq(); //exact match
+        while(true){
+            searchIndex += 1;
+            if(buckets.size() - 1 < searchIndex) break;
+            if (buckets.get(searchIndex).getUpper().compareTo(this.getBooleanPredicates().get(1).getValue()) < 0){
+                frequency =+ buckets.get(searchIndex).getFreq();
+            }
+            else break;
+        }
+        System.out.println(this.toString() + " : " + frequency);
         return frequency/100;
     }
 

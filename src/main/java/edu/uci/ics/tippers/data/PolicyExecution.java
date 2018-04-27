@@ -265,20 +265,26 @@ public class PolicyExecution {
 
                 runTime = Duration.ofSeconds(0);
                 ApproxFactorization f = new ApproxFactorization(beExpression);
+                Instant sA = Instant.now();
                 f.approximateFactorization();
+                Instant eA = Instant.now();
+                System.out.println("Approximate factorization took " + Duration.between(sA, eA));
                 System.out.print("Approximate number of tuples: ");
                 runQuery(f.getExpression().createQueryFromPolices());
                 runTime = runTime.plus(runQuery(f.getExpression().createQueryFromPolices()));
                 policyRunTimes.put(file.getName() + "-af", runTime);
                 System.out.println("Approx Factorization complete amd took " + runTime);
-                writer.writeJSONToFile(f.getExpression().getPolicies(), file.getName() + "-af");
+                writer.writeJSONToFile(f.getExpression().getPolicies(), PolicyConstants.BE_POLICY_DIR, null);
 
                 /** To read approximate expression from the file **/
 //                BEExpression approxExpression = new BEExpression();
 //                approxExpression.parseJSONList(Reader.readTxt(policyDir + file.getName()));
 //                System.out.println(approxExpression.createQueryFromPolices());
-//                GreedyExact gf = new GreedyExact(beExpression);
+//                GreedyExact gf = new GreedyExact(f.getExpression());
+//                Instant sG = Instant.now();
 //                gf.GFactorize();
+//                Instant eG = Instant.now();
+//                System.out.println("Greedy factorization took " + Duration.between(sG, eG));
 //                System.out.println("Greedy Factorization complete ");
 //                runTime = Duration.ofMillis(0);
 //                runTime = runTime.plus(runQuery(gf.createQueryFromExactFactor()));
