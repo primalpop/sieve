@@ -127,7 +127,7 @@ public class PolicyGeneration {
             BasicQuery bq = new BasicQuery(String.valueOf(user.getUser_id()), infra.getName(), ts, temperature, wemo, activity);
             basicQueries.add(bq);
         }
-        writer.writeJSONToFile(basicQueries, PolicyConstants.BASIC_POLICY_1_DIR);
+        writer.writeJSONToFile(basicQueries, PolicyConstants.BASIC_POLICY_1_DIR, null);
     }
 
 
@@ -175,7 +175,7 @@ public class PolicyGeneration {
             basicQueries.add(bq);
         }
 
-        writer.writeJSONToFile(basicQueries, PolicyConstants.BASIC_POLICY_2_DIR);
+        writer.writeJSONToFile(basicQueries, PolicyConstants.BASIC_POLICY_2_DIR, null);
     }
 
 
@@ -211,7 +211,7 @@ public class PolicyGeneration {
             rangeQueries.add(rq);
         }
 
-        writer.writeJSONToFile(rangeQueries, PolicyConstants.RANGE_POLICY_1_DIR);
+        writer.writeJSONToFile(rangeQueries, PolicyConstants.RANGE_POLICY_1_DIR, null);
 
     }
 
@@ -259,7 +259,7 @@ public class PolicyGeneration {
             }
             rangeQueries.add(rq);
         }
-        writer.writeJSONToFile(rangeQueries, PolicyConstants.RANGE_POLICY_2_DIR);
+        writer.writeJSONToFile(rangeQueries, PolicyConstants.RANGE_POLICY_2_DIR, null);
     }
 
     /**
@@ -306,7 +306,7 @@ public class PolicyGeneration {
             List<ObjectCondition> objectConditions = rq.createObjectCondition();
             bePolicies.add(new BEPolicy(String.valueOf(i), "Generated Policy " + i, objectConditions, PolicyConstants.DEFAULT_QC.asList(), "", ""));
         }
-        writer.writeJSONToFile(bePolicies, PolicyConstants.BE_POLICY_DIR);
+        writer.writeJSONToFile(bePolicies, PolicyConstants.BE_POLICY_DIR, null);
     }
 
 }

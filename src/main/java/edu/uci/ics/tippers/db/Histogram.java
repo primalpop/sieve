@@ -11,14 +11,12 @@ import edu.uci.ics.tippers.fileop.Writer;
 import edu.uci.ics.tippers.model.guard.Bucket;
 
 import java.io.*;
+import java.security.Policy;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Histogram {
 
@@ -46,12 +44,12 @@ public class Histogram {
 
     private void retrieveBuckets(){
         bucketMap = new HashMap<>();
-        bucketMap.put(PolicyConstants.USERID_ATTR, parseJSONList(Reader.readTxt(PolicyConstants.HISTOGRAM_DIR + PolicyConstants.USERID_ATTR + ".json")));
-        bucketMap.put(PolicyConstants.TIMESTAMP_ATTR, parseJSONList(Reader.readTxt(PolicyConstants.HISTOGRAM_DIR + PolicyConstants.TIMESTAMP_ATTR + ".json")));
-        bucketMap.put(PolicyConstants.LOCATIONID_ATTR, parseJSONList(Reader.readTxt(PolicyConstants.HISTOGRAM_DIR + PolicyConstants.LOCATIONID_ATTR + ".json")));
-        bucketMap.put(PolicyConstants.ENERGY_ATTR, parseJSONList(Reader.readTxt(PolicyConstants.HISTOGRAM_DIR + PolicyConstants.ENERGY_ATTR + ".json")));
-        bucketMap.put(PolicyConstants.TEMPERATURE_ATTR, parseJSONList(Reader.readTxt(PolicyConstants.HISTOGRAM_DIR + PolicyConstants.TEMPERATURE_ATTR + ".json")));
-        bucketMap.put(PolicyConstants.ACTIVITY_ATTR, parseJSONList(Reader.readTxt(PolicyConstants.HISTOGRAM_DIR + PolicyConstants.ACTIVITY_ATTR + ".json")));
+        bucketMap.put(PolicyConstants.USERID_ATTR, sortBuckets(parseJSONList(Reader.readTxt(PolicyConstants.HISTOGRAM_DIR + PolicyConstants.USERID_ATTR + ".json"))));
+        bucketMap.put(PolicyConstants.TIMESTAMP_ATTR, sortBuckets(parseJSONList(Reader.readTxt(PolicyConstants.HISTOGRAM_DIR + PolicyConstants.TIMESTAMP_ATTR + ".json"))));
+        bucketMap.put(PolicyConstants.LOCATIONID_ATTR, sortBuckets( parseJSONList(Reader.readTxt(PolicyConstants.HISTOGRAM_DIR + PolicyConstants.LOCATIONID_ATTR + ".json"))));
+        bucketMap.put(PolicyConstants.ENERGY_ATTR, sortBuckets(parseJSONList(Reader.readTxt(PolicyConstants.HISTOGRAM_DIR + PolicyConstants.ENERGY_ATTR + ".json"))));
+        bucketMap.put(PolicyConstants.TEMPERATURE_ATTR, sortBuckets( parseJSONList(Reader.readTxt(PolicyConstants.HISTOGRAM_DIR + PolicyConstants.TEMPERATURE_ATTR + ".json"))));
+        bucketMap.put(PolicyConstants.ACTIVITY_ATTR, sortBuckets(parseJSONList(Reader.readTxt(PolicyConstants.HISTOGRAM_DIR + PolicyConstants.ACTIVITY_ATTR + ".json"))));
     }
 
     private static List<Bucket> getHistogram(String attribute, String attribute_type, String histogram_type) {
@@ -70,6 +68,7 @@ public class Histogram {
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()) {
                     Bucket bucket = new Bucket();
+                    bucket.setAttribute(attribute);
                     bucket.setValue(rs.getString("value"));
                     bucket.setCumulfreq(Double.parseDouble(rs.getString("cumulfreq").replaceAll("[^\\d.]", "")));
                     bucket.setFreq(Double.parseDouble(rs.getString("freq").replaceAll("[^\\d.]", "")));
@@ -91,6 +90,7 @@ public class Histogram {
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()) {
                     Bucket bucket = new Bucket();
+                    bucket.setAttribute(attribute);
                     bucket.setLower(rs.getString("lvalue"));
                     bucket.setUpper(rs.getString("uvalue"));
                     bucket.setCumulfreq(Double.parseDouble(rs.getString("cumulfreq").replaceAll("[^\\d.]", "")));
@@ -114,6 +114,7 @@ public class Histogram {
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()) {
                     Bucket bucket = new Bucket();
+                    bucket.setAttribute(attribute);
                     bucket.setLower(rs.getString("lvalue"));
                     bucket.setUpper(rs.getString("uvalue"));
                     bucket.setCumulfreq(Double.parseDouble(rs.getString("cumulfreq").replaceAll("[^\\d.]", "")));
@@ -132,14 +133,19 @@ public class Histogram {
         return hBuckets;
     }
 
-
+    //TODO: change it from a static method to run automatically if the json files are not present
     public static void writeBuckets(){
-        writer.writeJSONToFile(getHistogram("user_id", "String", "equiheight"), PolicyConstants.USERID_ATTR);
-        writer.writeJSONToFile(getHistogram("timeStamp", "DateTime", "equiheight"), PolicyConstants.TIMESTAMP_ATTR);
-        writer.writeJSONToFile(getHistogram("location_id", "String", "singleton"), PolicyConstants.LOCATIONID_ATTR);
-        writer.writeJSONToFile(getHistogram("energy", "String", "singleton"), PolicyConstants.ENERGY_ATTR);
-        writer.writeJSONToFile(getHistogram("temperature", "String", "singleton"), PolicyConstants.TEMPERATURE_ATTR);
-        writer.writeJSONToFile(getHistogram("activity", "String", "singleton"), PolicyConstants.ACTIVITY_ATTR);
+        writer.writeJSONToFile(getHistogram("user_id", "String", "equiheight"), PolicyConstants.HISTOGRAM_DIR, PolicyConstants.USERID_ATTR);
+        writer.writeJSONToFile(getHistogram("timeStamp", "DateTime", "equiheight"), PolicyConstants.HISTOGRAM_DIR, PolicyConstants.TIMESTAMP_ATTR);
+        writer.writeJSONToFile(getHistogram("location_id", "String", "singleton"), PolicyConstants.HISTOGRAM_DIR, PolicyConstants.LOCATIONID_ATTR);
+        writer.writeJSONToFile(getHistogram("energy", "String", "singleton"), PolicyConstants.HISTOGRAM_DIR, PolicyConstants.ENERGY_ATTR);
+        writer.writeJSONToFile(getHistogram("temperature", "String", "singleton"), PolicyConstants.HISTOGRAM_DIR, PolicyConstants.TEMPERATURE_ATTR);
+        writer.writeJSONToFile(getHistogram("activity", "String", "singleton"), PolicyConstants.HISTOGRAM_DIR, PolicyConstants.ACTIVITY_ATTR);
+    }
+
+    public List<Bucket> sortBuckets(List<Bucket> buckets){
+        Collections.sort(buckets);
+        return buckets;
     }
 
 

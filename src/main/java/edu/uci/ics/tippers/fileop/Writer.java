@@ -37,12 +37,20 @@ public class Writer {
     }
 
 
-    public void writeJSONToFile(List<?> items, String dir){
+    public void writeJSONToFile(List<?> items, String dir, String filename){
         ObjectMapper mapper = new ObjectMapper();
         mapper.setDateFormat(formatter);
         ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter());
+        File f = null;
         try {
-            writer.writeValue(new File(dir + "policy"+items.size()+".json"), items);
+            if(filename == null) {
+                f = new File(dir + "policy" + items.size() + ".json");
+                if (f.exists()) f = new File(dir + "policy" + items.size() + "-af.json");
+            }
+            else {
+                f = new File(dir + filename +".json");
+            }
+            writer.writeValue(f, items);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -1,6 +1,10 @@
 package edu.uci.ics.tippers.model.guard;
 
-public class Bucket {
+import edu.uci.ics.tippers.common.PolicyConstants;
+
+public class Bucket implements Comparable<Bucket> {
+
+    private String attribute;
 
     private String value;
 
@@ -29,6 +33,14 @@ public class Bucket {
 
     public Bucket() {
 
+    }
+
+    public String getAttribute() {
+        return attribute;
+    }
+
+    public void setAttribute(String attribute) {
+        this.attribute = attribute;
     }
 
     public String getValue() {
@@ -96,4 +108,27 @@ public class Bucket {
                 ", numberOfItems=" + numberOfItems +
                 '}';
     }
+
+    @Override
+    public int compareTo(Bucket bucket) {
+        if(this.getAttribute().equalsIgnoreCase(PolicyConstants.USERID_ATTR) || this.getAttribute().equalsIgnoreCase(PolicyConstants.TIMESTAMP_ATTR)){
+            return this.getLower().compareTo(bucket.getLower());
+        }
+        else if(this.getAttribute().equalsIgnoreCase(PolicyConstants.LOCATIONID_ATTR)){
+            if(Integer.parseInt(this.getValue().substring(0,4)) > Integer.parseInt(bucket.getValue().substring(0,4))) return 1;
+            if(Integer.parseInt(this.getValue().substring(0,4)) < Integer.parseInt(bucket.getValue().substring(0,4))) return -1;
+            return 0;
+        }
+        else if (this.getAttribute().equalsIgnoreCase(PolicyConstants.ACTIVITY_ATTR)) {
+            return this.getValue().compareTo(bucket.getValue());
+        }
+        else {
+            if(Integer.parseInt(this.getValue()) > Integer.parseInt(bucket.getValue())) return 1;
+            if(Integer.parseInt(this.getValue()) < Integer.parseInt(bucket.getValue())) return -1;
+            return 0;
+        }
+    }
+
+
+
 }
