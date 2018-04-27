@@ -76,28 +76,34 @@ public class ObjectCondition extends BooleanCondition {
     private double equiheightRange(){
         double frequency = 0.0001;
         List<Bucket> buckets = Histogram.getInstance().getBucketMap().get(this.attribute);
-        Bucket searchKey = new Bucket();
-        searchKey.setAttribute(PolicyConstants.TIMESTAMP_ATTR);
-        searchKey.setLower(this.getBooleanPredicates().get(0).getValue());
-        int searchIndex = Collections.binarySearch(buckets, searchKey);
-        if (searchIndex < 0) { // no exact match
-            if(-searchIndex > 2) {
-                searchIndex = -searchIndex - 2;
-                frequency += buckets.get(searchIndex).getFreq();
+        Bucket lKey = new Bucket();
+        lKey.setAttribute(PolicyConstants.TIMESTAMP_ATTR);
+        lKey.setLower(this.getBooleanPredicates().get(0).getValue());
+        Bucket uKey = new Bucket();
+        uKey.setAttribute(PolicyConstants.TIMESTAMP_ATTR);
+        uKey.setLower(this.getBooleanPredicates().get(1).getValue());
+        int lIndex = Collections.binarySearch(buckets, lKey);
+        if (lIndex < 0) { // no exact match
+            if(-lIndex > 2) {
+                lIndex = -lIndex - 2;
             }
             else {//first bucket
-                searchIndex = -searchIndex - 1;
-                frequency += buckets.get(searchIndex).getFreq();
+                lIndex = -lIndex - 1;
             }
         }
-        else frequency += buckets.get(searchIndex).getFreq(); //exact match
-        while(true){
-            searchIndex += 1;
-            if(buckets.size() - 1 < searchIndex) break;
-            if (buckets.get(searchIndex).getUpper().compareTo(this.getBooleanPredicates().get(1).getValue()) < 0){
-                frequency =+ buckets.get(searchIndex).getFreq();
+        int uIndex = Collections.binarySearch(buckets, uKey);
+        if (uIndex < 0) { // no exact match
+            if(-uIndex > 2) {
+                uIndex = -uIndex - 2;
             }
-            else break;
+            else {//first bucket
+                uIndex = -uIndex - 1;
+            }
+        }
+        if(lIndex > buckets.size()-1 ) return frequency;
+        if(uIndex > buckets.size()-1) uIndex = buckets.size() - 1;
+        for (int i = lIndex; i <= uIndex; i++) {
+            frequency += (buckets.get(i).getFreq()/buckets.get(i).getNumberOfItems());
         }
         System.out.println(this.toString() + " : " + frequency);
         return frequency/100;

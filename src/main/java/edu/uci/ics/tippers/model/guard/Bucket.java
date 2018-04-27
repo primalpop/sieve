@@ -104,6 +104,7 @@ public class Bucket implements Comparable<Bucket> {
         return "Bucket{" +
                 "lower='" + lower + '\'' +
                 ", upper='" + upper + '\'' +
+                ", freq=" + freq +
                 ", cumulfreq=" + cumulfreq +
                 ", numberOfItems=" + numberOfItems +
                 '}';
