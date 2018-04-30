@@ -55,10 +55,10 @@ public class Index {
                 while ((line = br.readLine()) != null) {
                     String[] pString = line.split(csvSplit);
                     Semantic_Observation p = new Semantic_Observation();
-                    p.setId(Integer.parseInt(pString[0]));
-                    p.setLocation(Integer.parseInt(pString[1]));
+                    p.setId(pString[0]);
+                    p.setLocation(pString[1]);
                     p.setTimeStamp(pString[2] + " " + pString[3]);
-                    p.setUser_id(Integer.parseInt(pString[4]));
+                    p.setUser_id(pString[4]);
                     result.add(p);
                 }
             } catch (FileNotFoundException e) {
@@ -88,13 +88,13 @@ public class Index {
     public void checkPoliciesAgainstTuples() {
         int count = 0;
         for (Semantic_Observation tuple : this.pList) {
-            Observable<Entry<Integer, Point>> match =
-                    this.tree.search(Geometries.point(tuple.getUser_id(), tuple.getLocation()));
-            if (!match.toList().toBlocking().single().isEmpty()) {
+//            Observable<Entry<Integer, Point>> match =
+//                    this.tree.search(Geometries.point(tuple.getUser_id(), tuple.getLocation()));
+//            if (!match.toList().toBlocking().single().isEmpty()) {
 //                System.out.println("Matching policy "  + match.toList().toBlocking().single());
 //                System.out.println("Matching tuple " + tuple.toString());
                 count += 1;
-            }
+//            }
         }
         System.out.println("# final tuples: " + count);
     }

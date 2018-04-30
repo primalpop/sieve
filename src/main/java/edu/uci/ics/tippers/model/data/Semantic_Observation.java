@@ -1,64 +1,60 @@
 package edu.uci.ics.tippers.model.data;
 
+import java.util.Objects;
+
 /**
  * Created by cygnus on 7/5/17.
  */
 public class Semantic_Observation {
 
-    int id;
+    private String id;
 
-    int user_id;
+    private String user_id;
 
-    int location;
+    private String location;
 
-    String timeStamp;
+    private String timeStamp;
 
-    float temperature;
+    private String temperature;
 
-    float wemo;
+    private String energy;
+
+    private String activity;
 
     public Semantic_Observation(){
 
     }
 
-    public Semantic_Observation(int id, int user_id, int location, String timeStamp) {
-        this.id = id;
+    public Semantic_Observation(String user_id, String location, String timeStamp, String temperature, String energy, String activity) {
         this.user_id = user_id;
         this.location = location;
         this.timeStamp = timeStamp;
+        this.temperature = temperature;
+        this.energy = energy;
+        this.activity = activity;
     }
 
-    @Override
-    public String toString() {
-        return "SemanticObservation{" +
-                "id=" + id +
-                ", user_id=" + user_id +
-                ", location=" + location +
-                ", timeStamp='" + timeStamp + '\'' +
-                '}';
-    }
-
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public int getUser_id() {
+    public String getUser_id() {
         return user_id;
     }
 
-    public void setUser_id(int user_id) {
+    public void setUser_id(String user_id) {
         this.user_id = user_id;
     }
 
-    public int getLocation() {
+    public String getLocation() {
         return location;
     }
 
-    public void setLocation(int location) {
+    public void setLocation(String location) {
         this.location = location;
     }
 
@@ -68,5 +64,43 @@ public class Semantic_Observation {
 
     public void setTimeStamp(String timeStamp) {
         this.timeStamp = timeStamp;
+    }
+
+    public String getTemperature() {
+        return temperature;
+    }
+
+    public void setTemperature(String temperature) {
+        this.temperature = temperature;
+    }
+
+    public String getEnergy() {
+        return energy;
+    }
+
+    public void setEnergy(String energy) {
+        this.energy = energy;
+    }
+
+    public String getActivity() {
+        return activity;
+    }
+
+    public void setActivity(String activity) {
+        this.activity = activity;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Semantic_Observation that = (Semantic_Observation) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id);
     }
 }

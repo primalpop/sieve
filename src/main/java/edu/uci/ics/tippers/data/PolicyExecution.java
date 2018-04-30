@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.common.PolicyEngineException;
 import edu.uci.ics.tippers.db.MySQLConnectionManager;
+import edu.uci.ics.tippers.db.MySQLQueryManager;
 import edu.uci.ics.tippers.fileop.Reader;
 import edu.uci.ics.tippers.fileop.Writer;
 import edu.uci.ics.tippers.model.guard.ApproxFactorization;
@@ -24,6 +25,7 @@ import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.*;
+import java.util.Date;
 import java.util.concurrent.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -48,79 +50,15 @@ public class PolicyExecution {
 
     Writer writer;
 
+    MySQLQueryManager mySQLQueryManager;
+
+
     public PolicyExecution(){
         this.connection = MySQLConnectionManager.getInstance().getConnection();
         policyGen = new PolicyGeneration();
         writer = new Writer();
         objectMapper.setDateFormat(sdf);
-    }
-
-    public Duration runWithThread(String query) {
-
-        Statement statement = null;
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        Future<Duration> future = null;
-        try {
-            statement = connection.createStatement();
-            QueryExecutor queryExecutor = new QueryExecutor(statement, query);
-            future = executor.submit(queryExecutor);
-            Duration timeTaken = future.get(timeout, TimeUnit.MILLISECONDS);
-            executor.shutdown();
-            return timeTaken;
-        } catch (SQLException | InterruptedException | ExecutionException ex) {
-            cancelStatement(statement, ex);
-            throw new PolicyEngineException("Failed to query the database. " + ex);
-        } catch (TimeoutException ex) {
-            cancelStatement(statement, ex);
-            future.cancel(true);
-            return PolicyConstants.MAX_DURATION;
-        } finally {
-            DbUtils.closeQuietly(statement);
-            executor.shutdownNow();
-        }
-    }
-
-    private class QueryExecutor implements  Callable<Duration>{
-
-        Statement statement;
-        String query;
-
-        public QueryExecutor(Statement statement, String query) {
-            this.statement = statement;
-            this.query = query;
-        }
-
-        @Override
-        public Duration call() throws Exception {
-            try {
-                Instant start = Instant.now();
-                ResultSet rs = statement.executeQuery(query);
-                int size = 0;
-                if (rs != null)
-                {
-                    rs.beforeFirst();
-                    rs.last();
-                    size = rs.getRow();
-                }
-                rs.close();
-                Instant end = Instant.now();
-                System.out.println("Result set size " + size);
-                return Duration.between(start, end);
-            } catch (SQLException e) {
-                cancelStatement(statement, e);
-                e.printStackTrace();
-                throw new PolicyEngineException("Error Running Query");
-            }
-        }
-    }
-
-    private void cancelStatement(Statement statement, Exception ex) {
-        System.out.println("Cancelling the current query statement. Timeout occurred" + ex);
-        try {
-            statement.cancel();
-        } catch (SQLException exception) {
-            throw new PolicyEngineException("Calling cancel() on the Statement issued exception. Details are: " + exception);
-        }
+        mySQLQueryManager = new MySQLQueryManager();
     }
 
     private List<BasicQuery> readBasicPolicy(String fileName){
@@ -141,7 +79,7 @@ public class PolicyExecution {
                 "WHERE " + IntStream.range(0, basicQueries.size()-1 ).mapToObj(i-> basicQueries.get(i).createPredicate())
                 .collect(Collectors.joining(" OR "));
         try {
-            return runWithThread(query);
+            return mySQLQueryManager.runWithThread(query, "bq");
         } catch (Exception e) {
             e.printStackTrace();
             throw new PolicyEngineException("Error Running Query");
@@ -190,7 +128,7 @@ public class PolicyExecution {
                 .collect(Collectors.joining(" OR "));
 
         try {
-            return runWithThread(query);
+            return mySQLQueryManager.runWithThread(query, "rq");
         } catch (Exception e) {
             e.printStackTrace();
             throw new PolicyEngineException("Error Running Query");
@@ -224,14 +162,6 @@ public class PolicyExecution {
     }
 
 
-    public Duration runQuery(String query){
-        try {
-            return runWithThread(PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS  + query);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new PolicyEngineException("Error Running Query");
-        }
-    }
 
     public Map<String, Duration> runBEPolicies(String policyDir) {
 
@@ -239,26 +169,31 @@ public class PolicyExecution {
 
         File[] policyFiles = new File(policyDir).listFiles();
 
+        Boolean resultsChecked = false;
+
         for (File file : policyFiles) {
 
             System.out.println(file.getName() + " being processed........");
+
+            String results_file = new SimpleDateFormat("yyyyMMddHHmm").format(new Date());
 
             BEExpression beExpression = new BEExpression();
 
             beExpression.parseJSONList(Reader.readTxt(policyDir + file.getName()));
 
-            int pred_count = beExpression.getPolicies().stream()
-                    .map(BEPolicy::getObject_conditions)
-                    .filter(objectConditions ->  objectConditions != null)
-                    .mapToInt(List::size)
-                    .sum();
-
-            System.out.println("Original number of Predicates :" + pred_count);
-
+//            int pred_count = beExpression.getPolicies().stream()
+//                    .map(BEPolicy::getObject_conditions)
+//                    .filter(objectConditions ->  objectConditions != null)
+//                    .mapToInt(List::size)
+//                    .sum();
+//
+//            System.out.println("Original number of Predicates :" + pred_count);
+//
             Duration runTime = Duration.ofMillis(0);
 
             try {
-                runTime = runTime.plus(runQuery(beExpression.createQueryFromPolices()));
+                runTime = runTime.plus(mySQLQueryManager.runTimedQuery(beExpression.createQueryFromPolices(),
+                        results_file));
                 policyRunTimes.put(file.getName(), runTime);
                 System.out.println(file.getName() + " completed and took " + runTime);
 
@@ -268,28 +203,33 @@ public class PolicyExecution {
                 Instant sA = Instant.now();
                 f.approximateFactorization();
                 Instant eA = Instant.now();
-                System.out.println("Approximate factorization took " + Duration.between(sA, eA));
-                System.out.print("Approximate number of tuples: ");
-                runQuery(f.getExpression().createQueryFromPolices());
-                runTime = runTime.plus(runQuery(f.getExpression().createQueryFromPolices()));
+                System.out.println("Extension took " + Duration.between(sA, eA));
+                runTime = runTime.plus(mySQLQueryManager.runTimedQuery(f.getExpression().createQueryFromPolices(),
+                        PolicyConstants.QR_EXTENDED + results_file));
+                resultsChecked = mySQLQueryManager.checkResults(PolicyConstants.QR_EXTENDED + results_file);
+                if(!resultsChecked)
+                    System.out.print("Query results don't match after Extension!!!");
                 policyRunTimes.put(file.getName() + "-af", runTime);
-                System.out.println("Approx Factorization complete amd took " + runTime);
+                System.out.println("Extended query took " + runTime);
                 writer.writeJSONToFile(f.getExpression().getPolicies(), PolicyConstants.BE_POLICY_DIR, null);
 
                 /** To read approximate expression from the file **/
 //                BEExpression approxExpression = new BEExpression();
 //                approxExpression.parseJSONList(Reader.readTxt(policyDir + file.getName()));
-//                System.out.println(approxExpression.createQueryFromPolices());
-//                GreedyExact gf = new GreedyExact(f.getExpression());
-//                Instant sG = Instant.now();
-//                gf.GFactorize();
-//                Instant eG = Instant.now();
-//                System.out.println("Greedy factorization took " + Duration.between(sG, eG));
-//                System.out.println("Greedy Factorization complete ");
-//                runTime = Duration.ofMillis(0);
-//                runTime = runTime.plus(runQuery(gf.createQueryFromExactFactor()));
-//                policyRunTimes.put(file.getName() + "-gf", runTime);
-//                System.out.println(file.getName() + "_greedy_factorized completed and took " + runTime);
+//                GreedyExact gf = new GreedyExact(approxExpression);
+                GreedyExact gf = new GreedyExact(f.getExpression());
+                Instant sG = Instant.now();
+                gf.GFactorize();
+                Instant eG = Instant.now();
+                System.out.println("Factorization took " + Duration.between(sG, eG));
+                runTime = Duration.ofMillis(0);
+                runTime = runTime.plus(mySQLQueryManager.runTimedQuery(gf.createQueryFromExactFactor(),
+                        PolicyConstants.QR_FACTORIZED + results_file));
+                resultsChecked = mySQLQueryManager.checkResults(PolicyConstants.QR_FACTORIZED + results_file);
+                if(!resultsChecked)
+                    System.out.println("Query results don't match after Factorization!!!");
+                policyRunTimes.put(file.getName() + "-gf", runTime);
+                System.out.println("Factorized query took " + runTime);
 
             } catch (Exception e) {
                 e.printStackTrace();
