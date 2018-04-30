@@ -103,6 +103,7 @@ public class BooleanCondition  implements Comparable<BooleanCondition>  {
         return r.toString();
     }
 
+    //TODO: Compare it using String instead?
     public static LocalDateTime timeStampToLDT(String timestamp) {
         return LocalDateTime.parse(timestamp, PolicyConstants.TIME_FORMATTER);
     }

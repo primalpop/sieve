@@ -2,6 +2,7 @@ package edu.uci.ics.tippers.execution;
 
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.db.Histogram;
+import edu.uci.ics.tippers.db.MySQLQueryManager;
 import edu.uci.ics.tippers.fileop.Reader;
 import edu.uci.ics.tippers.model.guard.*;
 import edu.uci.ics.tippers.model.policy.BEExpression;

@@ -220,7 +220,8 @@ public class ApproxFactorization {
 //                    BEPolicy policy_a2 = policy_a2_list.get(0);
                     BEPolicy policy_a1 = new BEPolicy(choosePolicyToMerge(next, policy_a1_list));
                     BEPolicy policy_a2 = new BEPolicy(choosePolicyToMerge(top, policy_a2_list));
-                    if(canBeMerged(policy_a1, next, policy_a2, top)){
+                    if(true) {
+//                    if(canBeMerged(policy_a1, next, policy_a2, top)){
                         if(next.getBooleanPredicates().get(1).getValue().compareTo(top.getBooleanPredicates().get(1).getValue()) > 0){
                             top.getBooleanPredicates().get(1).setValue(next.getBooleanPredicates().get(1).getValue());
                             top.getBooleanPredicates().get(0).setOperator(">=");

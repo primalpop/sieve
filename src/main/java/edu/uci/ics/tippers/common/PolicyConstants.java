@@ -99,4 +99,11 @@ public class PolicyConstants {
     public static final String BE_POLICY_DIR = "results/be_policies/";
 
     public static final String HISTOGRAM_DIR = "histogram/";
+
+    public static final String QUERY_RESULTS_DIR = "query_results/"; //results from traditional query rewrite
+
+    public static final String QR_FACTORIZED = "factorized/"; //results from greedy exact
+
+    public static final String QR_EXTENDED = "extended/"; //results from approximation/extension
+
 }

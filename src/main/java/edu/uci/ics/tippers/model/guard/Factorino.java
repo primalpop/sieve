@@ -54,8 +54,6 @@ public class Factorino {
     public void setCost() {
         if (multiplier == null || quotient == null)
             this.cost = PolicyConstants.INFINTIY;
-        else
-            this.cost = mySQLQueryManager.runTimedQuery(this.toString()).toMillis();
     }
 
     @Override

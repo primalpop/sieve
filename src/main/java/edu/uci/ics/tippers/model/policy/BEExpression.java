@@ -186,14 +186,6 @@ public class BEExpression{
         return query.toString();
     }
 
-    public long computeCost(){
-        return mySQLQueryManager.runTimedQuery(createQueryFromPolices()).toMillis();
-    }
-
-    public double computeFalsePositives() {
-        return mySQLQueryManager.runCountingQuery(createQueryFromPolices());
-    }
-
     public void parseJSONList(String jsonData) {
         ObjectMapper objectMapper = new ObjectMapper();
         List<BEPolicy> bePolicies = null;

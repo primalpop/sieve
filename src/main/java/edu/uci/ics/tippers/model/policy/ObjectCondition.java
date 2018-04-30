@@ -105,7 +105,6 @@ public class ObjectCondition extends BooleanCondition {
         for (int i = lIndex; i <= uIndex; i++) {
             frequency += (buckets.get(i).getFreq()/buckets.get(i).getNumberOfItems());
         }
-        System.out.println(this.toString() + " : " + frequency);
         return frequency/100;
     }
 

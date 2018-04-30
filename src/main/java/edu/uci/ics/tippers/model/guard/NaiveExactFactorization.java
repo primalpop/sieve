@@ -108,7 +108,7 @@ public class NaiveExactFactorization {
             this.quotient.getExpression().removeFromPolicies(objSet);
             this.reminder = new NaiveExactFactorization(this.getExpression());
             this.reminder.getExpression().getPolicies().removeAll(qoutientWithMultiplier.getPolicies());
-            this.cost = mySQLQueryManager.runTimedQuery(this.createQueryFromExactFactor()).toMillis();
+            this.cost = mySQLQueryManager.runTimedQuery(this.createQueryFromExactFactor(), PolicyConstants.QR_FACTORIZED + "naive.txt").toMillis();
         }
     }
 
@@ -140,7 +140,7 @@ public class NaiveExactFactorization {
                     this.quotient.greedyFactorization();;
                     this.reminder = currentFactor.getReminder();
                     this.reminder.greedyFactorization();
-                    this.cost = mySQLQueryManager.runTimedQuery(this.createQueryFromExactFactor()).toMillis();
+                    this.cost = mySQLQueryManager.runTimedQuery(this.createQueryFromExactFactor(), PolicyConstants.QR_FACTORIZED + "naive.txt").toMillis();
                 }
             }
         }

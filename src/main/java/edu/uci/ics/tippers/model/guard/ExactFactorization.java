@@ -1,6 +1,8 @@
 package edu.uci.ics.tippers.model.guard;
 
 import com.github.davidmoten.guavamini.Lists;
+import edu.uci.ics.tippers.common.PolicyConstants;
+import edu.uci.ics.tippers.db.MySQLQueryManager;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
 import edu.uci.ics.tippers.model.policy.ObjectCondition;
@@ -18,6 +20,8 @@ public class ExactFactorization {
 
 
     Map<BEExpression, ExactFactor> fMap = new HashMap<>();
+
+    MySQLQueryManager mySQLQueryManager = new MySQLQueryManager();
 
     public ExactFactorization(){
 
@@ -44,7 +48,7 @@ public class ExactFactorization {
                 factz.add(factorino);
             }
             ExactFactor ef = new ExactFactor(factz);
-            long cost = ef.getMinByCost().getCost() + remainder.computeCost();
+            long cost = ef.getMinByCost().getCost() + computeCost(remainder);
             ef.setCost(cost);
             fMap.put(policyExp, ef);
         }
@@ -92,6 +96,11 @@ public class ExactFactorization {
         }
         //Incomplete algorithm; temporary fix
         return null;
+    }
+
+
+    public long computeCost(BEExpression beExpression){
+        return mySQLQueryManager.runTimedQuery(beExpression.createQueryFromPolices(), PolicyConstants.QR_FACTORIZED + "ef.txt").toMillis();
     }
 
 
