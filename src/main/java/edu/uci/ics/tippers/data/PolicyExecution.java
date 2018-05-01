@@ -181,55 +181,54 @@ public class PolicyExecution {
 
             beExpression.parseJSONList(Reader.readTxt(policyDir + file.getName()));
 
-//            int pred_count = beExpression.getPolicies().stream()
-//                    .map(BEPolicy::getObject_conditions)
-//                    .filter(objectConditions ->  objectConditions != null)
-//                    .mapToInt(List::size)
-//                    .sum();
-//
-//            System.out.println("Original number of Predicates :" + pred_count);
-//
             Duration runTime = Duration.ofMillis(0);
 
             try {
+                /** Traditional approach **/
+                System.out.println(beExpression.createQueryFromPolices());
                 runTime = runTime.plus(mySQLQueryManager.runTimedQuery(beExpression.createQueryFromPolices(),
                         results_file));
                 policyRunTimes.put(file.getName(), runTime);
                 System.out.println(file.getName() + " completed and took " + runTime);
 
-
+                /** Extension **/
                 runTime = Duration.ofSeconds(0);
                 ApproxFactorization f = new ApproxFactorization(beExpression);
                 Instant sA = Instant.now();
                 f.approximateFactorization();
                 Instant eA = Instant.now();
                 System.out.println("Extension took " + Duration.between(sA, eA));
+                System.out.println(f.getExpression().createQueryFromPolices());
                 runTime = runTime.plus(mySQLQueryManager.runTimedQuery(f.getExpression().createQueryFromPolices(),
                         PolicyConstants.QR_EXTENDED + results_file));
                 resultsChecked = mySQLQueryManager.checkResults(PolicyConstants.QR_EXTENDED + results_file);
-                if(!resultsChecked)
-                    System.out.print("Query results don't match after Extension!!!");
-                policyRunTimes.put(file.getName() + "-af", runTime);
-                System.out.println("Extended query took " + runTime);
-                writer.writeJSONToFile(f.getExpression().getPolicies(), PolicyConstants.BE_POLICY_DIR, null);
+                if(!resultsChecked){
+                    System.out.println("*** Query results don't match after Extension ***!!!");
+                    policyRunTimes.put(file.getName() + "-af-invalid", PolicyConstants.MAX_DURATION);
+                }
+                else {
+                    policyRunTimes.put(file.getName() + "-af", runTime);
+                    System.out.println("Extended query took " + runTime);
+                    writer.writeJSONToFile(f.getExpression().getPolicies(), PolicyConstants.BE_POLICY_DIR, null);
+                }
 
-                /** To read approximate expression from the file **/
+                /** Factorization **/
 //                BEExpression approxExpression = new BEExpression();
 //                approxExpression.parseJSONList(Reader.readTxt(policyDir + file.getName()));
 //                GreedyExact gf = new GreedyExact(approxExpression);
-                GreedyExact gf = new GreedyExact(f.getExpression());
-                Instant sG = Instant.now();
-                gf.GFactorize();
-                Instant eG = Instant.now();
-                System.out.println("Factorization took " + Duration.between(sG, eG));
-                runTime = Duration.ofMillis(0);
-                runTime = runTime.plus(mySQLQueryManager.runTimedQuery(gf.createQueryFromExactFactor(),
-                        PolicyConstants.QR_FACTORIZED + results_file));
-                resultsChecked = mySQLQueryManager.checkResults(PolicyConstants.QR_FACTORIZED + results_file);
-                if(!resultsChecked)
-                    System.out.println("Query results don't match after Factorization!!!");
-                policyRunTimes.put(file.getName() + "-gf", runTime);
-                System.out.println("Factorized query took " + runTime);
+//                GreedyExact gf = new GreedyExact(f.getExpression());
+//                Instant sG = Instant.now();
+//                gf.GFactorize();
+//                Instant eG = Instant.now();
+//                System.out.println("Factorization took " + Duration.between(sG, eG));
+//                runTime = Duration.ofMillis(0);
+//                runTime = runTime.plus(mySQLQueryManager.runTimedQuery(gf.createQueryFromExactFactor(),
+//                        PolicyConstants.QR_FACTORIZED + results_file));
+//                resultsChecked = mySQLQueryManager.checkResults(PolicyConstants.QR_FACTORIZED + results_file);
+//                if(!resultsChecked)
+//                    System.out.println("Query results don't match after Factorization!!!");
+//                policyRunTimes.put(file.getName() + "-gf", runTime);
+//                System.out.println("Factorized query took " + runTime);
 
             } catch (Exception e) {
                 e.printStackTrace();

@@ -167,6 +167,14 @@ public class BEExpression{
         }
     }
 
+    public int countNumberOfPredicates(){
+        return this.getPolicies().stream()
+                .map(BEPolicy::getObject_conditions)
+                .filter(objectConditions ->  objectConditions != null)
+                .mapToInt(List::size)
+                .sum();
+    }
+
 
 
     /**

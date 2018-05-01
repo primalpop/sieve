@@ -216,11 +216,11 @@ public class ApproxFactorization {
      */
     private boolean canBeExtended(ObjectCondition a1, ObjectCondition a2) {
         if(!overlaps(a1, a2)) return false;
-        BEPolicy intersection = new BEPolicy();
-        intersection.getObject_conditions().add(a1);
-        intersection.getObject_conditions().add(a2);
-        double l_union = BEPolicy.computeL(intersection.getObject_conditions());
-        if ((a1.computeL() + a2.computeL()) < l_union) return false;
+//        BEPolicy intersection = new BEPolicy();
+//        intersection.getObject_conditions().add(a1);
+//        intersection.getObject_conditions().add(a2);
+//        double l_union = BEPolicy.computeL(intersection.getObject_conditions());
+//        if ((a1.computeL() + a2.computeL()) < l_union) return false;
         else return true;
     }
 

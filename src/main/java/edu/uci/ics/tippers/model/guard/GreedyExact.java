@@ -80,17 +80,6 @@ public class GreedyExact {
         this.cost = cost;
     }
 
-    public static Calendar timestampStrToCal(String timestamp) {
-        Calendar cal = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat(PolicyConstants.TIMESTAMP_FORMAT);
-        try {
-            cal.setTime(sdf.parse(timestamp));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return cal;
-    }
-
     /**
      * Computing gain for Exact Factorization of single predicate
      * Based on the gain formula from Surajit's paper
