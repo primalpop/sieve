@@ -130,7 +130,8 @@ public class MySQLQueryManager {
      * @return
      */
     public Boolean checkResults(String filename) {
-        List<Semantic_Observation> og = parseJSONList(Reader.readTxt(PolicyConstants.QUERY_RESULTS_DIR + filename +".json"));
+        String ogFile = filename.substring(filename.indexOf("/")+1);
+        List<Semantic_Observation> og = parseJSONList(Reader.readTxt(PolicyConstants.QUERY_RESULTS_DIR + ogFile +".json"));
         List<Semantic_Observation> tbc = parseJSONList(Reader.readTxt(PolicyConstants.QUERY_RESULTS_DIR + filename + ".json"));
         if(og.size() != tbc.size()) return false;
         Comparator<Semantic_Observation> comp =

@@ -28,10 +28,10 @@ public class RunMe {
 //        System.out.println(-s);
 //        System.out.println(Histogram.getInstance().getBucketMap().get(PolicyConstants.TIMESTAMP_ATTR).get(-s -1 ).toStringEH());
 //
-//        BEExpression beExpression = new BEExpression();
-//        beExpression.parseJSONList(Reader.readFile("/policies/policyef.json"));
-//        System.out.println(beExpression.createQueryFromPolices());
-//
+        BEExpression beExpression = new BEExpression();
+        beExpression.parseJSONList(Reader.readFile("/policies/policy50-gen.json"));
+        System.out.println(beExpression.createQueryFromPolices());
+
 //        GreedyExact gf = new GreedyExact(beExpression);
 //        gf.GFactorize();
 //        System.out.println(gf.createQueryFromExactFactor());
@@ -40,9 +40,9 @@ public class RunMe {
 //        ef.memoize(beExpression);
 //        ef.printfMap();
 
-//        ApproxFactorization f = new ApproxFactorization(beExpression);
-//        f.approximateFactorization();
-//        System.out.println(f.getExpression().createQueryFromPolices());
+        ApproxFactorization f = new ApproxFactorization(beExpression);
+        f.approximateFactorization();
+        System.out.println(f.getExpression().createQueryFromPolices());
 //
 //        NaiveExactFactorization ef = new NaiveExactFactorization(f.getExpression());
 //        ef.greedyFactorization();
