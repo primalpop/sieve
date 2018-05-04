@@ -1,6 +1,7 @@
 package edu.uci.ics.tippers.model.guard;
 
 import edu.uci.ics.tippers.common.PolicyConstants;
+import edu.uci.ics.tippers.db.MySQLQueryManager;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
 import edu.uci.ics.tippers.model.policy.ObjectCondition;
@@ -26,6 +27,8 @@ public class GreedyExact {
 
     //Cost of evaluating the expression
     double cost;
+
+    MySQLQueryManager mySQLQueryManager = new MySQLQueryManager();
 
     public GreedyExact() {
         this.expression = new BEExpression();
@@ -159,7 +162,7 @@ public class GreedyExact {
                 .collect(Collectors.toList());
         GreedyExact currentFactor = new GreedyExact(this.expression);
         for (ObjectCondition objectCondition : singletonSet) {
-            if(!PolicyConstants.INDEXED_ATTRS.contains(objectCondition.getAttribute())) continue;
+//            if(!PolicyConstants.INDEXED_ATTRS.contains(objectCondition.getAttribute())) continue;
             BEExpression temp = new BEExpression(this.expression);
             temp.checkAgainstPolices(objectCondition);
             if (temp.getPolicies().size() > 1) { //was able to factorize
@@ -169,7 +172,7 @@ public class GreedyExact {
                 currentFactor.quotient.expression.removeFromPolicies(objectCondition);
                 currentFactor.reminder = new GreedyExact(this.expression);
                 currentFactor.reminder.expression.getPolicies().removeAll(temp.getPolicies());
-                currentFactor.cost = computeBenefit(objectCondition, temp, currentFactor.quotient.expression);
+                currentFactor.cost = mySQLQueryManager.runTimedQuery(this.createQueryFromExactFactor(), null).toMillis();
                 if (this.cost < currentFactor.cost) {
                     this.multiplier = currentFactor.getMultiplier();
                     this.quotient = currentFactor.getQuotient();
@@ -180,7 +183,9 @@ public class GreedyExact {
                 currentFactor = new GreedyExact(this.expression);
             }
         }
-        if((this.reminder.getExpression().getPolicies().size() <= 1 ) || factorized) return;
+        if((this.reminder.getExpression().getPolicies().size() <= 1 ) || factorized) {
+            return;
+        }
         this.reminder.GFactorize();
     }
 
