@@ -74,7 +74,8 @@ public class BooleanCondition  implements Comparable<BooleanCondition>  {
         this.booleanPredicates = new ArrayList<>();
     }
 
-
+    //TODO: Is this required? If not in quotes, it raises this warning
+    //TODO: Cannot use range access on index 'so_t' due to type or collation conversion on field 'temperature'
     public String check_type(String value) {
         switch(type.getID()){
             case 1: //String
@@ -82,9 +83,9 @@ public class BooleanCondition  implements Comparable<BooleanCondition>  {
             case 2: //Timestamp
                 return " \"" + value + "\" ";
             case 3: //Double
-                return value;
+                return " \"" + value + "\" ";
             case 4:
-                return value;
+                return " \"" + value + "\" ";
             default:
                 throw new PolicyEngineException("Unknown Type error");
         }

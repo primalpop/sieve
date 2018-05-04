@@ -59,8 +59,7 @@ public class PolicyGeneration {
     }
 
     private Timestamp getRandomTimeStamp() {
-        Instant instant = Instant.ofEpochSecond(getRandomTimeBetweenTwoDates());
-        LocalDateTime randomDate = LocalDateTime.ofInstant(instant, ZoneId.of("UTC-07:00"));
+        LocalDateTime randomDate = Instant.ofEpochMilli(getRandomTimeBetweenTwoDates()).atZone(ZoneId.systemDefault()).toLocalDateTime();
         return Timestamp.valueOf(randomDate);
     }
 
@@ -87,6 +86,7 @@ public class PolicyGeneration {
         int noise =  ((int) (1 + Math.random() * (4)));
 
         if (temperature + noise < PolicyConstants.HIGH_TEMPERATURE){
+            if (temperature + noise > temperature + 3) return temperature + 3;
             return temperature + noise;
         }
         else
@@ -104,6 +104,7 @@ public class PolicyGeneration {
         int noise =  ((int) (1 + Math.random() * (20)));
 
         if (energy + noise < PolicyConstants.HIGH_WEMO){
+            if (energy + noise > energy + 5) return energy + 5;
             return energy + noise;
         }
         else

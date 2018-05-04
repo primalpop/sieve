@@ -1,6 +1,7 @@
 package edu.uci.ics.tippers.common;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import edu.uci.ics.tippers.model.policy.QuerierCondition;
 
 import java.time.Duration;
@@ -8,7 +9,9 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.temporal.ChronoField;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Author primpap
@@ -21,7 +24,7 @@ public class PolicyConstants {
 
     //EXPERIMENTAL PARAMETERS
     //TODO: Initialize this from the database
-    public static final long NUMBER_OR_TUPLES = 1000000;
+    public static final long NUMBER_OR_TUPLES = 14675437;
 
     public static final long INFINTIY = 10000000000000L;
 
@@ -45,6 +48,8 @@ public class PolicyConstants {
     public static final String SELECT_COUNT_STAR_SEMANTIC_OBSERVATIONS = "Select count(*) from SEMANTIC_OBSERVATION";
 
 
+
+
     //POLICY GENERATION PARAMETERS
     public static final int LOW_TEMPERATURE = 55;
 
@@ -61,8 +66,7 @@ public class PolicyConstants {
     public static final ImmutableList<String> ACTIVITIES = ImmutableList.of("class", "meeting", "seminar",
             "private", "walking", "unknown", "work");
 
-    public static final ImmutableList<Double> HOUR_EXTENSIONS = ImmutableList.of(1.0, 2.0, 3.0, 4.0,
-            5.0, 6.0, 8.0, 10.0, 12.0, 24.0, 48.0, 72.0, 168.0, 336.0);
+    public static final ImmutableList<Double> HOUR_EXTENSIONS = ImmutableList.of(1.0, 2.0, 3.0);
 
 
     //TEMPORARY FIX: Querier Conditions
@@ -105,5 +109,22 @@ public class PolicyConstants {
     public static final String QR_FACTORIZED = "factorized/"; //results from greedy exact
 
     public static final String QR_EXTENDED = "extended/"; //results from approximation/extension
+
+
+    //INDICES
+    public static final ImmutableMap<String, String> ATTRIBUTE_IND =
+            new ImmutableMap.Builder<String, String>()
+                    .put(PolicyConstants.USERID_ATTR, "so_u")
+                    .put(PolicyConstants.TIMESTAMP_ATTR, "so_ts")
+                    .put(PolicyConstants.LOCATIONID_ATTR, "so_l")
+                    .put(PolicyConstants.ENERGY_ATTR, "so_e")
+                    .put(PolicyConstants.TEMPERATURE_ATTR, "so_t")
+                    .put(PolicyConstants.ACTIVITY_ATTR, "so_a")
+                    .build();
+
+
+    public static final String SELECT_ALL_USE_INDEX = "Select * from SEMANTIC_OBSERVATION USE INDEX (so_ts, so_l, so_e, so_t, so_a) WHERE ";
+
+    public static final String SELECT_ALL_FORCE_INDEX = "Select * from SEMANTIC_OBSERVATION FORCE INDEX (so_u, so_ts, so_l, so_e, so_t, so_a) WHERE ";
 
 }

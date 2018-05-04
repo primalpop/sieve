@@ -15,17 +15,17 @@ import static org.hamcrest.Matchers.equalTo;
 /**
  * Created by cygnus on 2/20/18.
  */
-public class ApproxFactorizationTest {
+public class PredicateExtensionTest {
 
 
     BEExpression beExpression;
-    ApproxFactorization f;
+    PredicateExtension f;
     List<String> output;
 
     @Before
     public void setUp() throws Exception {
         beExpression = new BEExpression();
-        f = new ApproxFactorization();
+        f = new PredicateExtension();
         output = new ArrayList<String>();
         output.add(Reader.readTxt("src/test/resources/ApproximateFactor/policy4.txt"));
         output.add(Reader.readTxt("src/test/resources/ApproximateFactor/policy5_2.txt"));
@@ -38,7 +38,7 @@ public class ApproxFactorizationTest {
     @DisplayName("Test using policy4.json with integer(temperature)")
     public void approximateFactorization() throws Exception {
         beExpression.parseJSONList(Reader.readFile("/policies/policy4.json"));
-        f = new ApproxFactorization(beExpression);
+        f = new PredicateExtension(beExpression);
         f.approximateFactorization();
         assertThat(
                 f.getExpression().createQueryFromPolices(),
@@ -50,7 +50,7 @@ public class ApproxFactorizationTest {
     @DisplayName("Test using policy5.json with integers(temperature and energy)")
     public void approximateFactorization1() throws Exception {
         beExpression.parseJSONList(Reader.readFile("/policies/policy5_2.json"));
-        f = new ApproxFactorization(beExpression);
+        f = new PredicateExtension(beExpression);
         f.approximateFactorization();
         assertThat(
                 f.getExpression().createQueryFromPolices(),
@@ -61,7 +61,7 @@ public class ApproxFactorizationTest {
     @DisplayName("Test using policy6.json with timestamps")
     public void approximateFactorization2() throws Exception {
         beExpression.parseJSONList(Reader.readFile("/policies/policy6.json"));
-        f = new ApproxFactorization(beExpression);
+        f = new PredicateExtension(beExpression);
         f.approximateFactorization();
         assertThat(
                 f.getExpression().createQueryFromPolices(),
@@ -72,7 +72,7 @@ public class ApproxFactorizationTest {
     @DisplayName("Test using policy7.json with timestamps and integer(energy)")
     public void approximateFactorization3() throws Exception {
         beExpression.parseJSONList(Reader.readFile("/policies/policy7.json"));
-        f = new ApproxFactorization(beExpression);
+        f = new PredicateExtension(beExpression);
         f.approximateFactorization();
         assertThat(
                 f.getExpression().createQueryFromPolices(),
@@ -83,7 +83,7 @@ public class ApproxFactorizationTest {
     @DisplayName("Test using policy10.json with timestamps and integer(energy) and repeating predicates")
     public void approximateFactorization4() throws Exception {
         beExpression.parseJSONList(Reader.readFile("/policies/policy10.json"));
-        f = new ApproxFactorization(beExpression);
+        f = new PredicateExtension(beExpression);
         f.approximateFactorization();
         assertThat(
                 f.getExpression().createQueryFromPolices(),

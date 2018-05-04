@@ -95,8 +95,10 @@ public class MySQLQueryManager {
                     so.setActivity(rs.getString("activity"));
                     query_results.add(so);
                 }
+                System.out.println("Size of Result set: " + query_results.size());
                 rs.close();
-                writer.writeJSONToFile(query_results, PolicyConstants.QUERY_RESULTS_DIR, result_file);
+                if(result_file != null)
+                    writer.writeJSONToFile(query_results, PolicyConstants.QUERY_RESULTS_DIR, result_file);
                 return Duration.between(start, end);
             } catch (SQLException e) {
                 System.out.println("Exception raised by : " + query);
@@ -117,7 +119,7 @@ public class MySQLQueryManager {
 
     public Duration runTimedQuery(String predicates, String result_file) throws PolicyEngineException {
         try {
-            return runWithThread(PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS + predicates, result_file);
+            return runWithThread(PolicyConstants.SELECT_ALL_USE_INDEX + predicates, result_file);
         } catch (Exception e) {
             e.printStackTrace();
             throw new PolicyEngineException("Error Running Query");
@@ -153,5 +155,19 @@ public class MySQLQueryManager {
         return query_results;
     }
 
+    //TODO: Temporary counting query ** clean up **
+    public long runCountingQuery(String query){
+        long count = 0;
+        try{
+            PreparedStatement stmtQ = connection.prepareStatement(query);
+            ResultSet rsQ = stmtQ.executeQuery();
+            while(rsQ.next())
+                count =rsQ.getInt(1);
+        } catch (SQLException e) {
+            System.out.println(query);
+            e.printStackTrace();
+        }
+        return count;
+    }
 
 }

@@ -6,12 +6,11 @@ import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
 import edu.uci.ics.tippers.model.policy.ObjectCondition;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class GreedyExact {
+public class FactorSelection {
 
     //Original expression
     BEExpression expression;
@@ -20,23 +19,23 @@ public class GreedyExact {
     List<ObjectCondition> multiplier;
 
     // Polices from the original expression that contain the multiple
-    GreedyExact quotient;
+    FactorSelection quotient;
 
     // Polices from the original expression that does not contain the multiple
-    GreedyExact reminder;
+    FactorSelection reminder;
 
     //Cost of evaluating the expression
     double cost;
 
     MySQLQueryManager mySQLQueryManager = new MySQLQueryManager();
 
-    public GreedyExact() {
+    public FactorSelection() {
         this.expression = new BEExpression();
         this.multiplier = new ArrayList<ObjectCondition>();
         this.cost = -1L;
     }
 
-    public GreedyExact(BEExpression beExpression) {
+    public FactorSelection(BEExpression beExpression) {
         this.expression = new BEExpression(beExpression);
         this.multiplier = new ArrayList<ObjectCondition>();
         this.cost = -1L;
@@ -59,19 +58,19 @@ public class GreedyExact {
         this.multiplier = multiplier;
     }
 
-    public GreedyExact getQuotient() {
+    public FactorSelection getQuotient() {
         return quotient;
     }
 
-    public void setQuotient(GreedyExact quotient) {
+    public void setQuotient(FactorSelection quotient) {
         this.quotient = quotient;
     }
 
-    public GreedyExact getReminder() {
+    public FactorSelection getReminder() {
         return reminder;
     }
 
-    public void setReminder(GreedyExact reminder) {
+    public void setReminder(FactorSelection reminder) {
         this.reminder = reminder;
     }
 
@@ -114,6 +113,18 @@ public class GreedyExact {
     }
 
     /**
+     *  n * 1 / (frequency of the factor)
+     *  n - number of policies factorized
+     *  Intuition: Guards that filter away higher number of tuples are better
+     * @param objectCondition
+     * @param quotient
+     * @return
+     */
+    public double computeCriteria(ObjectCondition objectCondition, BEExpression quotient){
+        return quotient.getPolicies().size() * (1 /objectCondition.computeL());
+    }
+
+    /**
      * Factorization based on set of object conditions
      * @param rounds
      */
@@ -126,16 +137,16 @@ public class GreedyExact {
             powerSet.addAll(subPowerSet);
             subPowerSet = null; //forcing garbage collection
         }
-        GreedyExact currentFactor = new GreedyExact(this.expression);
+        FactorSelection currentFactor = new FactorSelection(this.expression);
         for (Set<ObjectCondition> objSet : powerSet) {
             if (objSet.size() == 0) continue;
             BEExpression temp = new BEExpression(this.expression);
             temp.checkAgainstPolices(objSet);
             if (temp.getPolicies().size() > 1) { //was able to factorize
                 currentFactor.multiplier = new ArrayList<>(objSet);
-                currentFactor.quotient = new GreedyExact(temp);
+                currentFactor.quotient = new FactorSelection(temp);
                 currentFactor.quotient.expression.removeFromPolicies(objSet);
-                currentFactor.reminder = new GreedyExact(this.expression);
+                currentFactor.reminder = new FactorSelection(this.expression);
                 currentFactor.reminder.expression.getPolicies().removeAll(temp.getPolicies());
 //                currentFactor.cost = computeGain(temp, objSet, currentFactor.quotient.expression);
                 if (this.cost < currentFactor.cost) {
@@ -144,7 +155,7 @@ public class GreedyExact {
                     this.reminder = currentFactor.getReminder();
                     factorized = true;
                 }
-                currentFactor = new GreedyExact(this.expression);
+                currentFactor = new FactorSelection(this.expression);
             }
         }
         if(!factorized || (this.reminder.getExpression().getPolicies().size() <= 1 ) || rounds >=2) return;
@@ -157,10 +168,10 @@ public class GreedyExact {
      */
     public void GFactorize() {
         Boolean factorized = false;
-        List<ObjectCondition> singletonSet = this.expression.getPolicies().stream()
+        Set<ObjectCondition> singletonSet = this.expression.getPolicies().stream()
                 .flatMap(p -> p.getObject_conditions().stream())
-                .collect(Collectors.toList());
-        GreedyExact currentFactor = new GreedyExact(this.expression);
+                .collect(Collectors.toSet());
+        FactorSelection currentFactor = new FactorSelection(this.expression);
         for (ObjectCondition objectCondition : singletonSet) {
 //            if(!PolicyConstants.INDEXED_ATTRS.contains(objectCondition.getAttribute())) continue;
             BEExpression temp = new BEExpression(this.expression);
@@ -168,11 +179,11 @@ public class GreedyExact {
             if (temp.getPolicies().size() > 1) { //was able to factorize
                 currentFactor.multiplier = new ArrayList<>();
                 currentFactor.multiplier.add(objectCondition);
-                currentFactor.quotient = new GreedyExact(temp);
+                currentFactor.quotient = new FactorSelection(temp);
                 currentFactor.quotient.expression.removeFromPolicies(objectCondition);
-                currentFactor.reminder = new GreedyExact(this.expression);
+                currentFactor.reminder = new FactorSelection(this.expression);
                 currentFactor.reminder.expression.getPolicies().removeAll(temp.getPolicies());
-                currentFactor.cost = mySQLQueryManager.runTimedQuery(this.createQueryFromExactFactor(), null).toMillis();
+                currentFactor.cost = computeCriteria(objectCondition, currentFactor.quotient.getExpression());
                 if (this.cost < currentFactor.cost) {
                     this.multiplier = currentFactor.getMultiplier();
                     this.quotient = currentFactor.getQuotient();
@@ -180,12 +191,11 @@ public class GreedyExact {
                     this.cost = currentFactor.cost;
                     factorized = true;
                 }
-                currentFactor = new GreedyExact(this.expression);
+                currentFactor = new FactorSelection(this.expression);
             }
         }
-        if((this.reminder.getExpression().getPolicies().size() <= 1 ) || factorized) {
-            return;
-        }
+        if(!factorized) return;
+        if((this.reminder.getExpression().getPolicies().size() <= 1 )) return;
         this.reminder.GFactorize();
     }
 
@@ -212,5 +222,44 @@ public class GreedyExact {
             query.append(")");
         }
         return query.toString();
+    }
+
+    public List<ObjectCondition> getIndexFilters(){
+        if (multiplier.isEmpty()) {
+            return multiplier;
+        }
+        List<ObjectCondition> indexFilters = new ArrayList<>();
+        for (ObjectCondition mul : multiplier) {
+            indexFilters.add(mul);
+        }
+        //TODO: Currently quotient not factorized
+//        indexFilters.addAll(this.quotient.getIndexFilters());
+        if (!this.reminder.expression.getPolicies().isEmpty()) {
+            indexFilters.addAll(this.reminder.getIndexFilters());
+        }
+        return indexFilters;
+    }
+
+
+    public String createQueryFromGQ(ObjectCondition objectCondition, BEExpression quotient){
+        StringBuilder query = new StringBuilder();
+        query.append(objectCondition.print());
+        query.append(PolicyConstants.CONJUNCTION);
+        query.append("(");
+        query.append(quotient.createQueryFromPolices());
+        query.append(")");
+        return query.toString();
+    }
+
+    public Duration computeGuardCosts(){
+        if(multiplier.isEmpty()){
+            Duration rcost = Duration.ofMillis(0);
+            for(BEPolicy bePolicy: this.expression.getPolicies()){
+                rcost.plus(mySQLQueryManager.runTimedQuery(bePolicy.createQueryFromObjectConditions(), null));
+            }
+            return rcost;
+        }
+        return mySQLQueryManager.runTimedQuery(createQueryFromGQ(multiplier.get(0),
+                this.quotient.getExpression()), null).plus(this.reminder.computeGuardCosts());
     }
 }
