@@ -8,17 +8,15 @@ import edu.uci.ics.tippers.db.MySQLConnectionManager;
 import edu.uci.ics.tippers.db.MySQLQueryManager;
 import edu.uci.ics.tippers.fileop.Reader;
 import edu.uci.ics.tippers.fileop.Writer;
-import edu.uci.ics.tippers.model.guard.ApproxFactorization;
-import edu.uci.ics.tippers.model.guard.GreedyExact;
+import edu.uci.ics.tippers.model.guard.PredicateExtension;
+import edu.uci.ics.tippers.model.guard.FactorSelection;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
+import edu.uci.ics.tippers.model.policy.ObjectCondition;
 import edu.uci.ics.tippers.model.query.BasicQuery;
 import edu.uci.ics.tippers.model.query.RangeQuery;
-import org.apache.commons.dbutils.DbUtils;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.*;
 import java.text.SimpleDateFormat;
@@ -26,7 +24,6 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.*;
 import java.util.Date;
-import java.util.concurrent.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -42,7 +39,7 @@ public class PolicyExecution {
 
     private Connection connection;
 
-    private static final int[] policyNumbers = {2000, 3000, 4000, 10000, 50000, 100000};
+    private static final int[] policyNumbers = {10, 20, 30, 40, 50};
 
     private static PolicyGeneration policyGen;
 
@@ -183,52 +180,67 @@ public class PolicyExecution {
 
             Duration runTime = Duration.ofMillis(0);
 
+            System.out.println("Number Of Predicates before extension: " + beExpression.countNumberOfPredicates());
+
             try {
                 /** Traditional approach **/
-                System.out.println(beExpression.createQueryFromPolices());
-                runTime = runTime.plus(mySQLQueryManager.runTimedQuery(beExpression.createQueryFromPolices(),
-                        results_file));
-                policyRunTimes.put(file.getName(), runTime);
-                System.out.println(file.getName() + " completed and took " + runTime);
+//                runTime = runTime.plus(mySQLQueryManager.runTimedQuery(beExpression.createQueryFromPolices(),
+//                        results_file));
+//                policyRunTimes.put(file.getName(), runTime);
+//                System.out.println(file.getName() + " completed and took " + runTime);
 
                 /** Extension **/
-                runTime = Duration.ofSeconds(0);
-                ApproxFactorization f = new ApproxFactorization(beExpression);
-                Instant sA = Instant.now();
-                f.approximateFactorization();
-                Instant eA = Instant.now();
-                System.out.println("Extension took " + Duration.between(sA, eA));
-                System.out.println(f.getExpression().createQueryFromPolices());
-                runTime = runTime.plus(mySQLQueryManager.runTimedQuery(f.getExpression().createQueryFromPolices(),
-                        PolicyConstants.QR_EXTENDED + results_file));
-                resultsChecked = mySQLQueryManager.checkResults(PolicyConstants.QR_EXTENDED + results_file);
-                if(!resultsChecked){
-                    System.out.println("*** Query results don't match after Extension ***!!!");
-                    policyRunTimes.put(file.getName() + "-af-invalid", PolicyConstants.MAX_DURATION);
-                }
-                else {
-                    policyRunTimes.put(file.getName() + "-af", runTime);
-                    System.out.println("Extended query took " + runTime);
-                    writer.writeJSONToFile(f.getExpression().getPolicies(), PolicyConstants.BE_POLICY_DIR, null);
-                }
+//                runTime = Duration.ofSeconds(0);
+//                PredicateExtension f = new PredicateExtension(beExpression);
+//                Instant sA = Instant.now();
+//                f.approximateFactorization();
+//                Instant eA = Instant.now();
+//                System.out.println("Extension took " + Duration.between(sA, eA));
+//                writer.writeJSONToFile(f.getExpression().getPolicies(), PolicyConstants.BE_POLICY_DIR, null);
+//                System.out.println("Number Of Predicates after extension: " + f.getExpression().countNumberOfPredicates());
+//                runTime = runTime.plus(mySQLQueryManager.runTimedQuery(f.getExpression().createQueryFromPolices(),
+//                        PolicyConstants.QR_EXTENDED + results_file));
+//                resultsChecked = mySQLQueryManager.checkResults(PolicyConstants.QR_EXTENDED + results_file);
+//                if(!resultsChecked){
+//                    System.out.println("*** Query results don't match after Extension ***!!!");
+//                    policyRunTimes.put(file.getName() + "-af-invalid", PolicyConstants.MAX_DURATION);
+//                }
+//                else {
+//                    policyRunTimes.put(file.getName() + "-af", runTime);
+//                    writer.writeJSONToFile(f.getExpression().getPolicies(), PolicyConstants.BE_POLICY_DIR, null);
+//                }
 
-                /** Factorization **/
+
 //                BEExpression approxExpression = new BEExpression();
 //                approxExpression.parseJSONList(Reader.readTxt(policyDir + file.getName()));
-//                GreedyExact gf = new GreedyExact(approxExpression);
-//                GreedyExact gf = new GreedyExact(f.getExpression());
-//                Instant sG = Instant.now();
-//                gf.GFactorize();
-//                Instant eG = Instant.now();
+//                FactorSelection gf = new FactorSelection(approxExpression);
+
+
+                /** Factorization **/
+                FactorSelection gf = new FactorSelection(beExpression);
+                Instant sG = Instant.now();
+                gf.GFactorize();
+                Instant eG = Instant.now();
+                List <ObjectCondition> guards = gf.getIndexFilters();
+                System.out.println("Number of guards: " + guards.size());
+                System.out.println(gf.createQueryFromExactFactor());
+
+//                System.out.println("Number of tuples satisfied by guards : "+ mySQLQueryManager.runCountingQuery(BEExpression.createQueryFromGuards(guards)));
+//                for (int i = 0; i < guards.size(); i++) {
+//                    List<ObjectCondition> dummy = new ArrayList<>();
+//                    dummy.add(guards.get(i));
+//                    Duration gR = Duration.ofMillis(0);
+//                    gR.plus(mySQLQueryManager.runTimedQuery(BEExpression.createQueryFromSingleGuard(dummy), null));
+//                    System.out.println("Time taken for " + guards.get(i).toString() + ": " + gR);
+//                }
 //                System.out.println("Factorization took " + Duration.between(sG, eG));
+//                System.out.println("Factorized query " + gf.createQueryFromExactFactor());
 //                runTime = Duration.ofMillis(0);
 //                runTime = runTime.plus(mySQLQueryManager.runTimedQuery(gf.createQueryFromExactFactor(),
 //                        PolicyConstants.QR_FACTORIZED + results_file));
-//                resultsChecked = mySQLQueryManager.checkResults(PolicyConstants.QR_FACTORIZED + results_file);
-//                if(!resultsChecked)
-//                    System.out.println("Query results don't match after Factorization!!!");
 //                policyRunTimes.put(file.getName() + "-gf", runTime);
-//                System.out.println("Factorized query took " + runTime);
+//                System.out.println("** Factorized query took " + runTime + " **");
+
 
             } catch (Exception e) {
                 e.printStackTrace();

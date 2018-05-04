@@ -27,7 +27,7 @@ public class MySQLConnectionManager {
 
     private MySQLConnectionManager() {
         try {
-            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("mysql/smalltest.properties");
+            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("mysql/bigtest.properties");
             props = new Properties();
             props.load(inputStream);
 
@@ -54,7 +54,7 @@ public class MySQLConnectionManager {
             connection = DriverManager.getConnection(
                     String.format("jdbc:mysql://%s:%s/%s?useLegacyDatetimeCode=false&serverTimezone=America/Los_Angeles",
                             SERVER, PORT, DATABASE), USER, PASSWORD);
-
+            System.out.println("--- Connected to " + DATABASE + " on server " + SERVER + "---");
             return connection;
         } catch (SQLException e) {
             e.printStackTrace();

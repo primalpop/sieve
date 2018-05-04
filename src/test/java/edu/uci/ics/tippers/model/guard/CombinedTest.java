@@ -1,6 +1,7 @@
 package edu.uci.ics.tippers.model.guard;
 
 import edu.uci.ics.tippers.fileop.Reader;
+import edu.uci.ics.tippers.model.guard.deprecated.NaiveExactFactorization;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -17,13 +18,13 @@ public class CombinedTest {
 
     BEExpression beExpression;
     NaiveExactFactorization ef;
-    ApproxFactorization f;
+    PredicateExtension f;
     List<String> output;
 
     @Before
     public void setUp() throws Exception {
         beExpression = new BEExpression();
-        f = new ApproxFactorization();
+        f = new PredicateExtension();
         ef = new NaiveExactFactorization();
         output = new ArrayList<String>();
         output.add(Reader.readTxt("src/test/resources/Combined/policy11.txt"));
@@ -34,7 +35,7 @@ public class CombinedTest {
     @DisplayName("Test using policy11.json with 6 policies and 2 approximate factors (time and energy)")
     public void approximateFactorization() throws Exception {
         beExpression.parseJSONList(Reader.readFile("/policies/policy11.json"));
-        f = new ApproxFactorization(beExpression);
+        f = new PredicateExtension(beExpression);
         f.approximateFactorization();
         ef = new NaiveExactFactorization(f.getExpression());
         ef.greedyFactorization();

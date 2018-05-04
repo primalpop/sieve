@@ -6,7 +6,10 @@ import edu.uci.ics.tippers.common.PolicyEngineException;
 import edu.uci.ics.tippers.model.guard.Bucket;
 import edu.uci.ics.tippers.db.Histogram;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
@@ -137,5 +140,67 @@ public class ObjectCondition extends BooleanCondition {
                 ", type=" + type +
                 ", booleanPredicates=" + booleanPredicates +
                 '}';
+    }
+
+    public boolean overlaps(ObjectCondition o2) {
+        if (this.getType().getID() == 4) { //Integer
+            int start1 = Integer.parseInt(this.getBooleanPredicates().get(0).getValue());
+            int end1 = Integer.parseInt(this.getBooleanPredicates().get(1).getValue());
+            int start2 = Integer.parseInt(o2.getBooleanPredicates().get(0).getValue());
+            int end2 = Integer.parseInt(o2.getBooleanPredicates().get(1).getValue());
+            if (start1 <= end2 && end1 >= start2)
+                return true;
+        } else if (this.getType().getID() == 2) { //Timestamp
+            Long extension = (long) (60 * 1000); //1 minute extension
+            Calendar start1 = timestampStrToCal(this.getBooleanPredicates().get(0).getValue());
+            Calendar start1Ext = Calendar.getInstance();
+            start1Ext.setTimeInMillis(start1.getTimeInMillis() - extension);
+            Calendar end1 = timestampStrToCal(this.getBooleanPredicates().get(1).getValue());
+            Calendar end1Ext = Calendar.getInstance();
+            end1Ext.setTimeInMillis(end1.getTimeInMillis() + extension);
+            Calendar start2 = timestampStrToCal(o2.getBooleanPredicates().get(0).getValue());
+            Calendar start2Ext = Calendar.getInstance();
+            start2Ext.setTimeInMillis(start2.getTimeInMillis() - extension);
+            Calendar end2 = timestampStrToCal(o2.getBooleanPredicates().get(1).getValue());
+            Calendar end2Ext = Calendar.getInstance();
+            end2Ext.setTimeInMillis(end2.getTimeInMillis() + extension);
+            if (start1Ext.compareTo(end2Ext) < 0 && end1Ext.compareTo(start2Ext) > 0) {
+                return true;
+            }
+        } else if (this.getType().getID() == 1) { //String
+            if (this.getAttribute().equalsIgnoreCase(PolicyConstants.USERID_ATTR)) {
+                int start1 = Integer.parseInt(this.getBooleanPredicates().get(0).getValue());
+                int end1 = Integer.parseInt(this.getBooleanPredicates().get(1).getValue());
+                int start2 = Integer.parseInt(o2.getBooleanPredicates().get(0).getValue());
+                int end2 = Integer.parseInt(o2.getBooleanPredicates().get(1).getValue());
+                if (start1 - 1000 <= end2 + 1000 && end1 + 1000 >= start2 - 1000)
+                    return true;
+            } else if (this.getAttribute().equalsIgnoreCase(PolicyConstants.LOCATIONID_ATTR)) {
+                int start1 = Integer.parseInt(this.getBooleanPredicates().get(0).getValue().substring(0, 4));
+                int end1 = Integer.parseInt(this.getBooleanPredicates().get(1).getValue().substring(0, 4));
+                int start2 = Integer.parseInt(o2.getBooleanPredicates().get(0).getValue().substring(0, 4));
+                int end2 = Integer.parseInt(o2.getBooleanPredicates().get(1).getValue().substring(0, 4));
+                if (start1 - 100 <= end2 + 100 && end1 + 100 >= start2 - 100)
+                    return true;
+            } else {
+                //attribute activity
+                return false;
+            }
+        } else {
+            throw new PolicyEngineException("Incompatible Attribute Type");
+        }
+        return false;
+    }
+
+    //TODO: Remove this
+    public static Calendar timestampStrToCal(String timestamp) {
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat(PolicyConstants.TIMESTAMP_FORMAT);
+        try {
+            cal.setTime(sdf.parse(timestamp));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return cal;
     }
 }

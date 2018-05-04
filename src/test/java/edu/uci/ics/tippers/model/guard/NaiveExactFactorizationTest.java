@@ -1,6 +1,7 @@
 package edu.uci.ics.tippers.model.guard;
 
 import edu.uci.ics.tippers.fileop.Reader;
+import edu.uci.ics.tippers.model.guard.deprecated.NaiveExactFactorization;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 import org.hamcrest.Matchers;
 import org.junit.After;

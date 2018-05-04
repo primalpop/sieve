@@ -1,4 +1,4 @@
-package edu.uci.ics.tippers.model.guard;
+package edu.uci.ics.tippers.model.guard.deprecated;
 
 import com.github.davidmoten.guavamini.Lists;
 import edu.uci.ics.tippers.common.PolicyConstants;

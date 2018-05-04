@@ -231,4 +231,31 @@ public class BEExpression{
     public int hashCode() {
         return Objects.hash(policies);
     }
+
+    //TODO: clean up
+    public static String createQueryFromGuards(List<ObjectCondition> guards){
+        StringBuilder query = new StringBuilder();
+        query.append(PolicyConstants.SELECT_COUNT_STAR_SEMANTIC_OBSERVATIONS + " where " );
+        String delim = "";
+        for (int i = 0; i < guards.size(); i++) {
+            ObjectCondition oc = guards.get(i);
+            query.append(delim);
+            query.append(oc.print());
+            delim = PolicyConstants.DISJUNCTION;
+        }
+        return query.toString();
+    }
+
+    //TODO: clean up
+    public static String createQueryFromSingleGuard(List<ObjectCondition> guards){
+        StringBuilder query = new StringBuilder();
+        String delim = "";
+        for (int i = 0; i < guards.size(); i++) {
+            ObjectCondition oc = guards.get(i);
+            query.append(delim);
+            query.append(oc.print());
+            delim = PolicyConstants.DISJUNCTION;
+        }
+        return query.toString();
+    }
 }

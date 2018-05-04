@@ -14,29 +14,18 @@ import java.util.*;
 /**
  * Created by cygnus on 2/14/18.
  */
-public class ApproxFactorization {
+public class PredicateExtension {
 
     Cloner cloner = new Cloner();
 
     BEExpression expression;
 
-    public ApproxFactorization() {
+    public PredicateExtension() {
         this.expression = new BEExpression();
     }
 
-    public ApproxFactorization(BEExpression expression) {
+    public PredicateExtension(BEExpression expression) {
         this.expression = new BEExpression(expression);
-    }
-
-    public static Calendar timestampStrToCal(String timestamp) {
-        Calendar cal = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat(PolicyConstants.TIMESTAMP_FORMAT);
-        try {
-            cal.setTime(sdf.parse(timestamp));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return cal;
     }
 
     public BEExpression getExpression() {
@@ -59,56 +48,6 @@ public class ApproxFactorization {
         double lfact = BEPolicy.computeL(factorized.getObject_conditions());
         double lorg = BEPolicy.computeL(original.getObject_conditions());
         return lorg - lfact;
-    }
-
-    private boolean overlaps(ObjectCondition o1, ObjectCondition o2) {
-        if (o1.getType().getID() == 4) { //Integer
-            int start1 = Integer.parseInt(o1.getBooleanPredicates().get(0).getValue());
-            int end1 = Integer.parseInt(o1.getBooleanPredicates().get(1).getValue());
-            int start2 = Integer.parseInt(o2.getBooleanPredicates().get(0).getValue());
-            int end2 = Integer.parseInt(o2.getBooleanPredicates().get(1).getValue());
-            if (start1 <= end2 && end1 >= start2)
-                return true;
-        } else if (o1.getType().getID() == 2) { //Timestamp
-            Long extension = (long) (60 * 1000); //1 minute extension
-            Calendar start1 = timestampStrToCal(o1.getBooleanPredicates().get(0).getValue());
-            Calendar start1Ext = Calendar.getInstance();
-            start1Ext.setTimeInMillis(start1.getTimeInMillis() - extension);
-            Calendar end1 = timestampStrToCal(o1.getBooleanPredicates().get(1).getValue());
-            Calendar end1Ext = Calendar.getInstance();
-            end1Ext.setTimeInMillis(end1.getTimeInMillis() + extension);
-            Calendar start2 = timestampStrToCal(o2.getBooleanPredicates().get(0).getValue());
-            Calendar start2Ext = Calendar.getInstance();
-            start2Ext.setTimeInMillis(start2.getTimeInMillis() - extension);
-            Calendar end2 = timestampStrToCal(o2.getBooleanPredicates().get(1).getValue());
-            Calendar end2Ext = Calendar.getInstance();
-            end2Ext.setTimeInMillis(end2.getTimeInMillis() + extension);
-            if (start1Ext.compareTo(end2Ext) < 0 && end1Ext.compareTo(start2Ext) > 0) {
-                return true;
-            }
-        } else if (o1.getType().getID() == 1) { //String
-            if (o1.getAttribute().equalsIgnoreCase(PolicyConstants.USERID_ATTR)) {
-                int start1 = Integer.parseInt(o1.getBooleanPredicates().get(0).getValue());
-                int end1 = Integer.parseInt(o1.getBooleanPredicates().get(1).getValue());
-                int start2 = Integer.parseInt(o2.getBooleanPredicates().get(0).getValue());
-                int end2 = Integer.parseInt(o2.getBooleanPredicates().get(1).getValue());
-                if (start1 - 1000 <= end2 + 1000 && end1 + 1000 >= start2 - 1000)
-                    return true;
-            } else if (o1.getAttribute().equalsIgnoreCase(PolicyConstants.LOCATIONID_ATTR)) {
-                int start1 = Integer.parseInt(o1.getBooleanPredicates().get(0).getValue().substring(0, 4));
-                int end1 = Integer.parseInt(o1.getBooleanPredicates().get(1).getValue().substring(0, 4));
-                int start2 = Integer.parseInt(o2.getBooleanPredicates().get(0).getValue().substring(0, 4));
-                int end2 = Integer.parseInt(o2.getBooleanPredicates().get(1).getValue().substring(0, 4));
-                if (start1 - 100 <= end2 + 100 && end1 + 100 >= start2 - 100)
-                    return true;
-            } else {
-                //attribute activity
-                return false;
-            }
-        } else {
-            throw new PolicyEngineException("Incompatible Attribute Type");
-        }
-        return false;
     }
 
     /**
@@ -181,7 +120,7 @@ public class ApproxFactorization {
     }
 
 
-    //TODO: Check if l_intersection is actually union!?! #bamboozled
+    //TODO: Check if l_intersection is actually union!?!
     /**
      * Gain formula from Surajit's work
      * if F(a1) + F (a2) + l_intersection(a1, a2) > 0: return true, false otherwise
@@ -207,20 +146,17 @@ public class ApproxFactorization {
     }
 
     /**
-     * Check if the two predicates can be extended by comparing if the number of tuples
-     * that satisfies the extended predicate is higher than sum of the number of tuples
-     * that satisfy each predicate
-     * @param a1
+     * Check if the two predicates can be extended
+     * TODO: Check if the selectivity of the intersection (of the overlapping predicates) is not higher than any of the predicates
      * @param a2
      * @return
      */
     private boolean canBeExtended(ObjectCondition a1, ObjectCondition a2) {
-        if(!overlaps(a1, a2)) return false;
-//        BEPolicy intersection = new BEPolicy();
-//        intersection.getObject_conditions().add(a1);
-//        intersection.getObject_conditions().add(a2);
-//        double l_union = BEPolicy.computeL(intersection.getObject_conditions());
-//        if ((a1.computeL() + a2.computeL()) < l_union) return false;
+        if(!a1.overlaps(a2)) return false;
+//        ObjectCondition overlap = new ObjectCondition(a1);
+//        if(a1.getBooleanPredicates().get(0).getValue().compareTo(a2.getBooleanPredicates().get(1).getValue()) > 0)
+//        overlap.getBooleanPredicates().get(0).setValue();
+//        overlap.getBooleanPredicates().get(1).setValue();
         else return true;
     }
 
