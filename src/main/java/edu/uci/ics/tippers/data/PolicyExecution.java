@@ -184,22 +184,24 @@ public class PolicyExecution {
 
             try {
                 /** Traditional approach **/
-//                runTime = runTime.plus(mySQLQueryManager.runTimedQuery(beExpression.createQueryFromPolices(),
-//                        results_file));
-//                policyRunTimes.put(file.getName(), runTime);
-//                System.out.println(file.getName() + " completed and took " + runTime);
+                System.out.println(beExpression.createQueryFromPolices());
+                runTime = runTime.plus(mySQLQueryManager.runTimedQuery(beExpression.createQueryFromPolices(),
+                        results_file));
+                policyRunTimes.put(file.getName(), runTime);
+                System.out.println(file.getName() + " completed and took " + runTime);
 
                 /** Extension **/
-//                runTime = Duration.ofSeconds(0);
-//                PredicateExtension f = new PredicateExtension(beExpression);
-//                Instant sA = Instant.now();
-//                f.approximateFactorization();
-//                Instant eA = Instant.now();
-//                System.out.println("Extension took " + Duration.between(sA, eA));
-//                writer.writeJSONToFile(f.getExpression().getPolicies(), PolicyConstants.BE_POLICY_DIR, null);
-//                System.out.println("Number Of Predicates after extension: " + f.getExpression().countNumberOfPredicates());
+//                runTime = Duration.ofMillis(0);
+                PredicateExtension f = new PredicateExtension(beExpression);
+                f.approximateFactorization();
+                System.out.println("Number Of Predicates after extension: " + f.getExpression().countNumberOfPredicates());
 //                runTime = runTime.plus(mySQLQueryManager.runTimedQuery(f.getExpression().createQueryFromPolices(),
 //                        PolicyConstants.QR_EXTENDED + results_file));
+//                System.out.println("**" + file.getName() + "-extended completed and took " + runTime + "**");
+//                Instant sA = Instant.now();
+//                Instant eA = Instant.now();
+//                System.out.println("Extension took " + Duration.between(sA, eA));
+                writer.writeJSONToFile(f.getExpression().getPolicies(), PolicyConstants.BE_POLICY_DIR, null);
 //                resultsChecked = mySQLQueryManager.checkResults(PolicyConstants.QR_EXTENDED + results_file);
 //                if(!resultsChecked){
 //                    System.out.println("*** Query results don't match after Extension ***!!!");
@@ -217,29 +219,24 @@ public class PolicyExecution {
 
 
                 /** Factorization **/
-                FactorSelection gf = new FactorSelection(beExpression);
-                Instant sG = Instant.now();
+                FactorSelection gf = new FactorSelection(f.getExpression());
+//                Instant sG = Instant.now();
                 gf.GFactorize();
-                Instant eG = Instant.now();
+//                Instant eG = Instant.now();
                 List <ObjectCondition> guards = gf.getIndexFilters();
                 System.out.println("Number of guards: " + guards.size());
                 System.out.println(gf.createQueryFromExactFactor());
+                System.out.println("Summed cost of guards: " + gf.computeGuardCosts());
+//                System.out.println("Length of remainder: " + gf.lengthOfRemainder());
 
 //                System.out.println("Number of tuples satisfied by guards : "+ mySQLQueryManager.runCountingQuery(BEExpression.createQueryFromGuards(guards)));
-//                for (int i = 0; i < guards.size(); i++) {
-//                    List<ObjectCondition> dummy = new ArrayList<>();
-//                    dummy.add(guards.get(i));
-//                    Duration gR = Duration.ofMillis(0);
-//                    gR.plus(mySQLQueryManager.runTimedQuery(BEExpression.createQueryFromSingleGuard(dummy), null));
-//                    System.out.println("Time taken for " + guards.get(i).toString() + ": " + gR);
-//                }
 //                System.out.println("Factorization took " + Duration.between(sG, eG));
 //                System.out.println("Factorized query " + gf.createQueryFromExactFactor());
 //                runTime = Duration.ofMillis(0);
-//                runTime = runTime.plus(mySQLQueryManager.runTimedQuery(gf.createQueryFromExactFactor(),
-//                        PolicyConstants.QR_FACTORIZED + results_file));
+                runTime = runTime.plus(mySQLQueryManager.runTimedQuery(gf.createQueryFromExactFactor(),
+                        PolicyConstants.QR_FACTORIZED + results_file));
 //                policyRunTimes.put(file.getName() + "-gf", runTime);
-//                System.out.println("** Factorized query took " + runTime + " **");
+                System.out.println("** Factorized query took " + runTime + " **");
 
 
             } catch (Exception e) {
@@ -251,18 +248,19 @@ public class PolicyExecution {
         return policyRunTimes;
     }
 
-    private void generatePolicies(String policyDir){
-        for (int i = 0; i < policyNumbers.length ; i++) {
-            if(policyDir.equalsIgnoreCase(PolicyConstants.BASIC_POLICY_1_DIR))
-                policyGen.generateBasicPolicy1(policyNumbers[i]);
-            else if(policyDir.equalsIgnoreCase(PolicyConstants.BASIC_POLICY_2_DIR))
-                policyGen.generateBasicPolicy2(policyNumbers[i]);
-            else if(policyDir.equalsIgnoreCase(PolicyConstants.RANGE_POLICY_1_DIR))
-                policyGen.generateRangePolicy1(policyNumbers[i]);
-            else if(policyDir.equalsIgnoreCase(PolicyConstants.RANGE_POLICY_2_DIR))
-                policyGen.generateRangePolicy2(policyNumbers[i]);
-            else if(policyDir.equalsIgnoreCase(PolicyConstants.BE_POLICY_DIR))
-                policyGen.generateBEPolicy(policyNumbers[i]);
+    //Only handles BEPolicies
+    private void generatePolicies(String policyDir) {
+        List<BEPolicy> bePolicies = new ArrayList<>();
+        for (int i = 0; i < policyNumbers.length; i++) {
+            List<String> attributes = new ArrayList<>();
+            attributes.add(PolicyConstants.TIMESTAMP_ATTR);
+            attributes.add(PolicyConstants.USERID_ATTR);
+            attributes.add(PolicyConstants.ENERGY_ATTR);
+            attributes.add(PolicyConstants.TEMPERATURE_ATTR);
+            attributes.add(PolicyConstants.LOCATIONID_ATTR);
+            List<BEPolicy> genPolicy = policyGen.generateBEPolicy(policyNumbers[i], attributes, bePolicies);
+            bePolicies.clear();
+            bePolicies.addAll(genPolicy);
         }
     }
 
@@ -297,7 +295,8 @@ public class PolicyExecution {
 //        pe.generatePolicies(PolicyConstants.RANGE_POLICY_2_DIR);
 //        pe.rangeQueryExperiments(PolicyConstants.RANGE_POLICY_2_DIR);
 
-//        pe.generatePolicies(PolicyConstants.BE_POLICY_DIR);
+        pe.generatePolicies(PolicyConstants.BE_POLICY_DIR);
+
         pe.bePolicyExperiments(PolicyConstants.BE_POLICY_DIR);
     }
 }

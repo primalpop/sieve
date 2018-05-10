@@ -66,7 +66,7 @@ public class PolicyConstants {
     public static final ImmutableList<String> ACTIVITIES = ImmutableList.of("class", "meeting", "seminar",
             "private", "walking", "unknown", "work");
 
-    public static final ImmutableList<Double> HOUR_EXTENSIONS = ImmutableList.of(1.0, 2.0, 3.0);
+    public static final ImmutableList<Double> HOUR_EXTENSIONS = ImmutableList.of(1.0, 2.0, 3.0, 5.0, 10.0, 12.0, 24.0, 48.0, 72.0);
 
 
     //TEMPORARY FIX: Querier Conditions
@@ -74,7 +74,7 @@ public class PolicyConstants {
             of(new QuerierCondition("user_name",AttributeType.STRING, "=","John Doe", "=", "John Doe"));
 
     //INDEXED ATTRIBUTES
-    public static final ImmutableList<String> INDEXED_ATTRS = ImmutableList.of("timeStamp", "location_id");
+    public static final ImmutableList<String> INDEXED_ATTRS = ImmutableList.of("timeStamp");
 
 
     //ATTRIBUTE NAMES

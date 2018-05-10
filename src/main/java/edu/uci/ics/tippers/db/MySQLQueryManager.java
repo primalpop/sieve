@@ -119,7 +119,7 @@ public class MySQLQueryManager {
 
     public Duration runTimedQuery(String predicates, String result_file) throws PolicyEngineException {
         try {
-            return runWithThread(PolicyConstants.SELECT_ALL_USE_INDEX + predicates, result_file);
+            return runWithThread(PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS + predicates, result_file);
         } catch (Exception e) {
             e.printStackTrace();
             throw new PolicyEngineException("Error Running Query");

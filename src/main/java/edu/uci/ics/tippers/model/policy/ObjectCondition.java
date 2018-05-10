@@ -151,7 +151,8 @@ public class ObjectCondition extends BooleanCondition {
             if (start1 <= end2 && end1 >= start2)
                 return true;
         } else if (this.getType().getID() == 2) { //Timestamp
-            Long extension = (long) (60 * 1000); //1 minute extension
+//            Long extension = (long) (12 * 60 * 60 * 1000); //1 minute extension
+            Long extension = (long) (0); //1 minute extension
             Calendar start1 = timestampStrToCal(this.getBooleanPredicates().get(0).getValue());
             Calendar start1Ext = Calendar.getInstance();
             start1Ext.setTimeInMillis(start1.getTimeInMillis() - extension);

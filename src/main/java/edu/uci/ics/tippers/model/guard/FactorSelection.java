@@ -22,7 +22,7 @@ public class FactorSelection {
     FactorSelection quotient;
 
     // Polices from the original expression that does not contain the multiple
-    FactorSelection reminder;
+    FactorSelection remainder;
 
     //Cost of evaluating the expression
     double cost;
@@ -66,12 +66,12 @@ public class FactorSelection {
         this.quotient = quotient;
     }
 
-    public FactorSelection getReminder() {
-        return reminder;
+    public FactorSelection getRemainder() {
+        return remainder;
     }
 
-    public void setReminder(FactorSelection reminder) {
-        this.reminder = reminder;
+    public void setRemainder(FactorSelection remainder) {
+        this.remainder = remainder;
     }
 
     public double getCost() {
@@ -121,7 +121,8 @@ public class FactorSelection {
      * @return
      */
     public double computeCriteria(ObjectCondition objectCondition, BEExpression quotient){
-        return quotient.getPolicies().size() * (1 /objectCondition.computeL());
+        return quotient.getPolicies().size();
+//        return quotient.getPolicies().size() * (1 /objectCondition.computeL());
     }
 
     /**
@@ -146,20 +147,20 @@ public class FactorSelection {
                 currentFactor.multiplier = new ArrayList<>(objSet);
                 currentFactor.quotient = new FactorSelection(temp);
                 currentFactor.quotient.expression.removeFromPolicies(objSet);
-                currentFactor.reminder = new FactorSelection(this.expression);
-                currentFactor.reminder.expression.getPolicies().removeAll(temp.getPolicies());
+                currentFactor.remainder = new FactorSelection(this.expression);
+                currentFactor.remainder.expression.getPolicies().removeAll(temp.getPolicies());
 //                currentFactor.cost = computeGain(temp, objSet, currentFactor.quotient.expression);
                 if (this.cost < currentFactor.cost) {
                     this.multiplier = currentFactor.getMultiplier();
                     this.quotient = currentFactor.getQuotient();
-                    this.reminder = currentFactor.getReminder();
+                    this.remainder = currentFactor.getRemainder();
                     factorized = true;
                 }
                 currentFactor = new FactorSelection(this.expression);
             }
         }
-        if(!factorized || (this.reminder.getExpression().getPolicies().size() <= 1 ) || rounds >=2) return;
-        this.reminder.GFactorizeOptimal(rounds + 1);
+        if(!factorized || (this.remainder.getExpression().getPolicies().size() <= 1 ) || rounds >=2) return;
+        this.remainder.GFactorizeOptimal(rounds + 1);
     }
 
     /**
@@ -173,7 +174,7 @@ public class FactorSelection {
                 .collect(Collectors.toSet());
         FactorSelection currentFactor = new FactorSelection(this.expression);
         for (ObjectCondition objectCondition : singletonSet) {
-//            if(!PolicyConstants.INDEXED_ATTRS.contains(objectCondition.getAttribute())) continue;
+            if(!PolicyConstants.INDEXED_ATTRS.contains(objectCondition.getAttribute())) continue;
             BEExpression temp = new BEExpression(this.expression);
             temp.checkAgainstPolices(objectCondition);
             if (temp.getPolicies().size() > 1) { //was able to factorize
@@ -181,13 +182,13 @@ public class FactorSelection {
                 currentFactor.multiplier.add(objectCondition);
                 currentFactor.quotient = new FactorSelection(temp);
                 currentFactor.quotient.expression.removeFromPolicies(objectCondition);
-                currentFactor.reminder = new FactorSelection(this.expression);
-                currentFactor.reminder.expression.getPolicies().removeAll(temp.getPolicies());
+                currentFactor.remainder = new FactorSelection(this.expression);
+                currentFactor.remainder.expression.getPolicies().removeAll(temp.getPolicies());
                 currentFactor.cost = computeCriteria(objectCondition, currentFactor.quotient.getExpression());
                 if (this.cost < currentFactor.cost) {
                     this.multiplier = currentFactor.getMultiplier();
                     this.quotient = currentFactor.getQuotient();
-                    this.reminder = currentFactor.getReminder();
+                    this.remainder = currentFactor.getRemainder();
                     this.cost = currentFactor.cost;
                     factorized = true;
                 }
@@ -195,8 +196,8 @@ public class FactorSelection {
             }
         }
         if(!factorized) return;
-        if((this.reminder.getExpression().getPolicies().size() <= 1 )) return;
-        this.reminder.GFactorize();
+        if((this.remainder.getExpression().getPolicies().size() <= 1 )) return;
+        this.remainder.GFactorize();
     }
 
 
@@ -215,15 +216,19 @@ public class FactorSelection {
         query.append("(");
         query.append(this.quotient.createQueryFromExactFactor());
         query.append(")");
-        if (!this.reminder.expression.getPolicies().isEmpty()) {
+        if (!this.remainder.expression.getPolicies().isEmpty()) {
             query.append(PolicyConstants.DISJUNCTION);
             query.append("(");
-            query.append(this.reminder.createQueryFromExactFactor());
+            query.append(this.remainder.createQueryFromExactFactor());
             query.append(")");
         }
         return query.toString();
     }
 
+    /**
+     * Get the guards from the factorized expression
+     * @return
+     */
     public List<ObjectCondition> getIndexFilters(){
         if (multiplier.isEmpty()) {
             return multiplier;
@@ -234,13 +239,18 @@ public class FactorSelection {
         }
         //TODO: Currently quotient not factorized
 //        indexFilters.addAll(this.quotient.getIndexFilters());
-        if (!this.reminder.expression.getPolicies().isEmpty()) {
-            indexFilters.addAll(this.reminder.getIndexFilters());
+        if (!this.remainder.expression.getPolicies().isEmpty()) {
+            indexFilters.addAll(this.remainder.getIndexFilters());
         }
         return indexFilters;
     }
 
-
+    /**
+     * Creates a query by AND'ing the multiplier and quotient
+     * @param objectCondition
+     * @param quotient
+     * @return
+     */
     public String createQueryFromGQ(ObjectCondition objectCondition, BEExpression quotient){
         StringBuilder query = new StringBuilder();
         query.append(objectCondition.print());
@@ -251,6 +261,11 @@ public class FactorSelection {
         return query.toString();
     }
 
+    /**
+     * Computes the cost of execution of individual guards and sums them up
+     * For the remainder it computes the cost of each policy separately
+     * @return
+     */
     public Duration computeGuardCosts(){
         if(multiplier.isEmpty()){
             Duration rcost = Duration.ofMillis(0);
@@ -260,6 +275,17 @@ public class FactorSelection {
             return rcost;
         }
         return mySQLQueryManager.runTimedQuery(createQueryFromGQ(multiplier.get(0),
-                this.quotient.getExpression()), null).plus(this.reminder.computeGuardCosts());
+                this.quotient.getExpression()), null).plus(this.remainder.computeGuardCosts());
+    }
+
+    /**
+     * Computes the length of the unfactorized remainder
+     * @return
+     */
+    public long lengthOfRemainder(){
+        if(multiplier.isEmpty()){
+            return expression.getPolicies().size();
+        }
+        return this.remainder.lengthOfRemainder();
     }
 }
