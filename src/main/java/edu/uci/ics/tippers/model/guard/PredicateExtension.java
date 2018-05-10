@@ -197,8 +197,8 @@ public class PredicateExtension {
      */
     public void approximateFactorization() {
         Map<ObjectCondition, ObjectCondition> replacementMap = new HashMap<>();
-        for (int i = 0; i < this.expression.getPolAttributes().size(); i++) {
-            HashMap<ObjectCondition, List<BEPolicy>> predOnAttr = getPredicatesOnAttr(this.expression.getPolAttributes().get(i));
+        for (int i = 0; i < PolicyConstants.INDEXED_ATTRS.size(); i++) {
+            HashMap<ObjectCondition, List<BEPolicy>> predOnAttr = getPredicatesOnAttr(PolicyConstants.INDEXED_ATTRS.get(i));
             if (predOnAttr.isEmpty()) continue;
             List<ObjectCondition> objectConditions = new ArrayList<>();
             objectConditions.addAll(predOnAttr.keySet());
@@ -249,7 +249,7 @@ public class PredicateExtension {
         }
     }
 
-    private Map<ObjectCondition, ObjectCondition> chainEmUp(Map<ObjectCondition, ObjectCondition> replacementMap, List<ObjectCondition> objectConditions){
+    private void chainEmUp(Map<ObjectCondition, ObjectCondition> replacementMap, List<ObjectCondition> objectConditions){
         Set<ObjectCondition> removal = new HashSet<>();
         Set<ObjectCondition> checker = new HashSet<>(replacementMap.values());
         for (ObjectCondition ext: checker) {
@@ -262,6 +262,5 @@ public class PredicateExtension {
             }
         }
         replacementMap.keySet().removeAll(removal);
-        return replacementMap;
     }
 }

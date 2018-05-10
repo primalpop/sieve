@@ -86,7 +86,7 @@ public class PolicyGeneration {
         int noise =  ((int) (1 + Math.random() * (4)));
 
         if (temperature + noise < PolicyConstants.HIGH_TEMPERATURE){
-            if (temperature + noise > temperature + 3) return temperature + 3;
+            if (temperature + noise > temperature + 5) return temperature + 5;
             return temperature + noise;
         }
         else
@@ -104,7 +104,7 @@ public class PolicyGeneration {
         int noise =  ((int) (1 + Math.random() * (20)));
 
         if (energy + noise < PolicyConstants.HIGH_WEMO){
-            if (energy + noise > energy + 5) return energy + 5;
+            if (energy + noise > energy + 10) return energy + 10;
             return energy + noise;
         }
         else
@@ -308,6 +308,55 @@ public class PolicyGeneration {
             bePolicies.add(new BEPolicy(String.valueOf(i), "Generated Policy " + i, objectConditions, PolicyConstants.DEFAULT_QC.asList(), "", ""));
         }
         writer.writeJSONToFile(bePolicies, PolicyConstants.BE_POLICY_DIR, null);
+    }
+
+    /**
+     * Previously generated policies (if any) are appended to the current list of generated policies
+     * Returns the generated policies
+     * Includes a random subset of attributes which are mentioned in 'attributes'
+     * Only closed ranges are allowed e.g., if start_timestamp is chosen, then end_timestamp is included too.
+     * @param numberOfPolicies
+     */
+    public List<BEPolicy> generateBEPolicy(int numberOfPolicies, List<String> attributes, List<BEPolicy> previous){
+        List<BEPolicy> bePolicies = new ArrayList<>();
+        bePolicies.addAll(previous);
+        for (int i = previous.size(); i < numberOfPolicies; i++) {
+            RangeQuery rq = new RangeQuery();
+            int attrCount = (int) (r.nextGaussian() * 2 + 3); //mean - 4, SD - 2
+            if (attrCount <= 1 || attrCount > attributes.size()) attrCount = 3;
+            ArrayList<String> attrList = new ArrayList<>();
+            rq.setStart_timestamp(getRandomTimeStamp());
+            rq.setEnd_timestamp(getEndingTimeInterval(rq.getStart_timestamp()));
+            attrList.add(PolicyConstants.TIMESTAMP_ATTR);
+            for (int j = 1; j < attrCount; j++) {
+                String attribute = attributes.get(r.nextInt(attributes.size()));
+                if (attrList.contains(attribute)) {
+                    j--;
+                    continue;
+                }
+                if (attribute.equalsIgnoreCase(PolicyConstants.USERID_ATTR)) {
+                    rq.setUser_id(String.valueOf(users.get(new Random().nextInt(users.size())).getUser_id()));
+                } else if (attribute.equalsIgnoreCase(PolicyConstants.LOCATIONID_ATTR)) {
+                    rq.setLocation_id(infras.get(new Random().nextInt(infras.size())).getName());
+//                } else if (attribute.equalsIgnoreCase(PolicyConstants.TIMESTAMP_ATTR)){
+//                    rq.setStart_timestamp(getRandomTimeStamp());
+//                    rq.setEnd_timestamp(getEndingTimeInterval(rq.getStart_timestamp()));
+                } else if (attribute.equalsIgnoreCase(PolicyConstants.ENERGY_ATTR)){
+                    rq.setStart_wemo(String.valueOf(getEnergy(null)));
+                    rq.setEnd_wemo(String.valueOf(getEnergy(rq.getStart_wemo())));
+                } else if (attribute.equalsIgnoreCase(PolicyConstants.ACTIVITY_ATTR)) {
+                    rq.setActivity(PolicyConstants.ACTIVITIES.get(new Random().nextInt(PolicyConstants.ACTIVITIES.size())));
+                } else if (attribute.equalsIgnoreCase(PolicyConstants.TEMPERATURE_ATTR)){
+                    rq.setStart_temp(String.valueOf(getTemperature(null)));
+                    rq.setEnd_temp(String.valueOf(getTemperature(rq.getStart_temp())));
+                }
+                attrList.add(attribute);
+            }
+            List<ObjectCondition> objectConditions = rq.createObjectCondition();
+            bePolicies.add(new BEPolicy(String.valueOf(i), "Generated Policy " + i , objectConditions, PolicyConstants.DEFAULT_QC.asList(), "", ""));
+        }
+        writer.writeJSONToFile(bePolicies, PolicyConstants.BE_POLICY_DIR, null);
+        return bePolicies;
     }
 
 }
