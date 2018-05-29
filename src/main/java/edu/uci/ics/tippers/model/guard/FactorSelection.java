@@ -270,12 +270,12 @@ public class FactorSelection {
         if(multiplier.isEmpty()){
             Duration rcost = Duration.ofMillis(0);
             for(BEPolicy bePolicy: this.expression.getPolicies()){
-                rcost.plus(mySQLQueryManager.runTimedQuery(bePolicy.createQueryFromObjectConditions(), null));
+                rcost.plus(mySQLQueryManager.runTimedQuery(bePolicy.createQueryFromObjectConditions()));
             }
             return rcost;
         }
         return mySQLQueryManager.runTimedQuery(createQueryFromGQ(multiplier.get(0),
-                this.quotient.getExpression()), null).plus(this.remainder.computeGuardCosts());
+                this.quotient.getExpression())).plus(this.remainder.computeGuardCosts());
     }
 
     /**
