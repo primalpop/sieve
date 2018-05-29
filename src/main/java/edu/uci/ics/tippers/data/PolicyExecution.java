@@ -21,7 +21,6 @@ import java.io.IOException;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
-import java.time.Instant;
 import java.util.*;
 import java.util.Date;
 import java.util.stream.Collectors;
@@ -76,7 +75,7 @@ public class PolicyExecution {
                 "WHERE " + IntStream.range(0, basicQueries.size()-1 ).mapToObj(i-> basicQueries.get(i).createPredicate())
                 .collect(Collectors.joining(" OR "));
         try {
-            return mySQLQueryManager.runWithThread(query, "bq");
+            return mySQLQueryManager.runWithThread(query).getDuration();
         } catch (Exception e) {
             e.printStackTrace();
             throw new PolicyEngineException("Error Running Query");
@@ -125,7 +124,7 @@ public class PolicyExecution {
                 .collect(Collectors.joining(" OR "));
 
         try {
-            return mySQLQueryManager.runWithThread(query, "rq");
+            return mySQLQueryManager.runWithThread(query).getDuration();
         } catch (Exception e) {
             e.printStackTrace();
             throw new PolicyEngineException("Error Running Query");
@@ -185,8 +184,8 @@ public class PolicyExecution {
             try {
                 /** Traditional approach **/
                 System.out.println(beExpression.createQueryFromPolices());
-                runTime = runTime.plus(mySQLQueryManager.runTimedQuery(beExpression.createQueryFromPolices(),
-                        results_file));
+                runTime = runTime.plus(mySQLQueryManager.runTimedQuery(beExpression.createQueryFromPolices()
+                ));
                 policyRunTimes.put(file.getName(), runTime);
                 System.out.println(file.getName() + " completed and took " + runTime);
 
@@ -233,8 +232,8 @@ public class PolicyExecution {
 //                System.out.println("Factorization took " + Duration.between(sG, eG));
 //                System.out.println("Factorized query " + gf.createQueryFromExactFactor());
 //                runTime = Duration.ofMillis(0);
-                runTime = runTime.plus(mySQLQueryManager.runTimedQuery(gf.createQueryFromExactFactor(),
-                        PolicyConstants.QR_FACTORIZED + results_file));
+                runTime = runTime.plus(mySQLQueryManager.runTimedQuery(gf.createQueryFromExactFactor()
+                ));
 //                policyRunTimes.put(file.getName() + "-gf", runTime);
                 System.out.println("** Factorized query took " + runTime + " **");
 

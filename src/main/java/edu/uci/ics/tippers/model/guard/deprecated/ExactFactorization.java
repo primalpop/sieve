@@ -1,7 +1,6 @@
 package edu.uci.ics.tippers.model.guard.deprecated;
 
 import com.github.davidmoten.guavamini.Lists;
-import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.db.MySQLQueryManager;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
@@ -100,7 +99,7 @@ public class ExactFactorization {
 
 
     public long computeCost(BEExpression beExpression){
-        return mySQLQueryManager.runTimedQuery(beExpression.createQueryFromPolices(), PolicyConstants.QR_FACTORIZED + "ef.txt").toMillis();
+        return mySQLQueryManager.runTimedQuery(beExpression.createQueryFromPolices()).toMillis();
     }
 
 
