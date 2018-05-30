@@ -167,7 +167,6 @@ public class BEPolicy {
     }
 
     //TODO: Make it a single method for both subclasses taking parent class as parameter
-
     public String serializeObjectConditions(List<ObjectCondition> bcs){
         StringBuilder result = new StringBuilder();
         result.append("[ ");
@@ -262,6 +261,29 @@ public class BEPolicy {
         Set<Set<ObjectCondition>> result =  Sets.powerSet(objectConditionSet);
         return result;
     }
+
+    /**
+     * Estimates the upper bound of the cost of evaluating an individual policy by adding up
+     * io block read cost * selectivity of lowest selectivity predicate * D +
+     * (D * selectivity of lowest selectivity predicate *  row evaluate cost * 2  * alpha * number of predicates)
+     * alpha is a parameter which determines the number of predicates that are evaluated in the policy (e.g., 2/3)
+     * @return
+     */
+    public double estimateCost() {
+        ObjectCondition selected = this.getObject_conditions().get(0);
+        for (ObjectCondition oc : this.getObject_conditions()) {
+            if (PolicyConstants.INDEXED_ATTRS.contains(oc.getAttribute()))
+                if (oc.computeL() < selected.computeL())
+                    selected = oc;
+        }
+        double cost = PolicyConstants.IO_BLOCK_READ_COST * PolicyConstants.NUMBER_OR_TUPLES * selected.computeL() +
+                PolicyConstants.NUMBER_OR_TUPLES * selected.computeL() *
+                        PolicyConstants.ROW_EVALUATE_COST * 2 *
+                        PolicyConstants.NUMBER_OF_PREDICATES_EVALUATED * this.getObject_conditions().size();
+        return cost;
+    }
+
+
 
     //TODO: Change into a non-static method
     /**

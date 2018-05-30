@@ -1,13 +1,12 @@
 package edu.uci.ics.tippers.model.guard;
 
 import edu.uci.ics.tippers.common.PolicyConstants;
-import edu.uci.ics.tippers.db.MySQLQueryManager;
 import edu.uci.ics.tippers.model.policy.BEExpression;
-import edu.uci.ics.tippers.model.policy.BEPolicy;
 import edu.uci.ics.tippers.model.policy.ObjectCondition;
 
-import java.time.Duration;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class FactorSelection {
@@ -27,20 +26,10 @@ public class FactorSelection {
     //Cost of evaluating the expression
     double cost;
 
-    MySQLQueryManager mySQLQueryManager = new MySQLQueryManager();
-
-    public FactorSelection() {
-        this.expression = new BEExpression();
+    public FactorSelection(BEExpression expression) {
+        this.expression = new BEExpression(expression);
         this.multiplier = new ArrayList<ObjectCondition>();
-        this.cost = -1L;
     }
-
-    public FactorSelection(BEExpression beExpression) {
-        this.expression = new BEExpression(beExpression);
-        this.multiplier = new ArrayList<ObjectCondition>();
-        this.cost = -1L;
-    }
-
 
     public BEExpression getExpression() {
         return expression;
@@ -83,109 +72,27 @@ public class FactorSelection {
     }
 
     /**
-     * Computing gain for Exact Factorization of single predicate
-     * Based on the gain formula from Surajit's paper
-     * @param original
-     * @param objectCondition
-     * @param quotient
-     * @return
-     */
-    public long computeGain(BEExpression original, ObjectCondition objectCondition, BEExpression quotient) {
-        long gain = (long) ((quotient.getPolicies().size() - 1)* objectCondition.computeL() * PolicyConstants.NUMBER_OR_TUPLES);
-        gain += original.computeL() * PolicyConstants.NUMBER_OR_TUPLES;
-        gain -= quotient.computeL() * PolicyConstants.NUMBER_OR_TUPLES;
-        return gain;
-    }
-
-
-    /**
-     * Computing benefit by computing the weighted normalized sum of number of tuples satisfied by guard
-     * and difference of tuples between original and quotient/filter.
-     * @param objectCondition
-     * @param original
-     * @param quotient
-     * @return
-     */
-    public double computeBenefit(ObjectCondition objectCondition, BEExpression original, BEExpression quotient){
-        double guardFreq = objectCondition.computeL() * PolicyConstants.NUMBER_OR_TUPLES;
-        double filterFreq = quotient.computeL() - original.computeL() * PolicyConstants.NUMBER_OR_TUPLES;
-        return ((0.8 * guardFreq) + (0.2 * filterFreq))/ (guardFreq + filterFreq);
-    }
-
-    /**
-     *  n * 1 / (frequency of the factor)
-     *  n - number of policies factorized
-     *  Intuition: Guards that filter away higher number of tuples are better
-     * @param objectCondition
-     * @param quotient
-     * @return
-     */
-    public double computeCriteria(ObjectCondition objectCondition, BEExpression quotient){
-        return quotient.getPolicies().size();
-//        return quotient.getPolicies().size() * (1 /objectCondition.computeL());
-    }
-
-    /**
-     * Factorization based on set of object conditions
-     * @param rounds
-     */
-    public void GFactorizeOptimal(int rounds) {
-        Boolean factorized = false;
-        Set<Set<ObjectCondition>> powerSet = new HashSet<Set<ObjectCondition>>();
-        for (int i = 0; i < this.expression.getPolicies().size(); i++) {
-            BEPolicy bp = this.expression.getPolicies().get(i);
-            Set<Set<ObjectCondition>> subPowerSet = bp.calculatePowerSet();
-            powerSet.addAll(subPowerSet);
-            subPowerSet = null; //forcing garbage collection
-        }
-        FactorSelection currentFactor = new FactorSelection(this.expression);
-        for (Set<ObjectCondition> objSet : powerSet) {
-            if (objSet.size() == 0) continue;
-            BEExpression temp = new BEExpression(this.expression);
-            temp.checkAgainstPolices(objSet);
-            if (temp.getPolicies().size() > 1) { //was able to factorize
-                currentFactor.multiplier = new ArrayList<>(objSet);
-                currentFactor.quotient = new FactorSelection(temp);
-                currentFactor.quotient.expression.removeFromPolicies(objSet);
-                currentFactor.remainder = new FactorSelection(this.expression);
-                currentFactor.remainder.expression.getPolicies().removeAll(temp.getPolicies());
-//                currentFactor.cost = computeGain(temp, objSet, currentFactor.quotient.expression);
-                if (this.cost < currentFactor.cost) {
-                    this.multiplier = currentFactor.getMultiplier();
-                    this.quotient = currentFactor.getQuotient();
-                    this.remainder = currentFactor.getRemainder();
-                    factorized = true;
-                }
-                currentFactor = new FactorSelection(this.expression);
-            }
-        }
-        if(!factorized || (this.remainder.getExpression().getPolicies().size() <= 1 ) || rounds >=2) return;
-        this.remainder.GFactorizeOptimal(rounds + 1);
-    }
-
-    /**
      * Factorization based on a single object condition and not all the possible combinations
-     * TODO: How does exact factorization take the aspect of indices available into consideration?
      */
-    public void GFactorize() {
+    public void selectFactor() {
         Boolean factorized = false;
         Set<ObjectCondition> singletonSet = this.expression.getPolicies().stream()
                 .flatMap(p -> p.getObject_conditions().stream())
+                .filter(o -> PolicyConstants.INDEXED_ATTRS.contains(o.getAttribute()))
                 .collect(Collectors.toSet());
         FactorSelection currentFactor = new FactorSelection(this.expression);
         for (ObjectCondition objectCondition : singletonSet) {
-            if(!PolicyConstants.INDEXED_ATTRS.contains(objectCondition.getAttribute())) continue;
             BEExpression temp = new BEExpression(this.expression);
             temp.checkAgainstPolices(objectCondition);
             if (temp.getPolicies().size() > 1) { //was able to factorize
                 currentFactor.multiplier = new ArrayList<>();
                 currentFactor.multiplier.add(objectCondition);
-                currentFactor.quotient = new FactorSelection(temp);
-                currentFactor.quotient.expression.removeFromPolicies(objectCondition);
                 currentFactor.remainder = new FactorSelection(this.expression);
                 currentFactor.remainder.expression.getPolicies().removeAll(temp.getPolicies());
-                currentFactor.cost = computeCriteria(objectCondition, currentFactor.quotient.getExpression());
-                if (this.cost < currentFactor.cost) {
+                currentFactor.quotient = new FactorSelection(temp);
+                currentFactor.quotient.expression.removeFromPolicies(objectCondition);
+                currentFactor.cost = estimateCostOfGuardRep(objectCondition, currentFactor.quotient.getExpression());
+                if (temp.estimateCost() > currentFactor.cost) {
                     this.multiplier = currentFactor.getMultiplier();
                     this.quotient = currentFactor.getQuotient();
                     this.remainder = currentFactor.getRemainder();
@@ -197,7 +104,7 @@ public class FactorSelection {
         }
         if(!factorized) return;
         if((this.remainder.getExpression().getPolicies().size() <= 1 )) return;
-        this.remainder.GFactorize();
+        this.remainder.selectFactor();
     }
 
 
@@ -226,66 +133,15 @@ public class FactorSelection {
     }
 
     /**
-     * Get the guards from the factorized expression
+     * Estimates the cost of a guarded representation of a set of policies
+     * Selectivity of guard * D * Index access + Selectivity of guard * D * cost of filter * alpha * number of predicates
+     * alpha is a parameter which determines the number of predicates that are evaluated in the policy (e.g., 2/3)
      * @return
      */
-    public List<ObjectCondition> getIndexFilters(){
-        if (multiplier.isEmpty()) {
-            return multiplier;
-        }
-        List<ObjectCondition> indexFilters = new ArrayList<>();
-        for (ObjectCondition mul : multiplier) {
-            indexFilters.add(mul);
-        }
-        //TODO: Currently quotient not factorized
-//        indexFilters.addAll(this.quotient.getIndexFilters());
-        if (!this.remainder.expression.getPolicies().isEmpty()) {
-            indexFilters.addAll(this.remainder.getIndexFilters());
-        }
-        return indexFilters;
-    }
-
-    /**
-     * Creates a query by AND'ing the multiplier and quotient
-     * @param objectCondition
-     * @param quotient
-     * @return
-     */
-    public String createQueryFromGQ(ObjectCondition objectCondition, BEExpression quotient){
-        StringBuilder query = new StringBuilder();
-        query.append(objectCondition.print());
-        query.append(PolicyConstants.CONJUNCTION);
-        query.append("(");
-        query.append(quotient.createQueryFromPolices());
-        query.append(")");
-        return query.toString();
-    }
-
-    /**
-     * Computes the cost of execution of individual guards and sums them up
-     * For the remainder it computes the cost of each policy separately
-     * @return
-     */
-    public Duration computeGuardCosts(){
-        if(multiplier.isEmpty()){
-            Duration rcost = Duration.ofMillis(0);
-            for(BEPolicy bePolicy: this.expression.getPolicies()){
-                rcost.plus(mySQLQueryManager.runTimedQuery(bePolicy.createQueryFromObjectConditions()));
-            }
-            return rcost;
-        }
-        return mySQLQueryManager.runTimedQuery(createQueryFromGQ(multiplier.get(0),
-                this.quotient.getExpression())).plus(this.remainder.computeGuardCosts());
-    }
-
-    /**
-     * Computes the length of the unfactorized remainder
-     * @return
-     */
-    public long lengthOfRemainder(){
-        if(multiplier.isEmpty()){
-            return expression.getPolicies().size();
-        }
-        return this.remainder.lengthOfRemainder();
+    public double estimateCostOfGuardRep(ObjectCondition guard, BEExpression partition){
+        long numOfPreds = partition.getPolicies().stream().collect(Collectors.counting());
+        return PolicyConstants.IO_BLOCK_READ_COST * PolicyConstants.NUMBER_OR_TUPLES * guard.computeL() +
+                PolicyConstants.NUMBER_OR_TUPLES * guard.computeL() * PolicyConstants.ROW_EVALUATE_COST *
+                        2 * numOfPreds * PolicyConstants.NUMBER_OF_PREDICATES_EVALUATED;
     }
 }

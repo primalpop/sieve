@@ -32,6 +32,17 @@ public class PolicyConstants {
 
     public static final Duration MAX_DURATION = Duration.ofSeconds(10000000, 0);
 
+    //SERVER COST AND ENGINE COST PARAMETERS DEFAULT VALUES FROM MYSQL
+    public static final double IO_BLOCK_READ_COST = 1;
+
+    public static final double MEMORY_BLOCK_READ_COST = 0.25;
+
+    public static final double ROW_EVALUATE_COST = 0.1;
+
+    public static final double KEY_COMPARE_COST = 0.1;
+
+    public static final double NUMBER_OF_PREDICATES_EVALUATED = 0.66;
+
     //TIMESTAMP FORMAT
     public static final String TIMESTAMP_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
@@ -74,7 +85,8 @@ public class PolicyConstants {
             of(new QuerierCondition("user_name",AttributeType.STRING, "=","John Doe", "=", "John Doe"));
 
     //INDEXED ATTRIBUTES
-    public static final ImmutableList<String> INDEXED_ATTRS = ImmutableList.of("timeStamp");
+    public static final ImmutableList<String> INDEXED_ATTRS = ImmutableList.of("timeStamp", "energy", "temperature",
+            "location_id", "activity");
 
 
     //ATTRIBUTE NAMES

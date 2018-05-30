@@ -18,13 +18,13 @@ public class CombinedTest {
 
     BEExpression beExpression;
     NaiveExactFactorization ef;
-    PredicateExtension f;
+    PredicateExtensionOld f;
     List<String> output;
 
     @Before
     public void setUp() throws Exception {
         beExpression = new BEExpression();
-        f = new PredicateExtension();
+        f = new PredicateExtensionOld();
         ef = new NaiveExactFactorization();
         output = new ArrayList<String>();
         output.add(Reader.readTxt("src/test/resources/Combined/policy11.txt"));
@@ -35,7 +35,7 @@ public class CombinedTest {
     @DisplayName("Test using policy11.json with 6 policies and 2 approximate factors (time and energy)")
     public void approximateFactorization() throws Exception {
         beExpression.parseJSONList(Reader.readFile("/policies/policy11.json"));
-        f = new PredicateExtension(beExpression);
+        f = new PredicateExtensionOld(beExpression);
         f.approximateFactorization();
         ef = new NaiveExactFactorization(f.getExpression());
         ef.greedyFactorization();
