@@ -8,8 +8,8 @@ import edu.uci.ics.tippers.db.MySQLConnectionManager;
 import edu.uci.ics.tippers.db.MySQLQueryManager;
 import edu.uci.ics.tippers.fileop.Reader;
 import edu.uci.ics.tippers.fileop.Writer;
-import edu.uci.ics.tippers.model.guard.PredicateExtension;
-import edu.uci.ics.tippers.model.guard.FactorSelection;
+import edu.uci.ics.tippers.model.guard.PredicateExtensionOld;
+import edu.uci.ics.tippers.model.guard.FactorSelectionOld;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
 import edu.uci.ics.tippers.model.policy.ObjectCondition;
@@ -191,7 +191,7 @@ public class PolicyExecution {
 
                 /** Extension **/
 //                runTime = Duration.ofMillis(0);
-                PredicateExtension f = new PredicateExtension(beExpression);
+                PredicateExtensionOld f = new PredicateExtensionOld(beExpression);
                 f.approximateFactorization();
                 System.out.println("Number Of Predicates after extension: " + f.getExpression().countNumberOfPredicates());
 //                runTime = runTime.plus(mySQLQueryManager.runTimedQuery(f.getExpression().createQueryFromPolices(),
@@ -214,11 +214,11 @@ public class PolicyExecution {
 
 //                BEExpression approxExpression = new BEExpression();
 //                approxExpression.parseJSONList(Reader.readTxt(policyDir + file.getName()));
-//                FactorSelection gf = new FactorSelection(approxExpression);
+//                FactorSelectionOld gf = new FactorSelectionOld(approxExpression);
 
 
                 /** Factorization **/
-                FactorSelection gf = new FactorSelection(f.getExpression());
+                FactorSelectionOld gf = new FactorSelectionOld(f.getExpression());
 //                Instant sG = Instant.now();
                 gf.GFactorize();
 //                Instant eG = Instant.now();

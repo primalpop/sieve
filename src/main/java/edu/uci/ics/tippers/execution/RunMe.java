@@ -12,8 +12,6 @@ public class RunMe {
 
     public static void main(String args[]) {
 
-        PGSQLConnectionManager.getInstance().getConnection();
-
 //        for(int i = 0; i <Histogram.getInstance().getBucketMap().get(PolicyConstants.TIMESTAMP_ATTR).size(); i++){
 //            System.out.println(Histogram.getInstance().getBucketMap().get(PolicyConstants.TIMESTAMP_ATTR).get(i).toStringEH());
 //        }
@@ -25,22 +23,19 @@ public class RunMe {
 //        System.out.println(-s);
 //        System.out.println(Histogram.getInstance().getBucketMap().get(PolicyConstants.TIMESTAMP_ATTR).get(-s -1 ).toStringEH());
 //
-//        BEExpression beExpression = new BEExpression();
-//        beExpression.parseJSONList(Reader.readFile("/policies/policyef.json"));
-//        System.out.println(beExpression.createQueryFromPolices());
-//
-//        FactorSelection gf = new FactorSelection(beExpression);
-//        gf.GFactorize();
-//        System.out.println(gf.computeGuardCosts().toString());
-//        System.out.println(gf.createQueryFromExactFactor());
+        BEExpression beExpression = new BEExpression();
+        beExpression.parseJSONList(Reader.readFile("/policies/policyef.json"));
+        System.out.println(beExpression.createQueryFromPolices());
 
-
+        FactorSelection gf = new FactorSelection(beExpression);
+        gf.selectFactor();
+        System.out.println(gf.createQueryFromExactFactor());
 
 //        ExactFactorization ef = new ExactFactorization();
 //        ef.memoize(beExpression);
 //        ef.printfMap();
 
-//        PredicateExtension f = new PredicateExtension(beExpression);
+//        PredicateExtensionOld f = new PredicateExtensionOld(beExpression);
 //        f.approximateFactorization();
 //        System.out.println(f.getExpression().createQueryFromPolices());
 //
