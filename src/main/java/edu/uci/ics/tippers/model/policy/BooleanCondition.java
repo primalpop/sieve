@@ -109,6 +109,14 @@ public class BooleanCondition  implements Comparable<BooleanCondition>  {
         return LocalDateTime.parse(timestamp, PolicyConstants.TIME_FORMATTER);
     }
 
+    @Override
+    public String toString() {
+        return "BooleanCondition{" +
+                "attribute='" + attribute + '\'' +
+                ", type=" + type +
+                ", booleanPredicates=" + booleanPredicates +
+                '}';
+    }
 
     /**
      * 0 if they are equal, negative if start predicate of first boolean condition
@@ -158,6 +166,5 @@ public class BooleanCondition  implements Comparable<BooleanCondition>  {
         BooleanCondition bc = (BooleanCondition) obj;
         return bc.attribute.equals(attribute) && bc.type.equals(type) && bc.booleanPredicates.equals(booleanPredicates);
     }
-
 
 }

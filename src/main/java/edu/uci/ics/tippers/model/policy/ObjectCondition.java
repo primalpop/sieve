@@ -142,6 +142,7 @@ public class ObjectCondition extends BooleanCondition {
                 '}';
     }
 
+    //TODO: Only strict overlaps are checked therefore remove the extra code to add extensions
     public boolean overlaps(ObjectCondition o2) {
         if (this.getType().getID() == 4) { //Integer
             int start1 = Integer.parseInt(this.getBooleanPredicates().get(0).getValue());
@@ -152,7 +153,7 @@ public class ObjectCondition extends BooleanCondition {
                 return true;
         } else if (this.getType().getID() == 2) { //Timestamp
 //            Long extension = (long) (12 * 60 * 60 * 1000); //1 minute extension
-            Long extension = (long) (0); //1 minute extension
+            Long extension = (long) (0); //No extension
             Calendar start1 = timestampStrToCal(this.getBooleanPredicates().get(0).getValue());
             Calendar start1Ext = Calendar.getInstance();
             start1Ext.setTimeInMillis(start1.getTimeInMillis() - extension);
@@ -174,14 +175,14 @@ public class ObjectCondition extends BooleanCondition {
                 int end1 = Integer.parseInt(this.getBooleanPredicates().get(1).getValue());
                 int start2 = Integer.parseInt(o2.getBooleanPredicates().get(0).getValue());
                 int end2 = Integer.parseInt(o2.getBooleanPredicates().get(1).getValue());
-                if (start1 - 1000 <= end2 + 1000 && end1 + 1000 >= start2 - 1000)
+                if (start1 <= end2  && end1  >= start2 )
                     return true;
             } else if (this.getAttribute().equalsIgnoreCase(PolicyConstants.LOCATIONID_ATTR)) {
                 int start1 = Integer.parseInt(this.getBooleanPredicates().get(0).getValue().substring(0, 4));
                 int end1 = Integer.parseInt(this.getBooleanPredicates().get(1).getValue().substring(0, 4));
                 int start2 = Integer.parseInt(o2.getBooleanPredicates().get(0).getValue().substring(0, 4));
                 int end2 = Integer.parseInt(o2.getBooleanPredicates().get(1).getValue().substring(0, 4));
-                if (start1 - 100 <= end2 + 100 && end1 + 100 >= start2 - 100)
+                if (start1  <= end2&& end1  >= start2 )
                     return true;
             } else {
                 //attribute activity
@@ -191,6 +192,26 @@ public class ObjectCondition extends BooleanCondition {
             throw new PolicyEngineException("Incompatible Attribute Type");
         }
         return false;
+    }
+
+    /**
+     * Merges two overlapping predicates by extending ranges
+     * @param objectCondition
+     * @return
+     */
+    public ObjectCondition merge(ObjectCondition objectCondition){
+        ObjectCondition extended = new ObjectCondition(this);
+        String minValue = this.getBooleanPredicates().get(0).getValue()
+                .compareTo(objectCondition.getBooleanPredicates().get(0).getValue()) < 0  ?
+                this.getBooleanPredicates().get(0).getValue(): objectCondition.getBooleanPredicates().get(0).getValue();
+        String maxValue = this.getBooleanPredicates().get(1).getValue()
+                .compareTo(objectCondition.getBooleanPredicates().get(1).getValue()) > 0  ?
+                this.getBooleanPredicates().get(1).getValue(): objectCondition.getBooleanPredicates().get(1).getValue();
+        extended.getBooleanPredicates().get(0).setValue(minValue);
+        extended.getBooleanPredicates().get(1).setValue(maxValue);
+        extended.getBooleanPredicates().get(0).setOperator(">=");
+        extended.getBooleanPredicates().get(1).setOperator("<=");
+        return extended;
     }
 
     //TODO: Remove this
@@ -204,4 +225,6 @@ public class ObjectCondition extends BooleanCondition {
         }
         return cal;
     }
+
+
 }
