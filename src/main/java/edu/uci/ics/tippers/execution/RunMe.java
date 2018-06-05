@@ -24,7 +24,7 @@ public class RunMe {
 //        System.out.println(Histogram.getInstance().getBucketMap().get(PolicyConstants.TIMESTAMP_ATTR).get(-s -1 ).toStringEH());
 //
         BEExpression beExpression = new BEExpression();
-        beExpression.parseJSONList(Reader.readFile("/policies/policyef.json"));
+        beExpression.parseJSONList(Reader.readFile("/policies/policy10.json"));
         System.out.println(beExpression.createQueryFromPolices());
 
         FactorSelection gf = new FactorSelection(beExpression);
@@ -33,6 +33,7 @@ public class RunMe {
 
         PredicateExtension pe = new PredicateExtension(gf);
         pe.extendPredicate();
+        System.out.println(pe.printGuardMap());
 
 
 //        ExactFactorization ef = new ExactFactorization();

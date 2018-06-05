@@ -75,6 +75,7 @@ public class FactorSelection {
 
     /**
      * Factorization based on a single object condition and not all the possible combinations
+     * After selecting factor, they are not removed from the quotient
      */
     public void selectFactor() {
         Boolean factorized = false;
@@ -92,7 +93,7 @@ public class FactorSelection {
                 currentFactor.remainder = new FactorSelection(this.expression);
                 currentFactor.remainder.expression.getPolicies().removeAll(temp.getPolicies());
                 currentFactor.quotient = new FactorSelection(temp);
-                currentFactor.quotient.expression.removeFromPolicies(objectCondition);
+//                currentFactor.quotient.expression.removeFromPolicies(objectCondition);
                 currentFactor.cost = estimateCostOfGuardRep(objectCondition, currentFactor.quotient.getExpression());
                 if (temp.estimateCost() > currentFactor.cost) {
                     this.multiplier = currentFactor.getMultiplier();
