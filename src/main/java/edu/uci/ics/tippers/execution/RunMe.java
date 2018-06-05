@@ -31,6 +31,10 @@ public class RunMe {
         gf.selectFactor();
         System.out.println(gf.createQueryFromExactFactor());
 
+        PredicateExtension pe = new PredicateExtension(gf);
+        pe.extendPredicate();
+
+
 //        ExactFactorization ef = new ExactFactorization();
 //        ef.memoize(beExpression);
 //        ef.printfMap();

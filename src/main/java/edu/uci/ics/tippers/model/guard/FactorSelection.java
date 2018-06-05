@@ -2,9 +2,11 @@ package edu.uci.ics.tippers.model.guard;
 
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.model.policy.BEExpression;
+import edu.uci.ics.tippers.model.policy.BEPolicy;
 import edu.uci.ics.tippers.model.policy.ObjectCondition;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -143,5 +145,38 @@ public class FactorSelection {
         return PolicyConstants.IO_BLOCK_READ_COST * PolicyConstants.NUMBER_OR_TUPLES * guard.computeL() +
                 PolicyConstants.NUMBER_OR_TUPLES * guard.computeL() * PolicyConstants.ROW_EVALUATE_COST *
                         2 * numOfPreds * PolicyConstants.NUMBER_OF_PREDICATES_EVALUATED;
+    }
+
+
+    /**
+     * returns a map with key as guards and value as the guarded representation of the partition of policies
+     * guard is a single object condition
+     * @return
+     */
+    public HashMap<ObjectCondition, BEExpression> getGuardPartitionMap() {
+        if(this.getMultiplier().isEmpty()){
+            HashMap<ObjectCondition, BEExpression> remainderMap = new HashMap<>();
+            for(BEPolicy bePolicy: this.expression.getPolicies()){
+                double freq = PolicyConstants.NUMBER_OR_TUPLES;
+                ObjectCondition gOC = new ObjectCondition();
+                for (ObjectCondition oc: bePolicy.getObject_conditions()) {
+                    if(!PolicyConstants.INDEXED_ATTRS.contains(oc.getAttribute())) continue;
+                    if (oc.computeL() < freq) {
+                        freq = oc.computeL();
+                        gOC = oc;
+                    }
+                }
+                BEExpression quo = new BEExpression();
+                quo.getPolicies().add(bePolicy);
+                remainderMap.put(gOC, quo);
+            }
+            return remainderMap;
+        }
+        HashMap<ObjectCondition, BEExpression> gMap = new HashMap<>();
+        gMap.put(this.getMultiplier().get(0), this.getQuotient().getExpression());
+        if(!this.getRemainder().expression.getPolicies().isEmpty()){
+            gMap.putAll(this.getRemainder().getGuardPartitionMap());
+        }
+        return gMap;
     }
 }

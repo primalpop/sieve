@@ -240,4 +240,11 @@ public class BEExpression{
     public double estimateCost(){
         return this.getPolicies().stream().mapToDouble(p -> p.estimateCost()).sum();
     }
+
+
+    public BEExpression mergeExpression(BEExpression beExpression){
+        BEExpression extended = new BEExpression(this);
+        extended.getPolicies().addAll(beExpression.getPolicies());
+        return extended;
+    }
 }
