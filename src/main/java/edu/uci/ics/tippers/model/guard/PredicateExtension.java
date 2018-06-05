@@ -3,7 +3,6 @@ package edu.uci.ics.tippers.model.guard;
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.policy.ObjectCondition;
-
 import java.util.*;
 
 public class PredicateExtension {
@@ -41,9 +40,6 @@ public class PredicateExtension {
     }
 
 
-
-    //TODO: replacement map for predicates to be replaced by merged predicate
-    //TODO: chaining them up like in the previous implementation
     //TODO: Improve the overlapping condition to the criterion we have derived
     public void extendPredicate() {
         Map<ObjectCondition, ObjectCondition> replacementMap = new HashMap<>();
@@ -55,10 +51,11 @@ public class PredicateExtension {
                     ObjectCondition ocj = guards.get(j);
                     ObjectCondition ock = guards.get(k);
                     if (!ocj.overlaps(ock)) continue;
-                    double benefit = (gExpression.estimateCostOfGuardRep(ocj, guardMap.get(ocj))
+                    double benefit = gExpression.estimateCostOfGuardRep(ocj.merge(ock),
+                            guardMap.get(ocj).mergeExpression(guardMap.get(ock)));
+                    benefit -=(gExpression.estimateCostOfGuardRep(ocj, guardMap.get(ocj))
                             + gExpression.estimateCostOfGuardRep(ock, guardMap.get(ock)));
-                    benefit -= gExpression.estimateCostOfGuardRep(ocj.merge(ock), guardMap.get(ocj).mergeExpression(guardMap.get(ock)));
-                    memoized.put(ocj.hashCode() + "" + ock.hashCode(), benefit);
+                    memoized.put(ocj.hashCode() + "." + ock.hashCode(), benefit);
                 }
             }
 
@@ -66,12 +63,14 @@ public class PredicateExtension {
                 if(guards.size() <= 1) break;
                 String maxBenefitKey = memoized.entrySet().stream().max((entry1, entry2) -> entry1.getValue()
                         > entry2.getValue() ? 1 : -1).get().getKey();
-                if(memoized.get(maxBenefitKey) < 0) break; //Break condition
-                ObjectCondition m1 = new ObjectCondition();
-                ObjectCondition m2 = new ObjectCondition();
-                for (int j = 0; j < guards.size(); j++) {
-                    if (guards.get(j).hashCode() == Integer.parseInt(maxBenefitKey.substring(0, 1))) m1 = guards.get(j);
-                    if (guards.get(j).hashCode() == Integer.parseInt(maxBenefitKey.substring(1, 2))) m2 = guards.get(j);
+//                if(memoized.get(maxBenefitKey) < 0) break; //Break condition
+                ObjectCondition m1 = null;
+                ObjectCondition m2 = null;
+                for (ObjectCondition g: guardMap.keySet()) {
+                    if(!g.getAttribute().equalsIgnoreCase(PolicyConstants.INDEXED_ATTRS.get(i))) continue;
+                    if(m1 != null && m2 != null) break;
+                    if (g.hashCode() == Integer.parseInt(maxBenefitKey.split("\\.")[0])) m1 = g;
+                    if (g.hashCode() == Integer.parseInt(maxBenefitKey.split("\\.")[1])) m2 = g;
                 }
                 ObjectCondition ocM = m1.merge(m2);
                 BEExpression beM = guardMap.get(m1).mergeExpression(guardMap.get(m2));
@@ -91,14 +90,13 @@ public class PredicateExtension {
                     memoized.put(ocj.hashCode() + "" + ocM.hashCode(), benefit);
                 }
             }
+            chainEmUp(replacementMap, getGuardsOnAttribute(PolicyConstants.INDEXED_ATTRS.get(i)));
         }
 
         //Rewriting the original expression
-//        for(ObjectCondition pred:replacementMap.keySet()) {
-//            this.expression.replenishFromPolicies(pred, replacementMap.get(pred));
-//        }
-//
-
+        for(ObjectCondition pred:replacementMap.keySet()) {
+            this.guardMap.put(replacementMap.get(pred), guardMap.remove(pred));
+        }
     }
 
 
@@ -118,5 +116,18 @@ public class PredicateExtension {
         replacementMap.keySet().removeAll(removal);
     }
 
-
+    public String printGuardMap(){
+        StringBuilder gRep = new StringBuilder();
+        String delim = "";
+        for (Map.Entry<ObjectCondition, BEExpression> entry : guardMap.entrySet()) {
+            gRep.append(delim);
+            gRep.append(entry.getKey().print());
+            gRep.append(PolicyConstants.CONJUNCTION);
+            gRep.append("(");
+            gRep.append(entry.getValue().createQueryFromPolices());
+            gRep.append(")");
+            delim = PolicyConstants.DISJUNCTION;
+        }
+        return gRep.toString();
+    }
 }
