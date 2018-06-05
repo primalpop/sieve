@@ -4,6 +4,7 @@ import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.policy.ObjectCondition;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class PredicateExtension {
 
@@ -43,6 +44,7 @@ public class PredicateExtension {
     //TODO: Improve the overlapping condition to the criterion we have derived
     public void extendPredicate() {
         Map<ObjectCondition, ObjectCondition> replacementMap = new HashMap<>();
+        HashMap<ObjectCondition, BEExpression> growMap = new HashMap<>(guardMap);
         for (int i = 0; i < PolicyConstants.INDEXED_ATTRS.size(); i++) {
             List<ObjectCondition> guards = getGuardsOnAttribute(PolicyConstants.INDEXED_ATTRS.get(i));
             Map<String, Double> memoized = new HashMap<>();
@@ -66,44 +68,55 @@ public class PredicateExtension {
 //                if(memoized.get(maxBenefitKey) < 0) break; //Break condition
                 ObjectCondition m1 = null;
                 ObjectCondition m2 = null;
-                for (ObjectCondition g: guardMap.keySet()) {
+                for (ObjectCondition g: growMap.keySet()) {
                     if(!g.getAttribute().equalsIgnoreCase(PolicyConstants.INDEXED_ATTRS.get(i))) continue;
                     if(m1 != null && m2 != null) break;
                     if (g.hashCode() == Integer.parseInt(maxBenefitKey.split("\\.")[0])) m1 = g;
                     if (g.hashCode() == Integer.parseInt(maxBenefitKey.split("\\.")[1])) m2 = g;
                 }
                 ObjectCondition ocM = m1.merge(m2);
-                BEExpression beM = guardMap.get(m1).mergeExpression(guardMap.get(m2));
-                guardMap.put(ocM, beM);
+                BEExpression beM = growMap.get(m1).mergeExpression(guardMap.get(m2));
+                growMap.put(ocM, beM);
                 guards.remove(m1);
                 guards.remove(m2);
                 guards.add(ocM);
                 replacementMap.put(m1, ocM);
                 replacementMap.put(m2, ocM);
-                double costocM = gExpression.estimateCostOfGuardRep(ocM, guardMap.get(ocM));
+                double costocM = gExpression.estimateCostOfGuardRep(ocM, growMap.get(ocM));
                 for (int j = 0; j < guards.size(); j++) {
                     ObjectCondition ocj = guards.get(j);
                     if (ocj.compareTo(ocM) == 0) continue;
                     if (!ocj.overlaps(ocM)) continue;
-                    double benefit = gExpression.estimateCostOfGuardRep(ocj, guardMap.get(ocj)) + costocM;
-                    benefit -= gExpression.estimateCostOfGuardRep(ocj.merge(ocM), guardMap.get(ocM).mergeExpression(guardMap.get(ocM)));
+                    double benefit = gExpression.estimateCostOfGuardRep(ocj, growMap.get(ocj)) + costocM;
+                    benefit -= gExpression.estimateCostOfGuardRep(ocj.merge(ocM), growMap.get(ocM).mergeExpression(guardMap.get(ocM)));
                     memoized.put(ocj.hashCode() + "" + ocM.hashCode(), benefit);
                 }
             }
-            chainEmUp(replacementMap, getGuardsOnAttribute(PolicyConstants.INDEXED_ATTRS.get(i)));
+            chainEmUp(PolicyConstants.INDEXED_ATTRS.get(i), replacementMap,
+                    getGuardsOnAttribute(PolicyConstants.INDEXED_ATTRS.get(i)));
         }
 
         //Rewriting the original expression
-        for(ObjectCondition pred:replacementMap.keySet()) {
-            this.guardMap.put(replacementMap.get(pred), guardMap.remove(pred));
+        Set<ObjectCondition> replacement = new HashSet<>();
+        replacement.addAll(replacementMap.values());
+        for(ObjectCondition rep:replacement) {
+            List<ObjectCondition> replaced = new ArrayList<>(getKeysByValue(replacementMap, rep));
+            BEExpression beM = guardMap.get(replaced.get((0)));
+            guardMap.remove(replaced.get(0));
+            for (int i = 1; i < replaced.size() ; i++) {
+                beM = beM.mergeExpression(guardMap.get(replaced.get(i)));
+                guardMap.remove(replaced.get(i));
+            }
+            guardMap.put(rep, beM);
         }
     }
 
 
 
-    private void chainEmUp(Map<ObjectCondition, ObjectCondition> replacementMap, List<ObjectCondition> objectConditions){
+    private void chainEmUp(String attribute, Map<ObjectCondition, ObjectCondition> replacementMap, List<ObjectCondition> objectConditions){
         Set<ObjectCondition> removal = new HashSet<>();
-        Set<ObjectCondition> checker = new HashSet<>(replacementMap.values());
+        Set<ObjectCondition> checker = replacementMap.values().stream().filter(v -> v.getAttribute()
+                .equalsIgnoreCase(attribute)).collect(Collectors.toSet());
         for (ObjectCondition ext: checker) {
             if (replacementMap.containsKey(ext)){
                 if(!(objectConditions.contains(ext))) removal.add(ext);
