@@ -1,8 +1,12 @@
 package edu.uci.ics.tippers.model.guard;
 
 import edu.uci.ics.tippers.common.PolicyConstants;
+import edu.uci.ics.tippers.db.MySQLQueryManager;
 import edu.uci.ics.tippers.model.policy.BEExpression;
+import edu.uci.ics.tippers.model.policy.BEPolicy;
 import edu.uci.ics.tippers.model.policy.ObjectCondition;
+
+import java.time.Duration;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -10,6 +14,8 @@ public class PredicateExtension {
 
     FactorSelection gExpression;
     HashMap<ObjectCondition, BEExpression> guardMap;
+    MySQLQueryManager mySQLQueryManager = new MySQLQueryManager();
+
 
     public PredicateExtension(FactorSelection gExpression){
         this.gExpression = gExpression;
@@ -40,8 +46,27 @@ public class PredicateExtension {
         return gOnA;
     }
 
+    /**
+     * Checks the merging criterion we have derived!
+     * @param oc1
+     * @param oc2
+     * @param beExpression
+     * @return
+     */
+    private boolean shouldIMerge(ObjectCondition oc1, ObjectCondition oc2, BEExpression beExpression){
+        if(!oc1.overlaps(oc2)) return false;
+        ObjectCondition intersect = oc1.intersect(oc2);
+        ObjectCondition union = oc1.union(oc2);
+        double lhs = intersect.computeL() / union.computeL();
+        long numOfPreds = beExpression.getPolicies().stream().collect(Collectors.counting());
+        double rhs = (PolicyConstants.ROW_EVALUATE_COST * numOfPreds) / (PolicyConstants.IO_BLOCK_READ_COST
+                + PolicyConstants.ROW_EVALUATE_COST + (PolicyConstants.ROW_EVALUATE_COST * numOfPreds) );
+        return lhs > rhs;
+    }
+
 
     //TODO: Improve the overlapping condition to the criterion we have derived
+    //TODO: Only union if the benefit is positive
     public void extendPredicate() {
         Map<ObjectCondition, ObjectCondition> replacementMap = new HashMap<>();
         HashMap<ObjectCondition, BEExpression> growMap = new HashMap<>(guardMap);
@@ -52,8 +77,9 @@ public class PredicateExtension {
                 for (int k = j + 1; k < guards.size(); k++) {
                     ObjectCondition ocj = guards.get(j);
                     ObjectCondition ock = guards.get(k);
-                    if (!ocj.overlaps(ock)) continue;
-                    double benefit = gExpression.estimateCostOfGuardRep(ocj.merge(ock),
+                    BEExpression beM = growMap.get(ocj).mergeExpression(guardMap.get(ock));
+                    if (!shouldIMerge(ocj, ock, beM)) continue;
+                    double benefit = gExpression.estimateCostOfGuardRep(ocj.union(ock),
                             guardMap.get(ocj).mergeExpression(guardMap.get(ock)));
                     benefit -=(gExpression.estimateCostOfGuardRep(ocj, guardMap.get(ocj))
                             + gExpression.estimateCostOfGuardRep(ock, guardMap.get(ock)));
@@ -62,10 +88,10 @@ public class PredicateExtension {
             }
 
             while (true) {
-                if(guards.size() <= 1) break;
+                if(guards.size() <= 1 || memoized.size() == 0) break;
                 String maxBenefitKey = memoized.entrySet().stream().max((entry1, entry2) -> entry1.getValue()
                         > entry2.getValue() ? 1 : -1).get().getKey();
-//                if(memoized.get(maxBenefitKey) < 0) break; //Break condition
+                if(memoized.get(maxBenefitKey) < 0) break; //Break condition
                 ObjectCondition m1 = null;
                 ObjectCondition m2 = null;
                 for (ObjectCondition g: growMap.keySet()) {
@@ -74,7 +100,7 @@ public class PredicateExtension {
                     if (g.hashCode() == Integer.parseInt(maxBenefitKey.split("\\.")[0])) m1 = g;
                     if (g.hashCode() == Integer.parseInt(maxBenefitKey.split("\\.")[1])) m2 = g;
                 }
-                ObjectCondition ocM = m1.merge(m2);
+                ObjectCondition ocM = m1.union(m2);
                 BEExpression beM = growMap.get(m1).mergeExpression(guardMap.get(m2));
                 growMap.put(ocM, beM);
                 guards.remove(m1);
@@ -88,7 +114,7 @@ public class PredicateExtension {
                     if (ocj.compareTo(ocM) == 0) continue;
                     if (!ocj.overlaps(ocM)) continue;
                     double benefit = gExpression.estimateCostOfGuardRep(ocj, growMap.get(ocj)) + costocM;
-                    benefit -= gExpression.estimateCostOfGuardRep(ocj.merge(ocM), growMap.get(ocM).mergeExpression(guardMap.get(ocM)));
+                    benefit -= gExpression.estimateCostOfGuardRep(ocj.union(ocM), growMap.get(ocM).mergeExpression(guardMap.get(ocM)));
                     memoized.put(ocj.hashCode() + "" + ocM.hashCode(), benefit);
                 }
             }
@@ -110,8 +136,6 @@ public class PredicateExtension {
             guardMap.put(rep, beM);
         }
     }
-
-
 
     private void chainEmUp(String attribute, Map<ObjectCondition, ObjectCondition> replacementMap, List<ObjectCondition> objectConditions){
         Set<ObjectCondition> removal = new HashSet<>();
@@ -142,5 +166,21 @@ public class PredicateExtension {
             delim = PolicyConstants.DISJUNCTION;
         }
         return gRep.toString();
+    }
+
+    public Duration computeGuardCosts(){
+        long gcost = 0;
+        for (Map.Entry<ObjectCondition, BEExpression> entry : guardMap.entrySet()) {
+            StringBuilder query = new StringBuilder();
+            query.append(entry.getKey().print());
+            query.append(PolicyConstants.CONJUNCTION);
+            query.append("(" +entry.getValue().createQueryFromPolices() + ")");
+            long start_time = System.currentTimeMillis();
+            mySQLQueryManager.runTimedQuery(query.toString()).toMillis();
+            long end_time = System.currentTimeMillis();
+            long difference = end_time - start_time;
+            gcost += difference;
+        }
+        return Duration.ofMillis(gcost);
     }
 }

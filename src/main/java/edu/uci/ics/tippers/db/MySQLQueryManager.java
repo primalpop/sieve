@@ -106,15 +106,6 @@ public class MySQLQueryManager {
         }
     }
 
-    public MySQLResult executeGuard(String predicates, String table_name) throws PolicyEngineException {
-        String query = String.format("SELECT * FROM %s WHERE "+ predicates, table_name);
-        try {
-            return runWithThread(query);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new PolicyEngineException("Error Running Query");
-        }
-    }
 
     /**
      * Check the results against the traditional query rewritten approach

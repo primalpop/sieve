@@ -195,20 +195,41 @@ public class ObjectCondition extends BooleanCondition {
     }
 
     /**
-     * Merges two overlapping predicates by extending ranges
+     * Unions two overlapping predicates by extending ranges
      * @param objectCondition
      * @return
      */
-    public ObjectCondition merge(ObjectCondition objectCondition){
+    public ObjectCondition union(ObjectCondition objectCondition){
         ObjectCondition extended = new ObjectCondition(this);
-        String minValue = this.getBooleanPredicates().get(0).getValue()
+        String begValue = this.getBooleanPredicates().get(0).getValue()
                 .compareTo(objectCondition.getBooleanPredicates().get(0).getValue()) < 0  ?
                 this.getBooleanPredicates().get(0).getValue(): objectCondition.getBooleanPredicates().get(0).getValue();
-        String maxValue = this.getBooleanPredicates().get(1).getValue()
+        String endValue = this.getBooleanPredicates().get(1).getValue()
                 .compareTo(objectCondition.getBooleanPredicates().get(1).getValue()) > 0  ?
                 this.getBooleanPredicates().get(1).getValue(): objectCondition.getBooleanPredicates().get(1).getValue();
-        extended.getBooleanPredicates().get(0).setValue(minValue);
-        extended.getBooleanPredicates().get(1).setValue(maxValue);
+        extended.getBooleanPredicates().get(0).setValue(begValue);
+        extended.getBooleanPredicates().get(1).setValue(endValue);
+        extended.getBooleanPredicates().get(0).setOperator(">=");
+        extended.getBooleanPredicates().get(1).setOperator("<=");
+        return extended;
+    }
+
+
+    /**
+     * Intersects two overlapping predicates by extending ranges
+     * @param objectCondition
+     * @return
+     */
+    public ObjectCondition intersect(ObjectCondition objectCondition){
+        ObjectCondition extended = new ObjectCondition(this);
+        String begValue = this.getBooleanPredicates().get(0).getValue()
+                .compareTo(objectCondition.getBooleanPredicates().get(0).getValue()) > 0  ?
+                this.getBooleanPredicates().get(0).getValue(): objectCondition.getBooleanPredicates().get(0).getValue();
+        String endValue = this.getBooleanPredicates().get(1).getValue()
+                .compareTo(objectCondition.getBooleanPredicates().get(1).getValue()) < 0  ?
+                this.getBooleanPredicates().get(1).getValue(): objectCondition.getBooleanPredicates().get(1).getValue();
+        extended.getBooleanPredicates().get(0).setValue(begValue);
+        extended.getBooleanPredicates().get(1).setValue(endValue);
         extended.getBooleanPredicates().get(0).setOperator(">=");
         extended.getBooleanPredicates().get(1).setOperator("<=");
         return extended;
