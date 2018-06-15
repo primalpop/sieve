@@ -10,11 +10,8 @@ import edu.uci.ics.tippers.fileop.Reader;
 import edu.uci.ics.tippers.fileop.Writer;
 import edu.uci.ics.tippers.model.guard.FactorSelection;
 import edu.uci.ics.tippers.model.guard.PredicateExtension;
-import edu.uci.ics.tippers.model.guard.PredicateExtensionOld;
-import edu.uci.ics.tippers.model.guard.FactorSelectionOld;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
-import edu.uci.ics.tippers.model.policy.ObjectCondition;
 import edu.uci.ics.tippers.model.query.BasicQuery;
 import edu.uci.ics.tippers.model.query.RangeQuery;
 
@@ -30,7 +27,6 @@ import java.util.stream.IntStream;
 
 /**
  * Created by cygnus on 12/12/17.
- * Heavily borrowed from Benchmark code
  */
 public class PolicyExecution {
 
@@ -59,107 +55,8 @@ public class PolicyExecution {
         mySQLQueryManager = new MySQLQueryManager();
     }
 
-    private List<BasicQuery> readBasicPolicy(String fileName) {
-        String values = Reader.readTxt(fileName);
-        List<BasicQuery> basicQueries = new ArrayList<BasicQuery>();
-        try {
-            basicQueries.addAll(objectMapper.readValue(values,
-                    new TypeReference<List<BasicQuery>>() {
-                    }));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return basicQueries;
-    }
 
-    public Duration runBasicQuery(List<BasicQuery> basicQueries) {
-        String query = "SELECT * FROM SEMANTIC_OBSERVATION " +
-                "WHERE " + IntStream.range(0, basicQueries.size() - 1).mapToObj(i -> basicQueries.get(i).createPredicate())
-                .collect(Collectors.joining(" OR "));
-        try {
-            return mySQLQueryManager.runWithThread(query).getDuration();
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new PolicyEngineException("Error Running Query");
-        }
-    }
-
-    public Map<String, Duration> runBasicQueries(String policyDir) {
-
-        Map<String, Duration> policyRunTimes = new HashMap<>();
-
-        File[] policyFiles = new File(policyDir).listFiles();
-
-        for (File file : policyFiles) {
-
-            List<BasicQuery> basicQueries = readBasicPolicy(policyDir + file.getName());
-
-            Duration runTime = Duration.ofSeconds(0);
-
-            try {
-                runTime = runTime.plus(runBasicQuery(basicQueries));
-                policyRunTimes.put(file.getName(), runTime);
-            } catch (Exception e) {
-                e.printStackTrace();
-                policyRunTimes.put(file.getName(), PolicyConstants.MAX_DURATION);
-            }
-        }
-        return policyRunTimes;
-    }
-
-    private List<RangeQuery> readRangePolicy(String fileName) {
-        String values = Reader.readTxt(fileName);
-        List<RangeQuery> rangeQueries = new ArrayList<RangeQuery>();
-        try {
-            rangeQueries.addAll(objectMapper.readValue(values,
-                    new TypeReference<List<RangeQuery>>() {
-                    }));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return rangeQueries;
-    }
-
-    public Duration runRangeQuery(List<RangeQuery> rangeQueries) {
-        String query = "SELECT * FROM SEMANTIC_OBSERVATION " +
-                "WHERE " + IntStream.range(0, rangeQueries.size()).mapToObj(i -> rangeQueries.get(i).createPredicate())
-                .collect(Collectors.joining(" OR "));
-
-        try {
-            return mySQLQueryManager.runWithThread(query).getDuration();
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new PolicyEngineException("Error Running Query");
-        }
-    }
-
-    public Map<String, Duration> runRangeQueries(String policyDir) {
-
-        Map<String, Duration> policyRunTimes = new HashMap<>();
-
-        File[] policyFiles = new File(policyDir).listFiles();
-
-        String values = null;
-
-        for (File file : policyFiles) {
-
-            List<RangeQuery> rangeQueries = readRangePolicy(policyDir + file.getName());
-
-            Duration runTime = Duration.ofSeconds(0);
-
-            try {
-                runTime = runTime.plus(runRangeQuery(rangeQueries));
-                policyRunTimes.put(file.getName(), runTime);
-            } catch (Exception e) {
-                e.printStackTrace();
-                policyRunTimes.put(file.getName(), PolicyConstants.MAX_DURATION);
-            }
-        }
-
-        return policyRunTimes;
-    }
-
-
+    //TODO: Fix the result checker by passing the fileName to write to
     public Map<String, Duration> runBEPolicies(String policyDir) {
 
         Map<String, Duration> policyRunTimes = new HashMap<>();
@@ -184,10 +81,11 @@ public class PolicyExecution {
 
             try {
                 /** Traditional approach **/
-//                System.out.println(beExpression.createQueryFromPolices());
-//                runTime = runTime.plus(mySQLQueryManager.runTimedQuery(beExpression.createQueryFromPolices()));
-//                policyRunTimes.put(file.getName(), runTime);
-//                System.out.println(file.getName() + " completed and took " + runTime);
+                System.out.println(beExpression.createQueryFromPolices());
+                runTime = runTime.plus(mySQLQueryManager.runTimedQuery(beExpression.createQueryFromPolices(),
+                        PolicyConstants.QUERY_RESULTS_DIR, results_file));
+                policyRunTimes.put(file.getName(), runTime);
+                System.out.println(file.getName() + " completed and took " + runTime);
 
                 /** Factorization **/
                 FactorSelection gf = new FactorSelection(beExpression);
@@ -197,11 +95,12 @@ public class PolicyExecution {
                 System.out.println(gf.createQueryFromExactFactor());
 
 //                System.out.println("Factorization took " + Duration.between(sG, eG));
-//                System.out.println("Factorized query " + gf.createQueryFromExactFactor());
-//                runTime = Duration.ofMillis(0);
-//                runTime = runTime.plus(mySQLQueryManager.runTimedQuery(gf.createQueryFromExactFactor()));
-//                policyRunTimes.put(file.getName() + "-gf", runTime);
-//                System.out.println("** Factorized query took " + runTime + " **");
+                System.out.println("Factorized query " + gf.createQueryFromExactFactor());
+                runTime = Duration.ofMillis(0);
+                runTime = runTime.plus(mySQLQueryManager.runTimedQuery(gf.createQueryFromExactFactor(),
+                        PolicyConstants.QR_FACTORIZED, results_file));
+                policyRunTimes.put(file.getName() + "-gf", runTime);
+                System.out.println("** Factorized query took " + runTime + " **");
 
 
                 /** Extension **/
@@ -212,24 +111,19 @@ public class PolicyExecution {
 //                Instant eG = Instant.now();
 //                System.out.println("Factorization took " + Duration.between(sG, eG));
 
-                runTime = runTime.plus(mySQLQueryManager.runTimedQuery(f.printGuardMap()));
-                System.out.println("**" + file.getName() + "-extended completed and took " + runTime + "**");
-                System.out.println(f.printGuardMap());
-                Duration guardExecTime = f.computeGuardCosts();
-                System.out.println("Guard Rep cost: " + guardExecTime);
-                policyRunTimes.put(file.getName() + "-pe", guardExecTime);
+                mySQLQueryManager.runTimedQuery(f.printGuardMap(), PolicyConstants.QR_EXTENDED, results_file);
 
-
-//                resultsChecked = mySQLQueryManager.checkResults(PolicyConstants.QR_EXTENDED + results_file);
-//                if(!resultsChecked){
-//                    System.out.println("*** Query results don't match after Extension ***!!!");
-//                    policyRunTimes.put(file.getName() + "-af-invalid", PolicyConstants.MAX_DURATION);
-//                }
-//                else {
-//                    policyRunTimes.put(file.getName() + "-af", runTime);
-//                    writer.writeJSONToFile(f.getExpression().getPolicies(), PolicyConstants.BE_POLICY_DIR, null);
-//                }
-
+                /** Result checking **/
+                resultsChecked = mySQLQueryManager.checkResults(PolicyConstants.QR_EXTENDED, results_file);
+                if(!resultsChecked){
+                    System.out.println("*** Query results don't match after Extension ***!!!");
+                    policyRunTimes.put(file.getName() + "-af-invalid", PolicyConstants.MAX_DURATION);
+                }
+                else {
+                    Duration guardExecTime = f.computeGuardCosts();
+                    System.out.println("Guard Rep cost: " + guardExecTime);
+                    policyRunTimes.put(file.getName() + "-pe", guardExecTime);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
                 policyRunTimes.put(file.getName(), PolicyConstants.MAX_DURATION);
@@ -255,19 +149,6 @@ public class PolicyExecution {
         }
     }
 
-    private void basicQueryExperiments(String policyDir) {
-        Map<String, Duration> runTimes = new HashMap<>();
-        runTimes.putAll(runBasicQueries(policyDir));
-        writer.createTextReport(runTimes, policyDir);
-    }
-
-
-    private void rangeQueryExperiments(String policyDir) {
-        Map<String, Duration> runTimes = new HashMap<>();
-        runTimes.putAll(runRangeQueries(policyDir));
-        writer.createTextReport(runTimes, policyDir);
-    }
-
     private void bePolicyExperiments(String policyDir) {
         Map<String, Duration> runTimes = new HashMap<>();
         runTimes.putAll(runBEPolicies(policyDir));
@@ -277,16 +158,7 @@ public class PolicyExecution {
 
     public static void main(String args[]) {
         PolicyExecution pe = new PolicyExecution();
-//        pe.generatePolicies(PolicyConstants.BASIC_POLICY_1_DIR);
-//        pe.basicQueryExperiments(PolicyConstants.BASIC_POLICY_1_DIR);
-//        pe.generatePolicies(PolicyConstants.BASIC_POLICY_2_DIR);
-//        pe.basicQueryExperiments(PolicyConstants.BASIC_POLICY_2_DIR);
-//        pe.generatePolicies(PolicyConstants.RANGE_POLICY_1_DIR);
-//        pe.rangeQueryExperiments(PolicyConstants.RANGE_POLICY_1_DIR);
-//        pe.generatePolicies(PolicyConstants.RANGE_POLICY_2_DIR);
-//        pe.rangeQueryExperiments(PolicyConstants.RANGE_POLICY_2_DIR);
-
-        pe.generatePolicies(PolicyConstants.BE_POLICY_DIR);
+//        pe.generatePolicies(PolicyConstants.BE_POLICY_DIR);
 
         pe.bePolicyExperiments(PolicyConstants.BE_POLICY_DIR);
     }

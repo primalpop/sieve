@@ -118,9 +118,9 @@ public class PolicyConstants {
 
     public static final String QUERY_RESULTS_DIR = "query_results/"; //results from traditional query rewrite
 
-    public static final String QR_FACTORIZED = "factorized/"; //results from greedy exact
+    public static final String QR_FACTORIZED = "query_results/factorized/"; //results from greedy exact
 
-    public static final String QR_EXTENDED = "extended/"; //results from approximation/extension
+    public static final String QR_EXTENDED = "query_results/extended/"; //results from approximation/extension
 
 
     //INDICES

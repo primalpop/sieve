@@ -27,25 +27,25 @@ public class MySQLQueryManager {
 
     private static long timeout = 300000;
 
-    public MySQLResult runWithThread(String query) {
+    public Duration runWithThread(String query, MySQLResult mySQLResult) {
 
         Statement statement = null;
         ExecutorService executor = Executors.newSingleThreadExecutor();
-        Future<MySQLResult> future = null;
+        Future<Duration> future = null;
         try {
             statement = connection.createStatement();
-            QueryExecutor queryExecutor = new QueryExecutor(statement, query);
+            QueryExecutor queryExecutor = new QueryExecutor(statement, query, mySQLResult);
             future = executor.submit(queryExecutor);
-            MySQLResult mySQLResult = future.get(timeout, TimeUnit.MILLISECONDS);
+            Duration duration = future.get(timeout, TimeUnit.MILLISECONDS);
             executor.shutdown();
-            return mySQLResult;
+            return duration;
         } catch (SQLException | InterruptedException | ExecutionException ex) {
             cancelStatement(statement, ex);
             throw new PolicyEngineException("Failed to query the database. " + ex);
         } catch (TimeoutException ex) {
             cancelStatement(statement, ex);
             future.cancel(true);
-            return new MySQLResult(PolicyConstants.MAX_DURATION);
+            return PolicyConstants.MAX_DURATION;
         } finally {
             DbUtils.closeQuietly(statement);
             executor.shutdownNow();
@@ -62,24 +62,28 @@ public class MySQLQueryManager {
     }
 
 
-    private class QueryExecutor implements  Callable<MySQLResult>{
+    private class QueryExecutor implements  Callable<Duration>{
 
         Statement statement;
         String query;
+        MySQLResult mySQLResult;
 
-        public QueryExecutor(Statement statement, String query) {
+        public QueryExecutor(Statement statement, String query, MySQLResult mySQLResult) {
             this.statement = statement;
             this.query = query;
+            this.mySQLResult = mySQLResult;
         }
 
         @Override
-        public MySQLResult call() throws Exception {
-            List<Semantic_Observation> query_results = new ArrayList<>();
+        public Duration call() throws Exception {
             try {
                 Instant start = Instant.now();
                 ResultSet rs = statement.executeQuery(query);
                 Instant end = Instant.now();
-                return new MySQLResult(rs, Duration.between(start, end));
+                if(mySQLResult.getPathName() != null && mySQLResult.getFileName() != null){
+                    mySQLResult.writeResultsToFile(rs);
+                }
+                return Duration.between(start, end);
             } catch (SQLException e) {
                 System.out.println("Exception raised by : " + query);
                 cancelStatement(statement, e);
@@ -91,6 +95,25 @@ public class MySQLQueryManager {
 
 
     /**
+     * Compute the cost by execution time of the query and writes the results to file
+     * @param predicates
+     * @param pathName
+     * @param fileName
+     * @return
+     * @throws PolicyEngineException
+     */
+
+    public Duration runTimedQuery(String predicates, String pathName, String fileName) throws PolicyEngineException {
+        try {
+            MySQLResult mySQLResult = new MySQLResult(pathName, fileName);
+            return runWithThread(PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS + predicates, mySQLResult);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new PolicyEngineException("Error Running Query");
+        }
+    }
+
+    /**
      * Compute the cost by execution time of the query
      * @param predicates
      * @return
@@ -99,23 +122,24 @@ public class MySQLQueryManager {
 
     public Duration runTimedQuery(String predicates) throws PolicyEngineException {
         try {
-            return runWithThread(PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS + predicates).getDuration();
+            MySQLResult mySQLResult = new MySQLResult();
+            return runWithThread(PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS + predicates, mySQLResult);
         } catch (Exception e) {
             e.printStackTrace();
             throw new PolicyEngineException("Error Running Query");
         }
     }
 
-
     /**
      * Check the results against the traditional query rewritten approach
-     * @param filename
+     * TODO: Move this to MySQLResult class
+     * @param pathName
+     * @param fileName
      * @return
      */
-    public Boolean checkResults(String filename) {
-        String ogFile = filename.substring(filename.indexOf("/")+1);
-        List<Semantic_Observation> og = parseJSONList(Reader.readTxt(PolicyConstants.QUERY_RESULTS_DIR + ogFile +".json"));
-        List<Semantic_Observation> tbc = parseJSONList(Reader.readTxt(PolicyConstants.QUERY_RESULTS_DIR + filename + ".json"));
+    public Boolean checkResults(String pathName, String fileName) {
+        List<Semantic_Observation> og = parseJSONList(Reader.readTxt(PolicyConstants.QUERY_RESULTS_DIR + fileName +".json"));
+        List<Semantic_Observation> tbc = parseJSONList(Reader.readTxt(pathName + fileName + ".json"));
         if(og.size() != tbc.size()) return false;
         Comparator<Semantic_Observation> comp = Comparator.comparingInt(so -> Integer.parseInt(so.getId()));
         og.sort(comp);
