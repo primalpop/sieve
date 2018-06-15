@@ -1,4 +1,4 @@
-package edu.uci.ics.tippers.model.guard;
+package edu.uci.ics.tippers.model.guard.deprecated;
 
 import com.rits.cloning.Cloner;
 import edu.uci.ics.tippers.common.PolicyConstants;

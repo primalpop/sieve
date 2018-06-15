@@ -1,4 +1,4 @@
-package edu.uci.ics.tippers.model.guard;
+package edu.uci.ics.tippers.model.guard.deprecated;
 
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.db.MySQLQueryManager;
@@ -270,12 +270,12 @@ public class FactorSelectionOld {
         if(multiplier.isEmpty()){
             Duration rcost = Duration.ofMillis(0);
             for(BEPolicy bePolicy: this.expression.getPolicies()){
-                rcost.plus(mySQLQueryManager.runTimedQuery(bePolicy.createQueryFromObjectConditions()));
+                rcost.plus(mySQLQueryManager.runTimedQuery(bePolicy.createQueryFromObjectConditions() ));
             }
             return rcost;
         }
         return mySQLQueryManager.runTimedQuery(createQueryFromGQ(multiplier.get(0),
-                this.quotient.getExpression())).plus(this.remainder.computeGuardCosts());
+                this.quotient.getExpression()) ).plus(this.remainder.computeGuardCosts());
     }
 
     /**

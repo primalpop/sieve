@@ -3,7 +3,6 @@ package edu.uci.ics.tippers.model.guard;
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.db.MySQLQueryManager;
 import edu.uci.ics.tippers.model.policy.BEExpression;
-import edu.uci.ics.tippers.model.policy.BEPolicy;
 import edu.uci.ics.tippers.model.policy.ObjectCondition;
 
 import java.time.Duration;
@@ -176,7 +175,7 @@ public class PredicateExtension {
             query.append(PolicyConstants.CONJUNCTION);
             query.append("(" +entry.getValue().createQueryFromPolices() + ")");
             long start_time = System.currentTimeMillis();
-            mySQLQueryManager.runTimedQuery(query.toString()).toMillis();
+            mySQLQueryManager.runTimedQuery(query.toString() ).toMillis();
             long end_time = System.currentTimeMillis();
             long difference = end_time - start_time;
             gcost += difference;

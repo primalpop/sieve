@@ -6,42 +6,44 @@ import edu.uci.ics.tippers.model.data.Semantic_Observation;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class MySQLResult {
 
-    ResultSet resultSet;
+    String pathName;
+    String fileName;
 
-    Duration duration;
+    public MySQLResult() {
 
-    public MySQLResult(Duration duration) {
-        this.duration = duration;
     }
 
-    public MySQLResult(ResultSet resultSet, Duration duration) {
-        this.resultSet = resultSet;
-        this.duration = duration;
+    public String getPathName() {
+        return pathName;
     }
 
-    public ResultSet getResultSet() {
-        return resultSet;
+    public void setPathName(String pathName) {
+        this.pathName = pathName;
     }
 
-    public void setResultSet(ResultSet resultSet) {
-        this.resultSet = resultSet;
+    public String getFileName() {
+        return fileName;
     }
 
-    public Duration getDuration() {
-        return duration;
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 
-    public void setDuration(Duration duration) {
-        this.duration = duration;
+    public MySQLResult(String pathName, String fileName) {
+        this.pathName = pathName;
+        this.fileName = fileName;
     }
 
-    public void writeResultsToFile(String fileName){
+    public void writeResultsToFile(ResultSet resultSet){
+
         List<Semantic_Observation> query_results = new ArrayList<>();
         Writer writer = new Writer();
         try{
@@ -60,7 +62,7 @@ public class MySQLResult {
         }catch (SQLException e){
             e.printStackTrace();
         }
-        if(fileName!= null)
-            writer.writeJSONToFile(query_results, PolicyConstants.QUERY_RESULTS_DIR, fileName);
+        if(pathName != null && fileName != null)
+            writer.writeJSONToFile(query_results, pathName, fileName);
     }
 }
