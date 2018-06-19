@@ -167,7 +167,7 @@ public class PredicateExtensionOld {
      * @return
      */
     private ObjectCondition extend(ObjectCondition top, List<ObjectCondition> overlap){
-        ObjectCondition extended = new ObjectCondition(top);
+        ObjectCondition extended = new ObjectCondition(top.getPolicy_id(), top.getAttribute(), top.getType());
         String minValue = overlap.get(0).getBooleanPredicates().get(0).getValue();
         String maxValue = top.getBooleanPredicates().get(1).getValue();
         for (int k = 0; k < overlap.size(); k++) {

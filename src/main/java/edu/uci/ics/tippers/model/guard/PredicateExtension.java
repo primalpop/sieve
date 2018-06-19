@@ -3,6 +3,7 @@ package edu.uci.ics.tippers.model.guard;
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.db.MySQLQueryManager;
 import edu.uci.ics.tippers.model.policy.BEExpression;
+import edu.uci.ics.tippers.model.policy.BEPolicy;
 import edu.uci.ics.tippers.model.policy.ObjectCondition;
 
 import java.time.Duration;
@@ -57,7 +58,7 @@ public class PredicateExtension {
         ObjectCondition intersect = oc1.intersect(oc2);
         ObjectCondition union = oc1.union(oc2);
         double lhs = intersect.computeL() / union.computeL();
-        long numOfPreds = beExpression.getPolicies().stream().collect(Collectors.counting());
+        long numOfPreds = beExpression.getPolicies().stream().map(BEPolicy::getObject_conditions).mapToInt(List::size).sum();
         double rhs = (PolicyConstants.ROW_EVALUATE_COST * numOfPreds) / (PolicyConstants.IO_BLOCK_READ_COST
                 + PolicyConstants.ROW_EVALUATE_COST + (PolicyConstants.ROW_EVALUATE_COST * numOfPreds) );
         return lhs > rhs;

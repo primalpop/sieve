@@ -43,7 +43,7 @@ public class NaiveExactFactorizationTest {
 
     @Test
     public void greedyFactorization1(){
-        ef = returnBestFactor("/policies/policy0.json");
+        ef = returnBestFactor("/policies/deprecated/policy0.json");
         assert(ef.createQueryFromExactFactor().equals(policies.get(0)));
         assertThat(
                 ef.getMultiplier(),
@@ -52,7 +52,7 @@ public class NaiveExactFactorizationTest {
 
     @Test
     public void greedyFactorization2(){
-        ef = returnBestFactor("/policies/policy1.json");
+        ef = returnBestFactor("/policies/deprecated/policy1.json");
         assertThat(
                 ef.createQueryFromExactFactor(),
                 equalTo(policies.get(1)));
@@ -61,7 +61,7 @@ public class NaiveExactFactorizationTest {
     @Ignore
     @Test
     public void greedyFactorization3(){
-        ef = returnBestFactor("/policies/policy2.json");
+        ef = returnBestFactor("/policies/deprecated/policy2.json");
         assertThat(
                 ef.createQueryFromExactFactor(),
                 anyOf(equalTo(policies.get(3))));

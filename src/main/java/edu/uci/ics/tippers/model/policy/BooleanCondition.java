@@ -19,6 +19,7 @@ import java.util.List;
  * BooleanCondition within the same policy
  *
  * {
+ *      "policy_id": 001,
  *      "attribute": "semantic_observation.timeStamp",
  *      "type":   "TIMESTAMP",
  *      "predicates": [{
@@ -34,6 +35,9 @@ import java.util.List;
  */
 
 public class BooleanCondition  implements Comparable<BooleanCondition>  {
+
+    @JsonProperty("policy_id")
+    protected String policy_id;
 
     @JsonProperty("attribute")
     protected String attribute;
@@ -118,6 +122,15 @@ public class BooleanCondition  implements Comparable<BooleanCondition>  {
                 '}';
     }
 
+    public String getPolicy_id() {
+        return policy_id;
+    }
+
+    public void setPolicy_id(String policy_id) {
+        this.policy_id = policy_id;
+    }
+
+
     /**
      * 0 if they are equal, negative if start predicate of first boolean condition
      * is less than start predicate of second boolean condition, positive if vice versa.
@@ -153,9 +166,14 @@ public class BooleanCondition  implements Comparable<BooleanCondition>  {
         }
     }
 
+    /**
+     * Includes the policy_id so that if two identical object conditions belong to different policies, they generate
+     * different hash codes
+     * @return
+     */
     @Override
     public int hashCode() {
-        return attribute.hashCode() ^ type.hashCode() ^ this.booleanPredicates.hashCode();
+        return policy_id.hashCode() ^ attribute.hashCode() ^ type.hashCode() ^ this.booleanPredicates.hashCode();
     }
 
     @Override

@@ -1,6 +1,5 @@
 package edu.uci.ics.tippers.execution;
 
-import edu.uci.ics.tippers.db.PGSQLConnectionManager;
 import edu.uci.ics.tippers.fileop.Reader;
 import edu.uci.ics.tippers.model.guard.*;
 import edu.uci.ics.tippers.model.policy.BEExpression;
@@ -24,17 +23,12 @@ public class RunMe {
 //        System.out.println(Histogram.getInstance().getBucketMap().get(PolicyConstants.TIMESTAMP_ATTR).get(-s -1 ).toStringEH());
 //
         BEExpression beExpression = new BEExpression();
-        beExpression.parseJSONList(Reader.readFile("/policies/policy10.json"));
+        beExpression.parseJSONList(Reader.readFile("/policies/policyext.json"));
         System.out.println(beExpression.createQueryFromPolices());
 
-        FactorSelection gf = new FactorSelection(beExpression);
-        gf.selectFactor();
-        System.out.println(gf.createQueryFromExactFactor());
-
-        PredicateExtension pe = new PredicateExtension(gf);
-        pe.extendPredicate();
-        System.out.println(pe.printGuardMap());
-
+        GuardGeneration gg = new GuardGeneration(beExpression);
+        gg.doYourThing();
+        System.out.println(gg.getGenExpression().createQueryFromPolices());
 
 //        ExactFactorization ef = new ExactFactorization();
 //        ef.memoize(beExpression);

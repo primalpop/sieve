@@ -38,7 +38,7 @@ public class PredicateExtensionOldTest {
     @Test
     @DisplayName("Test using policy4.json with integer(temperature)")
     public void approximateFactorization() throws Exception {
-        beExpression.parseJSONList(Reader.readFile("/policies/policy4.json"));
+        beExpression.parseJSONList(Reader.readFile("/policies/deprecated/policy4.json"));
         f = new PredicateExtensionOld(beExpression);
         f.approximateFactorization();
         assertThat(
@@ -50,7 +50,7 @@ public class PredicateExtensionOldTest {
     @Test
     @DisplayName("Test using policy5.json with integers(temperature and energy)")
     public void approximateFactorization1() throws Exception {
-        beExpression.parseJSONList(Reader.readFile("/policies/policy5_2.json"));
+        beExpression.parseJSONList(Reader.readFile("/policies/deprecated/policy5_2.json"));
         f = new PredicateExtensionOld(beExpression);
         f.approximateFactorization();
         assertThat(
@@ -61,7 +61,7 @@ public class PredicateExtensionOldTest {
     @Test
     @DisplayName("Test using policy6.json with timestamps")
     public void approximateFactorization2() throws Exception {
-        beExpression.parseJSONList(Reader.readFile("/policies/policy6.json"));
+        beExpression.parseJSONList(Reader.readFile("/policies/deprecated/policy6.json"));
         f = new PredicateExtensionOld(beExpression);
         f.approximateFactorization();
         assertThat(
@@ -72,7 +72,7 @@ public class PredicateExtensionOldTest {
     @Test
     @DisplayName("Test using policy7.json with timestamps and integer(energy)")
     public void approximateFactorization3() throws Exception {
-        beExpression.parseJSONList(Reader.readFile("/policies/policy7.json"));
+        beExpression.parseJSONList(Reader.readFile("/policies/deprecated/policy7.json"));
         f = new PredicateExtensionOld(beExpression);
         f.approximateFactorization();
         assertThat(
@@ -83,7 +83,7 @@ public class PredicateExtensionOldTest {
     @Test
     @DisplayName("Test using policy10.json with timestamps and integer(energy) and repeating predicates")
     public void approximateFactorization4() throws Exception {
-        beExpression.parseJSONList(Reader.readFile("/policies/policy10.json"));
+        beExpression.parseJSONList(Reader.readFile("/policies/deprecated/policy10.json"));
         f = new PredicateExtensionOld(beExpression);
         f.approximateFactorization();
         assertThat(
