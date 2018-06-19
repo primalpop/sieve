@@ -304,7 +304,7 @@ public class PolicyGeneration {
                 }
                 attrList.add(attribute);
             }
-            List<ObjectCondition> objectConditions = rq.createObjectCondition();
+            List<ObjectCondition> objectConditions = rq.createObjectCondition(i);
             bePolicies.add(new BEPolicy(String.valueOf(i), "Generated Policy " + i, objectConditions, PolicyConstants.DEFAULT_QC.asList(), "", ""));
         }
         writer.writeJSONToFile(bePolicies, PolicyConstants.BE_POLICY_DIR, null);
@@ -352,7 +352,7 @@ public class PolicyGeneration {
                 }
                 attrList.add(attribute);
             }
-            List<ObjectCondition> objectConditions = rq.createObjectCondition();
+            List<ObjectCondition> objectConditions = rq.createObjectCondition(i);
             bePolicies.add(new BEPolicy(String.valueOf(i), "Generated Policy " + i , objectConditions, PolicyConstants.DEFAULT_QC.asList(), "", ""));
         }
         writer.writeJSONToFile(bePolicies, PolicyConstants.BE_POLICY_DIR, null);

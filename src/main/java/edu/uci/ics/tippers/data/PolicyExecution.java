@@ -158,8 +158,8 @@ public class PolicyExecution {
 
     public static void main(String args[]) {
         PolicyExecution pe = new PolicyExecution();
-//        pe.generatePolicies(PolicyConstants.BE_POLICY_DIR);
+        pe.generatePolicies(PolicyConstants.BE_POLICY_DIR);
 
-        pe.bePolicyExperiments(PolicyConstants.BE_POLICY_DIR);
+//        pe.bePolicyExperiments(PolicyConstants.BE_POLICY_DIR);
     }
 }

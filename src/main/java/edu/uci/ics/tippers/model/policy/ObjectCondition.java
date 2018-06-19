@@ -23,15 +23,24 @@ public class ObjectCondition extends BooleanCondition {
     }
 
     public ObjectCondition(ObjectCondition oc){
+        this.policy_id = oc.getPolicy_id();
         this.attribute = oc.getAttribute();
         this.type = oc.getType();
-        this.booleanPredicates = new ArrayList<BooleanPredicate>(oc.getBooleanPredicates().size());
-        for(BooleanPredicate bp: oc.getBooleanPredicates()){
-            this.booleanPredicates.add(new BooleanPredicate(bp));
-        }
+        this.booleanPredicates = oc.getBooleanPredicates();
     }
 
-    public ObjectCondition(String attribute, AttributeType attributeType, String o1, String v1, String o2, String v2){
+
+    public ObjectCondition(String policy_id, String attribute, AttributeType attributeType){
+        this.policy_id = policy_id;
+        this.attribute = attribute;
+        this.type = attributeType;
+        this.booleanPredicates = new ArrayList<>();
+    }
+
+
+
+    public ObjectCondition(String policy_id, String attribute, AttributeType attributeType, String o1, String v1, String o2, String v2){
+        this.policy_id = policy_id;
         this.attribute = attribute;
         this.type = attributeType;
         List<BooleanPredicate> booleanPredicates = new ArrayList<>();
@@ -142,7 +151,6 @@ public class ObjectCondition extends BooleanCondition {
                 '}';
     }
 
-    //TODO: Only strict overlaps are checked therefore remove the extra code to add extensions
     public boolean overlaps(ObjectCondition o2) {
         if (this.getType().getID() == 4) { //Integer
             int start1 = Integer.parseInt(this.getBooleanPredicates().get(0).getValue());
@@ -152,21 +160,11 @@ public class ObjectCondition extends BooleanCondition {
             if (start1 <= end2 && end1 >= start2)
                 return true;
         } else if (this.getType().getID() == 2) { //Timestamp
-//            Long extension = (long) (12 * 60 * 60 * 1000); //1 minute extension
-            Long extension = (long) (0); //No extension
             Calendar start1 = timestampStrToCal(this.getBooleanPredicates().get(0).getValue());
-            Calendar start1Ext = Calendar.getInstance();
-            start1Ext.setTimeInMillis(start1.getTimeInMillis() - extension);
             Calendar end1 = timestampStrToCal(this.getBooleanPredicates().get(1).getValue());
-            Calendar end1Ext = Calendar.getInstance();
-            end1Ext.setTimeInMillis(end1.getTimeInMillis() + extension);
             Calendar start2 = timestampStrToCal(o2.getBooleanPredicates().get(0).getValue());
-            Calendar start2Ext = Calendar.getInstance();
-            start2Ext.setTimeInMillis(start2.getTimeInMillis() - extension);
             Calendar end2 = timestampStrToCal(o2.getBooleanPredicates().get(1).getValue());
-            Calendar end2Ext = Calendar.getInstance();
-            end2Ext.setTimeInMillis(end2.getTimeInMillis() + extension);
-            if (start1Ext.compareTo(end2Ext) < 0 && end1Ext.compareTo(start2Ext) > 0) {
+            if (start1.compareTo(end2) < 0 && end1.compareTo(start2) > 0) {
                 return true;
             }
         } else if (this.getType().getID() == 1) { //String
@@ -200,17 +198,21 @@ public class ObjectCondition extends BooleanCondition {
      * @return
      */
     public ObjectCondition union(ObjectCondition objectCondition){
-        ObjectCondition extended = new ObjectCondition(this);
+        ObjectCondition extended = new ObjectCondition(this.policy_id + objectCondition.getPolicy_id(), this.getAttribute(), this.getType());
         String begValue = this.getBooleanPredicates().get(0).getValue()
                 .compareTo(objectCondition.getBooleanPredicates().get(0).getValue()) < 0  ?
                 this.getBooleanPredicates().get(0).getValue(): objectCondition.getBooleanPredicates().get(0).getValue();
         String endValue = this.getBooleanPredicates().get(1).getValue()
                 .compareTo(objectCondition.getBooleanPredicates().get(1).getValue()) > 0  ?
                 this.getBooleanPredicates().get(1).getValue(): objectCondition.getBooleanPredicates().get(1).getValue();
-        extended.getBooleanPredicates().get(0).setValue(begValue);
-        extended.getBooleanPredicates().get(1).setValue(endValue);
-        extended.getBooleanPredicates().get(0).setOperator(">=");
-        extended.getBooleanPredicates().get(1).setOperator("<=");
+        BooleanPredicate bp1 = new BooleanPredicate();
+        bp1.setValue(begValue);
+        bp1.setOperator(">=");
+        BooleanPredicate bp2 = new BooleanPredicate();
+        bp2.setValue(endValue);
+        bp2.setOperator("<=");
+        extended.getBooleanPredicates().add(bp1);
+        extended.getBooleanPredicates().add(bp2);
         return extended;
     }
 
@@ -221,17 +223,21 @@ public class ObjectCondition extends BooleanCondition {
      * @return
      */
     public ObjectCondition intersect(ObjectCondition objectCondition){
-        ObjectCondition extended = new ObjectCondition(this);
+        ObjectCondition extended = new ObjectCondition(this.policy_id + objectCondition.getPolicy_id(), this.getAttribute(), this.getType());
         String begValue = this.getBooleanPredicates().get(0).getValue()
                 .compareTo(objectCondition.getBooleanPredicates().get(0).getValue()) > 0  ?
                 this.getBooleanPredicates().get(0).getValue(): objectCondition.getBooleanPredicates().get(0).getValue();
         String endValue = this.getBooleanPredicates().get(1).getValue()
                 .compareTo(objectCondition.getBooleanPredicates().get(1).getValue()) < 0  ?
                 this.getBooleanPredicates().get(1).getValue(): objectCondition.getBooleanPredicates().get(1).getValue();
-        extended.getBooleanPredicates().get(0).setValue(begValue);
-        extended.getBooleanPredicates().get(1).setValue(endValue);
-        extended.getBooleanPredicates().get(0).setOperator(">=");
-        extended.getBooleanPredicates().get(1).setOperator("<=");
+        BooleanPredicate bp1 = new BooleanPredicate();
+        bp1.setValue(begValue);
+        bp1.setOperator(">=");
+        BooleanPredicate bp2 = new BooleanPredicate();
+        bp2.setValue(endValue);
+        bp2.setOperator("<=");
+        extended.getBooleanPredicates().add(bp1);
+        extended.getBooleanPredicates().add(bp2);
         return extended;
     }
 

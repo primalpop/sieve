@@ -35,7 +35,7 @@ public class CombinedTest {
     @Test
     @DisplayName("Test using policy11.json with 6 policies and 2 approximate factors (time and energy)")
     public void approximateFactorization() throws Exception {
-        beExpression.parseJSONList(Reader.readFile("/policies/policy11.json"));
+        beExpression.parseJSONList(Reader.readFile("/policies/deprecated/policy11.json"));
         f = new PredicateExtensionOld(beExpression);
         f.approximateFactorization();
         ef = new NaiveExactFactorization(f.getExpression());
