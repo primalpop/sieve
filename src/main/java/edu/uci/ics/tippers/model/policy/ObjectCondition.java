@@ -145,7 +145,8 @@ public class ObjectCondition extends BooleanCondition {
     @Override
     public String toString() {
         return "ObjectCondition{" +
-                "attribute='" + attribute + '\'' +
+                "policy_id='" + policy_id + '\'' +
+                ", attribute='" + attribute + '\'' +
                 ", type=" + type +
                 ", booleanPredicates=" + booleanPredicates +
                 '}';

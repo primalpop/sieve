@@ -1,6 +1,7 @@
 package edu.uci.ics.tippers.model.guard;
 
 import edu.uci.ics.tippers.common.PolicyConstants;
+import edu.uci.ics.tippers.common.PolicyEngineException;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
 import edu.uci.ics.tippers.model.policy.ObjectCondition;
@@ -19,6 +20,7 @@ public class GuardGeneration {
 
     Map<String, List<ObjectCondition>> aMap;
     Map<ObjectCondition, List<BEPolicy>> oMap;
+    Map<ObjectCondition, ObjectCondition> replacementMap;
 
     public BEExpression getGenExpression() {
         return genExpression;
@@ -28,6 +30,7 @@ public class GuardGeneration {
         this.genExpression = genExpression;
         oMap = new HashMap<>();
         aMap = new HashMap<>();
+        replacementMap = new HashMap<>();
         for (int i = 0; i < PolicyConstants.INDEXED_ATTRS.size(); i++) {
             List<ObjectCondition> attrToOc = new ArrayList<>();
             String attr = PolicyConstants.INDEXED_ATTRS.get(i);
@@ -54,6 +57,7 @@ public class GuardGeneration {
     }
 
     /**
+     * TODO: Double check this cost estimation as it is returning negative for most of them
      * Checks the merging criterion we have derived!
      * @param oc1
      * @param oc2
@@ -72,7 +76,7 @@ public class GuardGeneration {
     }
 
     /**
-     * TODO: Double this cost estimation as it is returning negative for most of them
+     * TODO: Evaluate for the same predicate, does it take into account the savings from reading only once for merged predicate?
      * Estimates the cost of a evaluating the policy with an index on Object condition 'oc'
      * Selectivity of oc * D * Index access + Selectivity of oc * D * cost of filter * alpha * number of predicates
      * alpha (set to 2/3) is a parameter which determines the number of predicates that are evaluated in the policy
@@ -80,9 +84,8 @@ public class GuardGeneration {
      */
     public double estimateCost(ObjectCondition oc, BEExpression beExp){
         long numOfPreds = beExp.getPolicies().stream().map(BEPolicy::getObject_conditions).mapToInt(List::size).sum();
-        return PolicyConstants.IO_BLOCK_READ_COST * PolicyConstants.NUMBER_OR_TUPLES * oc.computeL() +
-                PolicyConstants.NUMBER_OR_TUPLES * oc.computeL() * PolicyConstants.ROW_EVALUATE_COST *
-                        2 * numOfPreds * PolicyConstants.NUMBER_OF_PREDICATES_EVALUATED;
+        return PolicyConstants.NUMBER_OR_TUPLES * oc.computeL() * (PolicyConstants.IO_BLOCK_READ_COST *  +
+                PolicyConstants.ROW_EVALUATE_COST * 2 * numOfPreds * PolicyConstants.NUMBER_OF_PREDICATES_EVALUATED);
     }
 
     /**
@@ -96,6 +99,9 @@ public class GuardGeneration {
             ObjectCondition ock = aMap.get(oc.getAttribute()).get(k);
             BEExpression beM = new BEExpression();
             beM.getPolicies().addAll(oMap.get(oc));
+            if(oMap.get(ock) == null){
+                System.out.println(ock.toString());
+            }
             beM.getPolicies().addAll(oMap.get(ock));
             if(!shouldIMerge(oc, ock, beM)) continue;
             double mBenefit = estimateCost(oc.union(ock), beM);
@@ -116,12 +122,27 @@ public class GuardGeneration {
         memoized.keySet().removeAll(removal);
     }
 
-    private void smartReplace(Map<ObjectCondition, ObjectCondition> replacementMap, ObjectCondition orgOc, ObjectCondition repOc){
+    public List<ObjectCondition> getKeysByValue(ObjectCondition value) {
+        List<ObjectCondition> keys = new ArrayList<>();
+        for (Map.Entry<ObjectCondition, ObjectCondition> entry : replacementMap.entrySet()) {
+            if (entry.getValue().equals(value)) {
+                keys.add(entry.getKey());
+            }
+        }
+        return keys;
+    }
 
+    private void smartReplace(ObjectCondition orgOc, ObjectCondition repOc){
+        List<ObjectCondition> orgAsValue = getKeysByValue(orgOc);
+        if(orgAsValue.size() == 0) replacementMap.put(orgOc, repOc);
+        else {
+            for (int i = 0; i < orgAsValue.size(); i++) {
+                replacementMap.put(orgAsValue.get(i), repOc);
+            }
+        }
     }
 
     public void doYourThing() {
-        Map<ObjectCondition, ObjectCondition> replacementMap = new HashMap<>();
         for (String attribute: aMap.keySet()) {
             List<ObjectCondition> attrToOc = aMap.get(attribute);
             Map<String, Double> memoized = new HashMap<>();
@@ -137,7 +158,7 @@ public class GuardGeneration {
                 if(maxBenefitKey.getValue() < 0) break;
                 ObjectCondition m1 = null;
                 ObjectCondition m2 = null;
-                for (ObjectCondition g: oMap.keySet()) {
+                for (ObjectCondition g: attrToOc) {
                     if(m1 != null && m2 != null) break;
                     if (g.hashCode() == Integer.parseInt(maxBenefitKey.getKey().split("\\.")[0])) m1 = g;
                     if (g.hashCode() == Integer.parseInt(maxBenefitKey.getKey().split("\\.")[1])) m2 = g;
@@ -147,8 +168,8 @@ public class GuardGeneration {
                 beM.getPolicies().addAll(oMap.get(m1));
                 beM.getPolicies().addAll(oMap.get(m2));
                 //remove from aMap
-                aMap.get(m1.getAttribute()).remove(m1);
-                aMap.get(m2.getAttribute()).remove(m2);
+                if(!aMap.get(m1.getAttribute()).remove(m1)) throw new PolicyEngineException(m1.toString() + " not removed from aMap");
+                if(!aMap.get(m2.getAttribute()).remove(m2)) throw new PolicyEngineException(m1.toString() + " not removed from aMap");;
                 //remove from oMap
                 oMap.remove(m1);
                 oMap.remove(m2);
@@ -159,9 +180,9 @@ public class GuardGeneration {
                 oMap.put(ocM, beM.getPolicies());
                 //memoize the new object condition benefit
                 memoize(memoized, ocM, -1);
-                //add to replacement map
-                smartReplace(replacementMap, m1, ocM);
-                smartReplace(replacementMap, m2, ocM);
+                //add to replacement map TODO: only one entry got added to the replacement map instead of both, might be because the merged predicate is same as one of the original predicates
+                smartReplace(m1, ocM);
+                smartReplace(m2, ocM);
                 //add merged oc to aMap
                 aMap.get(ocM.getAttribute()).add(ocM);
             }
