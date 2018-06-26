@@ -1,29 +1,22 @@
 package edu.uci.ics.tippers.data;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.uci.ics.tippers.common.PolicyConstants;
-import edu.uci.ics.tippers.common.PolicyEngineException;
 import edu.uci.ics.tippers.db.MySQLConnectionManager;
 import edu.uci.ics.tippers.db.MySQLQueryManager;
 import edu.uci.ics.tippers.fileop.Reader;
 import edu.uci.ics.tippers.fileop.Writer;
 import edu.uci.ics.tippers.model.guard.FactorSelection;
-import edu.uci.ics.tippers.model.guard.PredicateExtension;
+import edu.uci.ics.tippers.model.guard.deprecated.PredicateExtension;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
-import edu.uci.ics.tippers.model.query.BasicQuery;
-import edu.uci.ics.tippers.model.query.RangeQuery;
 
 import java.io.File;
-import java.io.IOException;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.*;
 import java.util.Date;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 /**
  * Created by cygnus on 12/12/17.
@@ -90,7 +83,7 @@ public class PolicyExecution {
                 /** Factorization **/
                 FactorSelection gf = new FactorSelection(beExpression);
 //                Instant sG = Instant.now();
-                gf.selectFactor();
+                gf.selectGuards();
 //                Instant eG = Instant.now();
                 System.out.println(gf.createQueryFromExactFactor());
 

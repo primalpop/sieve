@@ -11,10 +11,10 @@ import java.util.stream.Collectors;
 
 
 /**
- * Assumption: all attributes in the relation are indexed
+ * Assumption for cost estimation: all attributes in the relation are indexed
  *
  */
-public class GuardGeneration {
+public class FactorExtension {
 
     BEExpression genExpression;
 
@@ -26,7 +26,7 @@ public class GuardGeneration {
         return genExpression;
     }
 
-    public GuardGeneration(BEExpression genExpression) {
+    public FactorExtension(BEExpression genExpression) {
         this.genExpression = genExpression;
         oMap = new HashMap<>();
         aMap = new HashMap<>();
@@ -57,8 +57,8 @@ public class GuardGeneration {
     }
 
     /**
-     * TODO: Double check this cost estimation as it is returning negative for most of them
-     * Checks the merging criterion we have derived!
+     * Checks the following merging criterion
+     * intersection/union > (row_eval_cost * number of predicates) / (io_read_cost + row_eval_cost + row_eval_cost * number of predicates)
      * @param oc1
      * @param oc2
      * @param beMerged
@@ -76,7 +76,7 @@ public class GuardGeneration {
     }
 
     /**
-     * TODO: Evaluate for the same predicate, does it take into account the savings from reading only once for merged predicate?
+     * TODO: In the case of identical predicates does it include savings from reading only once?
      * Estimates the cost of a evaluating the policy with an index on Object condition 'oc'
      * Selectivity of oc * D * Index access + Selectivity of oc * D * cost of filter * alpha * number of predicates
      * alpha (set to 2/3) is a parameter which determines the number of predicates that are evaluated in the policy
@@ -99,9 +99,6 @@ public class GuardGeneration {
             ObjectCondition ock = aMap.get(oc.getAttribute()).get(k);
             BEExpression beM = new BEExpression();
             beM.getPolicies().addAll(oMap.get(oc));
-            if(oMap.get(ock) == null){
-                System.out.println(ock.toString());
-            }
             beM.getPolicies().addAll(oMap.get(ock));
             if(!shouldIMerge(oc, ock, beM)) continue;
             double mBenefit = estimateCost(oc.union(ock), beM);
@@ -115,9 +112,8 @@ public class GuardGeneration {
         List<String> removal = new ArrayList<>();
         for (String memKey: memoized.keySet()){
             if (oc.hashCode() == Integer.parseInt(memKey.split("\\.")[0]) ||
-                    oc.hashCode() == Integer.parseInt(memKey.split("\\.")[1])){
+                    oc.hashCode() == Integer.parseInt(memKey.split("\\.")[1]))
                 removal.add(memKey);
-            }
         }
         memoized.keySet().removeAll(removal);
     }
@@ -149,8 +145,6 @@ public class GuardGeneration {
             for (int j = 0; j < attrToOc.size(); j++) {
                 memoize(memoized, attrToOc.get(j), j);
             }
-
-            //TODO: Is the break condition for this loop correct?
             while(true){
                 if(memoized.size() == 0) break;
                 Map.Entry<String, Double> maxBenefitKey = memoized.entrySet().stream()
@@ -180,7 +174,7 @@ public class GuardGeneration {
                 oMap.put(ocM, beM.getPolicies());
                 //memoize the new object condition benefit
                 memoize(memoized, ocM, -1);
-                //add to replacement map TODO: only one entry got added to the replacement map instead of both, might be because the merged predicate is same as one of the original predicates
+                //add to replacement map
                 smartReplace(m1, ocM);
                 smartReplace(m2, ocM);
                 //add merged oc to aMap

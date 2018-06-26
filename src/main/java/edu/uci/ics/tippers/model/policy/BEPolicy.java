@@ -276,10 +276,9 @@ public class BEPolicy {
                 if (oc.computeL() < selected.computeL())
                     selected = oc;
         }
-        double cost = PolicyConstants.IO_BLOCK_READ_COST * PolicyConstants.NUMBER_OR_TUPLES * selected.computeL() +
-                PolicyConstants.NUMBER_OR_TUPLES * selected.computeL() *
-                        PolicyConstants.ROW_EVALUATE_COST * 2 *
-                        PolicyConstants.NUMBER_OF_PREDICATES_EVALUATED * this.getObject_conditions().size();
+        double cost = PolicyConstants.NUMBER_OR_TUPLES * selected.computeL() *(PolicyConstants.IO_BLOCK_READ_COST  +
+                        PolicyConstants.ROW_EVALUATE_COST * 2 * PolicyConstants.NUMBER_OF_PREDICATES_EVALUATED *
+                                this.getObject_conditions().size());
         return cost;
     }
 
