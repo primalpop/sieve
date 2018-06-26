@@ -23,12 +23,16 @@ public class RunMe {
 //        System.out.println(Histogram.getInstance().getBucketMap().get(PolicyConstants.TIMESTAMP_ATTR).get(-s -1 ).toStringEH());
 //
         BEExpression beExpression = new BEExpression();
-        beExpression.parseJSONList(Reader.readFile("/policies/policyext.json"));
+        beExpression.parseJSONList(Reader.readFile("/policies/policyext2.json"));
         System.out.println(beExpression.createQueryFromPolices());
 
-        GuardGeneration gg = new GuardGeneration(beExpression);
+        FactorExtension gg = new FactorExtension(beExpression);
         gg.doYourThing();
         System.out.println(gg.getGenExpression().createQueryFromPolices());
+
+        FactorSelection tt = new FactorSelection(gg.getGenExpression());
+        tt.selectGuards();
+        System.out.println(tt.createQueryFromExactFactor());
 
 //        ExactFactorization ef = new ExactFactorization();
 //        ef.memoize(beExpression);
