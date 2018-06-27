@@ -96,8 +96,12 @@ public class FactorSelection {
             BEExpression temp = new BEExpression(this.expression);
             temp.checkAgainstPolices(objectCondition);
             if (temp.getPolicies().size() > 1) { //was able to factorize
+                double tCost = temp.estimateCost();
+                System.out.println(String.format("Expression: %s, Cost: %s", temp.createQueryFromPolices(), tCost));
                 double fCost = estimateCostOfGuardRep(objectCondition, temp);
-                if (temp.estimateCost() > fCost) {
+                System.out.println(String.format("Guard: %s, Partition: %s, Cost: %s", objectCondition.print(),
+                        temp.createQueryFromPolices(), fCost));
+                if (tCost > fCost) {
                     if(currentBestFactor.cost > fCost) {
                         factorized = true;
                         currentBestFactor.multiplier = new ArrayList<>();
@@ -221,9 +225,23 @@ public class FactorSelection {
      */
     public Duration computeGuardCosts() {
         Map<ObjectCondition, BEExpression> gMap = getGuardPartitionMap();
-        Duration rcost = Duration.ofMillis(0);
+        Duration rcost = Duration.ofNanos(0);
         for (ObjectCondition kOb : gMap.keySet())
-            rcost.plus(mySQLQueryManager.runTimedQuery(createQueryFromGQ(kOb, gMap.get(kOb))));
+            rcost.plusMillis(mySQLQueryManager.runTimedQuery(createQueryFromGQ(kOb, gMap.get(kOb))).toMillis());
         return rcost;
+    }
+
+    public List<ObjectCondition> getIndexFilters(){
+        if (multiplier.isEmpty()) {
+            return multiplier;
+        }
+        List<ObjectCondition> indexFilters = new ArrayList<>();
+        for (ObjectCondition mul : multiplier) {
+            indexFilters.add(mul);
+        }
+        if (!this.remainder.expression.getPolicies().isEmpty()) {
+            indexFilters.addAll(this.remainder.getIndexFilters());
+        }
+        return indexFilters;
     }
 }
