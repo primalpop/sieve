@@ -6,6 +6,7 @@ import edu.uci.ics.tippers.db.MySQLConnectionManager;
 import edu.uci.ics.tippers.db.MySQLQueryManager;
 import edu.uci.ics.tippers.fileop.Reader;
 import edu.uci.ics.tippers.fileop.Writer;
+import edu.uci.ics.tippers.model.guard.FactorExtension;
 import edu.uci.ics.tippers.model.guard.FactorSelection;
 import edu.uci.ics.tippers.model.guard.deprecated.PredicateExtension;
 import edu.uci.ics.tippers.model.policy.BEExpression;
@@ -29,7 +30,7 @@ public class PolicyExecution {
 
     private Connection connection;
 
-    private static final int[] policyNumbers = {5, 10};
+    private static final int[] policyNumbers = {10, 20, 30, 40, 50};
 
     private static PolicyGeneration policyGen;
 
@@ -70,7 +71,7 @@ public class PolicyExecution {
 
             Duration runTime = Duration.ofMillis(0);
 
-            System.out.println("Number Of Predicates before extension: " + beExpression.countNumberOfPredicates());
+//            System.out.println("Number Of Predicates before extension: " + beExpression.countNumberOfPredicates());
 
             try {
                 /** Traditional approach **/
@@ -80,43 +81,38 @@ public class PolicyExecution {
                 policyRunTimes.put(file.getName(), runTime);
                 System.out.println(file.getName() + " completed and took " + runTime);
 
+                /** Extension **/
+                runTime = Duration.ofMillis(0);
+                FactorExtension f = new FactorExtension(beExpression);
+//                Instant sG = Instant.now();
+                f.doYourThing();
+//                Instant eG = Instant.now();
+//                System.out.println("Factorization took " + Duration.between(sG, eG));
+
+                /** Result checking **/
+//                mySQLQueryManager.runTimedQuery(f.getGenExpression().createQueryFromPolices(),
+//                        PolicyConstants.QR_EXTENDED, results_file);
+//                resultsChecked = mySQLQueryManager.checkResults(PolicyConstants.QR_EXTENDED, results_file);
+//                if(!resultsChecked){
+//                    System.out.println("*** Query results don't match after Extension ***!!!");
+//                    policyRunTimes.put(file.getName() + "-af-invalid", PolicyConstants.MAX_DURATION);
+//                }
+
                 /** Factorization **/
-                FactorSelection gf = new FactorSelection(beExpression);
+                FactorSelection gf = new FactorSelection(f.getGenExpression());
 //                Instant sG = Instant.now();
                 gf.selectGuards();
 //                Instant eG = Instant.now();
-                System.out.println(gf.createQueryFromExactFactor());
-
 //                System.out.println("Factorization took " + Duration.between(sG, eG));
-                System.out.println("Factorized query " + gf.createQueryFromExactFactor());
-                runTime = Duration.ofMillis(0);
-                runTime = runTime.plus(mySQLQueryManager.runTimedQuery(gf.createQueryFromExactFactor(),
-                        PolicyConstants.QR_FACTORIZED, results_file));
-                policyRunTimes.put(file.getName() + "-gf", runTime);
-                System.out.println("** Factorized query took " + runTime + " **");
+//                System.out.println("Factorized query " + gf.createQueryFromExactFactor());
+//                runTime = Duration.ofMillis(0);
+//                runTime = runTime.plus(mySQLQueryManager.runTimedQuery(gf.createQueryFromExactFactor(),
+//                        PolicyConstants.QR_FACTORIZED, results_file));
+                policyRunTimes.put(file.getName() + "-gf", gf.computeGuardCosts());
+                System.out.println("Number of index filters : " + gf.getIndexFilters().size());
+//                System.out.println("** Factorized query took " + runTime + " **");
 
 
-                /** Extension **/
-                runTime = Duration.ofMillis(0);
-                PredicateExtension f = new PredicateExtension(gf);
-//                Instant sG = Instant.now();
-                f.extendPredicate();
-//                Instant eG = Instant.now();
-//                System.out.println("Factorization took " + Duration.between(sG, eG));
-
-                mySQLQueryManager.runTimedQuery(f.printGuardMap(), PolicyConstants.QR_EXTENDED, results_file);
-
-                /** Result checking **/
-                resultsChecked = mySQLQueryManager.checkResults(PolicyConstants.QR_EXTENDED, results_file);
-                if(!resultsChecked){
-                    System.out.println("*** Query results don't match after Extension ***!!!");
-                    policyRunTimes.put(file.getName() + "-af-invalid", PolicyConstants.MAX_DURATION);
-                }
-                else {
-                    Duration guardExecTime = f.computeGuardCosts();
-                    System.out.println("Guard Rep cost: " + guardExecTime);
-                    policyRunTimes.put(file.getName() + "-pe", guardExecTime);
-                }
             } catch (Exception e) {
                 e.printStackTrace();
                 policyRunTimes.put(file.getName(), PolicyConstants.MAX_DURATION);
@@ -128,6 +124,7 @@ public class PolicyExecution {
 
     //Only handles BEPolicies
     private void generatePolicies(String policyDir) {
+        System.out.println("Generating Policies ..........");
         List<BEPolicy> bePolicies = new ArrayList<>();
         for (int i = 0; i < policyNumbers.length; i++) {
             List<String> attributes = new ArrayList<>();
@@ -151,8 +148,7 @@ public class PolicyExecution {
 
     public static void main(String args[]) {
         PolicyExecution pe = new PolicyExecution();
-        pe.generatePolicies(PolicyConstants.BE_POLICY_DIR);
-
-//        pe.bePolicyExperiments(PolicyConstants.BE_POLICY_DIR);
+//        pe.generatePolicies(PolicyConstants.BE_POLICY_DIR);
+        pe.bePolicyExperiments(PolicyConstants.BE_POLICY_DIR);
     }
 }

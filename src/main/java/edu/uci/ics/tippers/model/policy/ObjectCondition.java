@@ -195,11 +195,12 @@ public class ObjectCondition extends BooleanCondition {
 
     /**
      * Unions two overlapping predicates by extending ranges
+     * the two object condtions unioned are separated by :
      * @param objectCondition
      * @return
      */
     public ObjectCondition union(ObjectCondition objectCondition){
-        ObjectCondition extended = new ObjectCondition(this.policy_id + objectCondition.getPolicy_id(), this.getAttribute(), this.getType());
+        ObjectCondition extended = new ObjectCondition(this.policy_id + ":" + objectCondition.getPolicy_id(), this.getAttribute(), this.getType());
         String begValue = this.getBooleanPredicates().get(0).getValue()
                 .compareTo(objectCondition.getBooleanPredicates().get(0).getValue()) < 0  ?
                 this.getBooleanPredicates().get(0).getValue(): objectCondition.getBooleanPredicates().get(0).getValue();
@@ -220,11 +221,12 @@ public class ObjectCondition extends BooleanCondition {
 
     /**
      * Intersects two overlapping predicates by extending ranges
+     * the two object condtions intersected are separated by -
      * @param objectCondition
      * @return
      */
     public ObjectCondition intersect(ObjectCondition objectCondition){
-        ObjectCondition extended = new ObjectCondition(this.policy_id + objectCondition.getPolicy_id(), this.getAttribute(), this.getType());
+        ObjectCondition extended = new ObjectCondition(this.policy_id + "-" +  objectCondition.getPolicy_id(), this.getAttribute(), this.getType());
         String begValue = this.getBooleanPredicates().get(0).getValue()
                 .compareTo(objectCondition.getBooleanPredicates().get(0).getValue()) > 0  ?
                 this.getBooleanPredicates().get(0).getValue(): objectCondition.getBooleanPredicates().get(0).getValue();
