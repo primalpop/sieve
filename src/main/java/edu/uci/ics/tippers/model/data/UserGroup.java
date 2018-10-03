@@ -11,6 +11,10 @@ public class UserGroup {
 
     private String name;
 
+    private User owner;
+
+    private String description;
+
     private List<Integer> users;
 
 
@@ -18,6 +22,30 @@ public class UserGroup {
         this.group_id = group_id;
         this.name = name;
         this.users = users;
+    }
+
+    public UserGroup(int group_id, String name, User owner, String description, List<Integer> users) {
+        this.group_id = group_id;
+        this.name = name;
+        this.owner = owner;
+        this.description = description;
+        this.users = users;
+    }
+
+    public User getOwner() {
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public int getGroup_id() {

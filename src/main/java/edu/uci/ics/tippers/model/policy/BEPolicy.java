@@ -1,14 +1,19 @@
 package edu.uci.ics.tippers.model.policy;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.davidmoten.guavamini.Lists;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import edu.uci.ics.tippers.common.PolicyConstants;
+import edu.uci.ics.tippers.common.PolicyEngineException;
 import edu.uci.ics.tippers.db.MySQLQueryManager;
+import edu.uci.ics.tippers.model.data.User;
+import edu.uci.ics.tippers.model.data.UserGroup;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -17,14 +22,12 @@ import java.util.stream.Collectors;
  */
 public class BEPolicy {
 
-    @JsonProperty("id")
-    private String id;
+    //TODO: Remove from Policy JSON
+    @JsonIgnore
+    private int id;
 
     @JsonProperty("description")
     private String description;
-
-    @JsonProperty("metadata")
-    private String metadata;
 
     /**
      * 1) user = Alice ^ loc = 2065
@@ -33,6 +36,10 @@ public class BEPolicy {
      */
     @JsonProperty("object_conditions")
     private List<ObjectCondition> object_conditions;
+
+    //Policy subject can be a user or a user_group
+    //TODO: Include it in the policy json object
+    private Object policy_subject;
 
     /**
      * 1) querier = John
@@ -56,7 +63,11 @@ public class BEPolicy {
      */
     @JsonProperty("action")
     private String action;
-    private MySQLQueryManager mySQLQueryManager = new MySQLQueryManager();
+
+    //The timestamp of policy insertion
+    //TODO: Include it in the policy json object
+    @JsonProperty("inserted_at")
+    private Timestamp inserted_at;
 
     public BEPolicy(){
         this.object_conditions = new ArrayList<ObjectCondition>();
@@ -66,7 +77,6 @@ public class BEPolicy {
     public BEPolicy(BEPolicy bePolicy){
         this.id = bePolicy.getId();
         this.description = bePolicy.getDescription();
-        this.metadata = bePolicy.getMetadata();
         this.object_conditions = new ArrayList<ObjectCondition>(bePolicy.getObject_conditions().size());
         for(ObjectCondition oc: bePolicy.getObject_conditions()){
             this.object_conditions.add(new ObjectCondition(oc));
@@ -76,7 +86,7 @@ public class BEPolicy {
 
     }
 
-    public BEPolicy(String id, String description, List<ObjectCondition> object_conditions, List<QuerierCondition> querier_conditions, String purpose, String action) {
+    public BEPolicy(int id, String description, List<ObjectCondition> object_conditions, List<QuerierCondition> querier_conditions, String purpose, String action) {
         this.id = id;
         this.description = description;
         this.object_conditions = object_conditions;
@@ -90,11 +100,11 @@ public class BEPolicy {
         this.object_conditions = objectConditions;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -104,14 +114,6 @@ public class BEPolicy {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public String getMetadata() {
-        return metadata;
-    }
-
-    public void setMetadata(String metadata) {
-        this.metadata = metadata;
     }
 
     public List<ObjectCondition> getObject_conditions() {
@@ -144,6 +146,34 @@ public class BEPolicy {
 
     public void setAction(String action) {
         this.action = action;
+    }
+
+    public Object getPolicy_subject() {
+        return policy_subject;
+    }
+
+    public void setPolicy_subject(Object policy_subject) {
+        this.policy_subject = policy_subject;
+    }
+
+
+    public Timestamp getInserted_at() {
+        return inserted_at;
+    }
+
+    public void setInserted_at(Timestamp inserted_at) {
+        this.inserted_at = inserted_at;
+    }
+
+    public Boolean isUserPolicy(){
+        if (policy_subject instanceof User){
+            return true;
+        }
+        else if (policy_subject instanceof UserGroup) {
+            return false;
+        }
+        else
+            throw new PolicyEngineException("Unknown Policy Subject type");
     }
 
     public List<String> retrieveObjCondAttributes(){
@@ -263,22 +293,26 @@ public class BEPolicy {
     }
 
     /**
-     * Estimates the upper bound of the cost of evaluating an individual policy by adding up
-     * io block read cost * selectivity of lowest selectivity predicate * D +
-     * (D * selectivity of lowest selectivity predicate *  row evaluate cost * 2  * alpha * number of predicates)
+     * Estimates the cost of evaluating an individual policy (for the purpose of extension) by adding up
+     * io block read cost * selectivity of predicate on a given attribute * D +
+     * (D * selectivity of predicate on a given attribute *  row evaluate cost * 2  * alpha * number of predicates)
      * alpha is a parameter which determines the number of predicates that are evaluated in the policy (e.g., 2/3)
-     * @return
      */
-    public double estimateCost() {
-        ObjectCondition selected = this.getObject_conditions().get(0);
-        for (ObjectCondition oc : this.getObject_conditions()) {
-            if (PolicyConstants.INDEXED_ATTRS.contains(oc.getAttribute()))
-                if (oc.computeL() < selected.computeL())
-                    selected = oc;
-        }
+    public double estimateCostForExtension(String attribute) {
+        ObjectCondition selected = this.getObject_conditions().stream().filter(o -> o.getAttribute().equals(attribute)).findFirst().get();
         double cost = PolicyConstants.NUMBER_OR_TUPLES * selected.computeL() *(PolicyConstants.IO_BLOCK_READ_COST  +
                         PolicyConstants.ROW_EVALUATE_COST * 2 * PolicyConstants.NUMBER_OF_PREDICATES_EVALUATED *
                                 this.getObject_conditions().size());
+        return cost;
+    }
+
+    /**
+     * Estimates the cost of evaluating an individual policy (for the purpose of selection) rest same as above
+     */
+    public double estimateCostForSelection(ObjectCondition toBeSelected) {
+        double cost = PolicyConstants.NUMBER_OR_TUPLES * toBeSelected.computeL() *(PolicyConstants.IO_BLOCK_READ_COST  +
+                PolicyConstants.ROW_EVALUATE_COST * 2 * PolicyConstants.NUMBER_OF_PREDICATES_EVALUATED *
+                        this.getObject_conditions().size());
         return cost;
     }
 

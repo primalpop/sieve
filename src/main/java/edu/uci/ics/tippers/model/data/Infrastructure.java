@@ -4,29 +4,25 @@ package edu.uci.ics.tippers.model.data;
  * Created by cygnus on 7/7/17.
  */
 public class Infrastructure {
-    //Semantic entity id of the room
-    int location_id;
     //Name as per DBH, e.g. 2065. This is used in SemanticObservation table
     String name;
     //Available types: lab, faculty_office, corridor, restroom, utility, kitchen, Test?, Mail room, Conference room, Floor
-    int type;
+    String type;
+    //Floors: 1,2,3,4,5,6
+    int floor;
+    //Regions: ISG, Statistics, ML etc
+    String region_name;
 
-    public Infrastructure(int location_id, String name, int type) {
-        this.location_id = location_id;
-        this.name = name;
-        this.type = type;
-    }
 
 
     public Infrastructure() {
     }
 
-    public int getLocation_id() {
-        return location_id;
-    }
-
-    public void setLocation_id(int location_id) {
-        this.location_id = location_id;
+    public Infrastructure(String name, String type, int floor, String region_name) {
+        this.name = name;
+        this.type = type;
+        this.floor = floor;
+        this.region_name = region_name;
     }
 
     public String getName() {
@@ -37,11 +33,27 @@ public class Infrastructure {
         this.name = name;
     }
 
-    public int getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(int type) {
+    public void setType(String type) {
         this.type = type;
+    }
+
+    public int getFloor() {
+        return floor;
+    }
+
+    public void setFloor(int floor) {
+        this.floor = floor;
+    }
+
+    public String getRegion_name() {
+        return region_name;
+    }
+
+    public void setRegion_name(String region_name) {
+        this.region_name = region_name;
     }
 }

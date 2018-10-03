@@ -96,11 +96,8 @@ public class FactorSelection {
             BEExpression temp = new BEExpression(this.expression);
             temp.checkAgainstPolices(objectCondition);
             if (temp.getPolicies().size() > 1) { //was able to factorize
-                double tCost = temp.estimateCost();
-                System.out.println(String.format("Expression: %s, Cost: %s", temp.createQueryFromPolices(), tCost));
-                double fCost = estimateCostOfGuardRep(objectCondition, temp);
-                System.out.println(String.format("Guard: %s, Partition: %s, Cost: %s", objectCondition.print(),
-                        temp.createQueryFromPolices(), fCost));
+                double tCost = temp.estimateCostForSelection(objectCondition);
+                double fCost = temp.estimateCostOfGuardRep(objectCondition);
                 if (tCost > fCost) {
                     if(currentBestFactor.cost > fCost) {
                         factorized = true;
@@ -115,6 +112,7 @@ public class FactorSelection {
                 }
                 else removal.add(objectCondition); //not considered for factorization recursively
             }
+            else removal.add(objectCondition); //not a factor of at least two policies
         }
         if(factorized){
             this.setMultiplier(currentBestFactor.getMultiplier());
@@ -151,20 +149,6 @@ public class FactorSelection {
         }
         return query.toString();
     }
-
-    /**
-     * Estimates the cost of a guarded representation of a set of policies
-     * Selectivity of guard * D * Index access + Selectivity of guard * D * cost of filter * alpha * number of predicates
-     * alpha is a parameter which determines the number of predicates that are evaluated in the policy (e.g., 2/3)
-     *
-     * @return
-     */
-    public double estimateCostOfGuardRep(ObjectCondition guard, BEExpression partition) {
-        long numOfPreds = partition.getPolicies().stream().map(BEPolicy::getObject_conditions).mapToInt(List::size).sum();
-        return PolicyConstants.NUMBER_OR_TUPLES * guard.computeL() * (PolicyConstants.IO_BLOCK_READ_COST +
-                 PolicyConstants.ROW_EVALUATE_COST * 2 * numOfPreds * PolicyConstants.NUMBER_OF_PREDICATES_EVALUATED);
-    }
-
 
     /**
      * returns a map with key as guards and value as the guarded representation of the partition of policies
@@ -221,13 +205,15 @@ public class FactorSelection {
      * Computes the cost of execution of individual guards and sums them up
      * For the remainder it considers the predicate with highest selectivity as the guard and computes the cost
      *
+     *
      * @return
      */
     public Duration computeGuardCosts() {
         Map<ObjectCondition, BEExpression> gMap = getGuardPartitionMap();
-        Duration rcost = Duration.ofNanos(0);
-        for (ObjectCondition kOb : gMap.keySet())
+        Duration rcost = Duration.ZERO;
+        for (ObjectCondition kOb : gMap.keySet()) {
             rcost.plusMillis(mySQLQueryManager.runTimedQuery(createQueryFromGQ(kOb, gMap.get(kOb))).toMillis());
+        }
         return rcost;
     }
 
