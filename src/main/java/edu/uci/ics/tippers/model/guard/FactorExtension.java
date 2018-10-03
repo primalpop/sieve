@@ -75,20 +75,9 @@ public class FactorExtension {
         return lhs > rhs;
     }
 
-    /**
-     * TODO: In the case of identical predicates does it include savings from reading only once?
-     * Estimates the cost of a evaluating the policy with an index on Object condition 'oc'
-     * Selectivity of oc * D * Index access + Selectivity of oc * D * cost of filter * alpha * number of predicates
-     * alpha (set to 2/3) is a parameter which determines the number of predicates that are evaluated in the policy
-     * @return
-     */
-    public double estimateCost(ObjectCondition oc, BEExpression beExp){
-        long numOfPreds = beExp.getPolicies().stream().map(BEPolicy::getObject_conditions).mapToInt(List::size).sum();
-        return PolicyConstants.NUMBER_OR_TUPLES * oc.computeL() * (PolicyConstants.IO_BLOCK_READ_COST *  +
-                PolicyConstants.ROW_EVALUATE_COST * 2 * numOfPreds * PolicyConstants.NUMBER_OF_PREDICATES_EVALUATED);
-    }
 
     /**
+     * TODO: Should we memoize object conditions that do not overlap with each other?
      * Memoizes the benefit of merging two object conditions on the same attribute
      * The memoized matrix is upper triangular i.e all the entries below the diagonal are not computed as merging is commutative
      * @param oc
@@ -101,8 +90,9 @@ public class FactorExtension {
             beM.getPolicies().addAll(oMap.get(oc));
             beM.getPolicies().addAll(oMap.get(ock));
             if(!shouldIMerge(oc, ock, beM)) continue;
-            double mBenefit = estimateCost(oc.union(ock), beM);
-            mBenefit -= estimateCost(oc, new BEExpression(oMap.get(oc))) + estimateCost(ock, new BEExpression(oMap.get(ock)));
+            double mBenefit = new BEExpression(oMap.get(oc)).estimateCostForExtension(oc.getAttribute())
+                    + new BEExpression(oMap.get(ock)).estimateCostForExtension(ock.getAttribute());
+            mBenefit -= beM.estimateCostOfGuardRep(oc.union(ock));
             memoized.put(oc.hashCode() + "." + ock.hashCode(), mBenefit);
         }
     }

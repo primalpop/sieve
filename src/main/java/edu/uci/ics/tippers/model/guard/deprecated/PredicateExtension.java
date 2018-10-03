@@ -80,10 +80,9 @@ public class PredicateExtension {
                     ObjectCondition ock = guards.get(k);
                     BEExpression beM = growMap.get(ocj).mergeExpression(guardMap.get(ock));
                     if (!shouldIMerge(ocj, ock, beM)) continue;
-                    double benefit = gExpression.estimateCostOfGuardRep(ocj.union(ock),
-                            guardMap.get(ocj).mergeExpression(guardMap.get(ock)));
-                    benefit -=(gExpression.estimateCostOfGuardRep(ocj, guardMap.get(ocj))
-                            + gExpression.estimateCostOfGuardRep(ock, guardMap.get(ock)));
+                    double benefit = guardMap.get(ocj).mergeExpression(guardMap.get(ock)).estimateCostOfGuardRep(ocj.union(ock));
+                    benefit -=(guardMap.get(ock).estimateCostOfGuardRep(ocj)
+                            + guardMap.get(ock).estimateCostOfGuardRep(ock));
                     memoized.put(ocj.hashCode() + "." + ock.hashCode(), benefit);
                 }
             }
@@ -109,13 +108,13 @@ public class PredicateExtension {
                 guards.add(ocM);
                 replacementMap.put(m1, ocM);
                 replacementMap.put(m2, ocM);
-                double costocM = gExpression.estimateCostOfGuardRep(ocM, growMap.get(ocM));
+                double costocM = growMap.get(ocM).estimateCostOfGuardRep(ocM);
                 for (int j = 0; j < guards.size(); j++) {
                     ObjectCondition ocj = guards.get(j);
                     if (ocj.compareTo(ocM) == 0) continue;
                     if (!ocj.overlaps(ocM)) continue;
-                    double benefit = gExpression.estimateCostOfGuardRep(ocj, growMap.get(ocj)) + costocM;
-                    benefit -= gExpression.estimateCostOfGuardRep(ocj.union(ocM), growMap.get(ocM).mergeExpression(guardMap.get(ocM)));
+                    double benefit = growMap.get(ocj).estimateCostOfGuardRep(ocj) + costocM;
+                    benefit -= growMap.get(ocM).mergeExpression(guardMap.get(ocM)).estimateCostOfGuardRep(ocj.union(ocM));
                     memoized.put(ocj.hashCode() + "" + ocM.hashCode(), benefit);
                 }
             }

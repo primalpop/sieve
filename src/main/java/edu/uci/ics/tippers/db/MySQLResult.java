@@ -1,15 +1,11 @@
 package edu.uci.ics.tippers.db;
 
-import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.fileop.Writer;
-import edu.uci.ics.tippers.model.data.Semantic_Observation;
+import edu.uci.ics.tippers.model.data.Presence;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class MySQLResult {
@@ -44,11 +40,11 @@ public class MySQLResult {
 
     public void writeResultsToFile(ResultSet resultSet){
 
-        List<Semantic_Observation> query_results = new ArrayList<>();
+        List<Presence> query_results = new ArrayList<>();
         Writer writer = new Writer();
         try{
             while(resultSet.next()){
-                Semantic_Observation so = new Semantic_Observation();
+                Presence so = new Presence();
                 so.setId(resultSet.getString("id"));
                 so.setUser_id(resultSet.getString("user_id"));
                 so.setLocation(resultSet.getString("location_id"));

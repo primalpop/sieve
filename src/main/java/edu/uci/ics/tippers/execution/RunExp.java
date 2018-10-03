@@ -1,14 +1,14 @@
-package edu.uci.ics.tippers.data;
+package edu.uci.ics.tippers.execution;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.uci.ics.tippers.common.PolicyConstants;
+import edu.uci.ics.tippers.data.PolicyGeneration;
 import edu.uci.ics.tippers.db.MySQLConnectionManager;
 import edu.uci.ics.tippers.db.MySQLQueryManager;
 import edu.uci.ics.tippers.fileop.Reader;
 import edu.uci.ics.tippers.fileop.Writer;
 import edu.uci.ics.tippers.model.guard.FactorExtension;
 import edu.uci.ics.tippers.model.guard.FactorSelection;
-import edu.uci.ics.tippers.model.guard.deprecated.PredicateExtension;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
 
@@ -22,7 +22,7 @@ import java.util.Date;
 /**
  * Created by cygnus on 12/12/17.
  */
-public class PolicyExecution {
+public class RunExp {
 
     private long timeout = 250000;
 
@@ -41,7 +41,7 @@ public class PolicyExecution {
     MySQLQueryManager mySQLQueryManager;
 
 
-    public PolicyExecution() {
+    public RunExp() {
         this.connection = MySQLConnectionManager.getInstance().getConnection();
         policyGen = new PolicyGeneration();
         writer = new Writer();
@@ -133,6 +133,7 @@ public class PolicyExecution {
             attributes.add(PolicyConstants.ENERGY_ATTR);
             attributes.add(PolicyConstants.TEMPERATURE_ATTR);
             attributes.add(PolicyConstants.LOCATIONID_ATTR);
+            attributes.add(PolicyConstants.ACTIVITY_ATTR);
             List<BEPolicy> genPolicy = policyGen.generateBEPolicy(policyNumbers[i], attributes, bePolicies);
             bePolicies.clear();
             bePolicies.addAll(genPolicy);
@@ -147,8 +148,8 @@ public class PolicyExecution {
 
 
     public static void main(String args[]) {
-        PolicyExecution pe = new PolicyExecution();
-//        pe.generatePolicies(PolicyConstants.BE_POLICY_DIR);
+        RunExp pe = new RunExp();
+        pe.generatePolicies(PolicyConstants.BE_POLICY_DIR);
         pe.bePolicyExperiments(PolicyConstants.BE_POLICY_DIR);
     }
 }
