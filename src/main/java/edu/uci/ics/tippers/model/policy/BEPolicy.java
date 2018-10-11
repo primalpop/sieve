@@ -289,6 +289,7 @@ public class BEPolicy {
      * Selectivity of a conjunctive expression
      * e.g., A = u and B = v
      * sel = set (A) * sel (B)
+     * with independence assumption
      * @param objectConditions
      * @return
      */

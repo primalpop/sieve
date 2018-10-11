@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Created by cygnus on 10/29/17.
@@ -56,7 +57,7 @@ public class Writer {
         }
     }
 
-    public void createTextReport(Map<String, Duration> runTimes, String fileDir) {
+    public void createTextReport(TreeMap<String, Duration> runTimes, String fileDir) {
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter( fileDir + "results.txt"));
 

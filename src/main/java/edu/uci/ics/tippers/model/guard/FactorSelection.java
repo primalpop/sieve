@@ -97,10 +97,10 @@ public class FactorSelection {
             temp.checkAgainstPolices(objectCondition);
             if (temp.getPolicies().size() > 1) { //was able to factorize
                 double tCost = temp.estimateCost();
-                System.out.println(String.format("Expression: %s, Cost: %s", temp.createQueryFromPolices(), tCost));
+//                System.out.println(String.format("Expression: %s, Cost: %s", temp.createQueryFromPolices(), tCost));
                 double fCost = estimateCostOfGuardRep(objectCondition, temp);
-                System.out.println(String.format("Guard: %s, Partition: %s, Cost: %s", objectCondition.print(),
-                        temp.createQueryFromPolices(), fCost));
+//                System.out.println(String.format("Guard: %s, Partition: %s, Cost: %s", objectCondition.print(),
+//                        temp.createQueryFromPolices(), fCost));
                 if (tCost > fCost) {
                     if(currentBestFactor.cost > fCost) {
                         factorized = true;
@@ -213,6 +213,7 @@ public class FactorSelection {
         query.append("(");
         query.append(partition.createQueryFromPolices());
         query.append(")");
+//        System.out.println(query.toString());
         return query.toString();
     }
 
@@ -226,8 +227,14 @@ public class FactorSelection {
     public Duration computeGuardCosts() {
         Map<ObjectCondition, BEExpression> gMap = getGuardPartitionMap();
         Duration rcost = Duration.ofNanos(0);
-        for (ObjectCondition kOb : gMap.keySet())
-            rcost.plusMillis(mySQLQueryManager.runTimedQuery(createQueryFromGQ(kOb, gMap.get(kOb))).toMillis());
+        int guardNum = 0;
+        for (ObjectCondition kOb : gMap.keySet()) {
+//            System.out.println("Guard " + guardNum++ + ": ");
+            System.out.println("Guard selectivity: " + kOb.computeL());
+            Duration gCost = mySQLQueryManager.runTimedQuery(createQueryFromGQ(kOb, gMap.get(kOb)));
+            System.out.print(gCost);
+            rcost = rcost.plus(gCost);
+        }
         return rcost;
     }
 
