@@ -16,6 +16,7 @@ import java.io.File;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
+import java.time.Instant;
 import java.util.*;
 import java.util.Date;
 
@@ -30,7 +31,7 @@ public class PolicyExecution {
 
     private Connection connection;
 
-    private static final int[] policyNumbers = {10, 20, 30, 40, 50};
+    private static final int[] policyNumbers = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 
     private static PolicyGeneration policyGen;
 
@@ -53,7 +54,7 @@ public class PolicyExecution {
     //TODO: Fix the result checker by passing the fileName to write to
     public Map<String, Duration> runBEPolicies(String policyDir) {
 
-        Map<String, Duration> policyRunTimes = new HashMap<>();
+        TreeMap<String, Duration> policyRunTimes = new TreeMap<>();
 
         File[] policyFiles = new File(policyDir).listFiles();
 
@@ -81,13 +82,13 @@ public class PolicyExecution {
                 policyRunTimes.put(file.getName(), runTime);
                 System.out.println(file.getName() + " completed and took " + runTime);
 
+                Duration guardGen = Duration.ofMillis(0);
                 /** Extension **/
-                runTime = Duration.ofMillis(0);
                 FactorExtension f = new FactorExtension(beExpression);
-//                Instant sG = Instant.now();
+                Instant feStart = Instant.now();
                 f.doYourThing();
-//                Instant eG = Instant.now();
-//                System.out.println("Factorization took " + Duration.between(sG, eG));
+                Instant feEnd = Instant.now();
+                guardGen = guardGen.plus(Duration.between(feStart, feEnd));
 
                 /** Result checking **/
 //                mySQLQueryManager.runTimedQuery(f.getGenExpression().createQueryFromPolices(),
@@ -100,15 +101,17 @@ public class PolicyExecution {
 
                 /** Factorization **/
                 FactorSelection gf = new FactorSelection(f.getGenExpression());
-//                Instant sG = Instant.now();
+                Instant fsStart = Instant.now();
                 gf.selectGuards();
-//                Instant eG = Instant.now();
-//                System.out.println("Factorization took " + Duration.between(sG, eG));
+                Instant fsEnd = Instant.now();
+                guardGen = guardGen.plus(Duration.between(fsStart, fsEnd));
 //                System.out.println("Factorized query " + gf.createQueryFromExactFactor());
 //                runTime = Duration.ofMillis(0);
 //                runTime = runTime.plus(mySQLQueryManager.runTimedQuery(gf.createQueryFromExactFactor(),
 //                        PolicyConstants.QR_FACTORIZED, results_file));
-                policyRunTimes.put(file.getName() + "-gf", gf.computeGuardCosts());
+                policyRunTimes.put(file.getName() + "-guardGeneration", guardGen);
+                Duration guardRunTime = gf.computeGuardCosts();
+                policyRunTimes.put(file.getName() + "-withGuard", guardRunTime);
                 System.out.println("Number of index filters : " + gf.getIndexFilters().size());
 //                System.out.println("** Factorized query took " + runTime + " **");
 
@@ -140,7 +143,7 @@ public class PolicyExecution {
     }
 
     private void bePolicyExperiments(String policyDir) {
-        Map<String, Duration> runTimes = new HashMap<>();
+        TreeMap<String, Duration> runTimes = new TreeMap<>();
         runTimes.putAll(runBEPolicies(policyDir));
         writer.createTextReport(runTimes, policyDir);
     }
