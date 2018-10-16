@@ -8,7 +8,6 @@ import edu.uci.ics.tippers.fileop.Reader;
 import edu.uci.ics.tippers.fileop.Writer;
 import edu.uci.ics.tippers.model.guard.FactorExtension;
 import edu.uci.ics.tippers.model.guard.FactorSelection;
-import edu.uci.ics.tippers.model.guard.deprecated.PredicateExtension;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
 
@@ -31,7 +30,7 @@ public class PolicyExecution {
 
     private Connection connection;
 
-    private static final int[] policyNumbers = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    private static final int[] policyNumbers = {114};
 
     private static PolicyGeneration policyGen;
 
@@ -82,6 +81,7 @@ public class PolicyExecution {
                 policyRunTimes.put(file.getName(), runTime);
                 System.out.println(file.getName() + " completed and took " + runTime);
 
+                System.out.println("Starting Factor Extension");
                 Duration guardGen = Duration.ofMillis(0);
                 /** Extension **/
                 FactorExtension f = new FactorExtension(beExpression);
@@ -99,6 +99,7 @@ public class PolicyExecution {
 //                    policyRunTimes.put(file.getName() + "-af-invalid", PolicyConstants.MAX_DURATION);
 //                }
 
+                System.out.println("Starting Factorization");
                 /** Factorization **/
                 FactorSelection gf = new FactorSelection(f.getGenExpression());
                 Instant fsStart = Instant.now();
@@ -136,7 +137,7 @@ public class PolicyExecution {
             attributes.add(PolicyConstants.ENERGY_ATTR);
             attributes.add(PolicyConstants.TEMPERATURE_ATTR);
             attributes.add(PolicyConstants.LOCATIONID_ATTR);
-            List<BEPolicy> genPolicy = policyGen.generateBEPolicy(policyNumbers[i], attributes, bePolicies);
+            List<BEPolicy> genPolicy = policyGen.generateFilteredBEPolicy(policyNumbers[i], attributes, bePolicies);
             bePolicies.clear();
             bePolicies.addAll(genPolicy);
         }

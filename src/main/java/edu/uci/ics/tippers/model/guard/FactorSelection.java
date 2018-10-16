@@ -227,12 +227,8 @@ public class FactorSelection {
     public Duration computeGuardCosts() {
         Map<ObjectCondition, BEExpression> gMap = getGuardPartitionMap();
         Duration rcost = Duration.ofNanos(0);
-        int guardNum = 0;
         for (ObjectCondition kOb : gMap.keySet()) {
-//            System.out.println("Guard " + guardNum++ + ": ");
-            System.out.println("Guard selectivity: " + kOb.computeL());
             Duration gCost = mySQLQueryManager.runTimedQuery(createQueryFromGQ(kOb, gMap.get(kOb)));
-            System.out.print(gCost);
             rcost = rcost.plus(gCost);
         }
         return rcost;
