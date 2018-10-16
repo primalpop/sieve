@@ -402,8 +402,8 @@ public class PolicyGeneration {
             }
             List<ObjectCondition> objectConditions = rq.createObjectCondition(i);
             double selOfPolicy = BEPolicy.computeL(objectConditions);
-            if(selOfPolicy > 0.0001 && selOfPolicy < 0.1){
-                bePolicies.add(new BEPolicy(String.valueOf(i), "Generated Policy " + i + " with selectivity " + selOfPolicy, objectConditions, PolicyConstants.DEFAULT_QC.asList(), "", ""));
+            if(selOfPolicy > 0.000001 && selOfPolicy < 0.000005){
+                bePolicies.add(new BEPolicy(String.valueOf(i), "Generated Policy " + i + "with selectivity " + selOfPolicy, objectConditions, PolicyConstants.DEFAULT_QC.asList(), "", ""));
             }
             else {
                 i = i - 1; //Discard the policy
