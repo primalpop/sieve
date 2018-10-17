@@ -30,7 +30,7 @@ public class PolicyExecution {
 
     private Connection connection;
 
-    private static final int[] policyNumbers = {114};
+    private static final int[] policyNumbers = {82};
 
     private static PolicyGeneration policyGen;
 
@@ -152,7 +152,7 @@ public class PolicyExecution {
 
     public static void main(String args[]) {
         PolicyExecution pe = new PolicyExecution();
-//        pe.generatePolicies(PolicyConstants.BE_POLICY_DIR);
-        pe.bePolicyExperiments(PolicyConstants.BE_POLICY_DIR);
+        pe.generatePolicies(PolicyConstants.BE_POLICY_DIR);
+//        pe.bePolicyExperiments(PolicyConstants.BE_POLICY_DIR);
     }
 }
