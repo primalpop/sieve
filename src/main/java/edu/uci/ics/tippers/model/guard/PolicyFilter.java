@@ -7,7 +7,10 @@ import edu.uci.ics.tippers.model.policy.BEPolicy;
 import edu.uci.ics.tippers.model.policy.ObjectCondition;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
 public class PolicyFilter {
 
@@ -41,9 +44,17 @@ public class PolicyFilter {
 
 
     public Duration computeGuardCosts(HashMap<ObjectCondition, BEExpression> gMap) {
-        Duration rcost = Duration.ofNanos(0);
+        int repetitions = 10;
+        Duration rcost = Duration.ofMillis(0);
         for (ObjectCondition kOb : gMap.keySet()) {
-            Duration gCost = mySQLQueryManager.runTimedQuery(createQueryFromGQ(kOb, gMap.get(kOb)));
+            List<Long> cList = new ArrayList<>();
+            for (int i = 0; i < repetitions; i++) {
+                Duration tCost = mySQLQueryManager.runTimedQuery(createQueryFromGQ(kOb, gMap.get(kOb)));
+                cList.add(tCost.toMillis());
+            }
+            Collections.sort(cList);
+            List<Long> clippedList = cList.subList(1, 9);
+            Duration gCost = Duration.ofMillis(clippedList.stream().mapToLong(i-> i).sum()/clippedList.size());
             rcost = rcost.plus(gCost);
         }
         return rcost;

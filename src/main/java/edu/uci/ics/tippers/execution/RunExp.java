@@ -72,38 +72,46 @@ public class RunExp {
      */
     public List<Duration> runExpt(int start_policies, int k, int rpq, int epochs, String fileName){
 
-        Duration genTotal = Duration.ofMillis(0);
-        Duration evalTotal = Duration.ofMillis(0);
+
         readPolicies(PolicyConstants.BE_POLICY_DIR + fileName);
 
         int i = start_policies;
         BEExpression current = new BEExpression(this.bePolicyList.subList(0,i));
         List<Duration> gCosts =  generateGuard(current);
+        int counter = 0;
+        System.out.println("Guard Eval cost before any epochs : " +  gCosts.get(1).toMillis());
+        Duration prev = Duration.ofMillis(0);
         while (i < start_policies + epochs - 1){
-            System.out.println("Guard Eval cost: " +  gCosts.get(1).toMillis());
-//            evalTotal = evalTotal.plusMillis(k * rpq * gCosts.get(1).toMillis()); //Guard execution cost
-            PolicyFilter pf = new PolicyFilter(new BEExpression(this.bePolicyList.subList(i,i+k)));
-            evalTotal = evalTotal.plus(pf.computeCost()); //Policy Filter cost for period k
-            System.out.println("Policy Filter: " + pf.computeCost());
-            i += k;
-            current = new BEExpression(this.bePolicyList.subList(0,i));
-            gCosts = generateGuard(current);
-            genTotal = genTotal.plusMillis(gCosts.get(0).toMillis()); //Guard Generation Cost
-            System.out.println("Guard Gen" + gCosts.get(0).toMillis());
+            counter += 1;
+            if(counter == k){
+                current = new BEExpression(this.bePolicyList.subList(0,i));
+                gCosts = generateGuard(current);
+                System.out.println("Guard Gen for epoch: " + i + ":" + gCosts.get(0).toMillis());
+                System.out.println("Guard Eval cost after epoch : " + i + " :"  + gCosts.get(1).toMillis());
+                counter = 0;
+            }
+            i += 1;
+            PolicyFilter pf = new PolicyFilter(new BEExpression(this.bePolicyList.subList(i-counter,i)));
+//            System.out.println("Policy Filter for Policy: " + i + " ");
+            Duration pfTime = pf.computeCost();
+            System.out.println("Policy Filter for Policy: " + i + " Time: " + pfTime.toMillis());
+            if(pfTime.toMillis() < prev.toMillis()){
+                System.out.println("DEBUG THIS!!!!");
+            }
+            System.out.println();
+            prev = Duration.ofMillis(pfTime.toMillis());
         }
         List<Duration> total_time = new ArrayList<>();
-        total_time.add(genTotal);
-        total_time.add(evalTotal);
         return total_time;
     }
 
     public static void main(String args[]) {
-        int[] kValues = {12};
-        int epochs = 64;
+        int[] kValues = {8};
+        int epochs = 32;
         int start_policies = 50;
         int rpq = 5;
-        String fileName = "policy114.json";
-        int numberOfReps = 5;
+        String fileName = "policy82.json";
+        int numberOfReps = 1;
         TreeMap<String, Duration> runTimes = new TreeMap<>();
         RunExp re = new RunExp();
         for (int kValue : kValues) {
@@ -112,8 +120,8 @@ public class RunExp {
             Duration queryTime = Duration.ofMillis(0);
             for (int i = 0; i < numberOfReps; i++) {
                 gTimes = re.runExpt(start_policies, kValue, rpq, epochs, fileName);
-                genTime = genTime.plus(gTimes.get(0));
-                queryTime = queryTime.plus(gTimes.get(1));
+//                genTime = genTime.plus(gTimes.get(0));
+//                queryTime = queryTime.plus(gTimes.get(1));
             }
             runTimes.put(String.valueOf(kValue) + " Generation", Duration.ofMillis(genTime.toMillis()/numberOfReps));
             runTimes.put(String.valueOf(kValue) + " Execution", Duration.ofMillis(queryTime.toMillis()/numberOfReps));
