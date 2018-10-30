@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.sql.*;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.*;
@@ -27,25 +26,26 @@ public class MySQLQueryManager {
 
     private static long timeout = 300000;
 
-    public Duration runWithThread(String query, MySQLResult mySQLResult) {
+    public MySQLResult runWithThread(String query, MySQLResult mySQLResult) {
 
         Statement statement = null;
         ExecutorService executor = Executors.newSingleThreadExecutor();
-        Future<Duration> future = null;
+        Future<MySQLResult> future = null;
         try {
             statement = connection.createStatement();
             QueryExecutor queryExecutor = new QueryExecutor(statement, query, mySQLResult);
             future = executor.submit(queryExecutor);
-            Duration duration = future.get(timeout, TimeUnit.MILLISECONDS);
+            mySQLResult = future.get(timeout, TimeUnit.MILLISECONDS);
             executor.shutdown();
-            return duration;
+            return mySQLResult;
         } catch (SQLException | InterruptedException | ExecutionException ex) {
             cancelStatement(statement, ex);
             throw new PolicyEngineException("Failed to query the database. " + ex);
         } catch (TimeoutException ex) {
             cancelStatement(statement, ex);
             future.cancel(true);
-            return PolicyConstants.MAX_DURATION;
+            mySQLResult.setTimeTaken(PolicyConstants.MAX_DURATION);
+            return mySQLResult;
         } finally {
             DbUtils.closeQuietly(statement);
             executor.shutdownNow();
@@ -62,7 +62,7 @@ public class MySQLQueryManager {
     }
 
 
-    private class QueryExecutor implements  Callable<Duration>{
+    private class QueryExecutor implements  Callable<MySQLResult>{
 
         Statement statement;
         String query;
@@ -75,15 +75,21 @@ public class MySQLQueryManager {
         }
 
         @Override
-        public Duration call() throws Exception {
+        public MySQLResult call() throws Exception {
             try {
                 Instant start = Instant.now();
                 ResultSet rs = statement.executeQuery(query);
                 Instant end = Instant.now();
+                int rowcount = 0;
+                if (rs.last()) {
+                    rowcount = rs.getRow();
+                }
                 if(mySQLResult.getPathName() != null && mySQLResult.getFileName() != null){
                     mySQLResult.writeResultsToFile(rs);
                 }
-                return Duration.between(start, end);
+                mySQLResult.setResultCount(rowcount);
+                mySQLResult.setTimeTaken(Duration.between(start, end));
+                return mySQLResult;
             } catch (SQLException e) {
                 System.out.println("Exception raised by : " + query);
                 cancelStatement(statement, e);
@@ -106,7 +112,7 @@ public class MySQLQueryManager {
     public Duration runTimedQuery(String predicates, String pathName, String fileName) throws PolicyEngineException {
         try {
             MySQLResult mySQLResult = new MySQLResult(pathName, fileName);
-            return runWithThread(PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS + predicates, mySQLResult);
+            return runWithThread(PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS + predicates, mySQLResult).getTimeTaken();
         } catch (Exception e) {
             e.printStackTrace();
             throw new PolicyEngineException("Error Running Query");
@@ -123,12 +129,23 @@ public class MySQLQueryManager {
     public Duration runTimedQuery(String predicates) throws PolicyEngineException {
         try {
             MySQLResult mySQLResult = new MySQLResult();
+            return runWithThread(PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS + predicates, mySQLResult).getTimeTaken();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new PolicyEngineException("Error Running Query");
+        }
+    }
+
+    public MySQLResult runTimedQueryWithResultCount(String predicates) throws PolicyEngineException {
+        try {
+            MySQLResult mySQLResult = new MySQLResult();
             return runWithThread(PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS + predicates, mySQLResult);
         } catch (Exception e) {
             e.printStackTrace();
             throw new PolicyEngineException("Error Running Query");
         }
     }
+
 
     /**
      * Check the results against the traditional query rewritten approach

@@ -20,7 +20,7 @@ public class PredicateExtension {
 
     public PredicateExtension(FactorSelection gExpression){
         this.gExpression = gExpression;
-        this.guardMap = gExpression.getGuardPartitionMap();
+        this.guardMap = gExpression.getGuardPartitionMapWithRemainder();
     }
 
     /**

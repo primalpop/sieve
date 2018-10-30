@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import edu.uci.ics.tippers.common.PolicyConstants;
+import edu.uci.ics.tippers.db.MySQLQueryManager;
 import edu.uci.ics.tippers.fileop.Writer;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
 import edu.uci.ics.tippers.model.policy.ObjectCondition;
@@ -40,6 +41,8 @@ public class PolicyGeneration {
     List<User> users;
     Random r;
     Writer writer;
+    MySQLQueryManager mySQLQueryManager = new MySQLQueryManager();
+
 
     public PolicyGeneration() {
 
@@ -353,7 +356,15 @@ public class PolicyGeneration {
                 attrList.add(attribute);
             }
             List<ObjectCondition> objectConditions = rq.createObjectCondition(i);
-            bePolicies.add(new BEPolicy(String.valueOf(i), "Generated Policy " + i , objectConditions, PolicyConstants.DEFAULT_QC.asList(), "", ""));
+            double selOfPolicy = BEPolicy.computeL(objectConditions);
+            if(selOfPolicy > 0.00001 && selOfPolicy < 0.00005){
+                BEPolicy bePolicy = new BEPolicy(String.valueOf(i), "Generated Policy " + i + "with selectivity " + selOfPolicy, objectConditions, PolicyConstants.DEFAULT_QC.asList(), "", "");
+                bePolicies.add(bePolicy);
+                int policySel = mySQLQueryManager.runTimedQueryWithResultCount(bePolicy.createQueryFromObjectConditions()).getResultCount();
+            }
+            else {
+                i = i - 1; //Discard the policy
+            }
         }
         writer.writeJSONToFile(bePolicies, PolicyConstants.BE_POLICY_DIR, null);
         return bePolicies;
@@ -364,9 +375,10 @@ public class PolicyGeneration {
      * improvement on generateBEPolicy method above which checks if the selecivity of the generated
      * policy is between 0.0001 and 0.1 to ensure that the policy returns enough tuples
      */
-    public List<BEPolicy> generateFilteredBEPolicy(int numberOfPolicies, List<String> attributes, List<BEPolicy> previous){
+    public List<BEPolicy> generateFilteredBEPolicy(int numberOfPolicies, int epochs, List<String> attributes, List<BEPolicy> previous){
         List<BEPolicy> bePolicies = new ArrayList<>();
         bePolicies.addAll(previous);
+        int policiesBefore = numberOfPolicies - epochs;
         for (int i = previous.size(); i < numberOfPolicies; i++) {
             RangeQuery rq = new RangeQuery();
             int attrCount = (int) (r.nextGaussian() * 2 + 3); //mean - 4, SD - 2
@@ -402,14 +414,136 @@ public class PolicyGeneration {
             }
             List<ObjectCondition> objectConditions = rq.createObjectCondition(i);
             double selOfPolicy = BEPolicy.computeL(objectConditions);
-            if(selOfPolicy > 0.000001 && selOfPolicy < 0.000005){
-                bePolicies.add(new BEPolicy(String.valueOf(i), "Generated Policy " + i + "with selectivity " + selOfPolicy, objectConditions, PolicyConstants.DEFAULT_QC.asList(), "", ""));
+
+            if(i < policiesBefore){
+                if(selOfPolicy > 0.00001 && selOfPolicy < 0.00005){
+                    BEPolicy bePolicy = new BEPolicy(String.valueOf(i), "Generated Policy " + i + "with selectivity " + selOfPolicy, objectConditions, PolicyConstants.DEFAULT_QC.asList(), "", "");
+                    bePolicies.add(bePolicy);
+                    int policySel = mySQLQueryManager.runTimedQueryWithResultCount(bePolicy.createQueryFromObjectConditions()).getResultCount();
+                    System.out.println("Predicted Selectivity: " + selOfPolicy);
+                    System.out.println("Actual Policy Selectivity: " + (double)policySel/(double)PolicyConstants.NUMBER_OR_TUPLES);
+                }
+                else {
+                    i = i - 1; //Discard the policy
+                }
             }
-            else {
-                i = i - 1; //Discard the policy
+            else { //for policies in epochs, i > policiesBefore
+                if(selOfPolicy > 0.00001 && selOfPolicy < 0.00005){
+                    bePolicies.add(new BEPolicy(String.valueOf(i), "Generated Policy " + i + "with selectivity " + selOfPolicy, objectConditions, PolicyConstants.DEFAULT_QC.asList(), "", ""));
+                }
+                else {
+                    i = i - 1; //Discard the policy
+                }
             }
+
         }
         writer.writeJSONToFile(bePolicies, PolicyConstants.BE_POLICY_DIR, null);
         return bePolicies;
     }
+
+    private List<ObjectCondition> generatePredicates(int policyID, List<String> attributes){
+        RangeQuery rq = new RangeQuery();
+        int attrCount = (int) (r.nextGaussian() * 2 + 3); //mean - 4, SD - 2
+        if (attrCount <= 1 || attrCount > attributes.size()) attrCount = 3;
+        ArrayList<String> attrList = new ArrayList<>();
+        rq.setStart_timestamp(getRandomTimeStamp());
+        rq.setEnd_timestamp(getEndingTimeInterval(rq.getStart_timestamp()));
+        attrList.add(PolicyConstants.TIMESTAMP_ATTR);
+        for (int j = 1; j < attrCount; j++) {
+            String attribute = attributes.get(r.nextInt(attributes.size()));
+            if (attrList.contains(attribute)) {
+                j--;
+                continue;
+            }
+            if (attribute.equalsIgnoreCase(PolicyConstants.USERID_ATTR)) {
+                rq.setUser_id(String.valueOf(users.get(new Random().nextInt(users.size())).getUser_id()));
+            }
+            if (attribute.equalsIgnoreCase(PolicyConstants.LOCATIONID_ATTR)) {
+                rq.setLocation_id(infras.get(new Random().nextInt(infras.size())).getName());
+            } else if (attribute.equalsIgnoreCase(PolicyConstants.ENERGY_ATTR)){
+                rq.setStart_wemo(String.valueOf(getEnergy(null)));
+                rq.setEnd_wemo(String.valueOf(getEnergy(rq.getStart_wemo())));
+            } else if (attribute.equalsIgnoreCase(PolicyConstants.ACTIVITY_ATTR)) {
+                rq.setActivity(PolicyConstants.ACTIVITIES.get(new Random().nextInt(PolicyConstants.ACTIVITIES.size())));
+            } else if (attribute.equalsIgnoreCase(PolicyConstants.TEMPERATURE_ATTR)){
+                rq.setStart_temp(String.valueOf(getTemperature(null)));
+                rq.setEnd_temp(String.valueOf(getTemperature(rq.getStart_temp())));
+            }
+            attrList.add(attribute);
+        }
+        List<ObjectCondition> objectConditions = rq.createObjectCondition(policyID);
+        return objectConditions;
+    }
+
+    /**
+     * Generates overlapping policies
+     * @param numberOfPolicies
+     * @param threshold
+     * @param attributes
+     * @param previous
+     * @return
+     */
+    public List<BEPolicy> generateOverlappingPolicies(int numberOfPolicies, float threshold, List<String> attributes, List<BEPolicy> previous){
+        List<BEPolicy> bePolicies = new ArrayList<>();
+        bePolicies.addAll(previous);
+        boolean overlap = false;
+        for (int i = previous.size(); i < numberOfPolicies; i++) {
+            if (overlap) {
+                BEPolicy oPolicy = bePolicies.get(new Random().nextInt(i)); //TODO: fix the ids
+                for (ObjectCondition objC: oPolicy.getObject_conditions()) {
+                    objC.shift();
+                }
+                bePolicies.add(oPolicy);
+                continue;
+            }
+            else {
+                double selOfPolicy = 0.0;
+                List<ObjectCondition> objectConditions;
+                do {
+                    objectConditions = generatePredicates(i, attributes);
+                    selOfPolicy = BEPolicy.computeL(objectConditions);
+                } while (selOfPolicy < 0.00001 || selOfPolicy > 0.00005);
+                BEPolicy bePolicy = new BEPolicy(String.valueOf(i), "Generated Policy " + i + "with selectivity " + selOfPolicy, objectConditions, PolicyConstants.DEFAULT_QC.asList(), "", "");
+                bePolicies.add(bePolicy);
+            }
+            if (Math.random() > threshold) overlap = true;
+
+        }
+        writer.writeJSONToFile(bePolicies, PolicyConstants.BE_POLICY_DIR, null);
+        return bePolicies;
+    }
+
+    /**
+     * Generates duplicate policies
+     * original = numberOfPolicies - duplicate
+     * @return
+     */
+    public List<BEPolicy> generateDuplicatePolicies(int numberOfPolicies, int duplicate, List<String> attributes, List<BEPolicy> previous){
+        List<BEPolicy> bePolicies = new ArrayList<>();
+        bePolicies.addAll(previous);
+        for (int i = previous.size(); i < numberOfPolicies; i++) {
+            if (i > duplicate) {
+                BEPolicy oPolicy = new BEPolicy(bePolicies.get(new Random().nextInt(i)));
+                oPolicy.setId("Generated Policy " + i);
+                for(ObjectCondition oc: oPolicy.getObject_conditions()){
+                    oc.setPolicy_id(String.valueOf(i));
+                }
+                bePolicies.add(oPolicy);
+            }
+            else {
+                double selOfPolicy = 0.0;
+                List<ObjectCondition> objectConditions;
+                do {
+                    objectConditions = generatePredicates(i, attributes);
+                    selOfPolicy = BEPolicy.computeL(objectConditions);
+                } while (selOfPolicy < 0.00001 || selOfPolicy > 0.00005);
+                BEPolicy bePolicy = new BEPolicy(String.valueOf(i), "Generated Policy " + i + "with selectivity " + selOfPolicy, objectConditions, PolicyConstants.DEFAULT_QC.asList(), "", "");
+                bePolicies.add(bePolicy);
+            }
+        }
+        writer.writeJSONToFile(bePolicies, PolicyConstants.BE_POLICY_DIR, "duplicate");
+        return bePolicies;
+    }
+
+
 }

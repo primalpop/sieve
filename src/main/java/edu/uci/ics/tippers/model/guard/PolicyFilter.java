@@ -23,6 +23,14 @@ public class PolicyFilter {
         this.expression = beExpression;
     }
 
+    public BEExpression getExpression() {
+        return expression;
+    }
+
+    public void setExpression(BEExpression expression) {
+        this.expression = expression;
+    }
+
     public Duration computeCost(){
         HashMap<ObjectCondition, BEExpression> pFilterMap = new HashMap<>();
         for (BEPolicy bePolicy : this.expression.getPolicies()) {
@@ -42,9 +50,8 @@ public class PolicyFilter {
         return computeGuardCosts(pFilterMap);
     }
 
-
     public Duration computeGuardCosts(HashMap<ObjectCondition, BEExpression> gMap) {
-        int repetitions = 10;
+        int repetitions = 3;
         Duration rcost = Duration.ofMillis(0);
         for (ObjectCondition kOb : gMap.keySet()) {
             List<Long> cList = new ArrayList<>();
@@ -53,7 +60,7 @@ public class PolicyFilter {
                 cList.add(tCost.toMillis());
             }
             Collections.sort(cList);
-            List<Long> clippedList = cList.subList(1, 9);
+            List<Long> clippedList = cList.subList(1, repetitions-1);
             Duration gCost = Duration.ofMillis(clippedList.stream().mapToLong(i-> i).sum()/clippedList.size());
             rcost = rcost.plus(gCost);
         }

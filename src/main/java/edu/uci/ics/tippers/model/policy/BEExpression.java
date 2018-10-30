@@ -24,7 +24,7 @@ public class BEExpression{
     }
 
     public BEExpression(List<BEPolicy> policies){
-        this.policies = new ArrayList<BEPolicy>(policies);
+        this.policies = new ArrayList<BEPolicy>();
         for(BEPolicy bp: policies){
             this.policies.add(new BEPolicy(bp));
         }
