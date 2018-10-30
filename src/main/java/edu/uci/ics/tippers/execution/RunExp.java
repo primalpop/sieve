@@ -60,73 +60,132 @@ public class RunExp {
         guardCosts.add(guardGen);
         guardCosts.add(guardRunTime);
 
+
         return guardCosts;
     }
 
     /**
-     *
-     * example: start_policies = 50, k = 4, rpq = 5, epochs = 64, fileName = policy114.json
-     * returns a list with first element as guard generation cost and second as query evaluation
-     * cost for the number of epochs
-     *
+     * For each epoch, returns the filter cost, guard cost and guard generation cost
+     * Encoding: 1 - filter cost 2 - guard cost and 3 - guard generation cost
+     * e.g., 1.1 - filter cost of 1st epoch, 3.7 - guard generation cost of 7th epoch
+     * @param start_policies
+     * @param k
+     * @param rqp
+     * @param epochs
+     * @param fileName
+     * @return
      */
-    public List<Duration> runExpt(int start_policies, int k, int rpq, int epochs, String fileName){
+    public TreeMap<String, Duration> runDetailedExpt(int start_policies, int k, int rqp, int epochs, String fileName){
 
+        TreeMap<String, Duration> runTimes = new TreeMap<>();
 
         readPolicies(PolicyConstants.BE_POLICY_DIR + fileName);
 
         int i = start_policies;
         BEExpression current = new BEExpression(this.bePolicyList.subList(0,i));
-        List<Duration> gCosts =  generateGuard(current);
         int counter = 0;
-        System.out.println("Guard Eval cost before any epochs : " +  gCosts.get(1).toMillis());
-        Duration prev = Duration.ofMillis(0);
+        List<Duration> gCosts =  generateGuard(current);
+        String epoch = "";
+        epoch += "2." + String.valueOf(i-start_policies);
+        runTimes.put(epoch, gCosts.get(1));
+        epoch = "";
         while (i < start_policies + epochs - 1){
             counter += 1;
+            i+=1;
             if(counter == k){
                 current = new BEExpression(this.bePolicyList.subList(0,i));
                 gCosts = generateGuard(current);
-                System.out.println("Guard Gen for epoch: " + i + ":" + gCosts.get(0).toMillis());
-                System.out.println("Guard Eval cost after epoch : " + i + " :"  + gCosts.get(1).toMillis());
+                epoch += "3." + String.valueOf(i-start_policies);
+                runTimes.put(epoch, gCosts.get(0));
+                epoch = "";
+                System.out.println("Guard generation cost at epoch" + String.valueOf(i-start_policies) + " :" + gCosts.get(0).toMillis());
                 counter = 0;
             }
-            i += 1;
-            PolicyFilter pf = new PolicyFilter(new BEExpression(this.bePolicyList.subList(i-counter,i)));
-//            System.out.println("Policy Filter for Policy: " + i + " ");
-            Duration pfTime = pf.computeCost();
-            System.out.println("Policy Filter for Policy: " + i + " Time: " + pfTime.toMillis());
-            if(pfTime.toMillis() < prev.toMillis()){
-                System.out.println("DEBUG THIS!!!!");
+            Duration pfTime;
+            if(counter != 0) {
+                PolicyFilter pf = new PolicyFilter(new BEExpression(this.bePolicyList.subList(i - counter, i)));
+                pfTime = pf.computeCost();
+                epoch += "1." + String.valueOf(i-start_policies);
+                runTimes.put(epoch, pfTime);
+                epoch = "";
+                System.out.println("Filter cost at epoch" + String.valueOf(i-start_policies) + ": " + pfTime.toMillis());
+                System.out.println("Filter Selectivity " + String.valueOf(i-start_policies) + ": " + pf.getExpression().computeL());
             }
-            System.out.println();
-            prev = Duration.ofMillis(pfTime.toMillis());
+            System.out.println("Guard Cost at epoch" + String.valueOf(i-start_policies) + ": " + gCosts.get(1).toMillis());
+            epoch += "2." + String.valueOf(i-start_policies);
+            runTimes.put(epoch, gCosts.get(1));
+            epoch = "";
         }
+        return runTimes;
+    }
+
+
+    /**
+     *
+     * example: start_policies = 50, k = 4, rqp = 5, epochs = 64, fileName = policy114.json
+     * returns a list with first element as guard generation cost and second as query evaluation
+     * cost for the number of epochs
+     *
+     */
+    public List<Duration> runExpt(int start_policies, int k, int rqp, int epochs, String fileName){
+
+        System.out.println("============= Starting new k = " + k + " =================");
+        readPolicies(PolicyConstants.BE_POLICY_DIR + fileName);
+
+        int i = start_policies;
+        BEExpression current = new BEExpression(this.bePolicyList.subList(0,i));
+        int counter = 0;
+        List<Duration> gCosts =  generateGuard(current);
+        Duration genCost = Duration.ofMillis(0);
+        Duration evalCost = Duration.ofMillis(0);
+        Duration filterCost = Duration.ofMillis(0);
+        Duration guardCost = Duration.ofMillis(0);
+        evalCost = evalCost.plusMillis(gCosts.get(1).toMillis() * rqp);
+        while (i < start_policies + epochs - 1){
+            counter += 1;
+            i+=1;
+            if(counter == k){
+                current = new BEExpression(this.bePolicyList.subList(0,i));
+                gCosts = generateGuard(current);
+                genCost = genCost.plusMillis(gCosts.get(0).toMillis());
+                System.out.println("Guard regenerated: " + i );
+                System.out.println("Guard generation cost: " + gCosts.get(0).toMillis());
+                counter = 0;
+            }
+            Duration pfTime = Duration.ofMillis(0);
+            if(counter != 0) {
+                PolicyFilter pf = new PolicyFilter(new BEExpression(this.bePolicyList.subList(i - counter, i)));
+                pfTime = pf.computeCost();
+                System.out.println("Filter cost " + i + ": " + pfTime.toMillis());
+                filterCost = filterCost.plusMillis(pfTime.toMillis());
+            }
+            System.out.println("Guard Cost " + i + ": " + gCosts.get(1).toMillis());
+            guardCost = guardCost.plusMillis(gCosts.get(1).toMillis());
+            evalCost = evalCost.plusMillis((pfTime.toMillis() + gCosts.get(1).toMillis())*rqp);
+        }
+        System.out.println("Total Filter Cost: " + filterCost.toMillis());
+        System.out.println("Total Guard Cost: " + guardCost.toMillis());
         List<Duration> total_time = new ArrayList<>();
+        total_time.add(genCost);
+        total_time.add(evalCost);
         return total_time;
     }
 
     public static void main(String args[]) {
-        int[] kValues = {8};
+        int[] kValues = {2,3,4,5,6,7,8,9,10, 12, 15};
         int epochs = 32;
-        int start_policies = 50;
+        int start_policies = 468;
         int rpq = 5;
-        String fileName = "policy82.json";
-        int numberOfReps = 1;
+        String[] fileNames = {"policy500duplicate.json"};
+        List<Duration> times = new ArrayList<>();
         TreeMap<String, Duration> runTimes = new TreeMap<>();
         RunExp re = new RunExp();
         for (int kValue : kValues) {
-            List<Duration> gTimes = new ArrayList<>();
-            Duration genTime = Duration.ofMillis(0);
-            Duration queryTime = Duration.ofMillis(0);
-            for (int i = 0; i < numberOfReps; i++) {
-                gTimes = re.runExpt(start_policies, kValue, rpq, epochs, fileName);
-//                genTime = genTime.plus(gTimes.get(0));
-//                queryTime = queryTime.plus(gTimes.get(1));
-            }
-            runTimes.put(String.valueOf(kValue) + " Generation", Duration.ofMillis(genTime.toMillis()/numberOfReps));
-            runTimes.put(String.valueOf(kValue) + " Execution", Duration.ofMillis(queryTime.toMillis()/numberOfReps));
+            times = re.runExpt(start_policies, kValue, rpq, epochs, fileNames[0]);
+            runTimes.put( kValue + " generation", times.get(0));
+            runTimes.put( kValue + " evaluation", times.get(1));
         }
         Writer writer = new Writer();
-        writer.createTextReport(runTimes, PolicyConstants.BE_POLICY_DIR);
+        writer.createCSVReport(runTimes, PolicyConstants.BE_POLICY_DIR, "result" + ".csv");
     }
 }

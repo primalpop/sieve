@@ -97,6 +97,11 @@ public class FactorExtension {
     private void memoize(Map<String, Double> memoized, ObjectCondition oc, int lindex){
         for (int k = lindex + 1; k < aMap.get(oc.getAttribute()).size(); k++) {
             ObjectCondition ock = aMap.get(oc.getAttribute()).get(k);
+            if(oc.compareTo(ock) == 0){ //TODO: DELETE LATER
+                if (oc.getPolicy_id().equalsIgnoreCase(ock.getPolicy_id())){
+                    System.out.println("DEBUG!!!");
+                }
+            }
             BEExpression beM = new BEExpression();
             beM.getPolicies().addAll(oMap.get(oc));
             beM.getPolicies().addAll(oMap.get(ock));
@@ -138,7 +143,12 @@ public class FactorExtension {
         }
     }
 
-    public void doYourThing() {
+    /**
+     * Returns the number of extensions performed for the expression
+     * @return
+     */
+    public int doYourThing() {
+        int numberOfExtensions = 0;
         for (String attribute: aMap.keySet()) {
             List<ObjectCondition> attrToOc = aMap.get(attribute);
             Map<String, Double> memoized = new HashMap<>();
@@ -157,13 +167,24 @@ public class FactorExtension {
                     if (g.hashCode() == Integer.parseInt(maxBenefitKey.getKey().split("\\.")[0])) m1 = g;
                     if (g.hashCode() == Integer.parseInt(maxBenefitKey.getKey().split("\\.")[1])) m2 = g;
                 }
+                if(m1.compareTo(m2) == 0) { //TODO: SANITY CHECK, DELETE AFTERWARDS
+                    if(m1.getPolicy_id().equalsIgnoreCase(m2.getPolicy_id())){
+                        System.out.println(m1.toString());
+                        System.out.println(m2.toString());
+                    }
+                }
                 ObjectCondition ocM = m1.union(m2);
                 BEExpression beM = new BEExpression();
                 beM.getPolicies().addAll(oMap.get(m1));
                 beM.getPolicies().addAll(oMap.get(m2));
+                numberOfExtensions += 1;
                 //remove from aMap
-                if(!aMap.get(m1.getAttribute()).remove(m1)) throw new PolicyEngineException(m1.toString() + " not removed from aMap");
-                if(!aMap.get(m2.getAttribute()).remove(m2)) throw new PolicyEngineException(m1.toString() + " not removed from aMap");;
+                if(!aMap.get(m1.getAttribute()).remove(m1)) {
+                    throw new PolicyEngineException(m1.toString() + " not removed from aMap");
+                }
+                if(!aMap.get(m2.getAttribute()).remove(m2)){
+                    throw new PolicyEngineException(m1.toString() + " not removed from aMap");
+                }
                 //remove from oMap
                 oMap.remove(m1);
                 oMap.remove(m2);
@@ -185,5 +206,6 @@ public class FactorExtension {
         for(ObjectCondition original:replacementMap.keySet()) {
             this.genExpression.replenishFromPolicies(original, replacementMap.get(original));
         }
+        return numberOfExtensions;
     }
 }

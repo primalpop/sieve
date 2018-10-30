@@ -2,6 +2,7 @@ package edu.uci.ics.tippers.model.guard;
 
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.db.MySQLQueryManager;
+import edu.uci.ics.tippers.db.MySQLResult;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
 import edu.uci.ics.tippers.model.policy.ObjectCondition;
@@ -172,7 +173,7 @@ public class FactorSelection {
      *
      * @return
      */
-    public HashMap<ObjectCondition, BEExpression> getGuardPartitionMap() {
+    public HashMap<ObjectCondition, BEExpression> getGuardPartitionMapWithRemainder() {
         if (this.getMultiplier().isEmpty()) {
             HashMap<ObjectCondition, BEExpression> remainderMap = new HashMap<>();
             for (BEPolicy bePolicy : this.expression.getPolicies()) {
@@ -194,7 +195,7 @@ public class FactorSelection {
         HashMap<ObjectCondition, BEExpression> gMap = new HashMap<>();
         gMap.put(this.getMultiplier().get(0), this.getQuotient().getExpression());
         if (!this.getRemainder().expression.getPolicies().isEmpty()) {
-            gMap.putAll(this.getRemainder().getGuardPartitionMap());
+            gMap.putAll(this.getRemainder().getGuardPartitionMapWithRemainder());
         }
         return gMap;
     }
@@ -221,18 +222,56 @@ public class FactorSelection {
     /**
      * Computes the cost of execution of individual guards and sums them up
      * For the remainder it considers the predicate with highest selectivity as the guard and computes the cost
-     *
+     * Repeats the cost computation *repetitions* number of times and drops highest and lowest value to smooth it out
      * @return
      */
     public Duration computeGuardCosts() {
-        Map<ObjectCondition, BEExpression> gMap = getGuardPartitionMap();
-        Duration rcost = Duration.ofNanos(0);
+        int repetitions = 1;
+        Map<ObjectCondition, BEExpression> gMap = getGuardPartitionMapWithRemainder();
+        Duration rcost = Duration.ofMillis(0);
+//        int numberOfTuples = 0;
+//        int totalGuardResultCount = 0;
         for (ObjectCondition kOb : gMap.keySet()) {
-            Duration gCost = mySQLQueryManager.runTimedQuery(createQueryFromGQ(kOb, gMap.get(kOb)));
+            List<Long> cList = new ArrayList<>();
+            MySQLResult mySQLResult = new MySQLResult();
+//            MySQLResult tempResult = new MySQLResult();
+            for (int i = 0; i < repetitions; i++) {
+//                tempResult = mySQLQueryManager.runTimedQueryWithResultCount(kOb.print());
+//                System.out.println("Count for current guard: " + tempResult.getResultCount());
+                mySQLResult = mySQLQueryManager.runTimedQueryWithResultCount(createQueryFromGQ(kOb, gMap.get(kOb)));
+//                System.out.println("Count for current guard + partition: " + mySQLResult.getResultCount());
+                cList.add(mySQLResult.getTimeTaken().toMillis());
+            }
+//            totalGuardResultCount += tempResult.getResultCount();
+//            numberOfTuples += mySQLResult.getResultCount();
+            Collections.sort(cList);
+//            List<Long> clippedList = cList.subList(1, repetitions-1);
+            Duration gCost = Duration.ofMillis(cList.stream().mapToLong(i-> i).sum()/cList.size());
             rcost = rcost.plus(gCost);
         }
+//        System.out.println("total number of tuples with just guard" + totalGuardResultCount);
+//        System.out.println("total true number of tuples: " +numberOfTuples);
         return rcost;
     }
+
+
+//
+//    public double computeGuardSel(){
+//        Map<ObjectCondition, BEExpression> gMap = getGuardPartitionMapWithRemainder();
+//        List<Double> guardSel = new ArrayList<>();
+//        for (ObjectCondition kOb : gMap.keySet()) {
+//            double gSel = kOb.computeL();
+//            gSel = gSel * gMap.get(kOb).computeL();
+//            guardSel.add(gSel);
+//        }
+//        double finalSel = guardSel.get(0);
+//        for (int i = 1; i < guardSel.size(); i++) {
+//            finalSel = 1 - ((1 - finalSel) * (1 - guardSel.get(i)));
+//        }
+//        return finalSel;
+//    }
+
+
 
     public List<ObjectCondition> getIndexFilters(){
         if (multiplier.isEmpty()) {
@@ -246,5 +285,19 @@ public class FactorSelection {
             indexFilters.addAll(this.remainder.getIndexFilters());
         }
         return indexFilters;
+    }
+
+    /**
+     * Guard and paritition map but not including remainder
+     * @return
+     */
+    public HashMap<ObjectCondition, BEExpression> getGuardPartition() {
+        if (this.getMultiplier().isEmpty()) return new HashMap<>();
+        HashMap<ObjectCondition, BEExpression> gMap = new HashMap<>();
+        gMap.put(this.getMultiplier().get(0), this.getQuotient().getExpression());
+        if (!this.getRemainder().expression.getPolicies().isEmpty()) {
+            gMap.putAll(this.getRemainder().getGuardPartition());
+        }
+        return gMap;
     }
 }
