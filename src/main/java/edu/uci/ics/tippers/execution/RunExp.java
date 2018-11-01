@@ -44,7 +44,8 @@ public class RunExp {
         /** Extension **/
         FactorExtension f = new FactorExtension(beExpression);
         Instant feStart = Instant.now();
-        f.doYourThing();
+        int ext = f.doYourThing();
+        System.out.println("Number of extensions: " + ext);
         Instant feEnd = Instant.now();
         guardGen = guardGen.plus(Duration.between(feStart, feEnd));
 
@@ -54,8 +55,11 @@ public class RunExp {
         gf.selectGuards();
         Instant fsEnd = Instant.now();
         guardGen = guardGen.plus(Duration.between(fsStart, fsEnd));
+        System.out.println("Number of guards: " + gf.getIndexFilters().size());
 
         Duration guardRunTime = gf.computeGuardCosts();
+
+        System.out.println("Guard " + gf.createQueryFromExactFactor());
 
         guardCosts.add(guardGen);
         guardCosts.add(guardRunTime);
@@ -141,6 +145,7 @@ public class RunExp {
         Duration filterCost = Duration.ofMillis(0);
         Duration guardCost = Duration.ofMillis(0);
         evalCost = evalCost.plusMillis(gCosts.get(1).toMillis() * rqp);
+        System.out.println("Guard Cost before epochs " + gCosts.get(1).toMillis());
         while (i < start_policies + epochs - 1){
             counter += 1;
             i+=1;
@@ -165,6 +170,8 @@ public class RunExp {
         }
         System.out.println("Total Filter Cost: " + filterCost.toMillis());
         System.out.println("Total Guard Cost: " + guardCost.toMillis());
+        System.out.println("** Total Evaluation Cost: **" + evalCost.toMillis());
+        System.out.println("** Total Guard Generation Cost: **" + genCost.toMillis());
         List<Duration> total_time = new ArrayList<>();
         total_time.add(genCost);
         total_time.add(evalCost);
@@ -172,20 +179,20 @@ public class RunExp {
     }
 
     public static void main(String args[]) {
-        int[] kValues = {2,3,4,5,6,7,8,9,10, 12, 15};
-        int epochs = 32;
-        int start_policies = 468;
-        int rpq = 5;
-        String[] fileNames = {"policy500duplicate.json"};
+        int[] kValues = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
+        int epochs = 15;
+        int start_policies = 20;
+        int rpq = 2;
+        String[] fileNames = {"policy35.json"};
         List<Duration> times = new ArrayList<>();
         TreeMap<String, Duration> runTimes = new TreeMap<>();
         RunExp re = new RunExp();
+        Writer writer = new Writer();
         for (int kValue : kValues) {
             times = re.runExpt(start_policies, kValue, rpq, epochs, fileNames[0]);
             runTimes.put( kValue + " generation", times.get(0));
             runTimes.put( kValue + " evaluation", times.get(1));
         }
-        Writer writer = new Writer();
         writer.createCSVReport(runTimes, PolicyConstants.BE_POLICY_DIR, "result" + ".csv");
     }
 }

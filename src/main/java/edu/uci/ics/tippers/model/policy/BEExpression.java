@@ -184,14 +184,19 @@ public class BEExpression{
      * Given a list of policies, it creates a query by
      * AND'ing object conditions that belong to the same policy
      * and by OR'ing the object conditions across policies
+     * TODO: Eliminate duplicate policies
      * @return
      */
     public String createQueryFromPolices(){
         StringBuilder query = new StringBuilder();
         String delim = "";
-        for (int i = 0; i < this.policies.size(); i++) {
+        BEExpression dupElim = new BEExpression(this.policies);
+        Set<BEPolicy> og = new HashSet<>(dupElim.getPolicies());
+        dupElim.getPolicies().clear();
+        dupElim.getPolicies().addAll(og);
+        for (BEPolicy beP: dupElim.getPolicies()) {
             query.append(delim);
-            query.append("(" + this.policies.get(i).createQueryFromObjectConditions() + ")");
+            query.append("(" + beP.createQueryFromObjectConditions() + ")");
             delim = PolicyConstants.DISJUNCTION;
         }
         return query.toString();

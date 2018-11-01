@@ -63,12 +63,12 @@ public class Writer {
 
             String line = "";
             for (String policy: runTimes.keySet()) {
-                String policyNumber = policy.replaceAll("\\D+","");
+//                String policyNumber = policy.replaceAll("\\D+","");
                 if (runTimes.get(policy).compareTo(PolicyConstants.MAX_DURATION) < 0 ){
-                    line +=  String.format("%s, %s", policyNumber, runTimes.get(policy).toMillis());
+                    line +=  String.format("%s, %s", policy, runTimes.get(policy).toMillis());
                 }
                 else{
-                    line +=  String.format("%s,  %s", policyNumber, "Timed out" );
+                    line +=  String.format("%s,  %s", policy, "Timed out" );
                 }
                 line += "\n";
             }
@@ -84,12 +84,12 @@ public class Writer {
             BufferedWriter writer = new BufferedWriter(new FileWriter( fileDir + fileName));
 
             String line = "";
-            for (String epochNumber: runTimes.keySet()) {
-                if (runTimes.get(epochNumber).compareTo(PolicyConstants.MAX_DURATION) < 0 ){
-                    line +=  String.format("%s, %s", epochNumber, runTimes.get(epochNumber).toMillis());
+            for (String number: runTimes.keySet()) {
+                if (runTimes.get(number).compareTo(PolicyConstants.MAX_DURATION) < 0 ){
+                    line +=  String.format("%s, %s", number, runTimes.get(number).toMillis());
                 }
                 else{
-                    line +=  String.format("%s,  %s", epochNumber, "Timed out" );
+                    line +=  String.format("%s,  %s", number, "Timed out" );
                 }
                 line += "\n";
             }

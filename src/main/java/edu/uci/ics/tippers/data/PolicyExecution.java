@@ -10,7 +10,6 @@ import edu.uci.ics.tippers.model.guard.FactorExtension;
 import edu.uci.ics.tippers.model.guard.FactorSelection;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
-import edu.uci.ics.tippers.model.policy.ObjectCondition;
 
 import java.io.File;
 import java.sql.*;
@@ -31,7 +30,7 @@ public class PolicyExecution {
 
     private Connection connection;
 
-    private static final int[] policyNumbers = {500};
+    private static final int[] policyNumbers = {5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 100, 300, 500, 700, 1000};
 
     private static final int[] policyEpochs = {0};
 
@@ -60,6 +59,7 @@ public class PolicyExecution {
         TreeMap<String, Duration> policyRunTimes = new TreeMap<>();
 
         File[] policyFiles = new File(policyDir).listFiles();
+        Arrays.sort(policyFiles);
 
         Boolean resultsChecked = false;
 
@@ -79,21 +79,21 @@ public class PolicyExecution {
 
             try {
                 /** Traditional approach **/
-//                System.out.println(beExpression.createQueryFromPolices());
+                System.out.println(beExpression.createQueryFromPolices());
 //                runTime = runTime.plus(mySQLQueryManager.runTimedQuery(beExpression.createQueryFromPolices(),
 //                        PolicyConstants.QUERY_RESULTS_DIR, results_file));
 //                policyRunTimes.put(file.getName(), runTime);
-//                System.out.println(file.getName() + " completed and took " + runTime);
+//                System.out.println("** " + file.getName() + " completed and took " + runTime.toMillis());
 
                 System.out.println("Starting Factor Extension");
-//                Duration guardGen = Duration.ofMillis(0);
+                Duration guardGen = Duration.ofMillis(0);
 //                /** Extension **/
                 FactorExtension f = new FactorExtension(beExpression);
-//                Instant feStart = Instant.now();
+                Instant feStart = Instant.now();
                 int ext = f.doYourThing();
                 System.out.println("Number of Extensions " + ext);
-//                Instant feEnd = Instant.now();
-//                guardGen = guardGen.plus(Duration.between(feStart, feEnd));
+                Instant feEnd = Instant.now();
+                guardGen = guardGen.plus(Duration.between(feStart, feEnd));
 
                 /** Result checking **/
 //                mySQLQueryManager.runTimedQuery(f.getGenExpression().createQueryFromPolices(),
@@ -107,29 +107,18 @@ public class PolicyExecution {
 //                System.out.println("Starting Factorization");
                 /** Factorization **/
                 FactorSelection gf = new FactorSelection(f.getGenExpression());
-//                Instant fsStart = Instant.now();
+                Instant fsStart = Instant.now();
                 gf.selectGuards();
-//                Instant fsEnd = Instant.now();
-//                guardGen = guardGen.plus(Duration.between(fsStart, fsEnd));
-//                System.out.println("Factorized query " + gf.createQueryFromExactFactor());
-//                runTime = Duration.ofMillis(0);
-//                runTime = runTime.plus(mySQLQueryManager.runTimedQuery(gf.createQueryFromExactFactor(),
-//                        PolicyConstants.QR_FACTORIZED, results_file));
-//                System.out.println("Policies "+ file.getName() + " Time taken: " + guardGen.toMillis());
-//                policyRunTimes.put(file.getName() + "-guardGeneration", guardGen);
-//                System.out.println("Starting Execution");
-//                Duration guardRunTime = gf.computeGuardCosts();
-//                policyRunTimes.put(file.getName() + "-withGuard", guardRunTime);
-                System.out.println("Number of index filters : " + gf.getIndexFilters().size());
-//                System.out.println("** Factorized query took " + runTime + " **");
-
-                HashMap<ObjectCondition, BEExpression> gMap = gf.getGuardPartition();
-                System.out.println("Number of guards " + gMap.keySet().size());
-
-                for (Map.Entry<ObjectCondition, BEExpression> entry : gMap.entrySet()) {
-                    System.out.println(entry.getKey().print() + " " + entry.getValue().getPolicies().size());
-                }
-
+                Instant fsEnd = Instant.now();
+                guardGen = guardGen.plus(Duration.between(fsStart, fsEnd));
+                System.out.println("Final Guard " + gf.createQueryFromExactFactor());
+                System.out.println("Policies "+ file.getName() + " Guard Generation time: " + guardGen.toMillis());
+                policyRunTimes.put(" ** " + file.getName() + "-guardGeneration", guardGen);
+                System.out.println("Starting Execution of Guard for " + file.getName());
+                Duration guardRunTime = gf.computeGuardCosts();
+                policyRunTimes.put(file.getName() + "-withGuard", guardRunTime);
+                System.out.println("** Number of index filters : " + gf.getIndexFilters().size() );
+                System.out.println("** Guard query for " + file.getName() + " took " + guardRunTime.toMillis() + " **");
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -150,7 +139,7 @@ public class PolicyExecution {
             attributes.add(PolicyConstants.ENERGY_ATTR);
             attributes.add(PolicyConstants.TEMPERATURE_ATTR);
             attributes.add(PolicyConstants.LOCATIONID_ATTR);
-            List<BEPolicy> genPolicy = policyGen.generateDuplicatePolicies(500, 300, attributes, bePolicies);
+            List<BEPolicy> genPolicy = policyGen.generateOverlappingPolicies(policyNumbers[i], 0.2, attributes, bePolicies);
             bePolicies.clear();
             bePolicies.addAll(genPolicy);
         }
@@ -159,13 +148,13 @@ public class PolicyExecution {
     private void bePolicyExperiments(String policyDir) {
         TreeMap<String, Duration> runTimes = new TreeMap<>();
         runTimes.putAll(runBEPolicies(policyDir));
-//        writer.createTextReport(runTimes, policyDir);
+        writer.createTextReport(runTimes, policyDir);
     }
 
 
     public static void main(String args[]) {
         PolicyExecution pe = new PolicyExecution();
-        pe.generatePolicies(PolicyConstants.BE_POLICY_DIR);
-//        pe.bePolicyExperiments(PolicyConstants.BE_POLICY_DIR);
+//        pe.generatePolicies(PolicyConstants.BE_POLICY_DIR);
+        pe.bePolicyExperiments(PolicyConstants.BE_POLICY_DIR);
     }
 }

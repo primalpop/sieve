@@ -225,11 +225,18 @@ public class BEPolicy {
         this.object_conditions.removeAll(toRemove);
     }
 
+    /**
+     * TODO: Eliminate duplicate object conditions
+     * @return String of the query constructed based on the policy in CNF
+     */
     public String createQueryFromObjectConditions(){
         StringBuilder query = new StringBuilder();
         String delim = "";
-        for (int i = 0; i < this.object_conditions.size(); i++) {
-            ObjectCondition oc = this.object_conditions.get(i);
+        BEPolicy dupElim = new BEPolicy(this);
+        Set<ObjectCondition> og = new HashSet<>(dupElim.getObject_conditions());
+        dupElim.getObject_conditions().clear();
+        dupElim.getObject_conditions().addAll(og);
+        for (ObjectCondition oc: dupElim.getObject_conditions()) {
             query.append(delim);
             query.append(oc.print());
             delim = PolicyConstants.CONJUNCTION;
