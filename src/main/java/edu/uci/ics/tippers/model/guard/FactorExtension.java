@@ -2,6 +2,7 @@ package edu.uci.ics.tippers.model.guard;
 
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.common.PolicyEngineException;
+import edu.uci.ics.tippers.db.Histogram;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
 import edu.uci.ics.tippers.model.policy.ObjectCondition;
@@ -27,6 +28,7 @@ public class FactorExtension {
     }
 
     public FactorExtension(BEExpression genExpression) {
+        Histogram.getInstance();
         this.genExpression = genExpression;
         oMap = new HashMap<>();
         aMap = new HashMap<>();
@@ -97,17 +99,17 @@ public class FactorExtension {
     private void memoize(Map<String, Double> memoized, ObjectCondition oc, int lindex){
         for (int k = lindex + 1; k < aMap.get(oc.getAttribute()).size(); k++) {
             ObjectCondition ock = aMap.get(oc.getAttribute()).get(k);
-            if(oc.compareTo(ock) == 0){ //TODO: DELETE LATER
-                if (oc.getPolicy_id().equalsIgnoreCase(ock.getPolicy_id())){
-                    System.out.println("DEBUG!!!");
-                }
-            }
             BEExpression beM = new BEExpression();
             beM.getPolicies().addAll(oMap.get(oc));
             beM.getPolicies().addAll(oMap.get(ock));
             if(!shouldIMerge(oc, ock, beM)) continue;
             double mBenefit = estimateCost(oc.union(ock), beM);
             mBenefit -= estimateCost(oc, new BEExpression(oMap.get(oc))) + estimateCost(ock, new BEExpression(oMap.get(ock)));
+            if(oc.hashCode() == ock.hashCode()){
+                System.out.println(oc.getPolicy_id() + " : " + oc.print());
+                System.out.println(ock.getPolicy_id() + " : " + ock.print());
+                System.out.println("----------");
+            }
             memoized.put(oc.hashCode() + "." + ock.hashCode(), mBenefit);
         }
     }
@@ -169,6 +171,7 @@ public class FactorExtension {
                 }
                 if(m1.compareTo(m2) == 0) { //TODO: SANITY CHECK, DELETE AFTERWARDS
                     if(m1.getPolicy_id().equalsIgnoreCase(m2.getPolicy_id())){
+                        System.out.println(maxBenefitKey.getKey());
                         System.out.println(m1.toString());
                         System.out.println(m2.toString());
                     }

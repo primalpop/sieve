@@ -259,7 +259,7 @@ public class ObjectCondition extends BooleanCondition {
                     e += noise;
             }
             else if (this.getAttribute().equalsIgnoreCase(PolicyConstants.ENERGY_ATTR)){
-                int noise =  ((int) (1 + Math.random() * (20)));
+                int noise =  ((int) (1 + Math.random() * (10)));
                 if (s - noise > PolicyConstants.LOW_WEMO)
                     s -= noise;
                 if (e + noise < PolicyConstants.HIGH_WEMO)
@@ -282,7 +282,7 @@ public class ObjectCondition extends BooleanCondition {
             throw new PolicyEngineException("Incompatible Attribute Type");
         }
         this.getBooleanPredicates().get(0).setValue(start);
-        this.getBooleanPredicates().get(0).setValue(end);
+        this.getBooleanPredicates().get(1).setValue(end);
     }
 
 
