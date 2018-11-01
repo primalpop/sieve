@@ -226,7 +226,6 @@ public class BEPolicy {
     }
 
     /**
-     * TODO: Eliminate duplicate object conditions
      * @return String of the query constructed based on the policy in CNF
      */
     public String createQueryFromObjectConditions(){

@@ -105,11 +105,6 @@ public class FactorExtension {
             if(!shouldIMerge(oc, ock, beM)) continue;
             double mBenefit = estimateCost(oc.union(ock), beM);
             mBenefit -= estimateCost(oc, new BEExpression(oMap.get(oc))) + estimateCost(ock, new BEExpression(oMap.get(ock)));
-            if(oc.hashCode() == ock.hashCode()){
-                System.out.println(oc.getPolicy_id() + " : " + oc.print());
-                System.out.println(ock.getPolicy_id() + " : " + ock.print());
-                System.out.println("----------");
-            }
             memoized.put(oc.hashCode() + "." + ock.hashCode(), mBenefit);
         }
     }
@@ -169,11 +164,10 @@ public class FactorExtension {
                     if (g.hashCode() == Integer.parseInt(maxBenefitKey.getKey().split("\\.")[0])) m1 = g;
                     if (g.hashCode() == Integer.parseInt(maxBenefitKey.getKey().split("\\.")[1])) m2 = g;
                 }
+                Boolean deleteOne = false;
                 if(m1.compareTo(m2) == 0) { //TODO: SANITY CHECK, DELETE AFTERWARDS
                     if(m1.getPolicy_id().equalsIgnoreCase(m2.getPolicy_id())){
-                        System.out.println(maxBenefitKey.getKey());
-                        System.out.println(m1.toString());
-                        System.out.println(m2.toString());
+                        deleteOne = true;
                     }
                 }
                 ObjectCondition ocM = m1.union(m2);
@@ -185,8 +179,10 @@ public class FactorExtension {
                 if(!aMap.get(m1.getAttribute()).remove(m1)) {
                     throw new PolicyEngineException(m1.toString() + " not removed from aMap");
                 }
-                if(!aMap.get(m2.getAttribute()).remove(m2)){
-                    throw new PolicyEngineException(m1.toString() + " not removed from aMap");
+                if(!deleteOne) {
+                    if(!aMap.get(m2.getAttribute()).remove(m2)){
+                        throw new PolicyEngineException(m1.toString() + " not removed from aMap");
+                    }
                 }
                 //remove from oMap
                 oMap.remove(m1);

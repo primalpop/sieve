@@ -80,10 +80,10 @@ public class PolicyExecution {
             try {
                 /** Traditional approach **/
                 System.out.println(beExpression.createQueryFromPolices());
-//                runTime = runTime.plus(mySQLQueryManager.runTimedQuery(beExpression.createQueryFromPolices(),
-//                        PolicyConstants.QUERY_RESULTS_DIR, results_file));
-//                policyRunTimes.put(file.getName(), runTime);
-//                System.out.println("** " + file.getName() + " completed and took " + runTime.toMillis());
+                runTime = runTime.plus(mySQLQueryManager.runTimedQuery(beExpression.createQueryFromPolices(),
+                        PolicyConstants.QUERY_RESULTS_DIR, results_file));
+                policyRunTimes.put(file.getName(), runTime);
+                System.out.println("** " + file.getName() + " completed and took " + runTime.toMillis());
 
                 System.out.println("Starting Factor Extension");
                 Duration guardGen = Duration.ofMillis(0);

@@ -184,7 +184,6 @@ public class BEExpression{
      * Given a list of policies, it creates a query by
      * AND'ing object conditions that belong to the same policy
      * and by OR'ing the object conditions across policies
-     * TODO: Eliminate duplicate policies
      * @return
      */
     public String createQueryFromPolices(){
