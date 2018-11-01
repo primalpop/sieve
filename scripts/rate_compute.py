@@ -2,12 +2,12 @@ import pymysql
 import os.path
 from datetime import datetime
 import json
+import random
+import scipy.stats as stats
 
 from UserRate import UserRate
 
 connection = pymysql.connect(host='sensoria-2.ics.uci.edu', port=3306, user='tippersUser', passwd='tippers2018', db='mysql')
-database = "tippersdb_logs"
-table = "API_LOG"
 
 """ Get the email ids from tippersdb_restored DB and create a dictionary with
 email as key and UserRate as the value
@@ -20,68 +20,67 @@ def get_distinct_users():
             cursor.execute(d_users_sql)
             for row  in cursor:
                 ur_list[row[0]] = UserRate(row[0])
+        return ur_list
     except Exception as e:
         print('Got error {!r}, errno is {}'.format(e, e.args[0]))
         return ur_list
 
+"""
+TODO: Improve this to read start and end timestamps and return the share for the person based on
+time duration, where longer time period means larger share for the users involved.
+"""
 def parse_payload(jsonstr):
     payload = json.loads(jsonstr)
     if 'subject_id' in payload:
         return payload['subject_id']
-    else
+    else:
         return ""
 
-def get_rows():
+def get_random_no():
+    a, b = 1, 20
+    mu, sigma = 6, 4
+    dist = stats.truncnorm((a - mu) / sigma, (b - mu) / sigma, loc=mu, scale=sigma)
+    values = dist.rvs(1)
+    return int(values[0])
+
+def get_rows(user_dict, apis_query):
     
-    user_dict = get_distinct_users()
-
-    total_users = len(user_dict)
-
-    apis_to_look_for = ["/analytics/occupancy/area/get", "/analytics/occupancy/rooms/get", 
-    "/observation/get", "/semanticobservation/getLast", "/semanticobservation/get/usersWOPolicy"]
-    
-    apis_query = "SELECT timeStamp, payload, api from tippersdb_logs.API_LOG where api IN ["
-
-    for api in apis_to_look_for:
-        apis_query+=api
-        apis_query+= ","
-    apis_query = apis_query[:-1]
-    apis_query+= "]"
-
-    print(apis_query)
-
     try: 
         with connection.cursor() as cursor:
             cursor.execute(apis_query)
-            for row  in cursor:
-                user_email = parse_payload(row['payload'])
-                api = row['api']
+            for row in cursor:
+                user_email = parse_payload(row[0])
+                subjects = []
                 if not user_email: #subject_id not present
-                    if api == "/analytics/occupancy/area/get" 
-                        or api == "/analytics/occupancy/rooms/get": #occupancy api
-
-                    else:
-
-
+                    num_users = get_random_no()
+                    for i in range(0, num_users):
+                        subjects.append(user_dict[random.choice(list(user_dict.keys()))])
                 else:
+                    if user_email in user_dict:
+                        subjects.append(user_dict[user_email])
 
-    except Exception as e:
-        print('Got error {!r}, errno is {}'.format(e, e.args[0]))
-        return distinct_users
-
-def get_sample_data(from_ts, to_ts):
-    if os.path.exists(sample_file): return
-    sample_data = []
-    sample_data_sql = 'SELECT userId, location, startTimestamp, endTimestamp from {}.{} ' \
-                            'where startTimestamp >= "{}" and endTimestamp <= "{}"' \
-                            .format(database, table, from_ts, to_ts)
-    try: 
-        with connection.cursor() as cursor:
-            cursor.execute(sample_data_sql)
-            writeToFile(sample_file, cursor)
+                for sub in subjects:
+                    sub.queries += 1/len(subjects)
     except Exception as e:
         print('Got error {!r}, errno is {}'.format(e, e.args[0]))
 
+
+def main():
+    user_dict = get_distinct_users()
+    apis_to_look_for = ["/analytics/occupancy/area/get", "/analytics/occupancy/rooms/get", "/observation/get", "/semanticobservation/getLast", "/semanticobservation/get/usersWOPolicy"]
+    
+    apis_query = "SELECT payload from tippersdb_logs.API_LOG where api IN ("
+
+    for api in apis_to_look_for:
+        apis_query+="\'" + api + "\'"
+        apis_query+= ","
+    apis_query = apis_query[:-1]
+    apis_query+= ")"
+
+    get_rows(user_dict, apis_query)
+
+    for k, v in user_dict.items():
+        print (k, v.queries)
 
 if __name__== "__main__":
     main()

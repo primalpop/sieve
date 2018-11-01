@@ -10,7 +10,9 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.temporal.ChronoField;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -78,6 +80,14 @@ public class BooleanCondition  implements Comparable<BooleanCondition>  {
         this.booleanPredicates = new ArrayList<>();
     }
 
+    public BooleanCondition(BooleanCondition booleanCondition) {
+        this.booleanPredicates = new ArrayList<>();
+        for(BooleanPredicate bp: booleanCondition.getBooleanPredicates()){
+            this.booleanPredicates.add(new BooleanPredicate(bp));
+        }
+    }
+
+
     //TODO: Is this required? If not in quotes, it raises this warning
     //TODO: Cannot use range access on index 'so_t' due to type or collation conversion on field 'temperature'
     public String check_type(String value) {
@@ -95,12 +105,18 @@ public class BooleanCondition  implements Comparable<BooleanCondition>  {
         }
     }
 
+    /**
+     * Removes duplicate predicates
+     * @return
+     */
     public String print(){
         StringBuilder r = new StringBuilder();
-        BooleanPredicate bp;
         String delim = "";
-        for (int i = 0; i < this.getBooleanPredicates().size(); i++){
-            bp = this.getBooleanPredicates().get(i);
+        BooleanCondition dupElim = new BooleanCondition(this);
+        Set<BooleanPredicate> og = new HashSet<>(dupElim.getBooleanPredicates());
+        dupElim.getBooleanPredicates().clear();
+        dupElim.getBooleanPredicates().addAll(og);
+        for (BooleanPredicate bp: dupElim.getBooleanPredicates()) {
             r.append(delim);
             r.append("(" + this.getAttribute() + bp.getOperator() + check_type(bp.getValue()) + ")");
             delim = PolicyConstants.CONJUNCTION;
