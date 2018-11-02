@@ -2,6 +2,7 @@ package edu.uci.ics.tippers.model.guard;
 
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.common.PolicyEngineException;
+import edu.uci.ics.tippers.db.Histogram;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
 import edu.uci.ics.tippers.model.policy.ObjectCondition;
@@ -27,6 +28,7 @@ public class FactorExtension {
     }
 
     public FactorExtension(BEExpression genExpression) {
+        Histogram.getInstance();
         this.genExpression = genExpression;
         oMap = new HashMap<>();
         aMap = new HashMap<>();
@@ -128,7 +130,12 @@ public class FactorExtension {
         }
     }
 
-    public void doYourThing() {
+    /**
+     * Returns the number of extensions performed for the expression
+     * @return
+     */
+    public int doYourThing() {
+        int numberOfExtensions = 0;
         for (String attribute: aMap.keySet()) {
             List<ObjectCondition> attrToOc = aMap.get(attribute);
             Map<String, Double> memoized = new HashMap<>();
@@ -147,13 +154,26 @@ public class FactorExtension {
                     if (g.hashCode() == Integer.parseInt(maxBenefitKey.getKey().split("\\.")[0])) m1 = g;
                     if (g.hashCode() == Integer.parseInt(maxBenefitKey.getKey().split("\\.")[1])) m2 = g;
                 }
+                Boolean deleteOne = false;
+                if(m1.compareTo(m2) == 0) { //TODO: SANITY CHECK, DELETE AFTERWARDS
+                    if(m1.getPolicy_id().equalsIgnoreCase(m2.getPolicy_id())){
+                        deleteOne = true;
+                    }
+                }
                 ObjectCondition ocM = m1.union(m2);
                 BEExpression beM = new BEExpression();
                 beM.getPolicies().addAll(oMap.get(m1));
                 beM.getPolicies().addAll(oMap.get(m2));
+                numberOfExtensions += 1;
                 //remove from aMap
-                if(!aMap.get(m1.getAttribute()).remove(m1)) throw new PolicyEngineException(m1.toString() + " not removed from aMap");
-                if(!aMap.get(m2.getAttribute()).remove(m2)) throw new PolicyEngineException(m1.toString() + " not removed from aMap");;
+                if(!aMap.get(m1.getAttribute()).remove(m1)) {
+                    throw new PolicyEngineException(m1.toString() + " not removed from aMap");
+                }
+                if(!deleteOne) {
+                    if(!aMap.get(m2.getAttribute()).remove(m2)){
+                        throw new PolicyEngineException(m1.toString() + " not removed from aMap");
+                    }
+                }
                 //remove from oMap
                 oMap.remove(m1);
                 oMap.remove(m2);
@@ -175,5 +195,6 @@ public class FactorExtension {
         for(ObjectCondition original:replacementMap.keySet()) {
             this.genExpression.replenishFromPolicies(original, replacementMap.get(original));
         }
+        return numberOfExtensions;
     }
 }
