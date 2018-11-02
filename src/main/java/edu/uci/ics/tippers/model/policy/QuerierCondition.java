@@ -10,11 +10,9 @@ import java.util.List;
  */
 public class QuerierCondition extends BooleanCondition {
 
-
     public QuerierCondition(){
 
     }
-
 
     public QuerierCondition(QuerierCondition qc){
         this.attribute = qc.getAttribute();
@@ -25,7 +23,6 @@ public class QuerierCondition extends BooleanCondition {
         }
     }
 
-
     public QuerierCondition(String attribute, AttributeType attributeType, String o1, String v1, String o2, String v2){
         this.attribute = attribute;
         this.type = attributeType;
@@ -34,4 +31,5 @@ public class QuerierCondition extends BooleanCondition {
         booleanPredicates.add(new BooleanPredicate(o2, v2));
         this.booleanPredicates = booleanPredicates;
     }
+
 }

@@ -72,12 +72,13 @@ public class PolicyConstants {
 
     public static final String START_TS = "2017-03-31 15:10:00 ";
 
-    public static final String END_TS = "2017-10-23 12:40:55";
+    public static final String END_TS = "2017-12-07 16:24:57";
 
     public static final ImmutableList<String> ACTIVITIES = ImmutableList.of("class", "meeting", "seminar",
             "private", "walking", "unknown", "work");
 
     public static final ImmutableList<Double> HOUR_EXTENSIONS = ImmutableList.of(5.0, 10.0, 12.0, 24.0, 48.0, 72.0, 96.0, 120.0);
+
 
 
     //TEMPORARY FIX: Querier Conditions

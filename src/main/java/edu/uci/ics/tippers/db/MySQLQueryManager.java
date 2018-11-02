@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.common.PolicyEngineException;
 import edu.uci.ics.tippers.fileop.Reader;
-import edu.uci.ics.tippers.model.data.Semantic_Observation;
+import edu.uci.ics.tippers.model.data.Presence;
 import org.apache.commons.dbutils.DbUtils;
 
 import java.io.IOException;
@@ -79,6 +79,12 @@ public class MySQLQueryManager {
             try {
                 Instant start = Instant.now();
                 ResultSet rs = statement.executeQuery(query);
+                int rowcount = 0;
+                if (rs.last()) {
+                    rowcount = rs.getRow();
+                    rs.beforeFirst(); // not rs.first() because the rs.next() below will move on, missing the first element
+                }
+                System.out.println("Result size: " + rowcount);
                 Instant end = Instant.now();
                 int rowcount = 0;
                 if (rs.last()) {
@@ -155,21 +161,21 @@ public class MySQLQueryManager {
      * @return
      */
     public Boolean checkResults(String pathName, String fileName) {
-        List<Semantic_Observation> og = parseJSONList(Reader.readTxt(PolicyConstants.QUERY_RESULTS_DIR + fileName +".json"));
-        List<Semantic_Observation> tbc = parseJSONList(Reader.readTxt(pathName + fileName + ".json"));
+        List<Presence> og = parseJSONList(Reader.readTxt(PolicyConstants.QUERY_RESULTS_DIR + fileName +".json"));
+        List<Presence> tbc = parseJSONList(Reader.readTxt(pathName + fileName + ".json"));
         if(og.size() != tbc.size()) return false;
-        Comparator<Semantic_Observation> comp = Comparator.comparingInt(so -> Integer.parseInt(so.getId()));
+        Comparator<Presence> comp = Comparator.comparingInt(so -> Integer.parseInt(so.getId()));
         og.sort(comp);
         tbc.sort(comp);
         return IntStream.range(0, og.size())
                 .allMatch(i -> comp.compare(og.get(i), tbc.get(i)) == 0);
     }
 
-    public List<Semantic_Observation> parseJSONList(String jsonData) {
+    public List<Presence> parseJSONList(String jsonData) {
         ObjectMapper objectMapper = new ObjectMapper();
-        List<Semantic_Observation> query_results = null;
+        List<Presence> query_results = null;
         try {
-            query_results = objectMapper.readValue(jsonData, new TypeReference<List<Semantic_Observation>>(){});
+            query_results = objectMapper.readValue(jsonData, new TypeReference<List<Presence>>(){});
         } catch (IOException e) {
             e.printStackTrace();
         }

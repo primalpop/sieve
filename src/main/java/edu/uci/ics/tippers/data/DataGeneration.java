@@ -37,7 +37,7 @@ public class DataGeneration {
         this.parser = new JSONParser();
     }
 
-    private void runScript(String fileName) throws PolicyEngineException {
+    public void runScript(String fileName) throws PolicyEngineException {
         ScriptRunner sr = new ScriptRunner(connection, false, true);
         sr.setLogWriter(null);
         Reader reader;

@@ -46,6 +46,48 @@ CREATE TABLE IF NOT EXISTS SEMANTIC_OBSERVATION  (
 --   FOREIGN KEY (user_id) REFERENCES USER (ID)
 ) ;
 
+
+CREATE TABLE IF NOT EXISTS USER_POLICY  (
+  id integer NOT NULL AUTO_INCREMENT,
+  querier varchar(255) NOT NULL,
+  purpose varchar(255) NOT NULL,
+  enforcement_action varchar(255) DEFAULT NULL,
+  inserted_at timestamp NOT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (querier) REFERENCES USER (ID)
+) ;
+
+CREATE TABLE IF NOT EXISTS GROUP_POLICY  (
+  id integer NOT NULL AUTO_INCREMENT,
+  querier varchar(255) NOT NULL,
+  purpose varchar(255) NOT NULL,
+  enforcement_action varchar(255) DEFAULT NULL,
+  inserted_at timestamp NOT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (querier) REFERENCES USER_GROUP (ID)
+) ;
+
+CREATE TABLE IF NOT EXISTS USER_POLICY_OBJECT_CONDITION  (
+  id integer NOT NULL AUTO_INCREMENT,
+  policy_id integer NOT NULL,
+  attribute varchar(255) NOT NULL,
+  operator varchar(255) NOT NULL,
+  comp_value varchar(255) DEFAULT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (policy_id) REFERENCES USER_POLICY (id)
+) ;
+
+
+CREATE TABLE IF NOT EXISTS GROUP_POLICY_OBJECT_CONDITION  (
+  id integer NOT NULL AUTO_INCREMENT,
+  policy_id integer NOT NULL,
+  attribute varchar(255) NOT NULL,
+  operator varchar(255) NOT NULL,
+  comp_value varchar(255) DEFAULT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (policy_id) REFERENCES GROUP_POLICY (id)
+) ;
+
 --
 --CREATE INDEX so_ts ON SEMANTIC_OBSERVATION(timeStamp);
 --CREATE INDEX so_u ON SEMANTIC_OBSERVATION(user_id);

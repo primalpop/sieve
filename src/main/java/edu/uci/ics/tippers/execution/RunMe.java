@@ -1,7 +1,7 @@
 package edu.uci.ics.tippers.execution;
 
 import edu.uci.ics.tippers.fileop.Reader;
-import edu.uci.ics.tippers.model.guard.*;
+import edu.uci.ics.tippers.manager.Persistor;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 
 /**
@@ -10,6 +10,15 @@ import edu.uci.ics.tippers.model.policy.BEExpression;
 public class RunMe {
 
     public static void main(String args[]) {
+
+//        DataGeneration dataGeneration = new DataGeneration();
+//        dataGeneration.runScript("mysql/schema.sql");
+
+        BEExpression beExpression = new BEExpression();
+        beExpression.parseJSONList(Reader.readFile("/policies/deprecated/policyext2.json"));
+
+        Persistor persistor = new Persistor();
+        persistor.insertPolicy(beExpression.getPolicies().get(0));
 
 //        for(int i = 0; i <Histogram.getInstance().getBucketMap().get(PolicyConstants.TIMESTAMP_ATTR).size(); i++){
 //            System.out.println(Histogram.getInstance().getBucketMap().get(PolicyConstants.TIMESTAMP_ATTR).get(i).toStringEH());
@@ -22,17 +31,17 @@ public class RunMe {
 //        System.out.println(-s);
 //        System.out.println(Histogram.getInstance().getBucketMap().get(PolicyConstants.TIMESTAMP_ATTR).get(-s -1 ).toStringEH());
 //
-        BEExpression beExpression = new BEExpression();
-        beExpression.parseJSONList(Reader.readFile("/policies/policyext2.json"));
-        System.out.println(beExpression.createQueryFromPolices());
-
-        FactorExtension gg = new FactorExtension(beExpression);
-        gg.doYourThing();
-        System.out.println(gg.getGenExpression().createQueryFromPolices());
-
-        FactorSelection tt = new FactorSelection(gg.getGenExpression());
-        tt.selectGuards();
-        System.out.println(tt.createQueryFromExactFactor());
+//        BEExpression beExpression = new BEExpression();
+//        beExpression.parseJSONList(Reader.readFile("/policies/policyext2.json"));
+//        System.out.println(beExpression.createQueryFromPolices());
+//
+//        FactorExtension gg = new FactorExtension(beExpression);
+//        gg.doYourThing();
+//        System.out.println(gg.getGenExpression().createQueryFromPolices());
+//
+//        FactorSelection tt = new FactorSelection(gg.getGenExpression());
+//        tt.selectGuards();
+//        System.out.println(tt.createQueryFromExactFactor());
 
 //        ExactFactorization ef = new ExactFactorization();
 //        ef.memoize(beExpression);
