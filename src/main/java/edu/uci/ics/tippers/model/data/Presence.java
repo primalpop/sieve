@@ -5,7 +5,7 @@ import java.util.Objects;
 /**
  * Created by cygnus on 7/5/17.
  */
-public class Semantic_Observation {
+public class Presence {
 
     private String id;
 
@@ -21,11 +21,11 @@ public class Semantic_Observation {
 
     private String activity;
 
-    public Semantic_Observation(){
+    public Presence(){
 
     }
 
-    public Semantic_Observation(String user_id, String location, String timeStamp, String temperature, String energy, String activity) {
+    public Presence(String user_id, String location, String timeStamp, String temperature, String energy, String activity) {
         this.user_id = user_id;
         this.location = location;
         this.timeStamp = timeStamp;
@@ -94,7 +94,7 @@ public class Semantic_Observation {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Semantic_Observation that = (Semantic_Observation) o;
+        Presence that = (Presence) o;
         return Objects.equals(id, that.id);
     }
 

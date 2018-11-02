@@ -71,7 +71,7 @@ public class PolicyGeneration {
             return getRandomTimeStamp();
         int hourIndex = new Random().nextInt(PolicyConstants.HOUR_EXTENSIONS.size());
         double rHour = PolicyConstants.HOUR_EXTENSIONS.get(hourIndex);
-        
+
         rHour = rHour * Math.random();
         Long milliseconds = (long)(rHour * 60.0 * 60.0 * 1000.0);
         return new Timestamp(timestamp.getTime() + milliseconds);

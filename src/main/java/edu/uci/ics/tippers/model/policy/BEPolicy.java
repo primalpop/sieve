@@ -205,7 +205,7 @@ public class BEPolicy {
      * @return true if all object conditions are contained in the policy, false otherwise
      */
     public boolean containsObjCond(Set<ObjectCondition> objectConditionSet){
-       return Sets.newHashSet(this.object_conditions).containsAll(objectConditionSet);
+        return Sets.newHashSet(this.object_conditions).containsAll(objectConditionSet);
     }
 
     public boolean containsObjCond(ObjectCondition oc){
@@ -283,8 +283,8 @@ public class BEPolicy {
                     selected = oc;
         }
         double cost = PolicyConstants.NUMBER_OR_TUPLES * selected.computeL() *(PolicyConstants.IO_BLOCK_READ_COST  +
-                        PolicyConstants.ROW_EVALUATE_COST * 2 * PolicyConstants.NUMBER_OF_PREDICATES_EVALUATED *
-                                this.getObject_conditions().size());
+                PolicyConstants.ROW_EVALUATE_COST * 2 * PolicyConstants.NUMBER_OF_PREDICATES_EVALUATED *
+                        this.getObject_conditions().size());
         return cost;
     }
 
