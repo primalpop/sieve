@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Created by cygnus on 10/29/17.
@@ -48,7 +49,7 @@ public class Writer {
                 if (f.exists()) f = new File(dir + "policy" + items.size() + "-af.json");
             }
             else {
-                f = new File(dir + filename +".json");
+                f = new File(dir + "policy" + items.size() + filename +".json");
             }
             writer.writeValue(f, items);
         } catch (IOException e) {
@@ -56,19 +57,19 @@ public class Writer {
         }
     }
 
-    public void createTextReport(Map<String, Duration> runTimes, String fileDir) {
+    public void createTextReport(TreeMap<String, Duration> runTimes, String fileDir) {
         try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter( fileDir + "results.txt"));
-
-            writer.write("Number of Policies     Time taken (in ms)");
-            writer.write("\n\n");
+            BufferedWriter writer = new BufferedWriter(new FileWriter( fileDir + "results.csv"));
 
             String line = "";
             for (String policy: runTimes.keySet()) {
-                if (runTimes.get(policy).compareTo(PolicyConstants.MAX_DURATION) < 0 )
-                    line +=  String.format("%s %s", policy, runTimes.get(policy).toMillis());
-                else
-                    line +=  String.format("%s  %s", policy, "Timed out" );
+//                String policyNumber = policy.replaceAll("\\D+","");
+                if (runTimes.get(policy).compareTo(PolicyConstants.MAX_DURATION) < 0 ){
+                    line +=  String.format("%s, %s", policy, runTimes.get(policy).toMillis());
+                }
+                else{
+                    line +=  String.format("%s,  %s", policy, "Timed out" );
+                }
                 line += "\n";
             }
             writer.write(line);
@@ -78,5 +79,25 @@ public class Writer {
         }
     }
 
+    public void createCSVReport(TreeMap<String, Duration> runTimes, String fileDir, String fileName) {
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter( fileDir + fileName));
+
+            String line = "";
+            for (String number: runTimes.keySet()) {
+                if (runTimes.get(number).compareTo(PolicyConstants.MAX_DURATION) < 0 ){
+                    line +=  String.format("%s, %s", number, runTimes.get(number).toMillis());
+                }
+                else{
+                    line +=  String.format("%s,  %s", number, "Timed out" );
+                }
+                line += "\n";
+            }
+            writer.write(line);
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 }

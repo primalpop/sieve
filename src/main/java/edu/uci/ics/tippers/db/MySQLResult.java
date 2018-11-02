@@ -5,6 +5,7 @@ import edu.uci.ics.tippers.model.data.Presence;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,9 +13,28 @@ public class MySQLResult {
 
     String pathName;
     String fileName;
+    Duration timeTaken;
+    int resultCount;
 
     public MySQLResult() {
+        this.timeTaken = Duration.ofMillis(0);
+        this.resultCount = 0;
+    }
 
+    public int getResultCount() {
+        return resultCount;
+    }
+
+    public void setResultCount(int resultCount) {
+        this.resultCount = resultCount;
+    }
+
+    public Duration getTimeTaken() {
+        return timeTaken;
+    }
+
+    public void setTimeTaken(Duration timeTaken) {
+        this.timeTaken = timeTaken;
     }
 
     public String getPathName() {

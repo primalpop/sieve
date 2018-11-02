@@ -1,155 +1,198 @@
 package edu.uci.ics.tippers.execution;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.uci.ics.tippers.common.PolicyConstants;
-import edu.uci.ics.tippers.data.PolicyGeneration;
-import edu.uci.ics.tippers.db.MySQLConnectionManager;
-import edu.uci.ics.tippers.db.MySQLQueryManager;
 import edu.uci.ics.tippers.fileop.Reader;
 import edu.uci.ics.tippers.fileop.Writer;
 import edu.uci.ics.tippers.model.guard.FactorExtension;
 import edu.uci.ics.tippers.model.guard.FactorSelection;
+import edu.uci.ics.tippers.model.guard.PolicyFilter;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
 
-import java.io.File;
-import java.sql.*;
-import java.text.SimpleDateFormat;
 import java.time.Duration;
-import java.util.*;
-import java.util.Date;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeMap;
 
-/**
- * Created by cygnus on 12/12/17.
- */
 public class RunExp {
 
-    private long timeout = 250000;
-
-    private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-    private Connection connection;
-
-    private static final int[] policyNumbers = {10, 20, 30, 40, 50};
-
-    private static PolicyGeneration policyGen;
-
-    private final ObjectMapper objectMapper = new ObjectMapper();
-
-    Writer writer;
-
-    MySQLQueryManager mySQLQueryManager;
-
+    List<BEPolicy> bePolicyList;
 
     public RunExp() {
-        this.connection = MySQLConnectionManager.getInstance().getConnection();
-        policyGen = new PolicyGeneration();
-        writer = new Writer();
-        objectMapper.setDateFormat(sdf);
-        mySQLQueryManager = new MySQLQueryManager();
+        bePolicyList = new ArrayList<>();
     }
 
 
-    //TODO: Fix the result checker by passing the fileName to write to
-    public Map<String, Duration> runBEPolicies(String policyDir) {
+    public void readPolicies(String filePath){
+        BEExpression beExpression = new BEExpression();
+        beExpression.parseJSONList(Reader.readTxt(filePath));
+        bePolicyList.addAll(beExpression.getPolicies());
+    }
 
-        Map<String, Duration> policyRunTimes = new HashMap<>();
+    /**
+     * Returns a list with first element as the guard generation cost and the second
+     * element as the guard execution cost
+     * @param beExpression
+     * @return
+     */
+    public List<Duration> generateGuard(BEExpression beExpression){
 
-        File[] policyFiles = new File(policyDir).listFiles();
+        List<Duration> guardCosts = new ArrayList<>();
 
-        Boolean resultsChecked = false;
+        Duration guardGen = Duration.ofMillis(0);
+        /** Extension **/
+        FactorExtension f = new FactorExtension(beExpression);
+        Instant feStart = Instant.now();
+        int ext = f.doYourThing();
+        System.out.println("Number of extensions: " + ext);
+        Instant feEnd = Instant.now();
+        guardGen = guardGen.plus(Duration.between(feStart, feEnd));
 
-        for (File file : policyFiles) {
+        /** Factorization **/
+        FactorSelection gf = new FactorSelection(f.getGenExpression());
+        Instant fsStart = Instant.now();
+        gf.selectGuards();
+        Instant fsEnd = Instant.now();
+        guardGen = guardGen.plus(Duration.between(fsStart, fsEnd));
+        System.out.println("Number of guards: " + gf.getIndexFilters().size());
 
-            System.out.println(file.getName() + " being processed........");
+        Duration guardRunTime = gf.computeGuardCosts();
 
-            String results_file = new SimpleDateFormat("yyyyMMddHHmm").format(new Date());
+        System.out.println("Guard " + gf.createQueryFromExactFactor());
 
-            BEExpression beExpression = new BEExpression();
-
-            beExpression.parseJSONList(Reader.readTxt(policyDir + file.getName()));
-
-            Duration runTime = Duration.ofMillis(0);
-
-//            System.out.println("Number Of Predicates before extension: " + beExpression.countNumberOfPredicates());
-
-            try {
-                /** Traditional approach **/
-                System.out.println(beExpression.createQueryFromPolices());
-                runTime = runTime.plus(mySQLQueryManager.runTimedQuery(beExpression.createQueryFromPolices(),
-                        PolicyConstants.QUERY_RESULTS_DIR, results_file));
-                policyRunTimes.put(file.getName(), runTime);
-                System.out.println(file.getName() + " completed and took " + runTime);
-
-                /** Extension **/
-                runTime = Duration.ofMillis(0);
-                FactorExtension f = new FactorExtension(beExpression);
-//                Instant sG = Instant.now();
-                f.doYourThing();
-//                Instant eG = Instant.now();
-//                System.out.println("Factorization took " + Duration.between(sG, eG));
-
-                /** Result checking **/
-//                mySQLQueryManager.runTimedQuery(f.getGenExpression().createQueryFromPolices(),
-//                        PolicyConstants.QR_EXTENDED, results_file);
-//                resultsChecked = mySQLQueryManager.checkResults(PolicyConstants.QR_EXTENDED, results_file);
-//                if(!resultsChecked){
-//                    System.out.println("*** Query results don't match after Extension ***!!!");
-//                    policyRunTimes.put(file.getName() + "-af-invalid", PolicyConstants.MAX_DURATION);
-//                }
-
-                /** Factorization **/
-                FactorSelection gf = new FactorSelection(f.getGenExpression());
-//                Instant sG = Instant.now();
-                gf.selectGuards();
-//                Instant eG = Instant.now();
-//                System.out.println("Factorization took " + Duration.between(sG, eG));
-//                System.out.println("Factorized query " + gf.createQueryFromExactFactor());
-//                runTime = Duration.ofMillis(0);
-//                runTime = runTime.plus(mySQLQueryManager.runTimedQuery(gf.createQueryFromExactFactor(),
-//                        PolicyConstants.QR_FACTORIZED, results_file));
-                policyRunTimes.put(file.getName() + "-gf", gf.computeGuardCosts());
-                System.out.println("Number of index filters : " + gf.getIndexFilters().size());
-//                System.out.println("** Factorized query took " + runTime + " **");
+        guardCosts.add(guardGen);
+        guardCosts.add(guardRunTime);
 
 
-            } catch (Exception e) {
-                e.printStackTrace();
-                policyRunTimes.put(file.getName(), PolicyConstants.MAX_DURATION);
+        return guardCosts;
+    }
+
+    /**
+     * For each epoch, returns the filter cost, guard cost and guard generation cost
+     * Encoding: 1 - filter cost 2 - guard cost and 3 - guard generation cost
+     * e.g., 1.1 - filter cost of 1st epoch, 3.7 - guard generation cost of 7th epoch
+     * @param start_policies
+     * @param k
+     * @param rqp
+     * @param epochs
+     * @param fileName
+     * @return
+     */
+    public TreeMap<String, Duration> runDetailedExpt(int start_policies, int k, int rqp, int epochs, String fileName){
+
+        TreeMap<String, Duration> runTimes = new TreeMap<>();
+
+        readPolicies(PolicyConstants.BE_POLICY_DIR + fileName);
+
+        int i = start_policies;
+        BEExpression current = new BEExpression(this.bePolicyList.subList(0,i));
+        int counter = 0;
+        List<Duration> gCosts =  generateGuard(current);
+        String epoch = "";
+        epoch += "2." + String.valueOf(i-start_policies);
+        runTimes.put(epoch, gCosts.get(1));
+        epoch = "";
+        while (i < start_policies + epochs - 1){
+            counter += 1;
+            i+=1;
+            if(counter == k){
+                current = new BEExpression(this.bePolicyList.subList(0,i));
+                gCosts = generateGuard(current);
+                epoch += "3." + String.valueOf(i-start_policies);
+                runTimes.put(epoch, gCosts.get(0));
+                epoch = "";
+                System.out.println("Guard generation cost at epoch" + String.valueOf(i-start_policies) + " :" + gCosts.get(0).toMillis());
+                counter = 0;
             }
+            Duration pfTime;
+            if(counter != 0) {
+                PolicyFilter pf = new PolicyFilter(new BEExpression(this.bePolicyList.subList(i - counter, i)));
+                pfTime = pf.computeCost();
+                epoch += "1." + String.valueOf(i-start_policies);
+                runTimes.put(epoch, pfTime);
+                epoch = "";
+                System.out.println("Filter cost at epoch" + String.valueOf(i-start_policies) + ": " + pfTime.toMillis());
+                System.out.println("Filter Selectivity " + String.valueOf(i-start_policies) + ": " + pf.getExpression().computeL());
+            }
+            System.out.println("Guard Cost at epoch" + String.valueOf(i-start_policies) + ": " + gCosts.get(1).toMillis());
+            epoch += "2." + String.valueOf(i-start_policies);
+            runTimes.put(epoch, gCosts.get(1));
+            epoch = "";
         }
-
-        return policyRunTimes;
+        return runTimes;
     }
 
-    //Only handles BEPolicies
-    private void generatePolicies(String policyDir) {
-        System.out.println("Generating Policies ..........");
-        List<BEPolicy> bePolicies = new ArrayList<>();
-        for (int i = 0; i < policyNumbers.length; i++) {
-            List<String> attributes = new ArrayList<>();
-            attributes.add(PolicyConstants.TIMESTAMP_ATTR);
-            attributes.add(PolicyConstants.USERID_ATTR);
-            attributes.add(PolicyConstants.ENERGY_ATTR);
-            attributes.add(PolicyConstants.TEMPERATURE_ATTR);
-            attributes.add(PolicyConstants.LOCATIONID_ATTR);
-            attributes.add(PolicyConstants.ACTIVITY_ATTR);
-            List<BEPolicy> genPolicy = policyGen.generateBEPolicy(policyNumbers[i], attributes, bePolicies);
-            bePolicies.clear();
-            bePolicies.addAll(genPolicy);
+
+    /**
+     *
+     * example: start_policies = 50, k = 4, rqp = 5, epochs = 64, fileName = policy114.json
+     * returns a list with first element as guard generation cost and second as query evaluation
+     * cost for the number of epochs
+     *
+     */
+    public List<Duration> runExpt(int start_policies, int k, int rqp, int epochs, String fileName){
+
+        System.out.println("============= Starting new k = " + k + " =================");
+        readPolicies(PolicyConstants.BE_POLICY_DIR + fileName);
+
+        int i = start_policies;
+        BEExpression current = new BEExpression(this.bePolicyList.subList(0,i));
+        int counter = 0;
+        List<Duration> gCosts =  generateGuard(current);
+        Duration genCost = Duration.ofMillis(0);
+        Duration evalCost = Duration.ofMillis(0);
+        Duration filterCost = Duration.ofMillis(0);
+        Duration guardCost = Duration.ofMillis(0);
+        evalCost = evalCost.plusMillis(gCosts.get(1).toMillis() * rqp);
+        System.out.println("Guard Cost before epochs " + gCosts.get(1).toMillis());
+        while (i < start_policies + epochs - 1){
+            counter += 1;
+            i+=1;
+            if(counter == k){
+                current = new BEExpression(this.bePolicyList.subList(0,i));
+                gCosts = generateGuard(current);
+                genCost = genCost.plusMillis(gCosts.get(0).toMillis());
+                System.out.println("Guard regenerated: " + i );
+                System.out.println("Guard generation cost: " + gCosts.get(0).toMillis());
+                counter = 0;
+            }
+            Duration pfTime = Duration.ofMillis(0);
+            if(counter != 0) {
+                PolicyFilter pf = new PolicyFilter(new BEExpression(this.bePolicyList.subList(i - counter, i)));
+                pfTime = pf.computeCost();
+                System.out.println("Filter cost " + i + ": " + pfTime.toMillis());
+                filterCost = filterCost.plusMillis(pfTime.toMillis());
+            }
+            System.out.println("Guard Cost " + i + ": " + gCosts.get(1).toMillis());
+            guardCost = guardCost.plusMillis(gCosts.get(1).toMillis());
+            evalCost = evalCost.plusMillis((pfTime.toMillis() + gCosts.get(1).toMillis())*rqp);
         }
+        System.out.println("Total Filter Cost: " + filterCost.toMillis());
+        System.out.println("Total Guard Cost: " + guardCost.toMillis());
+        System.out.println("** Total Evaluation Cost: **" + evalCost.toMillis());
+        System.out.println("** Total Guard Generation Cost: **" + genCost.toMillis());
+        List<Duration> total_time = new ArrayList<>();
+        total_time.add(genCost);
+        total_time.add(evalCost);
+        return total_time;
     }
-
-    private void bePolicyExperiments(String policyDir) {
-        Map<String, Duration> runTimes = new HashMap<>();
-        runTimes.putAll(runBEPolicies(policyDir));
-        writer.createTextReport(runTimes, policyDir);
-    }
-
 
     public static void main(String args[]) {
-        RunExp pe = new RunExp();
-        pe.generatePolicies(PolicyConstants.BE_POLICY_DIR);
-        pe.bePolicyExperiments(PolicyConstants.BE_POLICY_DIR);
+        int[] kValues = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
+        int epochs = 15;
+        int start_policies = 20;
+        int rpq = 2;
+        String[] fileNames = {"policy35.json"};
+        List<Duration> times = new ArrayList<>();
+        TreeMap<String, Duration> runTimes = new TreeMap<>();
+        RunExp re = new RunExp();
+        Writer writer = new Writer();
+        for (int kValue : kValues) {
+            times = re.runExpt(start_policies, kValue, rpq, epochs, fileNames[0]);
+            runTimes.put( kValue + " generation", times.get(0));
+            runTimes.put( kValue + " evaluation", times.get(1));
+        }
+        writer.createCSVReport(runTimes, PolicyConstants.BE_POLICY_DIR, "result" + ".csv");
     }
 }
