@@ -97,11 +97,8 @@ public class FactorSelection {
             BEExpression temp = new BEExpression(this.expression);
             temp.checkAgainstPolices(objectCondition);
             if (temp.getPolicies().size() > 1) { //was able to factorize
-                double tCost = temp.estimateCost();
-//                System.out.println(String.format("Expression: %s, Cost: %s", temp.createQueryFromPolices(), tCost));
-                double fCost = estimateCostOfGuardRep(objectCondition, temp);
-//                System.out.println(String.format("Guard: %s, Partition: %s, Cost: %s", objectCondition.print(),
-//                        temp.createQueryFromPolices(), fCost));
+                double tCost = temp.estimateCostForSelection(objectCondition);
+                double fCost = temp.estimateCostOfGuardRep(objectCondition);
                 if (tCost > fCost) {
                     if(currentBestFactor.cost > fCost) {
                         factorized = true;
@@ -116,6 +113,7 @@ public class FactorSelection {
                 }
                 else removal.add(objectCondition); //not considered for factorization recursively
             }
+            else removal.add(objectCondition); //not a factor of at least two policies
         }
         if(factorized){
             this.setMultiplier(currentBestFactor.getMultiplier());

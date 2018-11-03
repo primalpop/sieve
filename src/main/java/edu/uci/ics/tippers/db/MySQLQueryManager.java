@@ -79,12 +79,6 @@ public class MySQLQueryManager {
             try {
                 Instant start = Instant.now();
                 ResultSet rs = statement.executeQuery(query);
-                int rowcount = 0;
-                if (rs.last()) {
-                    rowcount = rs.getRow();
-                    rs.beforeFirst(); // not rs.first() because the rs.next() below will move on, missing the first element
-                }
-                System.out.println("Result size: " + rowcount);
                 Instant end = Instant.now();
                 int rowcount = 0;
                 if (rs.last()) {

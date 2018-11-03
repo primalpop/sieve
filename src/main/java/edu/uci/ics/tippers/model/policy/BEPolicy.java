@@ -306,4 +306,30 @@ public class BEPolicy {
         }
         return selectivity;
     }
+
+    /**
+     * Estimates the cost of evaluating an individual policy (for the purpose of extension) by adding up
+     * io block read cost * selectivity of predicate on a given attribute * D +
+     * (D * selectivity of predicate on a given attribute *  row evaluate cost * 2  * alpha * number of predicates)
+     * alpha is a parameter which determines the number of predicates that are evaluated in the policy (e.g., 2/3)
+     */
+    public double estimateCostForExtension(String attribute) {
+        ObjectCondition selected = this.getObject_conditions().stream().filter(o -> o.getAttribute().equals(attribute)).findFirst().get();
+        double cost = PolicyConstants.NUMBER_OR_TUPLES * selected.computeL() *(PolicyConstants.IO_BLOCK_READ_COST  +
+                PolicyConstants.ROW_EVALUATE_COST * 2 * PolicyConstants.NUMBER_OF_PREDICATES_EVALUATED *
+                        this.getObject_conditions().size());
+        return cost;
+    }
+
+
+    /**
+     * Estimates the cost of evaluating an individual policy (for the purpose of selection) rest same as above
+     */
+    public double estimateCostForSelection(ObjectCondition toBeSelected) {
+        double cost = PolicyConstants.NUMBER_OR_TUPLES * toBeSelected.computeL() *(PolicyConstants.IO_BLOCK_READ_COST  +
+                PolicyConstants.ROW_EVALUATE_COST * 2 * PolicyConstants.NUMBER_OF_PREDICATES_EVALUATED *
+                        this.getObject_conditions().size());
+        return cost;
+    }
+
 }
