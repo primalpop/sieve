@@ -30,7 +30,7 @@ public class PolicyExecution {
 
     private Connection connection;
 
-    private static final int[] policyNumbers = {5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 100, 300, 500, 700, 1000};
+    private static final int[] policyNumbers = {10};
 
     private static final int[] policyEpochs = {0};
 
@@ -54,14 +54,16 @@ public class PolicyExecution {
 
 
     //TODO: Fix the result checker by passing the fileName to write to
-    public Map<String, Duration> runBEPolicies(String policyDir) {
+    public void runBEPolicies(String policyDir) {
 
-        TreeMap<String, Duration> policyRunTimes = new TreeMap<>();
+        TreeMap<String, String> policyRunTimes = new TreeMap<>();
 
         File[] policyFiles = new File(policyDir).listFiles();
         Arrays.sort(policyFiles);
 
         Boolean resultsChecked = false;
+
+        String exptResults = "results.csv";
 
         for (File file : policyFiles) {
 
@@ -79,11 +81,11 @@ public class PolicyExecution {
 
             try {
                 /** Traditional approach **/
-                System.out.println(beExpression.createQueryFromPolices());
-                runTime = runTime.plus(mySQLQueryManager.runTimedQuery(beExpression.createQueryFromPolices(),
-                        PolicyConstants.QUERY_RESULTS_DIR, results_file));
-                policyRunTimes.put(file.getName(), runTime);
-                System.out.println("** " + file.getName() + " completed and took " + runTime.toMillis());
+//                System.out.println(beExpression.createQueryFromPolices());
+//                runTime = runTime.plus(mySQLQueryManager.runTimedQuery(beExpression.createQueryFromPolices(),
+//                        PolicyConstants.QUERY_RESULTS_DIR, results_file));
+//                policyRunTimes.put(file.getName(), String.valueOf(runTime.toMillis()));
+//                System.out.println("** " + file.getName() + " completed and took " + runTime.toMillis());
 
                 System.out.println("Starting Factor Extension");
                 Duration guardGen = Duration.ofMillis(0);
@@ -91,7 +93,7 @@ public class PolicyExecution {
                 FactorExtension f = new FactorExtension(beExpression);
                 Instant feStart = Instant.now();
                 int ext = f.doYourThing();
-                System.out.println("Number of Extensions " + ext);
+                policyRunTimes.put("Number of Extensions", String.valueOf(ext));
                 Instant feEnd = Instant.now();
                 guardGen = guardGen.plus(Duration.between(feStart, feEnd));
 
@@ -111,22 +113,25 @@ public class PolicyExecution {
                 gf.selectGuards();
                 Instant fsEnd = Instant.now();
                 guardGen = guardGen.plus(Duration.between(fsStart, fsEnd));
-                System.out.println("Final Guard " + gf.createQueryFromExactFactor());
+//                System.out.println("Final Guard " + gf.createQueryFromExactFactor());
                 System.out.println("Policies "+ file.getName() + " Guard Generation time: " + guardGen.toMillis());
-                policyRunTimes.put(" ** " + file.getName() + "-guardGeneration", guardGen);
+                policyRunTimes.put(" " + file.getName() + "-guardGeneration", String.valueOf(guardGen.toMillis()));
+
+                writer.appendToCSVReport(policyRunTimes, policyDir, exptResults);
+
                 System.out.println("Starting Execution of Guard for " + file.getName());
-                Duration guardRunTime = gf.computeGuardCosts();
-                policyRunTimes.put(file.getName() + "-withGuard", guardRunTime);
-                System.out.println("** Number of index filters : " + gf.getIndexFilters().size() );
-                System.out.println("** Guard query for " + file.getName() + " took " + guardRunTime.toMillis() + " **");
+                List<String> guardResults = gf.printDetailedGuardResults();
+                writer.addGuardReport(guardResults, policyDir, exptResults);
+//                Duration guardRunTime = gf.computeGuardCosts();
+//                policyRunTimes.put(file.getName() + "-withGuard", guardRunTime);
+//                System.out.println("** Number of index filters : " + gf.getIndexFilters().size() );
+//                System.out.println("** Guard query for " + file.getName() + " took " + guardRunTime.toMillis() + " **");
 
             } catch (Exception e) {
                 e.printStackTrace();
-                policyRunTimes.put(file.getName(), PolicyConstants.MAX_DURATION);
+                policyRunTimes.put(file.getName(), PolicyConstants.MAX_DURATION.toString());
             }
         }
-
-        return policyRunTimes;
     }
 
     //Only handles BEPolicies
@@ -145,16 +150,10 @@ public class PolicyExecution {
         }
     }
 
-    private void bePolicyExperiments(String policyDir) {
-        TreeMap<String, Duration> runTimes = new TreeMap<>();
-        runTimes.putAll(runBEPolicies(policyDir));
-        writer.createTextReport(runTimes, policyDir);
-    }
-
 
     public static void main(String args[]) {
         PolicyExecution pe = new PolicyExecution();
 //        pe.generatePolicies(PolicyConstants.BE_POLICY_DIR);
-        pe.bePolicyExperiments(PolicyConstants.BE_POLICY_DIR);
+        pe.runBEPolicies(PolicyConstants.BE_POLICY_DIR);
     }
 }

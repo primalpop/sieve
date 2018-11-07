@@ -81,7 +81,11 @@ public class MySQLQueryManager {
                 ResultSet rs = statement.executeQuery(query);
                 Instant end = Instant.now();
                 int rowcount = 0;
-                if (rs.last()) {
+                if (hasColumn(rs, "total")){
+                    rs.next();
+                    rowcount = rs.getInt(1);
+                }
+                else if (rs.last()) {
                     rowcount = rs.getRow();
                 }
                 if(mySQLResult.getPathName() != null && mySQLResult.getFileName() != null){
@@ -96,6 +100,17 @@ public class MySQLQueryManager {
                 e.printStackTrace();
                 throw new PolicyEngineException("Error Running Query");
             }
+        }
+
+        public boolean hasColumn(ResultSet rs, String columnName) throws SQLException {
+            ResultSetMetaData rsmd = rs.getMetaData();
+            int columns = rsmd.getColumnCount();
+            for (int x = 1; x <= columns; x++) {
+                if (columnName.equals(rsmd.getColumnName(x))) {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 
@@ -139,7 +154,7 @@ public class MySQLQueryManager {
     public MySQLResult runTimedQueryWithResultCount(String predicates) throws PolicyEngineException {
         try {
             MySQLResult mySQLResult = new MySQLResult();
-            return runWithThread(PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS + predicates, mySQLResult);
+            return runWithThread(PolicyConstants.SELECT_COUNT_STAR_SEMANTIC_OBSERVATIONS + predicates, mySQLResult);
         } catch (Exception e) {
             e.printStackTrace();
             throw new PolicyEngineException("Error Running Query");

@@ -23,7 +23,7 @@ public class Writer {
 
     DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-    public void writeResultsToCSV(ResultSet rs, String fileName ){
+    public void writeResultsToCSV(ResultSet rs, String fileName) {
         Boolean includeHeaders = false;
         CSVWriter writer = null;
         try {
@@ -38,18 +38,17 @@ public class Writer {
     }
 
 
-    public void writeJSONToFile(List<?> items, String dir, String filename){
+    public void writeJSONToFile(List<?> items, String dir, String filename) {
         ObjectMapper mapper = new ObjectMapper();
         mapper.setDateFormat(formatter);
         ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter());
         File f = null;
         try {
-            if(filename == null) {
+            if (filename == null) {
                 f = new File(dir + "policy" + items.size() + ".json");
                 if (f.exists()) f = new File(dir + "policy" + items.size() + "-af.json");
-            }
-            else {
-                f = new File(dir + "policy" + items.size() + filename +".json");
+            } else {
+                f = new File(dir + "policy" + items.size() + filename + ".json");
             }
             writer.writeValue(f, items);
         } catch (IOException e) {
@@ -59,16 +58,15 @@ public class Writer {
 
     public void createTextReport(TreeMap<String, Duration> runTimes, String fileDir) {
         try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter( fileDir + "results.csv"));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(fileDir + "results.csv"));
 
             String line = "";
-            for (String policy: runTimes.keySet()) {
+            for (String policy : runTimes.keySet()) {
 //                String policyNumber = policy.replaceAll("\\D+","");
-                if (runTimes.get(policy).compareTo(PolicyConstants.MAX_DURATION) < 0 ){
-                    line +=  String.format("%s, %s", policy, runTimes.get(policy).toMillis());
-                }
-                else{
-                    line +=  String.format("%s,  %s", policy, "Timed out" );
+                if (runTimes.get(policy).compareTo(PolicyConstants.MAX_DURATION) < 0) {
+                    line += String.format("%s, %s", policy, runTimes.get(policy).toMillis());
+                } else {
+                    line += String.format("%s,  %s", policy, "Timed out");
                 }
                 line += "\n";
             }
@@ -79,17 +77,16 @@ public class Writer {
         }
     }
 
-    public void createCSVReport(TreeMap<String, Duration> runTimes, String fileDir, String fileName) {
+    public void appendToCSVReport(TreeMap<String, String> runTimes, String fileDir, String fileName) {
         try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter( fileDir + fileName));
 
+            BufferedWriter writer = new BufferedWriter(new FileWriter(fileDir + fileName, true));
             String line = "";
-            for (String number: runTimes.keySet()) {
-                if (runTimes.get(number).compareTo(PolicyConstants.MAX_DURATION) < 0 ){
-                    line +=  String.format("%s, %s", number, runTimes.get(number).toMillis());
-                }
-                else{
-                    line +=  String.format("%s,  %s", number, "Timed out" );
+            for (String number : runTimes.keySet()) {
+                if (Long.parseLong(runTimes.get(number)) != PolicyConstants.MAX_DURATION.toMillis()) {
+                    line += String.format("%s, %s", number, runTimes.get(number));
+                } else {
+                    line += String.format("%s,  %s", number, "Timed out");
                 }
                 line += "\n";
             }
@@ -100,4 +97,19 @@ public class Writer {
         }
     }
 
+    public void addGuardReport(List<String> guardStrings, String fileDir, String fileName) {
+        String FILE_HEADER = "Number_of_Policies_in_partition,Number_of_Predicates_in_Policy,Coverage_of_guard,Coverage_of_guard_and_partition,Time_taken_by_each_guard,Time_taken_by_each_guard_and_partition, Guard_and_Partition";
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(fileDir + fileName, true));
+            writer.write(FILE_HEADER);
+            writer.write("\n");
+            for (String g : guardStrings) {
+                writer.write(g);
+                writer.write("\n");
+            }
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
