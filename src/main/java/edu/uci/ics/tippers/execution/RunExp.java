@@ -193,6 +193,7 @@ public class RunExp {
             runTimes.put( kValue + " generation", times.get(0));
             runTimes.put( kValue + " evaluation", times.get(1));
         }
-        writer.createCSVReport(runTimes, PolicyConstants.BE_POLICY_DIR, "result" + ".csv");
+//        TODO: fix the type in the runTimes dictionary
+//        writer.appendToCSVReport(runTimes, PolicyConstants.BE_POLICY_DIR, "result" + ".csv");
     }
 }

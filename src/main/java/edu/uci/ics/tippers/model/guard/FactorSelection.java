@@ -252,22 +252,66 @@ public class FactorSelection {
         return rcost;
     }
 
+    /**
+     * Prints the following to a csv file
+     * - For each guard
+     *  - Number of policies in the partition
+     *  - Number of predicates in policies
+     *  - Results returned by the guard
+     *  - Results returned by the guard + partition
+     *  - Time taken by each guard
+     *  - Time taken by each guard + partition
+     *  - Print the guard + partition
+     * @return an arraylist of strings with each element representing a line in the csv file
+     */
+    public List<String> printDetailedGuardResults() {
+        List<String> guardResults = new ArrayList<>();
+        Map<ObjectCondition, BEExpression> gMap = getGuardPartitionMapWithRemainder();
+        int repetitions = 3;
+        for (ObjectCondition kOb : gMap.keySet()) {
+            System.out.println("Executing Guard " + kOb.print() );
+            StringBuilder guardString = new StringBuilder();
+            guardString.append(gMap.get(kOb).getPolicies().size());
+            guardString.append(",");
+            int numOfPreds = new BEExpression(gMap.get(kOb).getPolicies()).countNumberOfPredicates();
+            guardString.append(numOfPreds);
+            guardString.append(",");
+            List<Long> gList = new ArrayList<>();
+            List<Long> cList = new ArrayList<>();
+            int gCount = 0, tCount = 0;
+            for (int i = 0; i < repetitions; i++) {
+                MySQLResult guardResult = new MySQLResult();
+                guardResult = mySQLQueryManager.runTimedQueryWithResultCount(kOb.print());
+                if(gCount == 0) gCount = guardResult.getResultCount();
+                gList.add(guardResult.getTimeTaken().toMillis());
+                MySQLResult completeResult = new MySQLResult();
+                completeResult = mySQLQueryManager.runTimedQueryWithResultCount(createQueryFromGQ(kOb, gMap.get(kOb)));
+                if(tCount == 0) tCount = completeResult.getResultCount();
+                cList.add(completeResult.getTimeTaken().toMillis());
 
-//
-//    public double computeGuardSel(){
-//        Map<ObjectCondition, BEExpression> gMap = getGuardPartitionMapWithRemainder();
-//        List<Double> guardSel = new ArrayList<>();
-//        for (ObjectCondition kOb : gMap.keySet()) {
-//            double gSel = kOb.computeL();
-//            gSel = gSel * gMap.get(kOb).computeL();
-//            guardSel.add(gSel);
-//        }
-//        double finalSel = guardSel.get(0);
-//        for (int i = 1; i < guardSel.size(); i++) {
-//            finalSel = 1 - ((1 - finalSel) * (1 - guardSel.get(i)));
-//        }
-//        return finalSel;
-//    }
+            }
+            Collections.sort(gList);
+            List<Long> clippedGList = gList.subList(1, repetitions-1);
+            Duration gCost = Duration.ofMillis(gList.stream().mapToLong(i-> i).sum()/gList.size());
+            Collections.sort(cList);
+            List<Long> clippedCList = cList.subList(1, repetitions-1);
+            Duration gAndPcost = Duration.ofMillis(cList.stream().mapToLong(i-> i).sum()/cList.size());
+
+            guardString.append(gCount);
+            guardString.append(",");
+            guardString.append(tCount);
+            guardString.append(",");
+
+            guardString.append(gCost.toMillis());
+            guardString.append(",");
+            guardString.append(gAndPcost.toMillis());
+            guardString.append(",");
+            guardString.append(createQueryFromGQ(kOb, gMap.get(kOb)));
+            guardResults.add(guardString.toString());
+        }
+        return guardResults;
+    }
+
 
 
 
