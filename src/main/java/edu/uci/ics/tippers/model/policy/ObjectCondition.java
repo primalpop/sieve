@@ -252,18 +252,22 @@ public class ObjectCondition extends BooleanCondition {
             int s = Integer.parseInt(this.getBooleanPredicates().get(0).getValue());
             int e = Integer.parseInt(this.getBooleanPredicates().get(1).getValue());
             if (this.getAttribute().equalsIgnoreCase(PolicyConstants.TEMPERATURE_ATTR)){
-                int noise =  ((int) (1 + Math.random() * (4)));
-                if (s - noise > PolicyConstants.LOW_TEMPERATURE)
-                    s -= noise;
-                if (e + noise < PolicyConstants.HIGH_TEMPERATURE)
-                    e += noise;
+                if (Math.random() > 0.3){
+                    int noise =  ((int) (1 + Math.random() * (3)));
+                    if (s - noise > PolicyConstants.LOW_TEMPERATURE)
+                        s -= noise;
+                    if (e + noise < PolicyConstants.HIGH_TEMPERATURE)
+                        e += noise;
+                }
             }
             else if (this.getAttribute().equalsIgnoreCase(PolicyConstants.ENERGY_ATTR)){
-                int noise =  ((int) (1 + Math.random() * (10)));
-                if (s - noise > PolicyConstants.LOW_WEMO)
-                    s -= noise;
-                if (e + noise < PolicyConstants.HIGH_WEMO)
-                    e += noise;
+                if (Math.random()> 0.3) {
+                    int noise =  ((int) (1 + Math.random() * (8)));
+                    if (s - noise > PolicyConstants.LOW_WEMO)
+                        s -= noise;
+                    if (e + noise < PolicyConstants.HIGH_WEMO)
+                        e += noise;
+                }
             }
             start = String.valueOf(s);
             end = String.valueOf(e);

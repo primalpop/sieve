@@ -3,11 +3,13 @@ package edu.uci.ics.tippers.model.guard;
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.db.MySQLQueryManager;
 import edu.uci.ics.tippers.db.MySQLResult;
+import edu.uci.ics.tippers.model.data.Presence;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
 import edu.uci.ics.tippers.model.policy.ObjectCondition;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -267,7 +269,8 @@ public class FactorSelection {
     public List<String> printDetailedGuardResults() {
         List<String> guardResults = new ArrayList<>();
         Map<ObjectCondition, BEExpression> gMap = getGuardPartitionMapWithRemainder();
-        int repetitions = 3;
+        int repetitions = 5;
+        Duration totalEval = Duration.ofMillis(0);
         for (ObjectCondition kOb : gMap.keySet()) {
             System.out.println("Executing Guard " + kOb.print() );
             StringBuilder guardString = new StringBuilder();
@@ -292,10 +295,10 @@ public class FactorSelection {
             }
             Collections.sort(gList);
             List<Long> clippedGList = gList.subList(1, repetitions-1);
-            Duration gCost = Duration.ofMillis(gList.stream().mapToLong(i-> i).sum()/gList.size());
+            Duration gCost = Duration.ofMillis(clippedGList.stream().mapToLong(i-> i).sum()/clippedGList.size());
             Collections.sort(cList);
             List<Long> clippedCList = cList.subList(1, repetitions-1);
-            Duration gAndPcost = Duration.ofMillis(cList.stream().mapToLong(i-> i).sum()/cList.size());
+            Duration gAndPcost = Duration.ofMillis(clippedCList.stream().mapToLong(i-> i).sum()/clippedCList.size());
 
             guardString.append(gCount);
             guardString.append(",");
@@ -308,11 +311,104 @@ public class FactorSelection {
             guardString.append(",");
             guardString.append(createQueryFromGQ(kOb, gMap.get(kOb)));
             guardResults.add(guardString.toString());
+            totalEval = totalEval.plus(gAndPcost);
         }
+        System.out.println("Total Guard Evaluation time: " + totalEval);
+        guardResults.add("Total Guard Evaluation time,"+totalEval);
         return guardResults;
     }
 
+    public void printDirtyFilterResults() {
+        Map<ObjectCondition, BEExpression> gMap = getGuardPartitionMapWithRemainder();
+        int repetitions = 1;
+        for (ObjectCondition kOb : gMap.keySet()) {
+            System.out.println("Executing Guard " + kOb.print() );
+            List<Long> gList = new ArrayList<>();
+            Duration fTime = Duration.ofMillis(0);
+            List<Presence> finalResult = new ArrayList<>();
+            for (int i = 0; i < repetitions; i++) {
+                MySQLResult guardResult = new MySQLResult();
+                guardResult = mySQLQueryManager.runTimedQueryWithResultCount(kOb.print());
+                gList.add(guardResult.getTimeTaken().toMillis());
+                Instant fsStart = Instant.now();
+                finalResult = checkManuallyAgainstPolicieS(guardResult.getQueryResult());
+                Instant fsEnd = Instant.now();
+                fTime = Duration.between(fsStart, fsEnd);
+            }
+            Collections.sort(gList);
+            System.out.println("Guard Time: " + gList.get(0));
+            System.out.println("Filter Time " + fTime.toMillis());
+            System.out.println("Size of final result " + finalResult.size());
+        }
+    }
 
+    private List<Presence> checkManuallyAgainstPolicieS(List<Presence> queryResult) {
+        List<Presence> finalResults = new ArrayList<>();
+        for(Iterator<Presence> pit = queryResult.iterator(); pit.hasNext();){
+            Presence p = pit.next();
+            if (Integer.parseInt(p.getTemperature()) >= 58 && Integer.parseInt(p.getTemperature()) <= 74 ){
+                if(Integer.parseInt(p.getEnergy()) >= 3 && (Integer.parseInt(p.getEnergy()) <= 97)) {
+                    finalResults.add(p);
+                    continue;
+                }
+            }
+            if (Integer.parseInt(p.getTemperature()) >= 56 && Integer.parseInt(p.getTemperature()) <= 70 ){
+                if(Integer.parseInt(p.getEnergy()) >= 56 && (Integer.parseInt(p.getEnergy()) <= 97)) {
+                    finalResults.add(p);
+                    continue;
+                }
+            }
+            if (Integer.parseInt(p.getTemperature()) >= 56 && Integer.parseInt(p.getTemperature()) <= 74 ){
+                if(Integer.parseInt(p.getEnergy()) >= 86 && (Integer.parseInt(p.getEnergy()) <= 97)) {
+                    finalResults.add(p);
+                    continue;
+                }
+            }
+            if (Integer.parseInt(p.getTemperature()) >= 56 && Integer.parseInt(p.getTemperature()) <= 74 ){
+                if(Integer.parseInt(p.getEnergy()) >= 3 && (Integer.parseInt(p.getEnergy()) <= 90)) {
+                    finalResults.add(p);
+                    continue;
+                }
+            }
+            if (Integer.parseInt(p.getTemperature()) >= 64 && Integer.parseInt(p.getTemperature()) <= 74 ) {
+                if (Integer.parseInt(p.getEnergy()) >= 53 && (Integer.parseInt(p.getEnergy()) <= 97)) {
+                    finalResults.add(p);
+                    continue;
+                }
+            }
+            if (Integer.parseInt(p.getTemperature()) >= 56 && Integer.parseInt(p.getTemperature()) <= 73){
+                if(Integer.parseInt(p.getEnergy()) >= 33 && (Integer.parseInt(p.getEnergy()) <= 47)) {
+                    finalResults.add(p);
+                    continue;
+                }
+            }
+            if (Integer.parseInt(p.getTemperature()) >= 56 && Integer.parseInt(p.getTemperature()) <= 74 ){
+                if(Integer.parseInt(p.getEnergy()) >= 32 && (Integer.parseInt(p.getEnergy()) <= 97)) {
+                    finalResults.add(p);
+                    continue;
+                }
+            }
+            if (Integer.parseInt(p.getTemperature()) >= 66 && Integer.parseInt(p.getTemperature()) <= 71 ){
+                if(Integer.parseInt(p.getEnergy()) >= 39 && (Integer.parseInt(p.getEnergy()) <= 97)) {
+                    finalResults.add(p);
+                    continue;
+                }
+            }
+            if (Integer.parseInt(p.getTemperature()) >= 66 && Integer.parseInt(p.getTemperature()) <= 74 ){
+                if(Integer.parseInt(p.getEnergy()) >= 3 && (Integer.parseInt(p.getEnergy()) <= 97)) {
+                    finalResults.add(p);
+                    continue;
+                }
+            }
+            if (Integer.parseInt(p.getTemperature()) >= 56 && Integer.parseInt(p.getTemperature()) <= 74 ){
+                if(Integer.parseInt(p.getEnergy()) >= 30 && (Integer.parseInt(p.getEnergy()) <= 77)) {
+                    finalResults.add(p);
+                    continue;
+                }
+            }
+        }
+        return finalResults;
+    }
 
 
     public List<ObjectCondition> getIndexFilters(){
