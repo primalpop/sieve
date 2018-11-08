@@ -161,25 +161,6 @@ public class MySQLQueryManager {
         }
     }
 
-
-    /**
-     * Check the results against the traditional query rewritten approach
-     * TODO: Move this to MySQLResult class
-     * @param pathName
-     * @param fileName
-     * @return
-     */
-    public Boolean checkResults(String pathName, String fileName) {
-        List<Presence> og = parseJSONList(Reader.readTxt(PolicyConstants.QUERY_RESULTS_DIR + fileName +".json"));
-        List<Presence> tbc = parseJSONList(Reader.readTxt(pathName + fileName + ".json"));
-        if(og.size() != tbc.size()) return false;
-        Comparator<Presence> comp = Comparator.comparingInt(so -> Integer.parseInt(so.getId()));
-        og.sort(comp);
-        tbc.sort(comp);
-        return IntStream.range(0, og.size())
-                .allMatch(i -> comp.compare(og.get(i), tbc.get(i)) == 0);
-    }
-
     public List<Presence> parseJSONList(String jsonData) {
         ObjectMapper objectMapper = new ObjectMapper();
         List<Presence> query_results = null;
