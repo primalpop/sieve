@@ -258,6 +258,20 @@ public class BEPolicy {
         return Objects.hash(id, object_conditions);
     }
 
+    public boolean equalsWithoutId(BEPolicy bePolicy){
+        int oc_size = this.getObject_conditions().size();
+        for (ObjectCondition oc: this.getObject_conditions()) {
+            for (ObjectCondition bec: bePolicy.getObject_conditions()) {
+                if(oc.equalsWithoutId(bec)) {
+                    oc_size -= 1;
+                    break;
+                }
+            }
+        }
+        return oc_size == 0;
+    }
+
+
     /**
      * Calculates the powerset of the object conditions of the policy which includes empty set and complete set
      * @return Set of object condition sets

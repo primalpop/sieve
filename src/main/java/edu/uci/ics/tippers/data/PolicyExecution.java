@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.db.MySQLConnectionManager;
 import edu.uci.ics.tippers.db.MySQLQueryManager;
+import edu.uci.ics.tippers.db.MySQLResult;
 import edu.uci.ics.tippers.fileop.Reader;
 import edu.uci.ics.tippers.fileop.Writer;
 import edu.uci.ics.tippers.model.guard.FactorExtension;
@@ -67,13 +68,11 @@ public class PolicyExecution {
         });
         Arrays.sort(policyFiles);
 
-        Boolean resultsChecked = false;
-
         String exptResults = "results.csv";
 
         for (File file : policyFiles) {
 
-            System.out.println(file.getName() + " being processed........");
+            System.out.println(file.getName() + " being processed......");
 
             String results_file = new SimpleDateFormat("yyyyMMddHHmm").format(new Date());
 
@@ -89,13 +88,13 @@ public class PolicyExecution {
             try {
                 /** Traditional approach **/
                 System.out.println(beExpression.createQueryFromPolices());
-                runTime = runTime.plus(mySQLQueryManager.runTimedQuery(beExpression.createQueryFromPolices(),
-                        PolicyConstants.QUERY_RESULTS_DIR, results_file));
+                MySQLResult tradResult = mySQLQueryManager.runTimedQuery(beExpression.createQueryFromPolices(), true);
+                runTime = runTime.plus(tradResult.getTimeTaken());
 
                 policyRunTimes.put(file.getName(), String.valueOf(runTime.toMillis()));
                 System.out.println("** " + file.getName() + " completed and took " + runTime.toMillis());
 
-                System.out.println("Starting Factor Extension");
+                System.out.println("Starting Generation......");
                 Duration guardGen = Duration.ofMillis(0);
 //                /** Extension **/
                 FactorExtension f = new FactorExtension(beExpression);
@@ -115,9 +114,10 @@ public class PolicyExecution {
 
 
                 /** Result checking **/
-                mySQLQueryManager.runTimedQuery(gf.createQueryFromExactFactor(), PolicyConstants.QR_EXTENDED, results_file);
-                resultsChecked = mySQLQueryManager.checkResults(PolicyConstants.QR_EXTENDED, results_file);
-                if(!resultsChecked){
+                System.out.println("Verifying results......");
+                MySQLResult guardResult = mySQLQueryManager.runTimedQuery(gf.createQueryFromExactFactor(),true);
+                Boolean resultSame = tradResult.checkResults(guardResult);
+                if(!resultSame){
                     System.out.println("*** Query results don't match after Extension!!! ***");
                     policyRunTimes.put(file.getName() + "-results-incorrect", String.valueOf(PolicyConstants.MAX_DURATION.toMillis()));
                 }
@@ -131,7 +131,7 @@ public class PolicyExecution {
 
                 writer.appendToCSVReport(policyRunTimes, policyDir, exptResults);
                 policyRunTimes.clear();
-                System.out.println("Starting Execution of Guard for " + file.getName());
+                System.out.println("Starting Execution of Guard for " + file.getName() + " ......");
                 List<String> guardResults = gf.printDetailedGuardResults();
                 writer.addGuardReport(guardResults, policyDir, exptResults);
 //                Duration guardRunTime = gf.computeGuardCosts();

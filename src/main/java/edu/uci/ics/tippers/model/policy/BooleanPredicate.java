@@ -65,4 +65,6 @@ public class BooleanPredicate {
                 ", operator='" + operator + '\'' +
                 '}';
     }
+
+
 }

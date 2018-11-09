@@ -6,8 +6,11 @@ import edu.uci.ics.tippers.db.MySQLResult;
 import edu.uci.ics.tippers.model.data.Presence;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
+import edu.uci.ics.tippers.model.policy.BooleanPredicate;
 import edu.uci.ics.tippers.model.policy.ObjectCondition;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.*;
@@ -212,19 +215,92 @@ public class FactorSelection {
         query.append(guard.print());
         query.append(PolicyConstants.CONJUNCTION);
         query.append("(");
-        query.append(partition.createQueryFromPolices());
+        query.append(cleanQueryFromPolices(partition));
         query.append(")");
-//        System.out.println(query.toString());
+        System.out.println(query.toString());
         return query.toString();
     }
 
+    public String cleanQueryFromPolices(BEExpression beExpression){
+        StringBuilder query = new StringBuilder();
+        String delim = "";
+        List<BEPolicy> dupElim = new BEExpression(beExpression.getPolicies()).getPolicies();
+        for (int i = 0; i < beExpression.getPolicies().size(); i++) {
+            for (int j = i+1; j < beExpression.getPolicies().size(); j++) {
+                BEPolicy bp1 = beExpression.getPolicies().get(i);
+                BEPolicy bp2 = beExpression.getPolicies().get(j);
+                if(bp1.equalsWithoutId(bp2)) {
+                    dupElim.remove(bp1);
+                    break;
+                }
+            }
+        }
+        for (BEPolicy beP: dupElim) {
+            query.append(delim);
+            query.append("(" + cleanQueryFromObjectConditions(beP) + ")");
+            delim = PolicyConstants.DISJUNCTION;
+        }
+        return query.toString();
+    }
+
+    public String cleanQueryFromObjectConditions(BEPolicy bePolicy) {
+        StringBuilder query = new StringBuilder();
+        String delim = "";
+        Map<String, List<ObjectCondition>> aMap = new HashMap<>();
+        for (int i = 0; i < PolicyConstants.INDEXED_ATTRS.size(); i++) {
+            List<ObjectCondition> attrToOc = new ArrayList<>();
+            String attr = PolicyConstants.INDEXED_ATTRS.get(i);
+            aMap.put(attr, attrToOc);
+        }
+        for (int j = 0; j < bePolicy.getObject_conditions().size(); j++) {
+            ObjectCondition oc = bePolicy.getObject_conditions().get(j);
+            aMap.get(oc.getAttribute()).add(oc);
+        }
+        for (int k = 0; k < aMap.keySet().size(); k++) {
+            BooleanPredicate gte = aMap.get(k).get(0).getBooleanPredicates().get(0);
+            BooleanPredicate lte = aMap.get(k).get(0).getBooleanPredicates().get(1);
+            for (ObjectCondition oc: aMap.get(k)) {
+                if(oc.getType().getID() == 2){
+                    if(timestampStrToCal(oc.getBooleanPredicates().get(0).getValue()).compareTo(timestampStrToCal(gte.getValue())) > 0)
+                        gte.setValue(oc.getBooleanPredicates().get(0).getValue());
+                    if(timestampStrToCal(oc.getBooleanPredicates().get(1).getValue()).compareTo(timestampStrToCal(lte.getValue())) < 0)
+                        lte.setValue(oc.getBooleanPredicates().get(1).getValue());
+                }
+                else{
+
+                }
+
+            }
+        }
+
+        for (ObjectCondition oc : dupElim) {
+            query.append(delim);
+            query.append(oc.print());
+            delim = PolicyConstants.CONJUNCTION;
+        }
+        return query.toString();
+    }
+
+    //TODO: Remove this
+    public static Calendar timestampStrToCal(String timestamp) {
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat(PolicyConstants.TIMESTAMP_FORMAT);
+        try {
+            cal.setTime(sdf.parse(timestamp));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return cal;
+    }
+
+
 
     /**
-     * Computes the cost of execution of individual guards and sums them up
-     * For the remainder it considers the predicate with highest selectivity as the guard and computes the cost
-     * Repeats the cost computation *repetitions* number of times and drops highest and lowest value to smooth it out
-     * @return
-     */
+         * Computes the cost of execution of individual guards and sums them up
+         * For the remainder it considers the predicate with highest selectivity as the guard and computes the cost
+         * Repeats the cost computation *repetitions* number of times and drops highest and lowest value to smooth it out
+         * @return
+         */
     public Duration computeGuardCosts() {
         int repetitions = 1;
         Map<ObjectCondition, BEExpression> gMap = getGuardPartitionMapWithRemainder();
@@ -283,12 +359,10 @@ public class FactorSelection {
             List<Long> cList = new ArrayList<>();
             int gCount = 0, tCount = 0;
             for (int i = 0; i < repetitions; i++) {
-                MySQLResult guardResult = new MySQLResult();
-                guardResult = mySQLQueryManager.runTimedQueryWithResultCount(kOb.print());
+                MySQLResult guardResult = mySQLQueryManager.runTimedQueryWithResultCount(kOb.print());
                 if(gCount == 0) gCount = guardResult.getResultCount();
                 gList.add(guardResult.getTimeTaken().toMillis());
-                MySQLResult completeResult = new MySQLResult();
-                completeResult = mySQLQueryManager.runTimedQueryWithResultCount(createQueryFromGQ(kOb, gMap.get(kOb)));
+                MySQLResult completeResult = mySQLQueryManager.runTimedQueryWithResultCount(createQueryFromGQ(kOb, gMap.get(kOb)));
                 if(tCount == 0) tCount = completeResult.getResultCount();
                 cList.add(completeResult.getTimeTaken().toMillis());
 
@@ -314,7 +388,7 @@ public class FactorSelection {
             totalEval = totalEval.plus(gAndPcost);
         }
         System.out.println("Total Guard Evaluation time: " + totalEval);
-        guardResults.add("Total Guard Evaluation time,"+totalEval);
+        guardResults.add("Total Guard Evaluation time,"+totalEval.toMillis());
         return guardResults;
     }
 
