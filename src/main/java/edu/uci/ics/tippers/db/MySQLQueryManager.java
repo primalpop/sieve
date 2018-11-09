@@ -1,21 +1,13 @@
 package edu.uci.ics.tippers.db;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.common.PolicyEngineException;
-import edu.uci.ics.tippers.fileop.Reader;
-import edu.uci.ics.tippers.model.data.Presence;
 import org.apache.commons.dbutils.DbUtils;
 
-import java.io.IOException;
 import java.sql.*;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Comparator;
-import java.util.List;
 import java.util.concurrent.*;
-import java.util.stream.IntStream;
 
 /**
  * Created by cygnus on 10/29/17.
@@ -40,6 +32,7 @@ public class MySQLQueryManager {
             return mySQLResult;
         } catch (SQLException | InterruptedException | ExecutionException ex) {
             cancelStatement(statement, ex);
+            ex.printStackTrace();
             throw new PolicyEngineException("Failed to query the database. " + ex);
         } catch (TimeoutException ex) {
             cancelStatement(statement, ex);
@@ -80,6 +73,8 @@ public class MySQLQueryManager {
                 Instant start = Instant.now();
                 ResultSet rs = statement.executeQuery(query);
                 Instant end = Instant.now();
+                if(mySQLResult.getResultsCheck())
+                    mySQLResult.setQueryResult(rs);
                 int rowcount = 0;
                 if (hasColumn(rs, "total")){
                     rs.next();
@@ -118,16 +113,17 @@ public class MySQLQueryManager {
     /**
      * Compute the cost by execution time of the query and writes the results to file
      * @param predicates
-     * @param pathName
-     * @param fileName
+     * @param resultCheck
      * @return
      * @throws PolicyEngineException
      */
 
-    public Duration runTimedQuery(String predicates, String pathName, String fileName) throws PolicyEngineException {
+    public MySQLResult runTimedQuery(String predicates, Boolean resultCheck) throws PolicyEngineException {
         try {
-            MySQLResult mySQLResult = new MySQLResult(pathName, fileName);
-            return runWithThread(PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS + predicates, mySQLResult).getTimeTaken();
+            MySQLResult mySQLResult = new MySQLResult();
+            mySQLResult.setResultsCheck(resultCheck);
+            runWithThread(PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS + predicates, mySQLResult);
+            return mySQLResult;
         } catch (Exception e) {
             e.printStackTrace();
             throw new PolicyEngineException("Error Running Query");
@@ -159,17 +155,6 @@ public class MySQLQueryManager {
             e.printStackTrace();
             throw new PolicyEngineException("Error Running Query");
         }
-    }
-
-    public List<Presence> parseJSONList(String jsonData) {
-        ObjectMapper objectMapper = new ObjectMapper();
-        List<Presence> query_results = null;
-        try {
-            query_results = objectMapper.readValue(jsonData, new TypeReference<List<Presence>>(){});
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return query_results;
     }
 
 }

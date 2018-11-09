@@ -201,4 +201,8 @@ public class BooleanCondition  implements Comparable<BooleanCondition>  {
         return bc.policy_id.equals(policy_id) && bc.attribute.equals(attribute) && bc.type.equals(type) && bc.booleanPredicates.equals(booleanPredicates);
     }
 
+
+    public boolean equalsWithoutId(BooleanCondition bc){
+        return bc.attribute.equals(attribute) && bc.type.equals(type) && bc.booleanPredicates.equals(booleanPredicates);
+    }
 }

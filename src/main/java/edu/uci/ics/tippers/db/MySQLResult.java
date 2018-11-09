@@ -18,10 +18,20 @@ public class MySQLResult {
     Duration timeTaken;
     int resultCount;
     List<Presence> queryResult;
+    Boolean resultsCheck;
 
     public MySQLResult() {
         this.timeTaken = Duration.ofMillis(0);
         this.resultCount = 0;
+        this.resultsCheck = false;
+    }
+
+    public Boolean getResultsCheck() {
+        return resultsCheck;
+    }
+
+    public void setResultsCheck(Boolean resultsCheck) {
+        this.resultsCheck = resultsCheck;
     }
 
 
