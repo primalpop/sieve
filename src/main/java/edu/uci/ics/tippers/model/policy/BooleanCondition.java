@@ -112,11 +112,7 @@ public class BooleanCondition  implements Comparable<BooleanCondition>  {
     public String print(){
         StringBuilder r = new StringBuilder();
         String delim = "";
-        BooleanCondition dupElim = new BooleanCondition(this);
-        Set<BooleanPredicate> og = new HashSet<>(dupElim.getBooleanPredicates());
-        dupElim.getBooleanPredicates().clear();
-        dupElim.getBooleanPredicates().addAll(og);
-        for (BooleanPredicate bp: dupElim.getBooleanPredicates()) {
+        for (BooleanPredicate bp: this.getBooleanPredicates()) {
             r.append(delim);
             r.append("(" + this.getAttribute() + bp.getOperator() + check_type(bp.getValue()) + ")");
             delim = PolicyConstants.CONJUNCTION;

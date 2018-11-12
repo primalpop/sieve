@@ -104,6 +104,17 @@ public class PolicyExecution {
                 Instant feEnd = Instant.now();
                 guardGen = guardGen.plus(Duration.between(feStart, feEnd));
 
+                /** Result checking after factor extension **/
+                System.out.println("Verifying results after factor extension......");
+                System.out.println("Intermediate query: " + f.getGenExpression().createQueryFromPolices());
+                MySQLResult interResult = mySQLQueryManager.runTimedQuery(f.getGenExpression().createQueryFromPolices(),true);
+                Boolean interSame = tradResult.checkResults(interResult);
+                if(!interSame){
+                    System.out.println("*** Query results don't match after Extension!!! Halting Execution ***");
+                    policyRunTimes.put(file.getName() + "-results-incorrect", String.valueOf(PolicyConstants.MAX_DURATION.toMillis()));
+                    return;
+                }
+
 
 //                System.out.println("Starting Factorization");
                 /** Factorization **/
@@ -115,11 +126,13 @@ public class PolicyExecution {
 
                 /** Result checking **/
                 System.out.println("Verifying results......");
+                System.out.println("Guard query: " + gf.createQueryFromExactFactor());
                 MySQLResult guardResult = mySQLQueryManager.runTimedQuery(gf.createQueryFromExactFactor(),true);
                 Boolean resultSame = tradResult.checkResults(guardResult);
                 if(!resultSame){
-                    System.out.println("*** Query results don't match after Extension!!! ***");
+                    System.out.println("*** Query results don't match with generated guard!!! Halting Execution ***");
                     policyRunTimes.put(file.getName() + "-results-incorrect", String.valueOf(PolicyConstants.MAX_DURATION.toMillis()));
+                    return;
                 }
 
 

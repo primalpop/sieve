@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.IntStream;
 
@@ -46,12 +47,12 @@ public class MySQLResult {
             while(resultSet.next()){
                 Presence so = new Presence();
                 so.setId(resultSet.getString("id"));
-                so.setUser_id(resultSet.getString("user_id"));
-                so.setLocation(resultSet.getString("location_id"));
-                so.setTimeStamp(resultSet.getString("timeStamp"));
-                so.setTemperature(resultSet.getString("temperature"));
-                so.setEnergy(resultSet.getString("energy"));
-                so.setActivity(resultSet.getString("activity"));
+//                so.setUser_id(resultSet.getString("user_id"));
+//                so.setLocation(resultSet.getString("location_id"));
+//                so.setTimeStamp(resultSet.getString("timeStamp"));
+//                so.setTemperature(resultSet.getString("temperature"));
+//                so.setEnergy(resultSet.getString("energy"));
+//                so.setActivity(resultSet.getString("activity"));
                 this.queryResult.add(so);
             }
         }catch (SQLException e){
@@ -128,7 +129,11 @@ public class MySQLResult {
     public Boolean checkResults(MySQLResult otherResult) {
         List<Presence> og = this.getQueryResult();
         List<Presence> tbc = otherResult.getQueryResult();
-        if(og.size() != tbc.size()) return false;
+        if(og.size() != tbc.size()) {
+            System.out.println("Not of same size: " + og.size() + " != " + tbc.size());
+            System.out.println("Set size: " + new HashSet<>(og).size() + " " + new HashSet<>(tbc).size());
+            return false;
+        }
         Comparator<Presence> comp = Comparator.comparingInt(so -> Integer.parseInt(so.getId()));
         og.sort(comp);
         tbc.sort(comp);

@@ -81,7 +81,7 @@ public class FactorSelection {
         this.cost = cost;
     }
 
-    public void selectGuards(){
+    public void selectGuards() {
         Set<ObjectCondition> singletonSet = this.expression.getPolicies().stream()
                 .flatMap(p -> p.getObject_conditions().stream())
                 .filter(o -> PolicyConstants.INDEXED_ATTRS.contains(o.getAttribute()))
@@ -105,7 +105,7 @@ public class FactorSelection {
                 double tCost = temp.estimateCostForSelection(objectCondition);
                 double fCost = temp.estimateCostOfGuardRep(objectCondition);
                 if (tCost > fCost) {
-                    if(currentBestFactor.cost > fCost) {
+                    if (currentBestFactor.cost > fCost) {
                         factorized = true;
                         currentBestFactor.multiplier = new ArrayList<>();
                         currentBestFactor.multiplier.add(objectCondition);
@@ -115,12 +115,10 @@ public class FactorSelection {
 //                        currentBestFactor.quotient.expression.removeFromPolicies(objectCondition);
                         currentBestFactor.cost = fCost;
                     }
-                }
-                else removal.add(objectCondition); //not considered for factorization recursively
-            }
-            else removal.add(objectCondition); //not a factor of at least two policies
+                } else removal.add(objectCondition); //not considered for factorization recursively
+            } else removal.add(objectCondition); //not a factor of at least two policies
         }
-        if(factorized){
+        if (factorized) {
             this.setMultiplier(currentBestFactor.getMultiplier());
             this.setQuotient(currentBestFactor.getQuotient());
             this.setRemainder(currentBestFactor.getRemainder());
@@ -215,27 +213,27 @@ public class FactorSelection {
         query.append(guard.print());
         query.append(PolicyConstants.CONJUNCTION);
         query.append("(");
-        query.append(cleanQueryFromPolices(partition));
+        query.append(partition.createQueryFromPolices());
         query.append(")");
-        System.out.println(query.toString());
+//        System.out.println(query.toString());
         return query.toString();
     }
 
-    public String cleanQueryFromPolices(BEExpression beExpression){
+    public String cleanQueryFromPolices(BEExpression beExpression) {
         StringBuilder query = new StringBuilder();
         String delim = "";
         List<BEPolicy> dupElim = new BEExpression(beExpression.getPolicies()).getPolicies();
         for (int i = 0; i < beExpression.getPolicies().size(); i++) {
-            for (int j = i+1; j < beExpression.getPolicies().size(); j++) {
+            for (int j = i + 1; j < beExpression.getPolicies().size(); j++) {
                 BEPolicy bp1 = beExpression.getPolicies().get(i);
                 BEPolicy bp2 = beExpression.getPolicies().get(j);
-                if(bp1.equalsWithoutId(bp2)) {
+                if (bp1.equalsWithoutId(bp2)) {
                     dupElim.remove(bp1);
                     break;
                 }
             }
         }
-        for (BEPolicy beP: dupElim) {
+        for (BEPolicy beP : dupElim) {
             query.append(delim);
             query.append("(" + cleanQueryFromObjectConditions(beP) + ")");
             delim = PolicyConstants.DISJUNCTION;
@@ -246,33 +244,17 @@ public class FactorSelection {
     public String cleanQueryFromObjectConditions(BEPolicy bePolicy) {
         StringBuilder query = new StringBuilder();
         String delim = "";
-        Map<String, List<ObjectCondition>> aMap = new HashMap<>();
-        for (int i = 0; i < PolicyConstants.INDEXED_ATTRS.size(); i++) {
-            List<ObjectCondition> attrToOc = new ArrayList<>();
-            String attr = PolicyConstants.INDEXED_ATTRS.get(i);
-            aMap.put(attr, attrToOc);
-        }
-        for (int j = 0; j < bePolicy.getObject_conditions().size(); j++) {
-            ObjectCondition oc = bePolicy.getObject_conditions().get(j);
-            aMap.get(oc.getAttribute()).add(oc);
-        }
-        for (int k = 0; k < aMap.keySet().size(); k++) {
-            BooleanPredicate gte = aMap.get(k).get(0).getBooleanPredicates().get(0);
-            BooleanPredicate lte = aMap.get(k).get(0).getBooleanPredicates().get(1);
-            for (ObjectCondition oc: aMap.get(k)) {
-                if(oc.getType().getID() == 2){
-                    if(timestampStrToCal(oc.getBooleanPredicates().get(0).getValue()).compareTo(timestampStrToCal(gte.getValue())) > 0)
-                        gte.setValue(oc.getBooleanPredicates().get(0).getValue());
-                    if(timestampStrToCal(oc.getBooleanPredicates().get(1).getValue()).compareTo(timestampStrToCal(lte.getValue())) < 0)
-                        lte.setValue(oc.getBooleanPredicates().get(1).getValue());
+        List<ObjectCondition> dupElim = new BEPolicy(bePolicy).getObject_conditions();
+        for (int i = 0; i < bePolicy.getObject_conditions().size(); i++) {
+            for (int j = i + 1; j < bePolicy.getObject_conditions().size(); j++) {
+                ObjectCondition oc1 = bePolicy.getObject_conditions().get(i);
+                ObjectCondition oc2 = bePolicy.getObject_conditions().get(j);
+                if (oc1.equalsWithoutId(oc2)) {
+                    dupElim.remove(oc1);
+                    break;
                 }
-                else{
-
-                }
-
             }
         }
-
         for (ObjectCondition oc : dupElim) {
             query.append(delim);
             query.append(oc.print());
@@ -281,26 +263,13 @@ public class FactorSelection {
         return query.toString();
     }
 
-    //TODO: Remove this
-    public static Calendar timestampStrToCal(String timestamp) {
-        Calendar cal = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat(PolicyConstants.TIMESTAMP_FORMAT);
-        try {
-            cal.setTime(sdf.parse(timestamp));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return cal;
-    }
-
-
-
     /**
-         * Computes the cost of execution of individual guards and sums them up
-         * For the remainder it considers the predicate with highest selectivity as the guard and computes the cost
-         * Repeats the cost computation *repetitions* number of times and drops highest and lowest value to smooth it out
-         * @return
-         */
+     * Computes the cost of execution of individual guards and sums them up
+     * For the remainder it considers the predicate with highest selectivity as the guard and computes the cost
+     * Repeats the cost computation *repetitions* number of times and drops highest and lowest value to smooth it out
+     *
+     * @return
+     */
     public Duration computeGuardCosts() {
         int repetitions = 1;
         Map<ObjectCondition, BEExpression> gMap = getGuardPartitionMapWithRemainder();
@@ -322,7 +291,7 @@ public class FactorSelection {
 //            numberOfTuples += mySQLResult.getResultCount();
             Collections.sort(cList);
 //            List<Long> clippedList = cList.subList(1, repetitions-1);
-            Duration gCost = Duration.ofMillis(cList.stream().mapToLong(i-> i).sum()/cList.size());
+            Duration gCost = Duration.ofMillis(cList.stream().mapToLong(i -> i).sum() / cList.size());
             rcost = rcost.plus(gCost);
         }
 //        System.out.println("total number of tuples with just guard" + totalGuardResultCount);
@@ -333,13 +302,14 @@ public class FactorSelection {
     /**
      * Prints the following to a csv file
      * - For each guard
-     *  - Number of policies in the partition
-     *  - Number of predicates in policies
-     *  - Results returned by the guard
-     *  - Results returned by the guard + partition
-     *  - Time taken by each guard
-     *  - Time taken by each guard + partition
-     *  - Print the guard + partition
+     * - Number of policies in the partition
+     * - Number of predicates in policies
+     * - Results returned by the guard
+     * - Results returned by the guard + partition
+     * - Time taken by each guard
+     * - Time taken by each guard + partition
+     * - Print the guard + partition
+     *
      * @return an arraylist of strings with each element representing a line in the csv file
      */
     public List<String> printDetailedGuardResults() {
@@ -348,7 +318,7 @@ public class FactorSelection {
         int repetitions = 5;
         Duration totalEval = Duration.ofMillis(0);
         for (ObjectCondition kOb : gMap.keySet()) {
-            System.out.println("Executing Guard " + kOb.print() );
+            System.out.println("Executing Guard " + kOb.print());
             StringBuilder guardString = new StringBuilder();
             guardString.append(gMap.get(kOb).getPolicies().size());
             guardString.append(",");
@@ -360,19 +330,19 @@ public class FactorSelection {
             int gCount = 0, tCount = 0;
             for (int i = 0; i < repetitions; i++) {
                 MySQLResult guardResult = mySQLQueryManager.runTimedQueryWithResultCount(kOb.print());
-                if(gCount == 0) gCount = guardResult.getResultCount();
+                if (gCount == 0) gCount = guardResult.getResultCount();
                 gList.add(guardResult.getTimeTaken().toMillis());
                 MySQLResult completeResult = mySQLQueryManager.runTimedQueryWithResultCount(createQueryFromGQ(kOb, gMap.get(kOb)));
-                if(tCount == 0) tCount = completeResult.getResultCount();
+                if (tCount == 0) tCount = completeResult.getResultCount();
                 cList.add(completeResult.getTimeTaken().toMillis());
 
             }
             Collections.sort(gList);
-            List<Long> clippedGList = gList.subList(1, repetitions-1);
-            Duration gCost = Duration.ofMillis(clippedGList.stream().mapToLong(i-> i).sum()/clippedGList.size());
+            List<Long> clippedGList = gList.subList(1, repetitions - 1);
+            Duration gCost = Duration.ofMillis(clippedGList.stream().mapToLong(i -> i).sum() / clippedGList.size());
             Collections.sort(cList);
-            List<Long> clippedCList = cList.subList(1, repetitions-1);
-            Duration gAndPcost = Duration.ofMillis(clippedCList.stream().mapToLong(i-> i).sum()/clippedCList.size());
+            List<Long> clippedCList = cList.subList(1, repetitions - 1);
+            Duration gAndPcost = Duration.ofMillis(clippedCList.stream().mapToLong(i -> i).sum() / clippedCList.size());
 
             guardString.append(gCount);
             guardString.append(",");
@@ -388,7 +358,7 @@ public class FactorSelection {
             totalEval = totalEval.plus(gAndPcost);
         }
         System.out.println("Total Guard Evaluation time: " + totalEval);
-        guardResults.add("Total Guard Evaluation time,"+totalEval.toMillis());
+        guardResults.add("Total Guard Evaluation time," + totalEval.toMillis());
         return guardResults;
     }
 
@@ -396,7 +366,7 @@ public class FactorSelection {
         Map<ObjectCondition, BEExpression> gMap = getGuardPartitionMapWithRemainder();
         int repetitions = 1;
         for (ObjectCondition kOb : gMap.keySet()) {
-            System.out.println("Executing Guard " + kOb.print() );
+            System.out.println("Executing Guard " + kOb.print());
             List<Long> gList = new ArrayList<>();
             Duration fTime = Duration.ofMillis(0);
             List<Presence> finalResult = new ArrayList<>();
@@ -418,64 +388,64 @@ public class FactorSelection {
 
     private List<Presence> checkManuallyAgainstPolicieS(List<Presence> queryResult) {
         List<Presence> finalResults = new ArrayList<>();
-        for(Iterator<Presence> pit = queryResult.iterator(); pit.hasNext();){
+        for (Iterator<Presence> pit = queryResult.iterator(); pit.hasNext(); ) {
             Presence p = pit.next();
-            if (Integer.parseInt(p.getTemperature()) >= 58 && Integer.parseInt(p.getTemperature()) <= 74 ){
-                if(Integer.parseInt(p.getEnergy()) >= 3 && (Integer.parseInt(p.getEnergy()) <= 97)) {
+            if (Integer.parseInt(p.getTemperature()) >= 58 && Integer.parseInt(p.getTemperature()) <= 74) {
+                if (Integer.parseInt(p.getEnergy()) >= 3 && (Integer.parseInt(p.getEnergy()) <= 97)) {
                     finalResults.add(p);
                     continue;
                 }
             }
-            if (Integer.parseInt(p.getTemperature()) >= 56 && Integer.parseInt(p.getTemperature()) <= 70 ){
-                if(Integer.parseInt(p.getEnergy()) >= 56 && (Integer.parseInt(p.getEnergy()) <= 97)) {
+            if (Integer.parseInt(p.getTemperature()) >= 56 && Integer.parseInt(p.getTemperature()) <= 70) {
+                if (Integer.parseInt(p.getEnergy()) >= 56 && (Integer.parseInt(p.getEnergy()) <= 97)) {
                     finalResults.add(p);
                     continue;
                 }
             }
-            if (Integer.parseInt(p.getTemperature()) >= 56 && Integer.parseInt(p.getTemperature()) <= 74 ){
-                if(Integer.parseInt(p.getEnergy()) >= 86 && (Integer.parseInt(p.getEnergy()) <= 97)) {
+            if (Integer.parseInt(p.getTemperature()) >= 56 && Integer.parseInt(p.getTemperature()) <= 74) {
+                if (Integer.parseInt(p.getEnergy()) >= 86 && (Integer.parseInt(p.getEnergy()) <= 97)) {
                     finalResults.add(p);
                     continue;
                 }
             }
-            if (Integer.parseInt(p.getTemperature()) >= 56 && Integer.parseInt(p.getTemperature()) <= 74 ){
-                if(Integer.parseInt(p.getEnergy()) >= 3 && (Integer.parseInt(p.getEnergy()) <= 90)) {
+            if (Integer.parseInt(p.getTemperature()) >= 56 && Integer.parseInt(p.getTemperature()) <= 74) {
+                if (Integer.parseInt(p.getEnergy()) >= 3 && (Integer.parseInt(p.getEnergy()) <= 90)) {
                     finalResults.add(p);
                     continue;
                 }
             }
-            if (Integer.parseInt(p.getTemperature()) >= 64 && Integer.parseInt(p.getTemperature()) <= 74 ) {
+            if (Integer.parseInt(p.getTemperature()) >= 64 && Integer.parseInt(p.getTemperature()) <= 74) {
                 if (Integer.parseInt(p.getEnergy()) >= 53 && (Integer.parseInt(p.getEnergy()) <= 97)) {
                     finalResults.add(p);
                     continue;
                 }
             }
-            if (Integer.parseInt(p.getTemperature()) >= 56 && Integer.parseInt(p.getTemperature()) <= 73){
-                if(Integer.parseInt(p.getEnergy()) >= 33 && (Integer.parseInt(p.getEnergy()) <= 47)) {
+            if (Integer.parseInt(p.getTemperature()) >= 56 && Integer.parseInt(p.getTemperature()) <= 73) {
+                if (Integer.parseInt(p.getEnergy()) >= 33 && (Integer.parseInt(p.getEnergy()) <= 47)) {
                     finalResults.add(p);
                     continue;
                 }
             }
-            if (Integer.parseInt(p.getTemperature()) >= 56 && Integer.parseInt(p.getTemperature()) <= 74 ){
-                if(Integer.parseInt(p.getEnergy()) >= 32 && (Integer.parseInt(p.getEnergy()) <= 97)) {
+            if (Integer.parseInt(p.getTemperature()) >= 56 && Integer.parseInt(p.getTemperature()) <= 74) {
+                if (Integer.parseInt(p.getEnergy()) >= 32 && (Integer.parseInt(p.getEnergy()) <= 97)) {
                     finalResults.add(p);
                     continue;
                 }
             }
-            if (Integer.parseInt(p.getTemperature()) >= 66 && Integer.parseInt(p.getTemperature()) <= 71 ){
-                if(Integer.parseInt(p.getEnergy()) >= 39 && (Integer.parseInt(p.getEnergy()) <= 97)) {
+            if (Integer.parseInt(p.getTemperature()) >= 66 && Integer.parseInt(p.getTemperature()) <= 71) {
+                if (Integer.parseInt(p.getEnergy()) >= 39 && (Integer.parseInt(p.getEnergy()) <= 97)) {
                     finalResults.add(p);
                     continue;
                 }
             }
-            if (Integer.parseInt(p.getTemperature()) >= 66 && Integer.parseInt(p.getTemperature()) <= 74 ){
-                if(Integer.parseInt(p.getEnergy()) >= 3 && (Integer.parseInt(p.getEnergy()) <= 97)) {
+            if (Integer.parseInt(p.getTemperature()) >= 66 && Integer.parseInt(p.getTemperature()) <= 74) {
+                if (Integer.parseInt(p.getEnergy()) >= 3 && (Integer.parseInt(p.getEnergy()) <= 97)) {
                     finalResults.add(p);
                     continue;
                 }
             }
-            if (Integer.parseInt(p.getTemperature()) >= 56 && Integer.parseInt(p.getTemperature()) <= 74 ){
-                if(Integer.parseInt(p.getEnergy()) >= 30 && (Integer.parseInt(p.getEnergy()) <= 77)) {
+            if (Integer.parseInt(p.getTemperature()) >= 56 && Integer.parseInt(p.getTemperature()) <= 74) {
+                if (Integer.parseInt(p.getEnergy()) >= 30 && (Integer.parseInt(p.getEnergy()) <= 77)) {
                     finalResults.add(p);
                     continue;
                 }
@@ -485,7 +455,7 @@ public class FactorSelection {
     }
 
 
-    public List<ObjectCondition> getIndexFilters(){
+    public List<ObjectCondition> getIndexFilters() {
         if (multiplier.isEmpty()) {
             return multiplier;
         }
@@ -501,6 +471,7 @@ public class FactorSelection {
 
     /**
      * Guard and paritition map but not including remainder
+     *
      * @return
      */
     public HashMap<ObjectCondition, BEExpression> getGuardPartition() {
