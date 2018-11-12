@@ -189,11 +189,7 @@ public class BEExpression{
     public String createQueryFromPolices(){
         StringBuilder query = new StringBuilder();
         String delim = "";
-        BEExpression dupElim = new BEExpression(this.policies);
-        Set<BEPolicy> og = new HashSet<>(dupElim.getPolicies());
-        dupElim.getPolicies().clear();
-        dupElim.getPolicies().addAll(og);
-        for (BEPolicy beP: dupElim.getPolicies()) {
+        for (BEPolicy beP: this.getPolicies()) {
             query.append(delim);
             query.append("(" + beP.createQueryFromObjectConditions() + ")");
             delim = PolicyConstants.DISJUNCTION;

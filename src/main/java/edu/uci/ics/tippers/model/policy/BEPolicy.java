@@ -231,11 +231,7 @@ public class BEPolicy {
     public String createQueryFromObjectConditions(){
         StringBuilder query = new StringBuilder();
         String delim = "";
-        BEPolicy dupElim = new BEPolicy(this);
-        Set<ObjectCondition> og = new HashSet<>(dupElim.getObject_conditions());
-        dupElim.getObject_conditions().clear();
-        dupElim.getObject_conditions().addAll(og);
-        for (ObjectCondition oc: dupElim.getObject_conditions()) {
+        for (ObjectCondition oc: this.getObject_conditions()) {
             query.append(delim);
             query.append(oc.print());
             delim = PolicyConstants.CONJUNCTION;
