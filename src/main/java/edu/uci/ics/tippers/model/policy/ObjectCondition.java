@@ -20,13 +20,21 @@ public class ObjectCondition extends BooleanCondition {
 
     }
 
-    public ObjectCondition(ObjectCondition oc){
-        this.policy_id = oc.getPolicy_id();
-        this.attribute = oc.getAttribute();
-        this.type = oc.getType();
-        this.booleanPredicates = oc.getBooleanPredicates();
+    public ObjectCondition(ObjectCondition objectCondition){
+        this.policy_id = objectCondition.getPolicy_id();
+        this.attribute = objectCondition.getAttribute();
+        this.type = objectCondition.getType();
+        this.booleanPredicates = objectCondition.getBooleanPredicates();
     }
 
+    public ObjectCondition(String attribute, AttributeType attributeType, List<BooleanPredicate> booleanPredicates){
+        this.attribute = attribute;
+        this.type = attributeType;
+        this.booleanPredicates = new ArrayList<BooleanPredicate>(booleanPredicates.size());
+        for(BooleanPredicate bp: booleanPredicates){
+            this.booleanPredicates.add(new BooleanPredicate(bp));
+        }
+    }
 
     public ObjectCondition(String policy_id, String attribute, AttributeType attributeType){
         this.policy_id = policy_id;

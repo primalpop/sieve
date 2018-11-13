@@ -213,7 +213,7 @@ public class FactorSelection {
         query.append(guard.print());
         query.append(PolicyConstants.CONJUNCTION);
         query.append("(");
-        query.append(partition.cleanQueryFromPolices());
+        query.append(partition.cleanQueryFromPolices(guard));
         query.append(")");
 //        System.out.println(query.toString());
         return query.toString();

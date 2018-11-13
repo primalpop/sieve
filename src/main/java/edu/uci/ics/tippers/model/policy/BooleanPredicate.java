@@ -70,18 +70,18 @@ public class BooleanPredicate {
                 '}';
     }
 
-    public int compareOnType(BooleanPredicate o, int type) {
-        if(type == 4){ //Integer
+    public int compareOnType(BooleanPredicate o, String attribute) {
+        if(attribute.equalsIgnoreCase(PolicyConstants.ENERGY_ATTR) || attribute.equalsIgnoreCase(PolicyConstants.TEMPERATURE_ATTR)){
             int o1 = Integer.parseInt(this.getValue());
             int o2 = Integer.parseInt(o.getValue());
             return o1-o2;
         }
-        else if(type == 2) { //Timestamp
+        else if(attribute.equalsIgnoreCase(PolicyConstants.TIMESTAMP_ATTR)) {
             LocalDateTime o1 = timeStampToLDT(this.getValue());
             LocalDateTime o2 = timeStampToLDT(o.getValue());
             return o1.compareTo(o2);
         }
-        else if(type == 1) {
+        else if(attribute.equalsIgnoreCase(PolicyConstants.LOCATIONID_ATTR) || attribute.equalsIgnoreCase(PolicyConstants.USERID_ATTR)) {
             String o1 = this.getValue();
             String o2 = o.getValue();
             return o1.compareTo(o2);

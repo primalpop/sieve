@@ -26,16 +26,11 @@ import java.util.Date;
  */
 public class PolicyExecution {
 
-    private long timeout = 25000000;
-
     private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-    private Connection connection;
 
     private static final int[] policyNumbers = {10, 25, 50, 100, 200, 300, 500, 700, 1000};
 
     private static final int[] policyEpochs = {0};
-
 
     private static PolicyGeneration policyGen;
 
@@ -47,7 +42,6 @@ public class PolicyExecution {
 
 
     public PolicyExecution() {
-        this.connection = MySQLConnectionManager.getInstance().getConnection();
         policyGen = new PolicyGeneration();
         writer = new Writer();
         objectMapper.setDateFormat(sdf);
@@ -82,19 +76,21 @@ public class PolicyExecution {
 
             Duration runTime = Duration.ofMillis(0);
 
-            Boolean resultCheck = true;
+            Boolean resultCheck = false;
+
+            MySQLResult tradResult = new MySQLResult();
 
 //            System.out.println("Number Of Predicates before extension: " + beExpression.countNumberOfPredicates());
 
             try {
                 /** Traditional approach **/
-                System.out.println(beExpression.createQueryFromPolices());
-                MySQLResult tradResult = mySQLQueryManager.runTimedQuery(beExpression.createQueryFromPolices(), true);
-                runTime = runTime.plus(tradResult.getTimeTaken());
-
-                policyRunTimes.put(file.getName(), String.valueOf(runTime.toMillis()));
-                if(runTime.toMillis() == PolicyConstants.MAX_DURATION.toMillis()) resultCheck = false;
-                System.out.println("** " + file.getName() + " completed and took " + runTime.toMillis());
+//                System.out.println(beExpression.createQueryFromPolices());
+//                tradResult = mySQLQueryManager.runTimedQuery(beExpression.createQueryFromPolices(), true);
+//                runTime = runTime.plus(tradResult.getTimeTaken());
+//
+//                policyRunTimes.put(file.getName(), String.valueOf(runTime.toMillis()));
+//                if(!(runTime.toMillis() == PolicyConstants.MAX_DURATION.toMillis())) resultCheck = true;
+//                System.out.println("** " + file.getName() + " completed and took " + runTime.toMillis());
 
                 System.out.println("Starting Generation......");
                 Duration guardGen = Duration.ofMillis(0);
@@ -127,15 +123,17 @@ public class PolicyExecution {
 
 
                 /** Result checking **/
-                System.out.println("Verifying results......");
-                System.out.println("Guard query: " + gf.createQueryFromExactFactor());
-                MySQLResult guardResult = mySQLQueryManager.runTimedQuery(gf.createQueryFromExactFactor(),resultCheck);
-                Boolean resultSame = tradResult.checkResults(guardResult);
-                if(!resultSame){
-                    System.out.println("*** Query results don't match with generated guard!!! Halting Execution ***");
-                    policyRunTimes.put(file.getName() + "-results-incorrect", String.valueOf(PolicyConstants.MAX_DURATION.toMillis()));
-                    return;
-                }
+//                if(resultCheck){
+//                    System.out.println("Verifying results......");
+//                    System.out.println("Guard query: " + gf.createQueryFromExactFactor());
+//                    MySQLResult guardResult = mySQLQueryManager.runTimedQuery(gf.createQueryFromExactFactor(),true);
+//                    Boolean resultSame = tradResult.checkResults(guardResult);
+//                    if(!resultSame){
+//                        System.out.println("*** Query results don't match with generated guard!!! Halting Execution ***");
+//                        policyRunTimes.put(file.getName() + "-results-incorrect", String.valueOf(PolicyConstants.MAX_DURATION.toMillis()));
+//                        return;
+//                    }
+//                }
 
 
                 guardGen = guardGen.plus(Duration.between(fsStart, fsEnd));
