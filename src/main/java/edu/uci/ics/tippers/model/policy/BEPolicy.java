@@ -277,18 +277,37 @@ public class BEPolicy {
     public String cleanQueryFromObjectConditions(ObjectCondition guard) {
         StringBuilder query = new StringBuilder();
         String delim = "";
-        List<ObjectCondition> dupElim = new BEPolicy(this).getObject_conditions();
-        for (int i = 0; i < this.getObject_conditions().size(); i++) {
-            for (int j = i + 1; j < this.getObject_conditions().size(); j++) {
-                ObjectCondition oc1 = this.getObject_conditions().get(i);
-                ObjectCondition oc2 = this.getObject_conditions().get(j);
-                if (oc1.equalsWithoutId(oc2)) {
-                    dupElim.remove(oc1);
-                    break;
+        List<ObjectCondition> toPrint = new ArrayList<>();
+        Map<String, List<ObjectCondition>> aMap = new HashMap<>();
+        for (int i = 0; i < PolicyConstants.INDEXED_ATTRS.size(); i++) { //Constructing attribute map
+            List<ObjectCondition> attrToOc = new ArrayList<>();
+            String attr = PolicyConstants.INDEXED_ATTRS.get(i);
+            aMap.put(attr, attrToOc);
+        }
+        for (int j = 0; j < this.getObject_conditions().size(); j++) {
+            ObjectCondition oc = this.getObject_conditions().get(j);
+            aMap.get(oc.getAttribute()).add(oc);
+        }
+        for (String attribute: aMap.keySet()) {
+            if(aMap.get(attribute).size() == 0) continue;
+            ObjectCondition finalOC;
+            if(guard.getAttribute().equalsIgnoreCase(attribute)) continue;
+            else {
+                finalOC = new ObjectCondition(aMap.get(attribute).get(0).getAttribute(),
+                        aMap.get(attribute).get(0).getType(), aMap.get(attribute).get(0).getBooleanPredicates());
+                for (int i = 1; i < aMap.get(attribute).size(); i++) {
+                    ObjectCondition oc = aMap.get(attribute).get(i);
+                    if (oc.getBooleanPredicates().get(0).compareOnType(finalOC.getBooleanPredicates().get(0), attribute) > 0) {
+                        finalOC.getBooleanPredicates().get(0).setValue(oc.getBooleanPredicates().get(0).getValue());
+                    }
+                    if (oc.getBooleanPredicates().get(1).compareOnType(finalOC.getBooleanPredicates().get(1), attribute) < 0) {
+                        finalOC.getBooleanPredicates().get(1).setValue(oc.getBooleanPredicates().get(1).getValue());
+                    }
                 }
             }
+            toPrint.add(finalOC);
         }
-        for (ObjectCondition oc : dupElim) {
+        for (ObjectCondition oc : toPrint) {
             query.append(delim);
             query.append(oc.print());
             delim = PolicyConstants.CONJUNCTION;
