@@ -210,7 +210,7 @@ public class BEPolicy {
 
     public boolean containsObjCond(ObjectCondition oc){
         List<ObjectCondition> contained = this.object_conditions.stream()
-                .filter(objCond -> objCond.getType() == oc.getType())
+                .filter(objCond -> objCond.getAttribute().equalsIgnoreCase(oc.getAttribute()))
                 .filter(objCond -> objCond.compareTo(oc) == 0)
                 .collect(Collectors.toList());
         return contained.size() != 0;
@@ -265,6 +265,35 @@ public class BEPolicy {
             }
         }
         return oc_size == 0;
+    }
+
+    /**
+     * For each attribute,
+     * if the guard is on the same attribute and then deletes all object conditions on that attribute in the policy
+     * else if the boolean predicates are range predicates, it selects the maximum for the >= predicate and minimum
+     * for the <= predicate
+     * @return
+     */
+    public String cleanQueryFromObjectConditions() {
+        StringBuilder query = new StringBuilder();
+        String delim = "";
+        List<ObjectCondition> dupElim = new BEPolicy(this).getObject_conditions();
+        for (int i = 0; i < this.getObject_conditions().size(); i++) {
+            for (int j = i + 1; j < this.getObject_conditions().size(); j++) {
+                ObjectCondition oc1 = this.getObject_conditions().get(i);
+                ObjectCondition oc2 = this.getObject_conditions().get(j);
+                if (oc1.equalsWithoutId(oc2)) {
+                    dupElim.remove(oc1);
+                    break;
+                }
+            }
+        }
+        for (ObjectCondition oc : dupElim) {
+            query.append(delim);
+            query.append(oc.print());
+            delim = PolicyConstants.CONJUNCTION;
+        }
+        return query.toString();
     }
 
 
