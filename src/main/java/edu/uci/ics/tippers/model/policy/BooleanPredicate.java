@@ -1,6 +1,10 @@
 package edu.uci.ics.tippers.model.policy;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import edu.uci.ics.tippers.common.PolicyConstants;
+import edu.uci.ics.tippers.common.PolicyEngineException;
+
+import java.time.LocalDateTime;
 
 /**
  * Created by cygnus on 10/26/17.
@@ -66,5 +70,30 @@ public class BooleanPredicate {
                 '}';
     }
 
+    public int compareOnType(BooleanPredicate o, int type) {
+        if(type == 4){ //Integer
+            int o1 = Integer.parseInt(this.getValue());
+            int o2 = Integer.parseInt(o.getValue());
+            return o1-o2;
+        }
+        else if(type == 2) { //Timestamp
+            LocalDateTime o1 = timeStampToLDT(this.getValue());
+            LocalDateTime o2 = timeStampToLDT(o.getValue());
+            return o1.compareTo(o2);
+        }
+        else if(type == 1) {
+            String o1 = this.getValue();
+            String o2 = o.getValue();
+            return o1.compareTo(o2);
+        }
+        else{
+            throw new PolicyEngineException("Incompatible Attribute Type");
+        }
+    }
+
+
+    public static LocalDateTime timeStampToLDT(String timestamp) {
+        return LocalDateTime.parse(timestamp, PolicyConstants.TIME_FORMATTER);
+    }
 
 }
