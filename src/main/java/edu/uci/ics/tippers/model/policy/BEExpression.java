@@ -164,8 +164,9 @@ public class BEExpression{
     public void replenishFromPolicies(ObjectCondition oc1, ObjectCondition oc2){
         for (int i = 0; i < this.policies.size(); i++) {
             if(this.policies.get(i).containsObjCond(oc1)){
-                if(!this.policies.get(i).containsObjCond(oc2))
+                if(!this.policies.get(i).containsObjCond(oc2)) {
                     this.policies.get(i).getObject_conditions().add(oc2);
+                }
             }
         }
     }
@@ -265,4 +266,31 @@ public class BEExpression{
         extended.getPolicies().addAll(beExpression.getPolicies());
         return extended;
     }
+
+    /**
+     * Removes identical policies with different ids from the expression
+     * @return
+     */
+    public String cleanQueryFromPolices() {
+        StringBuilder query = new StringBuilder();
+        String delim = "";
+        List<BEPolicy> dupElim = new BEExpression(this.getPolicies()).getPolicies();
+        for (int i = 0; i < this.getPolicies().size(); i++) {
+            for (int j = i + 1; j < this.getPolicies().size(); j++) {
+                BEPolicy bp1 = this.getPolicies().get(i);
+                BEPolicy bp2 = this.getPolicies().get(j);
+                if (bp1.equalsWithoutId(bp2)) {
+                    dupElim.remove(bp1);
+                    break;
+                }
+            }
+        }
+        for (BEPolicy beP : dupElim) {
+            query.append(delim);
+            query.append("(" + beP.cleanQueryFromObjectConditions() + ")");
+            delim = PolicyConstants.DISJUNCTION;
+        }
+        return query.toString();
+    }
+
 }

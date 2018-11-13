@@ -213,55 +213,12 @@ public class FactorSelection {
         query.append(guard.print());
         query.append(PolicyConstants.CONJUNCTION);
         query.append("(");
-        query.append(partition.createQueryFromPolices());
+        query.append(partition.cleanQueryFromPolices());
         query.append(")");
 //        System.out.println(query.toString());
         return query.toString();
     }
 
-    public String cleanQueryFromPolices(BEExpression beExpression) {
-        StringBuilder query = new StringBuilder();
-        String delim = "";
-        List<BEPolicy> dupElim = new BEExpression(beExpression.getPolicies()).getPolicies();
-        for (int i = 0; i < beExpression.getPolicies().size(); i++) {
-            for (int j = i + 1; j < beExpression.getPolicies().size(); j++) {
-                BEPolicy bp1 = beExpression.getPolicies().get(i);
-                BEPolicy bp2 = beExpression.getPolicies().get(j);
-                if (bp1.equalsWithoutId(bp2)) {
-                    dupElim.remove(bp1);
-                    break;
-                }
-            }
-        }
-        for (BEPolicy beP : dupElim) {
-            query.append(delim);
-            query.append("(" + cleanQueryFromObjectConditions(beP) + ")");
-            delim = PolicyConstants.DISJUNCTION;
-        }
-        return query.toString();
-    }
-
-    public String cleanQueryFromObjectConditions(BEPolicy bePolicy) {
-        StringBuilder query = new StringBuilder();
-        String delim = "";
-        List<ObjectCondition> dupElim = new BEPolicy(bePolicy).getObject_conditions();
-        for (int i = 0; i < bePolicy.getObject_conditions().size(); i++) {
-            for (int j = i + 1; j < bePolicy.getObject_conditions().size(); j++) {
-                ObjectCondition oc1 = bePolicy.getObject_conditions().get(i);
-                ObjectCondition oc2 = bePolicy.getObject_conditions().get(j);
-                if (oc1.equalsWithoutId(oc2)) {
-                    dupElim.remove(oc1);
-                    break;
-                }
-            }
-        }
-        for (ObjectCondition oc : dupElim) {
-            query.append(delim);
-            query.append(oc.print());
-            delim = PolicyConstants.CONJUNCTION;
-        }
-        return query.toString();
-    }
 
     /**
      * Computes the cost of execution of individual guards and sums them up
