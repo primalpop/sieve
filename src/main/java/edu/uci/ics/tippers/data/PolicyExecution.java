@@ -26,7 +26,7 @@ import java.util.Date;
  */
 public class PolicyExecution {
 
-    private long timeout = 250000;
+    private long timeout = 25000000;
 
     private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -82,6 +82,7 @@ public class PolicyExecution {
 
             Duration runTime = Duration.ofMillis(0);
 
+            Boolean resultCheck = true;
 
 //            System.out.println("Number Of Predicates before extension: " + beExpression.countNumberOfPredicates());
 
@@ -92,6 +93,7 @@ public class PolicyExecution {
                 runTime = runTime.plus(tradResult.getTimeTaken());
 
                 policyRunTimes.put(file.getName(), String.valueOf(runTime.toMillis()));
+                if(runTime.toMillis() == PolicyConstants.MAX_DURATION.toMillis()) resultCheck = false;
                 System.out.println("** " + file.getName() + " completed and took " + runTime.toMillis());
 
                 System.out.println("Starting Generation......");
@@ -107,7 +109,7 @@ public class PolicyExecution {
                 /** Result checking after factor extension **/
 //                System.out.println("Verifying results after factor extension......");
 //                System.out.println("Intermediate query: " + f.getGenExpression().createQueryFromPolices());
-//                MySQLResult interResult = mySQLQueryManager.runTimedQuery(f.getGenExpression().createQueryFromPolices(),true);
+//                MySQLResult interResult = mySQLQueryManager.runTimedQuery(f.getGenExpression().createQueryFromPolices(),resultCheck);
 //                Boolean interSame = tradResult.checkResults(interResult);
 //                if(!interSame){
 //                    System.out.println("*** Query results don't match after Extension!!! Halting Execution ***");
@@ -127,7 +129,7 @@ public class PolicyExecution {
                 /** Result checking **/
                 System.out.println("Verifying results......");
                 System.out.println("Guard query: " + gf.createQueryFromExactFactor());
-                MySQLResult guardResult = mySQLQueryManager.runTimedQuery(gf.createQueryFromExactFactor(),true);
+                MySQLResult guardResult = mySQLQueryManager.runTimedQuery(gf.createQueryFromExactFactor(),resultCheck);
                 Boolean resultSame = tradResult.checkResults(guardResult);
                 if(!resultSame){
                     System.out.println("*** Query results don't match with generated guard!!! Halting Execution ***");

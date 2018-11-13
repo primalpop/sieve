@@ -274,7 +274,7 @@ public class BEPolicy {
      * for the <= predicate
      * @return
      */
-    public String cleanQueryFromObjectConditions() {
+    public String cleanQueryFromObjectConditions(ObjectCondition guard) {
         StringBuilder query = new StringBuilder();
         String delim = "";
         List<ObjectCondition> dupElim = new BEPolicy(this).getObject_conditions();
