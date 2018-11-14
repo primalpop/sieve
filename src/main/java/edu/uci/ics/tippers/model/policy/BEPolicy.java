@@ -269,12 +269,11 @@ public class BEPolicy {
 
     /**
      * For each attribute,
-     * if the guard is on the same attribute and then deletes all object conditions on that attribute in the policy
-     * else if the boolean predicates are range predicates, it selects the maximum for the >= predicate and minimum
+     * if the boolean predicates are range predicates, it selects the maximum for the >= predicate and minimum
      * for the <= predicate
      * @return
      */
-    public String cleanQueryFromObjectConditions(ObjectCondition guard) {
+    public String cleanQueryFromObjectConditions() {
         StringBuilder query = new StringBuilder();
         String delim = "";
         List<ObjectCondition> toPrint = new ArrayList<>();
@@ -291,18 +290,15 @@ public class BEPolicy {
         for (String attribute: aMap.keySet()) {
             if(aMap.get(attribute).size() == 0) continue;
             ObjectCondition finalOC;
-            if(guard.getAttribute().equalsIgnoreCase(attribute)) continue;
-            else {
-                finalOC = new ObjectCondition(aMap.get(attribute).get(0).getAttribute(),
-                        aMap.get(attribute).get(0).getType(), aMap.get(attribute).get(0).getBooleanPredicates());
-                for (int i = 1; i < aMap.get(attribute).size(); i++) {
-                    ObjectCondition oc = aMap.get(attribute).get(i);
-                    if (oc.getBooleanPredicates().get(0).compareOnType(finalOC.getBooleanPredicates().get(0), attribute) > 0) {
-                        finalOC.getBooleanPredicates().get(0).setValue(oc.getBooleanPredicates().get(0).getValue());
-                    }
-                    if (oc.getBooleanPredicates().get(1).compareOnType(finalOC.getBooleanPredicates().get(1), attribute) < 0) {
-                        finalOC.getBooleanPredicates().get(1).setValue(oc.getBooleanPredicates().get(1).getValue());
-                    }
+            finalOC = new ObjectCondition(aMap.get(attribute).get(0).getAttribute(),
+                    aMap.get(attribute).get(0).getType(), aMap.get(attribute).get(0).getBooleanPredicates());
+            for (int i = 1; i < aMap.get(attribute).size(); i++) {
+                ObjectCondition oc = aMap.get(attribute).get(i);
+                if (oc.getBooleanPredicates().get(0).compareOnType(finalOC.getBooleanPredicates().get(0), attribute) > 0) {
+                    finalOC.getBooleanPredicates().get(0).setValue(oc.getBooleanPredicates().get(0).getValue());
+                }
+                if (oc.getBooleanPredicates().get(1).compareOnType(finalOC.getBooleanPredicates().get(1), attribute) < 0) {
+                    finalOC.getBooleanPredicates().get(1).setValue(oc.getBooleanPredicates().get(1).getValue());
                 }
             }
             toPrint.add(finalOC);

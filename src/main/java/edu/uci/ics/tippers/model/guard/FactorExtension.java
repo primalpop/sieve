@@ -92,9 +92,9 @@ public class FactorExtension {
             beM.getPolicies().addAll(oMap.get(oc));
             beM.getPolicies().addAll(oMap.get(ock));
             if(!shouldIMerge(oc, ock, beM)) continue;
-            double mBenefit = new BEExpression(oMap.get(oc)).estimateCostForExtension(oc.getAttribute())
+            double mBenefit = beM.estimateCostOfGuardRep(oc.union(ock));
+            mBenefit -= new BEExpression(oMap.get(oc)).estimateCostForExtension(oc.getAttribute())
                     + new BEExpression(oMap.get(ock)).estimateCostForExtension(ock.getAttribute());
-            mBenefit -= beM.estimateCostOfGuardRep(oc.union(ock));
             memoized.put(oc.hashCode() + "." + ock.hashCode(), mBenefit);
         }
     }
