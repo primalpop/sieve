@@ -28,7 +28,7 @@ public class PolicyExecution {
 
     private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-    private static final int[] policyNumbers = {10, 25, 50, 100, 200, 300, 500, 700, 1000};
+    private static final int[] policyNumbers = {35};
 
     private static final int[] policyEpochs = {0};
 

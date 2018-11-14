@@ -185,15 +185,15 @@ public class RunExp {
         int rpq = 2;
         String[] fileNames = {"policy35.json"};
         List<Duration> times = new ArrayList<>();
-        TreeMap<String, Duration> runTimes = new TreeMap<>();
+        TreeMap<String, String> runTimes = new TreeMap<>();
         RunExp re = new RunExp();
         Writer writer = new Writer();
         for (int kValue : kValues) {
             times = re.runExpt(start_policies, kValue, rpq, epochs, fileNames[0]);
-            runTimes.put( kValue + " generation", times.get(0));
-            runTimes.put( kValue + " evaluation", times.get(1));
+            runTimes.put( kValue + " generation", String.valueOf(times.get(0).toMillis()));
+            runTimes.put( kValue + " evaluation", String.valueOf(times.get(1).toMillis()));
+            writer.appendToCSVReport(runTimes, PolicyConstants.BE_POLICY_DIR, "result" + ".csv");
+            runTimes.clear();
         }
-//        TODO: fix the type in the runTimes dictionary
-//        writer.appendToCSVReport(runTimes, PolicyConstants.BE_POLICY_DIR, "result" + ".csv");
     }
 }

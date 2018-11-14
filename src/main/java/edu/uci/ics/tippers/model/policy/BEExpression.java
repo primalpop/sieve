@@ -271,7 +271,7 @@ public class BEExpression{
      * Removes identical policies with different ids from the expression
      * @return
      */
-    public String cleanQueryFromPolices(ObjectCondition guard) {
+    public String cleanQueryFromPolices() {
         StringBuilder query = new StringBuilder();
         String delim = "";
         List<BEPolicy> dupElim = new BEExpression(this.getPolicies()).getPolicies();
@@ -287,7 +287,7 @@ public class BEExpression{
         }
         for (BEPolicy beP : dupElim) {
             query.append(delim);
-            query.append("(" + beP.cleanQueryFromObjectConditions(guard) + ")");
+            query.append("(" + beP.cleanQueryFromObjectConditions() + ")");
             delim = PolicyConstants.DISJUNCTION;
         }
         return query.toString();
