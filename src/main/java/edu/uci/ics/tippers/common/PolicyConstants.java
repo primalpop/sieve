@@ -37,7 +37,7 @@ public class PolicyConstants {
 
     public static final double MEMORY_BLOCK_READ_COST = 0.25;
 
-    public static final double ROW_EVALUATE_COST = 0.1;
+    public static final double ROW_EVALUATE_COST = 0.01;
 
     public static final double KEY_COMPARE_COST = 0.1;
 

@@ -171,15 +171,6 @@ public class BEExpression{
         }
     }
 
-    public int countNumberOfPredicates(){
-        return this.getPolicies().stream()
-                .map(BEPolicy::getObject_conditions)
-                .filter(objectConditions ->  objectConditions != null)
-                .mapToInt(List::size)
-                .sum();
-    }
-
-
 
     /**
      * Given a list of policies, it creates a query by
@@ -237,28 +228,33 @@ public class BEExpression{
     }
 
     /**
-     * Estimates the cost of evaluating the union of policies
+     * Estimates the cost of evaluating the union of policies with the predicate on the given attribute
      * @return
      */
-    public double estimateCostForExtension(String attribute){
-        return this.getPolicies().stream().mapToDouble(p -> p.estimateCostForExtension(attribute)).sum();
+    public double estimateCost(){
+        return this.getPolicies().stream().mapToDouble(p -> p.estimateCost()).sum();
     }
 
-    public double estimateCostForSelection(ObjectCondition objectCondition){
-        return this.getPolicies().stream().mapToDouble(p -> p.estimateCostForSelection(objectCondition)).sum();
+    /**
+     * Estimates the cost of evaluation of policies as the sum of evaluating individual policies
+     * @return
+     */
+    public double estimateCostForSelection(){
+        return this.getPolicies().stream().mapToDouble(p -> p.estimateCost()).sum();
     }
 
     /**
      * TODO: In the case of identical predicates does it include savings from reading only once?
-     * Estimates the cost of a evaluating the policy with an index on Object condition 'oc'
+     * Estimates the cost of a evaluating the expression based on the object condition where the object condition
+     * is evaluated using index scan and the rest of the policies are evaluated as filter.
      * Selectivity of oc * D * Index access + Selectivity of oc * D * cost of filter * alpha * number of predicates
      * alpha (set to 2/3) is a parameter which determines the number of predicates that are evaluated in the policy
      * @return
      */
     public double estimateCostOfGuardRep(ObjectCondition oc){
-        long numOfPreds = this.getPolicies().stream().map(BEPolicy::getObject_conditions).mapToInt(List::size).sum();
+        long numOfPreds = this.getPolicies().stream().mapToInt(p -> p.countNumberOfPredicates()).sum();
         return PolicyConstants.NUMBER_OR_TUPLES * oc.computeL() * (PolicyConstants.IO_BLOCK_READ_COST  +
-                PolicyConstants.ROW_EVALUATE_COST * 2 * numOfPreds * PolicyConstants.NUMBER_OF_PREDICATES_EVALUATED);
+                PolicyConstants.ROW_EVALUATE_COST * numOfPreds * PolicyConstants.NUMBER_OF_PREDICATES_EVALUATED);
     }
 
     public BEExpression mergeExpression(BEExpression beExpression){
