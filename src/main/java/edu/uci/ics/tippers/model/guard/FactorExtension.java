@@ -8,7 +8,6 @@ import edu.uci.ics.tippers.model.policy.BEPolicy;
 import edu.uci.ics.tippers.model.policy.ObjectCondition;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 
 /**
@@ -71,7 +70,7 @@ public class FactorExtension {
         ObjectCondition intersect = oc1.intersect(oc2);
         ObjectCondition union = oc1.union(oc2);
         double lhs = intersect.computeL() / union.computeL();
-        long numOfPreds = beMerged.getPolicies().stream().map(BEPolicy::getObject_conditions).mapToInt(List::size).sum();
+        long numOfPreds = beMerged.getPolicies().stream().mapToInt(BEPolicy::countNumberOfPredicates).sum();
         double rhs = (PolicyConstants.ROW_EVALUATE_COST * numOfPreds) / (PolicyConstants.IO_BLOCK_READ_COST
                 + PolicyConstants.ROW_EVALUATE_COST + (PolicyConstants.ROW_EVALUATE_COST * numOfPreds) );
         return lhs > rhs;
@@ -92,9 +91,9 @@ public class FactorExtension {
             beM.getPolicies().addAll(oMap.get(oc));
             beM.getPolicies().addAll(oMap.get(ock));
             if(!shouldIMerge(oc, ock, beM)) continue;
-            double mBenefit = beM.estimateCostOfGuardRep(oc.union(ock));
-            mBenefit -= new BEExpression(oMap.get(oc)).estimateCostForExtension(oc.getAttribute())
-                    + new BEExpression(oMap.get(ock)).estimateCostForExtension(ock.getAttribute());
+            double mBenefit = new BEExpression(oMap.get(oc)).estimateCost()
+                    + new BEExpression(oMap.get(ock)).estimateCost();
+            mBenefit -= beM.estimateCostOfGuardRep(oc.union(ock));
             memoized.put(oc.hashCode() + "." + ock.hashCode(), mBenefit);
         }
     }

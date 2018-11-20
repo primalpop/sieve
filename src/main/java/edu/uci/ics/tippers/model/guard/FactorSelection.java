@@ -102,7 +102,7 @@ public class FactorSelection {
             BEExpression temp = new BEExpression(this.expression);
             temp.checkAgainstPolices(objectCondition);
             if (temp.getPolicies().size() > 1) { //was able to factorize
-                double tCost = temp.estimateCostForSelection(objectCondition);
+                double tCost = temp.estimateCostForSelection();
                 double fCost = temp.estimateCostOfGuardRep(objectCondition);
                 if (tCost > fCost) {
                     if (currentBestFactor.cost > fCost) {
@@ -202,13 +202,13 @@ public class FactorSelection {
     }
 
     /**
-     * Creates a query by AND'ing the guard and partition
+     * Creates a query by AND'ing the guard and partition and removing all the duplicates in the partition
      *
      * @param guard
      * @param partition
      * @return
      */
-    public String createQueryFromGQ(ObjectCondition guard, BEExpression partition) {
+    public String createCleanQueryFromGQ(ObjectCondition guard, BEExpression partition) {
         StringBuilder query = new StringBuilder();
         query.append(guard.print());
         query.append(PolicyConstants.CONJUNCTION);
@@ -224,35 +224,24 @@ public class FactorSelection {
      * Computes the cost of execution of individual guards and sums them up
      * For the remainder it considers the predicate with highest selectivity as the guard and computes the cost
      * Repeats the cost computation *repetitions* number of times and drops highest and lowest value to smooth it out
-     *
-     * @return
+     * @return total time taken for evaluating guards
      */
     public Duration computeGuardCosts() {
-        int repetitions = 1;
+        int repetitions = 5;
         Map<ObjectCondition, BEExpression> gMap = getGuardPartitionMapWithRemainder();
         Duration rcost = Duration.ofMillis(0);
-//        int numberOfTuples = 0;
-//        int totalGuardResultCount = 0;
         for (ObjectCondition kOb : gMap.keySet()) {
             List<Long> cList = new ArrayList<>();
             MySQLResult mySQLResult = new MySQLResult();
-//            MySQLResult tempResult = new MySQLResult();
             for (int i = 0; i < repetitions; i++) {
-//                tempResult = mySQLQueryManager.runTimedQueryWithResultCount(kOb.print());
-//                System.out.println("Count for current guard: " + tempResult.getResultCount());
-                mySQLResult = mySQLQueryManager.runTimedQueryWithResultCount(createQueryFromGQ(kOb, gMap.get(kOb)));
-//                System.out.println("Count for current guard + partition: " + mySQLResult.getResultCount());
+                mySQLResult = mySQLQueryManager.runTimedQueryWithResultCount(createCleanQueryFromGQ(kOb, gMap.get(kOb)));
                 cList.add(mySQLResult.getTimeTaken().toMillis());
             }
-//            totalGuardResultCount += tempResult.getResultCount();
-//            numberOfTuples += mySQLResult.getResultCount();
             Collections.sort(cList);
-//            List<Long> clippedList = cList.subList(1, repetitions-1);
-            Duration gCost = Duration.ofMillis(cList.stream().mapToLong(i -> i).sum() / cList.size());
+            List<Long> clippedList = cList.subList(1, repetitions-1);
+            Duration gCost = Duration.ofMillis(clippedList.stream().mapToLong(i -> i).sum() / clippedList.size());
             rcost = rcost.plus(gCost);
         }
-//        System.out.println("total number of tuples with just guard" + totalGuardResultCount);
-//        System.out.println("total true number of tuples: " +numberOfTuples);
         return rcost;
     }
 
@@ -279,7 +268,7 @@ public class FactorSelection {
             StringBuilder guardString = new StringBuilder();
             guardString.append(gMap.get(kOb).getPolicies().size());
             guardString.append(",");
-            int numOfPreds = new BEExpression(gMap.get(kOb).getPolicies()).countNumberOfPredicates();
+            int numOfPreds = gMap.get(kOb).getPolicies().stream().mapToInt(BEPolicy::countNumberOfPredicates).sum();
             guardString.append(numOfPreds);
             guardString.append(",");
             List<Long> gList = new ArrayList<>();
@@ -289,7 +278,7 @@ public class FactorSelection {
                 MySQLResult guardResult = mySQLQueryManager.runTimedQueryWithResultCount(kOb.print());
                 if (gCount == 0) gCount = guardResult.getResultCount();
                 gList.add(guardResult.getTimeTaken().toMillis());
-                MySQLResult completeResult = mySQLQueryManager.runTimedQueryWithResultCount(createQueryFromGQ(kOb, gMap.get(kOb)));
+                MySQLResult completeResult = mySQLQueryManager.runTimedQueryWithResultCount(createCleanQueryFromGQ(kOb, gMap.get(kOb)));
                 if (tCount == 0) tCount = completeResult.getResultCount();
                 cList.add(completeResult.getTimeTaken().toMillis());
 
@@ -310,7 +299,7 @@ public class FactorSelection {
             guardString.append(",");
             guardString.append(gAndPcost.toMillis());
             guardString.append(",");
-            guardString.append(createQueryFromGQ(kOb, gMap.get(kOb)));
+            guardString.append(createCleanQueryFromGQ(kOb, gMap.get(kOb)));
             guardResults.add(guardString.toString());
             totalEval = totalEval.plus(gAndPcost);
         }
@@ -318,99 +307,6 @@ public class FactorSelection {
         guardResults.add("Total Guard Evaluation time," + totalEval.toMillis());
         return guardResults;
     }
-
-    public void printDirtyFilterResults() {
-        Map<ObjectCondition, BEExpression> gMap = getGuardPartitionMapWithRemainder();
-        int repetitions = 1;
-        for (ObjectCondition kOb : gMap.keySet()) {
-            System.out.println("Executing Guard " + kOb.print());
-            List<Long> gList = new ArrayList<>();
-            Duration fTime = Duration.ofMillis(0);
-            List<Presence> finalResult = new ArrayList<>();
-            for (int i = 0; i < repetitions; i++) {
-                MySQLResult guardResult = new MySQLResult();
-                guardResult = mySQLQueryManager.runTimedQueryWithResultCount(kOb.print());
-                gList.add(guardResult.getTimeTaken().toMillis());
-                Instant fsStart = Instant.now();
-                finalResult = checkManuallyAgainstPolicieS(guardResult.getQueryResult());
-                Instant fsEnd = Instant.now();
-                fTime = Duration.between(fsStart, fsEnd);
-            }
-            Collections.sort(gList);
-            System.out.println("Guard Time: " + gList.get(0));
-            System.out.println("Filter Time " + fTime.toMillis());
-            System.out.println("Size of final result " + finalResult.size());
-        }
-    }
-
-    private List<Presence> checkManuallyAgainstPolicieS(List<Presence> queryResult) {
-        List<Presence> finalResults = new ArrayList<>();
-        for (Iterator<Presence> pit = queryResult.iterator(); pit.hasNext(); ) {
-            Presence p = pit.next();
-            if (Integer.parseInt(p.getTemperature()) >= 58 && Integer.parseInt(p.getTemperature()) <= 74) {
-                if (Integer.parseInt(p.getEnergy()) >= 3 && (Integer.parseInt(p.getEnergy()) <= 97)) {
-                    finalResults.add(p);
-                    continue;
-                }
-            }
-            if (Integer.parseInt(p.getTemperature()) >= 56 && Integer.parseInt(p.getTemperature()) <= 70) {
-                if (Integer.parseInt(p.getEnergy()) >= 56 && (Integer.parseInt(p.getEnergy()) <= 97)) {
-                    finalResults.add(p);
-                    continue;
-                }
-            }
-            if (Integer.parseInt(p.getTemperature()) >= 56 && Integer.parseInt(p.getTemperature()) <= 74) {
-                if (Integer.parseInt(p.getEnergy()) >= 86 && (Integer.parseInt(p.getEnergy()) <= 97)) {
-                    finalResults.add(p);
-                    continue;
-                }
-            }
-            if (Integer.parseInt(p.getTemperature()) >= 56 && Integer.parseInt(p.getTemperature()) <= 74) {
-                if (Integer.parseInt(p.getEnergy()) >= 3 && (Integer.parseInt(p.getEnergy()) <= 90)) {
-                    finalResults.add(p);
-                    continue;
-                }
-            }
-            if (Integer.parseInt(p.getTemperature()) >= 64 && Integer.parseInt(p.getTemperature()) <= 74) {
-                if (Integer.parseInt(p.getEnergy()) >= 53 && (Integer.parseInt(p.getEnergy()) <= 97)) {
-                    finalResults.add(p);
-                    continue;
-                }
-            }
-            if (Integer.parseInt(p.getTemperature()) >= 56 && Integer.parseInt(p.getTemperature()) <= 73) {
-                if (Integer.parseInt(p.getEnergy()) >= 33 && (Integer.parseInt(p.getEnergy()) <= 47)) {
-                    finalResults.add(p);
-                    continue;
-                }
-            }
-            if (Integer.parseInt(p.getTemperature()) >= 56 && Integer.parseInt(p.getTemperature()) <= 74) {
-                if (Integer.parseInt(p.getEnergy()) >= 32 && (Integer.parseInt(p.getEnergy()) <= 97)) {
-                    finalResults.add(p);
-                    continue;
-                }
-            }
-            if (Integer.parseInt(p.getTemperature()) >= 66 && Integer.parseInt(p.getTemperature()) <= 71) {
-                if (Integer.parseInt(p.getEnergy()) >= 39 && (Integer.parseInt(p.getEnergy()) <= 97)) {
-                    finalResults.add(p);
-                    continue;
-                }
-            }
-            if (Integer.parseInt(p.getTemperature()) >= 66 && Integer.parseInt(p.getTemperature()) <= 74) {
-                if (Integer.parseInt(p.getEnergy()) >= 3 && (Integer.parseInt(p.getEnergy()) <= 97)) {
-                    finalResults.add(p);
-                    continue;
-                }
-            }
-            if (Integer.parseInt(p.getTemperature()) >= 56 && Integer.parseInt(p.getTemperature()) <= 74) {
-                if (Integer.parseInt(p.getEnergy()) >= 30 && (Integer.parseInt(p.getEnergy()) <= 77)) {
-                    finalResults.add(p);
-                    continue;
-                }
-            }
-        }
-        return finalResults;
-    }
-
 
     public List<ObjectCondition> getIndexFilters() {
         if (multiplier.isEmpty()) {
@@ -426,18 +322,22 @@ public class FactorSelection {
         return indexFilters;
     }
 
+
     /**
-     * Guard and paritition map but not including remainder
-     *
+     * Creates a query by AND'ing the guard and partition
      * @return
      */
-    public HashMap<ObjectCondition, BEExpression> getGuardPartition() {
-        if (this.getMultiplier().isEmpty()) return new HashMap<>();
-        HashMap<ObjectCondition, BEExpression> gMap = new HashMap<>();
-        gMap.put(this.getMultiplier().get(0), this.getQuotient().getExpression());
-        if (!this.getRemainder().expression.getPolicies().isEmpty()) {
-            gMap.putAll(this.getRemainder().getGuardPartition());
+    public void createDirtyQuery() {
+        for(Map.Entry<ObjectCondition, BEExpression> pair: this.getGuardPartitionMapWithRemainder().entrySet()){
+            StringBuilder query = new StringBuilder();
+            ObjectCondition guard = pair.getKey();
+            BEExpression partition = pair.getValue();
+            query.append(guard.print());
+            query.append(PolicyConstants.CONJUNCTION);
+            query.append("(");
+            query.append(partition.createQueryFromPolices());
+            query.append(")");
+            System.out.println(query.toString());
         }
-        return gMap;
     }
 }

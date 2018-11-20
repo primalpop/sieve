@@ -180,10 +180,10 @@ public class RunExp {
 
     public static void main(String args[]) {
         int[] kValues = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
-        int epochs = 15;
-        int start_policies = 20;
-        int rpq = 2;
-        String[] fileNames = {"policy35.json"};
+        int epochs = 25;
+        int start_policies = 175;
+        int rpq = 10;
+        String[] fileNames = {"policy200.json"};
         List<Duration> times = new ArrayList<>();
         TreeMap<String, String> runTimes = new TreeMap<>();
         RunExp re = new RunExp();
