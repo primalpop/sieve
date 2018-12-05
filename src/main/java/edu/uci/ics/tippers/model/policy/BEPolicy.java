@@ -216,9 +216,13 @@ public class BEPolicy {
         return contained.size() != 0;
     }
 
+    /**
+     * Checks for matching object conditions in the policy based on attribute and value (not id)
+     * @param oc
+     */
     public void deleteObjCond(ObjectCondition oc){
         List<ObjectCondition> toRemove = this.object_conditions.stream()
-                .filter(objCond -> objCond.getType() == oc.getType())
+                .filter(objCond -> objCond.getAttribute().equalsIgnoreCase(oc.getAttribute()))
                 .filter(objCond -> objCond.compareTo(oc) == 0)
                 .collect(Collectors.toList());
         if(this.object_conditions.size() == toRemove.size()) return;
@@ -323,22 +327,31 @@ public class BEPolicy {
     }
 
     /**
+     * If eval
      * Estimates the upper bound of the cost of evaluating an individual policy by adding up
      * io block read cost * selectivity of lowest selectivity predicate * D +
      * (D * selectivity of lowest selectivity predicate *  row evaluate cost * 2  * alpha * number of predicates)
      * alpha is a parameter which determines the number of predicates that are evaluated in the policy (e.g., 2/3)
      * @return
      */
-    public double estimateCost() {
+    public double estimateCost(Boolean evalOnly) {
         ObjectCondition selected = this.getObject_conditions().get(0);
         for (ObjectCondition oc : this.getObject_conditions()) {
             if (PolicyConstants.INDEXED_ATTRS.contains(oc.getAttribute()))
                 if (oc.computeL() < selected.computeL())
                     selected = oc;
         }
-        double cost = PolicyConstants.NUMBER_OR_TUPLES * selected.computeL() *(PolicyConstants.IO_BLOCK_READ_COST  +
-                PolicyConstants.ROW_EVALUATE_COST * PolicyConstants.NUMBER_OF_PREDICATES_EVALUATED *
-                        countNumberOfPredicates());
+        double cost;
+        if(!evalOnly){
+            cost = PolicyConstants.NUMBER_OR_TUPLES * selected.computeL() *(PolicyConstants.IO_BLOCK_READ_COST  +
+                    PolicyConstants.ROW_EVALUATE_COST * PolicyConstants.NUMBER_OF_PREDICATES_EVALUATED *
+                            countNumberOfPredicates());
+        }
+        else{
+            cost = PolicyConstants.NUMBER_OR_TUPLES * selected.computeL() *
+                    PolicyConstants.ROW_EVALUATE_COST * PolicyConstants.NUMBER_OF_PREDICATES_EVALUATED *
+                            countNumberOfPredicates();
+        }
         return cost;
     }
 

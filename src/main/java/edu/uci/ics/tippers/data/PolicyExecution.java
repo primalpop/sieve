@@ -89,15 +89,15 @@ public class PolicyExecution {
 
                 try {
                     /** Traditional approach **/
-                    System.out.println(beExpression.createQueryFromPolices());
-                    tradResult = mySQLQueryManager.runTimedQuery(beExpression.createQueryFromPolices(), true);
-                    runTime = runTime.plus(tradResult.getTimeTaken());
-
-                    policyRunTimes.put(file.getName(), String.valueOf(runTime.toMillis()));
-                    if(!(runTime.toMillis() == PolicyConstants.MAX_DURATION.toMillis())) resultCheck = true;
-                    System.out.println("** " + file.getName() + " completed and took " + runTime.toMillis());
-
-                    System.out.println("Starting Generation......");
+//                    System.out.println(beExpression.createQueryFromPolices());
+//                    tradResult = mySQLQueryManager.runTimedQuery(beExpression.createQueryFromPolices(), true);
+//                    runTime = runTime.plus(tradResult.getTimeTaken());
+//
+//                    policyRunTimes.put(file.getName(), String.valueOf(runTime.toMillis()));
+//                    if(!(runTime.toMillis() == PolicyConstants.MAX_DURATION.toMillis())) resultCheck = true;
+//                    System.out.println("** " + file.getName() + " completed and took " + runTime.toMillis());
+//
+//                    System.out.println("Starting Generation......");
                     Duration guardGen = Duration.ofMillis(0);
     //                /** Extension **/
                     FactorExtension f = new FactorExtension(beExpression);
@@ -125,6 +125,7 @@ public class PolicyExecution {
                     Instant fsStart = Instant.now();
                     gf.selectGuards();
                     Instant fsEnd = Instant.now();
+                    System.out.println(gf.createQueryFromExactFactor());
 
 
                     /** Result checking **/
@@ -146,13 +147,15 @@ public class PolicyExecution {
                     System.out.println("Policies "+ file.getName() + " Guard Generation time: " + guardGen.toMillis());
                     policyRunTimes.put(file.getName() + "-guardGeneration", String.valueOf(guardGen.toMillis()));
                     policyRunTimes.put("Number of original guards ", String.valueOf(gf.getIndexFilters().size()));
+                    for (String gQuery: gf.getGuardQueries()) {
+                        System.out.println(gQuery);
+                    }
 
                     writer.appendToCSVReport(policyRunTimes, policyDir, exptResults);
-                    policyRunTimes.clear();
-                    System.out.println("Starting Execution of Guard for " + file.getName() + " ......");
-                    List<String> guardResults = gf.printDetailedGuardResults();
-                    gf.createDirtyQuery();
-                    writer.addGuardReport(guardResults, policyDir, exptResults);
+//                    policyRunTimes.clear();
+//                    System.out.println("Starting Execution of Guard for " + file.getName() + " ......");
+//                    List<String> guardResults = gf.printDetailedGuardResults();
+//                    writer.addGuardReport(guardResults, policyDir, exptResults);
     //                Duration guardRunTime = gf.computeGuardCosts();
     //                policyRunTimes.put(file.getName() + "-withGuard", guardRunTime);
     //                System.out.println("** Number of index filters : " + gf.getIndexFilters().size() );

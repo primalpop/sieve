@@ -86,7 +86,8 @@ public class BEExpression{
     }
 
     /**
-     * Given a object condition and list of policies, identify the list of policies containing that object condition
+     * Given a object condition and an expression, identify the list of policies containing that object condition
+     * in the expression
      * @param objectCondition
      * @return
      */
@@ -225,14 +226,6 @@ public class BEExpression{
     @Override
     public int hashCode() {
         return Objects.hash(policies);
-    }
-
-    /**
-     * Estimates the cost of evaluating the union of policies with the predicate on the given attribute
-     * @return
-     */
-    public double estimateCost(){
-        return this.getPolicies().stream().mapToDouble(p -> p.estimateCost()).sum();
     }
 
     /**
