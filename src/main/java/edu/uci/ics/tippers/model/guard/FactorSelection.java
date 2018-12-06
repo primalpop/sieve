@@ -86,13 +86,13 @@ public class FactorSelection {
                 .flatMap(p -> p.getObject_conditions().stream())
                 .filter(o -> PolicyConstants.INDEXED_ATTRS.contains(o.getAttribute()))
                 .collect(Collectors.toSet());
-        selectFactor(singletonSet);
+        selectFactor(singletonSet, false);
     }
 
-    private boolean isFactorGood(BEExpression original, ObjectCondition factor, Boolean quotient){
-        double tCost = original.estimateCostForSelection();
-        double fCost = original.estimateCostOfGuardRep(factor);
-
+    private boolean isFactorGood(BEExpression original, ObjectCondition factor, boolean quotient){
+        double tCost = original.estimateCostForSelection(quotient);
+        double fCost = original.estimateCostOfGuardRep(factor, quotient);
+        return tCost > fCost;
     }
 
 
@@ -100,21 +100,20 @@ public class FactorSelection {
      * Factorization based on a single object condition and not all the possible combinations
      * After selecting factor, they are not removed from the quotient
      */
-    public void selectFactor(Set<ObjectCondition> objectConditionSet) {
+    public void selectFactor(Set<ObjectCondition> objectConditionSet, boolean quotient) {
         Boolean factorized = false;
         FactorSelection currentBestFactor = new FactorSelection(this.expression);
-        currentBestFactor.setCost(currentBestFactor.expression.estimateCostForSelection());
+        currentBestFactor.setCost(currentBestFactor.expression.estimateCostForSelection(false));
         Set<ObjectCondition> removal = new HashSet<>();
         for (ObjectCondition objectCondition : objectConditionSet) {
             BEExpression tempQuotient = new BEExpression(this.expression);
             tempQuotient.checkAgainstPolices(objectCondition);
             if (tempQuotient.getPolicies().size() > 1) { //was able to factorize
-                double tCost = tempQuotient.estimateCostForSelection();
-                double fCost = tempQuotient.estimateCostOfGuardRep(objectCondition);
-                if (tCost > fCost) { //factorized is better than original
+                if (isFactorGood(tempQuotient, objectCondition, quotient)) { //factorized is better than original
                     BEExpression tempRemainder = new BEExpression(this.expression);
                     tempRemainder.getPolicies().removeAll(tempQuotient.getPolicies());
-                    double totalCost = fCost + tempRemainder.estimateCostForSelection();
+                    double totalCost = tempQuotient.estimateCostOfGuardRep(objectCondition, quotient)
+                            + tempRemainder.estimateCostForSelection(quotient);
                     if (currentBestFactor.cost > totalCost) { //greedy checking
                         factorized = true;
                         currentBestFactor.multiplier = new ArrayList<>();
@@ -123,7 +122,7 @@ public class FactorSelection {
                         currentBestFactor.remainder.expression.getPolicies().removeAll(tempQuotient.getPolicies());
                         currentBestFactor.quotient = new FactorSelection(tempQuotient);
                         currentBestFactor.quotient.expression.removeFromPolicies(objectCondition); //added to debug
-                        currentBestFactor.cost = fCost;
+                        currentBestFactor.cost = totalCost;
                     }
                 }
                 else removal.add(objectCondition); //not considered for factorization recursively
@@ -137,8 +136,8 @@ public class FactorSelection {
             this.setCost(currentBestFactor.cost);
             removal.add(this.getMultiplier().get(0));
             objectConditionSet.removeAll(removal);
-            this.remainder.selectFactor(objectConditionSet);
-            this.quotient.selectFactor(objectConditionSet); //added to debug
+            this.remainder.selectFactor(objectConditionSet, false);
+            this.quotient.selectFactor(objectConditionSet, true); //added to debug
         }
     }
 
@@ -146,7 +145,7 @@ public class FactorSelection {
     public String createQueryFromExactFactor() {
         if (multiplier.isEmpty()) {
             if (expression != null) {
-                return this.expression.createQueryFromPolices();
+                return this.expression.cleanQueryFromPolices();
             } else
                 return "";
         }
@@ -285,6 +284,7 @@ public class FactorSelection {
     }
 
     /**
+     * Works only with non-nested guards
      * Prints the following to a csv file
      * - For each guard
      * - Number of policies in the partition
@@ -294,7 +294,6 @@ public class FactorSelection {
      * - Time taken by each guard
      * - Time taken by each guard + partition
      * - Print the guard + partition
-     *
      * @return an arraylist of strings with each element representing a line in the csv file
      */
     public List<String> printDetailedGuardResults() {

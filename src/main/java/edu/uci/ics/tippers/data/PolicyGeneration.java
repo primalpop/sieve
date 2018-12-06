@@ -119,9 +119,13 @@ public class PolicyGeneration {
         int attrCount = (int) (r.nextGaussian() * 2 + 3); //mean - 4, SD - 2
         if (attrCount <= 1 || attrCount > attributes.size()) attrCount = 3;
         ArrayList<String> attrList = new ArrayList<>();
-        rq.setStart_timestamp(getRandomTimeStamp());
-        rq.setEnd_timestamp(getEndingTimeInterval(rq.getStart_timestamp()));
-        attrList.add(PolicyConstants.TIMESTAMP_ATTR);
+        double rand = Math.random();
+        double TIMESTAMP_INCLUDE = 0.6;
+        if (rand > TIMESTAMP_INCLUDE) {
+            rq.setStart_timestamp(getRandomTimeStamp());
+            rq.setEnd_timestamp(getEndingTimeInterval(rq.getStart_timestamp()));
+            attrList.add(PolicyConstants.TIMESTAMP_ATTR);
+        }
         for (int j = 1; j < attrCount; j++) {
             String attribute = attributes.get(r.nextInt(attributes.size()));
             if (attrList.contains(attribute)) {

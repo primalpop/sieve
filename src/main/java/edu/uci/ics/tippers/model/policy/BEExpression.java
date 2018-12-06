@@ -232,8 +232,8 @@ public class BEExpression{
      * Estimates the cost of evaluation of policies as the sum of evaluating individual policies
      * @return
      */
-    public double estimateCostForSelection(){
-        return this.getPolicies().stream().mapToDouble(p -> p.estimateCost()).sum();
+    public double estimateCostForSelection(boolean evalOnly){
+        return this.getPolicies().stream().mapToDouble(p -> p.estimateCost(evalOnly)).sum();
     }
 
     /**
@@ -244,10 +244,17 @@ public class BEExpression{
      * alpha (set to 2/3) is a parameter which determines the number of predicates that are evaluated in the policy
      * @return
      */
-    public double estimateCostOfGuardRep(ObjectCondition oc){
-        long numOfPreds = this.getPolicies().stream().mapToInt(p -> p.countNumberOfPredicates()).sum();
-        return PolicyConstants.NUMBER_OR_TUPLES * oc.computeL() * (PolicyConstants.IO_BLOCK_READ_COST  +
-                PolicyConstants.ROW_EVALUATE_COST * numOfPreds * PolicyConstants.NUMBER_OF_PREDICATES_EVALUATED);
+    public double estimateCostOfGuardRep(ObjectCondition oc, boolean evalOnly){
+        long numOfPreds = this.getPolicies().stream().mapToInt(BEPolicy::countNumberOfPredicates).sum();
+        if(!evalOnly){
+            return PolicyConstants.NUMBER_OR_TUPLES * oc.computeL() * (PolicyConstants.IO_BLOCK_READ_COST  +
+                    PolicyConstants.ROW_EVALUATE_COST * numOfPreds * PolicyConstants.NUMBER_OF_PREDICATES_EVALUATED);
+        }
+        else {
+            return PolicyConstants.NUMBER_OR_TUPLES * oc.computeL() *
+                    PolicyConstants.ROW_EVALUATE_COST * numOfPreds * PolicyConstants.NUMBER_OF_PREDICATES_EVALUATED;
+        }
+
     }
 
     public BEExpression mergeExpression(BEExpression beExpression){

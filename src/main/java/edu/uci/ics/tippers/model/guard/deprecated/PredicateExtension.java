@@ -80,9 +80,9 @@ public class PredicateExtension {
                     ObjectCondition ock = guards.get(k);
                     BEExpression beM = growMap.get(ocj).mergeExpression(guardMap.get(ock));
                     if (!shouldIMerge(ocj, ock, beM)) continue;
-                    double benefit = guardMap.get(ocj).mergeExpression(guardMap.get(ock)).estimateCostOfGuardRep(ocj.union(ock));
-                    benefit -=(guardMap.get(ock).estimateCostOfGuardRep(ocj)
-                            + guardMap.get(ock).estimateCostOfGuardRep(ock));
+                    double benefit = guardMap.get(ocj).mergeExpression(guardMap.get(ock)).estimateCostOfGuardRep(ocj.union(ock), false);
+                    benefit -=(guardMap.get(ock).estimateCostOfGuardRep(ocj, false)
+                            + guardMap.get(ock).estimateCostOfGuardRep(ock, false));
                     memoized.put(ocj.hashCode() + "." + ock.hashCode(), benefit);
                 }
             }
@@ -108,13 +108,13 @@ public class PredicateExtension {
                 guards.add(ocM);
                 replacementMap.put(m1, ocM);
                 replacementMap.put(m2, ocM);
-                double costocM = growMap.get(ocM).estimateCostOfGuardRep(ocM);
+                double costocM = growMap.get(ocM).estimateCostOfGuardRep(ocM, false);
                 for (int j = 0; j < guards.size(); j++) {
                     ObjectCondition ocj = guards.get(j);
                     if (ocj.compareTo(ocM) == 0) continue;
                     if (!ocj.overlaps(ocM)) continue;
-                    double benefit = growMap.get(ocj).estimateCostOfGuardRep(ocj) + costocM;
-                    benefit -= growMap.get(ocM).mergeExpression(guardMap.get(ocM)).estimateCostOfGuardRep(ocj.union(ocM));
+                    double benefit = growMap.get(ocj).estimateCostOfGuardRep(ocj, false) + costocM;
+                    benefit -= growMap.get(ocM).mergeExpression(guardMap.get(ocM)).estimateCostOfGuardRep(ocj.union(ocM), false);
                     memoized.put(ocj.hashCode() + "" + ocM.hashCode(), benefit);
                 }
             }
