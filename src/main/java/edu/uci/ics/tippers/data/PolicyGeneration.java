@@ -116,22 +116,19 @@ public class PolicyGeneration {
 
     private List<ObjectCondition> generatePredicates(int policyID, List<String> attributes){
         RangeQuery rq = new RangeQuery();
-        int attrCount = (int) (r.nextGaussian() * 2 + 3); //mean - 4, SD - 2
-        if (attrCount <= 1 || attrCount > attributes.size()) attrCount = 3;
+        int attrCount = (int) (r.nextGaussian() * 2 + 4); //mean - 4, SD - 2
+        if (attrCount <= 1 || attrCount > attributes.size()) attrCount = 4;
         ArrayList<String> attrList = new ArrayList<>();
         double rand = Math.random();
-        double TIMESTAMP_INCLUDE = 0.6;
+        double TIMESTAMP_INCLUDE = 0.1;
         if (rand > TIMESTAMP_INCLUDE) {
             rq.setStart_timestamp(getRandomTimeStamp());
             rq.setEnd_timestamp(getEndingTimeInterval(rq.getStart_timestamp()));
             attrList.add(PolicyConstants.TIMESTAMP_ATTR);
         }
-        for (int j = 1; j < attrCount; j++) {
+        while(attrCount - attrList.size() > 0) {
             String attribute = attributes.get(r.nextInt(attributes.size()));
-            if (attrList.contains(attribute)) {
-                j--;
-                continue;
-            }
+            if (attrList.contains(attribute)) continue;
             if (attribute.equalsIgnoreCase(PolicyConstants.USERID_ATTR)) {
                 rq.setUser_id(String.valueOf(users.get(new Random().nextInt(users.size())).getUser_id()));
             }

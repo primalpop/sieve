@@ -32,7 +32,7 @@ public class PolicyExecution {
 
     private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-    private static final int[] policyNumbers = {10, 25, 50, 100, 200};
+    private static final int[] policyNumbers = {200};
 
     private static final int[] policyEpochs = {0};
 
@@ -147,19 +147,12 @@ public class PolicyExecution {
                     System.out.println("Policies "+ file.getName() + " Guard Generation time: " + guardGen.toMillis());
                     policyRunTimes.put(file.getName() + "-guardGeneration", String.valueOf(guardGen.toMillis()));
                     policyRunTimes.put("Number of original guards ", String.valueOf(gf.getIndexFilters().size()));
-                    for (String gQuery: gf.getGuardQueries()) {
-                        System.out.println(gQuery);
-                    }
 
                     writer.appendToCSVReport(policyRunTimes, policyDir, exptResults);
                     policyRunTimes.clear();
                     System.out.println("Starting Execution of Guard for " + file.getName() + " ......");
                     List<String> guardResults = gf.printDetailedGuardResults();
                     writer.addGuardReport(guardResults, policyDir, exptResults);
-    //                Duration guardRunTime = gf.computeGuardCosts();
-    //                policyRunTimes.put(file.getName() + "-withGuard", guardRunTime);
-    //                System.out.println("** Number of index filters : " + gf.getIndexFilters().size() );
-    //                System.out.println("** Guard query for " + file.getName() + " took " + guardRunTime.toMillis() + " **");
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -179,7 +172,9 @@ public class PolicyExecution {
             attributes.add(PolicyConstants.ENERGY_ATTR);
             attributes.add(PolicyConstants.TEMPERATURE_ATTR);
             attributes.add(PolicyConstants.LOCATIONID_ATTR);
-            List<BEPolicy> genPolicy = policyGen.generateOverlappingPolicies(policyNumbers[i], 0.4, attributes, bePolicies);
+            attributes.add(PolicyConstants.USERID_ATTR); //TODO: remove for experiments?
+            attributes.add(PolicyConstants.ACTIVITY_ATTR);
+            List<BEPolicy> genPolicy = policyGen.generateOverlappingPolicies(policyNumbers[i], 0.5, attributes, bePolicies);
             bePolicies.clear();
             bePolicies.addAll(genPolicy);
         }
