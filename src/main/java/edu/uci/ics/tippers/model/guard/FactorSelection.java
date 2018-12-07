@@ -125,7 +125,7 @@ public class FactorSelection {
                         currentBestFactor.cost = totalCost;
                     }
                 }
-                else removal.add(objectCondition); //not considered for factorization recursively
+//                else removal.add(objectCondition); //not considered for factorization recursively
             }
             else removal.add(objectCondition); //not a factor of at least two policies
         }
@@ -229,6 +229,9 @@ public class FactorSelection {
         gQuery.append(this.getMultiplier().get(0).print());
         gQuery.append(PolicyConstants.CONJUNCTION);
         gQuery.append("(");
+        if(!this.getQuotient().getMultiplier().isEmpty()) {
+            System.out.println("Nested guard: " + this.getQuotient().createQueryFromExactFactor());
+        }
         gQuery.append(this.getQuotient().createQueryFromExactFactor());
         gQuery.append(")");
         gQueries.add(gQuery.toString());
