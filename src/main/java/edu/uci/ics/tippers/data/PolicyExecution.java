@@ -32,7 +32,7 @@ public class PolicyExecution {
 
     private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-    private static final int[] policyNumbers = {200};
+    private static final int[] policyNumbers = {10, 25, 50, 100, 200, 300, 400, 500, 750, 1000, 2000};
 
     private static final int[] policyEpochs = {0};
 
@@ -97,15 +97,15 @@ public class PolicyExecution {
                     if(!(runTime.toMillis() == PolicyConstants.MAX_DURATION.toMillis())) resultCheck = true;
                     System.out.println("** " + file.getName() + " completed and took " + runTime.toMillis());
 
-                    System.out.println("Starting Generation......");
-                    Duration guardGen = Duration.ofMillis(0);
-    //                /** Extension **/
-                    FactorExtension f = new FactorExtension(beExpression);
-                    Instant feStart = Instant.now();
-                    int ext = f.doYourThing();
-                    policyRunTimes.put("Number of Extensions", String.valueOf(ext));
-                    Instant feEnd = Instant.now();
-                    guardGen = guardGen.plus(Duration.between(feStart, feEnd));
+//                    System.out.println("Starting Generation......");
+//                    Duration guardGen = Duration.ofMillis(0);
+//    //                /** Extension **/
+//                    FactorExtension f = new FactorExtension(beExpression);
+//                    Instant feStart = Instant.now();
+//                    int ext = f.doYourThing();
+//                    policyRunTimes.put("Number of Extensions", String.valueOf(ext));
+//                    Instant feEnd = Instant.now();
+//                    guardGen = guardGen.plus(Duration.between(feStart, feEnd));
 
                     /** Result checking after factor extension **/
     //                System.out.println("Verifying results after factor extension......");
@@ -121,11 +121,11 @@ public class PolicyExecution {
 
     //                System.out.println("Starting Factorization");
                     /** Factorization **/
-                    FactorSelection gf = new FactorSelection(f.getGenExpression());
-                    Instant fsStart = Instant.now();
-                    gf.selectGuards();
-                    Instant fsEnd = Instant.now();
-                    System.out.println(gf.createQueryFromExactFactor());
+//                    FactorSelection gf = new FactorSelection(f.getGenExpression());
+//                    Instant fsStart = Instant.now();
+//                    gf.selectGuards();
+//                    Instant fsEnd = Instant.now();
+//                    System.out.println(gf.createQueryFromExactFactor());
 
 
                     /** Result checking **/
@@ -142,17 +142,17 @@ public class PolicyExecution {
     //                }
 
 
-                    guardGen = guardGen.plus(Duration.between(fsStart, fsEnd));
-    //                System.out.println("Final Guard " + gf.createQueryFromExactFactor());
-                    System.out.println("Policies "+ file.getName() + " Guard Generation time: " + guardGen.toMillis());
-                    policyRunTimes.put(file.getName() + "-guardGeneration", String.valueOf(guardGen.toMillis()));
-                    policyRunTimes.put("Number of original guards ", String.valueOf(gf.getIndexFilters().size()));
-
+//                    guardGen = guardGen.plus(Duration.between(fsStart, fsEnd));
+//    //                System.out.println("Final Guard " + gf.createQueryFromExactFactor());
+//                    System.out.println("Policies "+ file.getName() + " Guard Generation time: " + guardGen.toMillis());
+//                    policyRunTimes.put(file.getName() + "-guardGeneration", String.valueOf(guardGen.toMillis()));
+//                    policyRunTimes.put("Number of original guards ", String.valueOf(gf.getIndexFilters().size()));
+//
                     writer.appendToCSVReport(policyRunTimes, policyDir, exptResults);
-                    policyRunTimes.clear();
-                    System.out.println("Starting Execution of Guard for " + file.getName() + " ......");
-                    List<String> guardResults = gf.printDetailedGuardResults();
-                    writer.addGuardReport(guardResults, policyDir, exptResults);
+//                    policyRunTimes.clear();
+//                    System.out.println("Starting Execution of Guard for " + file.getName() + " ......");
+//                    List<String> guardResults = gf.printDetailedGuardResults();
+//                    writer.addGuardReport(guardResults, policyDir, exptResults);
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -174,7 +174,7 @@ public class PolicyExecution {
             attributes.add(PolicyConstants.LOCATIONID_ATTR);
             attributes.add(PolicyConstants.USERID_ATTR); //TODO: remove for experiments?
             attributes.add(PolicyConstants.ACTIVITY_ATTR);
-            List<BEPolicy> genPolicy = policyGen.generateOverlappingPolicies(policyNumbers[i], 0.5, attributes, bePolicies);
+            List<BEPolicy> genPolicy = policyGen.generateOverlappingPolicies(policyNumbers[i], 0.3, attributes, bePolicies);
             bePolicies.clear();
             bePolicies.addAll(genPolicy);
         }
