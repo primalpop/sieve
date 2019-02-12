@@ -30,19 +30,29 @@ public class FactorSearch {
     public FactorSearch(BEExpression input){
         this.input = new Term();
         this.input.setRemainder(input);
+        this.input.setFactor(input.getPolicies().get(0).getObject_conditions().get(0));
+        this.input.setQuotient(input);
         this.input.setFscore(Double.POSITIVE_INFINITY);
         this.open = new PriorityQueue<>();
         this.open.add(this.input);
         this.scores = new HashMap<Term, Double>();
-        this.scores.put(this.input, this.input.getFscore());
         this.closed = new HashSet<Term>();
         this.parentMap = new HashMap<Term, Term>();
         this.depth = 0;
         this.maxDepth = (int) Math.round(Math.log(input.getPolicies().size())/Math.log(2.0));
-        this.canFactors = input.getPolicies().stream()
+        this.canFactors = new HashSet<>();
+        Set<ObjectCondition> pFactors = input.getPolicies().stream()
                 .flatMap(p -> p.getObject_conditions().stream())
                 .filter(o -> PolicyConstants.INDEXED_ATTRS.contains(o.getAttribute()))
                 .collect(Collectors.toSet());
+        for (ObjectCondition pf: pFactors) {
+            Boolean match = false;
+            for (ObjectCondition cf: canFactors) {
+                if(pf.equalsWithoutId(cf)) match = true;
+            }
+            if(!match) canFactors.add(pf);
+        }
+
     }
 
     private boolean utility(BEExpression original, ObjectCondition factor, boolean costEvalOnly){
@@ -57,11 +67,15 @@ public class FactorSearch {
             BEPolicy pol = remainder.getPolicies().get(i);
             for (int j = 0; j < pol.getObject_conditions().size(); j++) {
                 ObjectCondition oc = pol.getObject_conditions().get(j);
-                ObjectCondition sup = aMap.get(oc.getAttribute()).union(oc);
-                aMap.put(oc.getAttribute(), sup);
+                if(aMap.containsKey(oc.getAttribute())) {
+                    ObjectCondition sup = aMap.get(oc.getAttribute()).union(oc);
+                    aMap.put(oc.getAttribute(), sup);
+                }
+                else
+                    aMap.put(oc.getAttribute(), oc);
             }
         }
-        BEPolicy superPolicy = new BEPolicy(new ArrayList<ObjectCondition>(aMap.size()));
+        BEPolicy superPolicy = new BEPolicy(new ArrayList<ObjectCondition>(aMap.values()));
         return superPolicy.estimateCost(false);
     }
 
@@ -94,25 +108,26 @@ public class FactorSearch {
      */
     public String search(){
         Term current;
-        while(!open.isEmpty()) {
-            current = open.remove();
-            if(!closed.contains(current)){
-                closed.add(current);
+        while(!this.open.isEmpty()) {
+            current = this.open.remove();
+            if(!this.closed.contains(current)){
+                this.closed.add(current);
                 List<Term> candidates = factorize(current.getRemainder());
                 if(candidates.isEmpty()) {
-                    createQuery(current); //Factorization complete
+                    return createQuery(current); //Factorization complete
                 }
                 this.depth += 1;
                 for (Term c: candidates) {
-                    if(!closed.contains(c)){
-                        if(open.contains(c)){
-                            if(scores.get(c) > c.getFscore()){
-                                open.remove(c); //Remove the old node
+                    if(!this.closed.contains(c)){
+                        if(this.open.contains(c)){
+                            if(this.scores.get(c) > c.getFscore()){
+                                this.open.remove(c); //Remove the old node
                             }
                             else continue;
                         }
-                        open.add(c);
-                        parentMap.put(c, current);
+                        this.open.add(c);
+                        this.parentMap.put(c, current);
+                        this.scores.put(c, c.getFscore());
                     }
                 }
             }
