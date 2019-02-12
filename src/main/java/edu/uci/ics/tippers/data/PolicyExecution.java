@@ -8,6 +8,7 @@ import edu.uci.ics.tippers.db.MySQLResult;
 import edu.uci.ics.tippers.fileop.Reader;
 import edu.uci.ics.tippers.fileop.Writer;
 import edu.uci.ics.tippers.model.guard.FactorExtension;
+import edu.uci.ics.tippers.model.guard.FactorSearch;
 import edu.uci.ics.tippers.model.guard.FactorSelection;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
@@ -90,12 +91,15 @@ public class PolicyExecution {
                 try {
                     /** Traditional approach **/
                     System.out.println(beExpression.createQueryFromPolices());
-                    tradResult = mySQLQueryManager.runTimedQuery(beExpression.createQueryFromPolices(), true);
-                    runTime = runTime.plus(tradResult.getTimeTaken());
+//                    tradResult = mySQLQueryManager.runTimedQuery(beExpression.createQueryFromPolices(), true);
+//                    runTime = runTime.plus(tradResult.getTimeTaken());
+//
+//                    policyRunTimes.put(file.getName(), String.valueOf(runTime.toMillis()));
+//                    if(!(runTime.toMillis() == PolicyConstants.MAX_DURATION.toMillis())) resultCheck = true;
+//                    System.out.println("** " + file.getName() + " completed and took " + runTime.toMillis());
 
-                    policyRunTimes.put(file.getName(), String.valueOf(runTime.toMillis()));
-                    if(!(runTime.toMillis() == PolicyConstants.MAX_DURATION.toMillis())) resultCheck = true;
-                    System.out.println("** " + file.getName() + " completed and took " + runTime.toMillis());
+                    FactorSearch fs = new FactorSearch(beExpression);
+                    System.out.println(fs.search());
 
 //                    System.out.println("Starting Generation......");
 //                    Duration guardGen = Duration.ofMillis(0);
