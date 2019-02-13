@@ -98,6 +98,7 @@ public class PolicyExecution {
                     if(!(runTime.toMillis() == PolicyConstants.MAX_DURATION.toMillis())) resultCheck = true;
                     System.out.println("** " + file.getName() + " completed and took " + runTime.toMillis());
 
+
                     FactorSearch fs = new FactorSearch(beExpression);
                     fs.search();
                     writer.addGuardReport(fs.printDetailedResults(), policyDir, exptResultsFile);
@@ -127,10 +128,12 @@ public class PolicyExecution {
 
     //                System.out.println("Starting Factorization");
                     /** Factorization **/
-//                    FactorSelection gf = new FactorSelection(f.getGenExpression());
-//                    Instant fsStart = Instant.now();
-//                    gf.selectGuards();
-//                    Instant fsEnd = Instant.now();
+                    FactorSelection gf = new FactorSelection(beExpression);
+                    Instant fsStart = Instant.now();
+                    gf.selectGuards();
+                    Instant fsEnd = Instant.now();
+                    List<String> guardResults = gf.printDetailedGuardResults();
+                    writer.addGuardReport(guardResults, policyDir, exptResultsFile);
 //                    System.out.println(gf.createQueryFromExactFactor());
 
 
@@ -157,8 +160,7 @@ public class PolicyExecution {
                     writer.appendToCSVReport(policyRunTimes, policyDir, exptResultsFile);
 //                    policyRunTimes.clear();
 //                    System.out.println("Starting Execution of Guard for " + file.getName() + " ......");
-//                    List<String> guardResults = gf.printDetailedGuardResults();
-//                    writer.addGuardReport(guardResults, policyDir, exptResults);
+
 
                 } catch (Exception e) {
                     e.printStackTrace();

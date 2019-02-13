@@ -85,13 +85,13 @@ public class PolicyConstants {
     public static final ImmutableList<QuerierCondition> DEFAULT_QC = ImmutableList.
             of(new QuerierCondition("user_name",AttributeType.STRING, "=","John Doe", "=", "John Doe"));
 
-    //ATTRIBUTE NAMES
+    //ATTRIBUTE NAMES, ,
     public static final ImmutableList<String> ATTR_LIST = ImmutableList.of("timeStamp", "energy", "temperature",
             "location_id", "activity", "user_id");
 
     //INDEXED ATTRIBUTES
     public static final ImmutableList<String> INDEX_ATTRS = ImmutableList.of("timeStamp", "energy", "temperature",
-            "location_id");
+            "location_id", "user_id", "activity");
 
     //RANGED ATTRIBUTE NAMES
     public static final ImmutableList<String> RANGE_ATTR_LIST = ImmutableList.of("timeStamp", "energy", "temperature");

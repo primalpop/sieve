@@ -23,7 +23,7 @@ public class FactorSearch {
     int maxDepth;
     Set<ObjectCondition> canFactors;
     double epsilon;
-    Map<ObjectCondition, BEExpression> gMap;
+    Map<String, String> gMap;
     MySQLQueryManager mySQLQueryManager;
 
 
@@ -63,6 +63,12 @@ public class FactorSearch {
         return beforeCost > afterCost;
     }
 
+    /**
+     * Computing h-score based on the
+     * lower bound of the cost of evaluating remainder based on super policy
+     * @param remainder
+     * @return
+     */
     private double superPolicyCost(BEExpression remainder) {
         Map<String, List<ObjectCondition>> aMap = new HashMap<>();
         for (int i = 0; i < remainder.getPolicies().size(); i++) {
@@ -143,6 +149,7 @@ public class FactorSearch {
                 List<Term> candidates = factorize(current.getRemainder());
                 if(candidates.isEmpty()) {
                     createQueryMap(current); //Factorization complete
+                    break;
                 }
                 this.depth += 1;
                 for (Term c: candidates) {
@@ -181,13 +188,11 @@ public class FactorSearch {
                     gOC = oc;
                 }
             }
-            BEExpression quo = new BEExpression();
-            quo.getPolicies().add(bePolicy);
-            gMap.put(gOC, quo);
+            gMap.put(gOC.print(), bePolicy.createQueryFromObjectConditions());
         }
         //for the factorized expression
         while(true){
-            gMap.put(current.getFactor(), current.getQuotient());
+            gMap.put(current.getFactor().print(), current.printFQ());
             Term parent = parentMap.get(current);
             if(parent.getFscore() == Double.POSITIVE_INFINITY) break;
             current = parent;
@@ -199,22 +204,17 @@ public class FactorSearch {
         List<String> guardResults = new ArrayList<>();
         int repetitions = 3;
         Duration totalEval = Duration.ofMillis(0);
-        for (ObjectCondition kOb : gMap.keySet()) {
-            System.out.println("Executing Guard " + kOb.print());
+        for (String kOb : gMap.keySet()) {
+            System.out.println("Executing Guard " + kOb);
             StringBuilder guardString = new StringBuilder();
-            guardString.append(gMap.get(kOb).getPolicies().size());
-            guardString.append(",");
-            int numOfPreds = gMap.get(kOb).getPolicies().stream().mapToInt(BEPolicy::countNumberOfPredicates).sum();
-            guardString.append(numOfPreds);
-            guardString.append(",");
             List<Long> gList = new ArrayList<>();
             List<Long> cList = new ArrayList<>();
             int gCount = 0, tCount = 0;
             for (int i = 0; i < repetitions; i++) {
-                MySQLResult guardResult = mySQLQueryManager.runTimedQueryWithResultCount(kOb.print());
+                MySQLResult guardResult = mySQLQueryManager.runTimedQueryWithResultCount(kOb);
                 if (gCount == 0) gCount = guardResult.getResultCount();
                 gList.add(guardResult.getTimeTaken().toMillis());
-                MySQLResult completeResult = mySQLQueryManager.runTimedQueryWithResultCount(new Term(kOb, gMap.get(kOb)).printFQ());
+                MySQLResult completeResult = mySQLQueryManager.runTimedQueryWithResultCount(gMap.get(kOb));
                 if (tCount == 0) tCount = completeResult.getResultCount();
                 cList.add(completeResult.getTimeTaken().toMillis());
 
@@ -235,7 +235,7 @@ public class FactorSearch {
             guardString.append(",");
             guardString.append(gAndPcost.toMillis());
             guardString.append(",");
-            guardString.append(new Term(kOb, gMap.get(kOb)).printFQ());
+            guardString.append(gMap.get(kOb));
             guardResults.add(guardString.toString());
             totalEval = totalEval.plus(gAndPcost);
         }
