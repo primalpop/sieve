@@ -71,8 +71,8 @@ public class PredicateExtension {
     public void extendPredicate() {
         Map<ObjectCondition, ObjectCondition> replacementMap = new HashMap<>();
         HashMap<ObjectCondition, BEExpression> growMap = new HashMap<>(guardMap);
-        for (int i = 0; i < PolicyConstants.INDEXED_ATTRS.size(); i++) {
-            List<ObjectCondition> guards = getGuardsOnAttribute(PolicyConstants.INDEXED_ATTRS.get(i));
+        for (int i = 0; i < PolicyConstants.ATTR_LIST.size(); i++) {
+            List<ObjectCondition> guards = getGuardsOnAttribute(PolicyConstants.ATTR_LIST.get(i));
             Map<String, Double> memoized = new HashMap<>();
             for (int j = 0; j < guards.size(); j++) {
                 for (int k = j + 1; k < guards.size(); k++) {
@@ -95,7 +95,7 @@ public class PredicateExtension {
                 ObjectCondition m1 = null;
                 ObjectCondition m2 = null;
                 for (ObjectCondition g: growMap.keySet()) {
-                    if(!g.getAttribute().equalsIgnoreCase(PolicyConstants.INDEXED_ATTRS.get(i))) continue;
+                    if(!g.getAttribute().equalsIgnoreCase(PolicyConstants.ATTR_LIST.get(i))) continue;
                     if(m1 != null && m2 != null) break;
                     if (g.hashCode() == Integer.parseInt(maxBenefitKey.split("\\.")[0])) m1 = g;
                     if (g.hashCode() == Integer.parseInt(maxBenefitKey.split("\\.")[1])) m2 = g;
@@ -118,8 +118,8 @@ public class PredicateExtension {
                     memoized.put(ocj.hashCode() + "" + ocM.hashCode(), benefit);
                 }
             }
-            chainEmUp(PolicyConstants.INDEXED_ATTRS.get(i), replacementMap,
-                    getGuardsOnAttribute(PolicyConstants.INDEXED_ATTRS.get(i)));
+            chainEmUp(PolicyConstants.ATTR_LIST.get(i), replacementMap,
+                    getGuardsOnAttribute(PolicyConstants.ATTR_LIST.get(i)));
         }
 
         //Rewriting the original expression

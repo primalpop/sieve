@@ -63,9 +63,9 @@ public class PolicyExecution {
         File[] policyFiles = dir.listFiles((dir1, name) -> name.toLowerCase().endsWith(".json"));
         Arrays.sort(policyFiles != null ? policyFiles : new File[0]);
 
-        String exptResults = "results.csv";
+        String exptResultsFile = "results.csv";
         try {
-            Files.delete(Paths.get(policyDir + exptResults));
+            Files.delete(Paths.get(policyDir + exptResultsFile));
         } catch (IOException ioException) {
             System.out.println("Error caught in deleting existing results file");
             ioException.printStackTrace();
@@ -91,7 +91,7 @@ public class PolicyExecution {
                 try {
                     /** Traditional approach **/
                     System.out.println(beExpression.createQueryFromPolices());
-//                    tradResult = mySQLQueryManager.runTimedQuery(beExpression.createQueryFromPolices(), true);
+//                    tradResult = mySQLQueryManager.runTimedQuery(beExpression.createQueryFromPolices(), resultCheck);
 //                    runTime = runTime.plus(tradResult.getTimeTaken());
 //
 //                    policyRunTimes.put(file.getName(), String.valueOf(runTime.toMillis()));
@@ -99,7 +99,8 @@ public class PolicyExecution {
 //                    System.out.println("** " + file.getName() + " completed and took " + runTime.toMillis());
 
                     FactorSearch fs = new FactorSearch(beExpression);
-                    System.out.println(fs.search());
+                    fs.search();
+                    writer.addGuardReport(fs.printDetailedResults(), policyDir, exptResultsFile);
 
 //                    System.out.println("Starting Generation......");
 //                    Duration guardGen = Duration.ofMillis(0);
@@ -152,7 +153,7 @@ public class PolicyExecution {
 //                    policyRunTimes.put(file.getName() + "-guardGeneration", String.valueOf(guardGen.toMillis()));
 //                    policyRunTimes.put("Number of original guards ", String.valueOf(gf.getIndexFilters().size()));
 //
-                    writer.appendToCSVReport(policyRunTimes, policyDir, exptResults);
+                    writer.appendToCSVReport(policyRunTimes, policyDir, exptResultsFile);
 //                    policyRunTimes.clear();
 //                    System.out.println("Starting Execution of Guard for " + file.getName() + " ......");
 //                    List<String> guardResults = gf.printDetailedGuardResults();

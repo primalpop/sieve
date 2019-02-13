@@ -3,7 +3,6 @@ package edu.uci.ics.tippers.model.policy;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.davidmoten.guavamini.Lists;
-import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.db.MySQLQueryManager;
@@ -282,9 +281,9 @@ public class BEPolicy {
         String delim = "";
         List<ObjectCondition> toPrint = new ArrayList<>();
         Map<String, List<ObjectCondition>> aMap = new HashMap<>();
-        for (int i = 0; i < PolicyConstants.INDEXED_ATTRS.size(); i++) { //Constructing attribute map
+        for (int i = 0; i < PolicyConstants.ATTR_LIST.size(); i++) { //Constructing attribute map
             List<ObjectCondition> attrToOc = new ArrayList<>();
-            String attr = PolicyConstants.INDEXED_ATTRS.get(i);
+            String attr = PolicyConstants.ATTR_LIST.get(i);
             aMap.put(attr, attrToOc);
         }
         for (int j = 0; j < this.getObject_conditions().size(); j++) {
@@ -337,7 +336,7 @@ public class BEPolicy {
     public double estimateCost(Boolean evalOnly) {
         ObjectCondition selected = this.getObject_conditions().get(0);
         for (ObjectCondition oc : this.getObject_conditions()) {
-            if (PolicyConstants.INDEXED_ATTRS.contains(oc.getAttribute()))
+            if (PolicyConstants.ATTR_LIST.contains(oc.getAttribute()))
                 if (oc.computeL() < selected.computeL())
                     selected = oc;
         }
