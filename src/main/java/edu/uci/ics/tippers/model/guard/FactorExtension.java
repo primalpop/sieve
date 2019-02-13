@@ -32,9 +32,9 @@ public class FactorExtension {
         oMap = new HashMap<>();
         aMap = new HashMap<>();
         replacementMap = new HashMap<>();
-        for (int i = 0; i < PolicyConstants.ATTR_LIST.size(); i++) {
+        for (int i = 0; i < PolicyConstants.RANGE_ATTR_LIST.size(); i++) {
             List<ObjectCondition> attrToOc = new ArrayList<>();
-            String attr = PolicyConstants.ATTR_LIST.get(i);
+            String attr = PolicyConstants.RANGE_ATTR_LIST.get(i);
             aMap.put(attr, attrToOc);
         }
         constructMaps();
@@ -45,6 +45,7 @@ public class FactorExtension {
             BEPolicy pol = genExpression.getPolicies().get(i);
             for (int j = 0; j < pol.getObject_conditions().size(); j++) {
                 ObjectCondition oc = pol.getObject_conditions().get(j);
+                if(!PolicyConstants.RANGE_ATTR_LIST.contains(oc.getAttribute())) continue;
                 aMap.get(oc.getAttribute()).add(oc);
                 if (oMap.containsKey(oc)) {
                     oMap.get(oc).add(pol);
@@ -91,9 +92,9 @@ public class FactorExtension {
             beM.getPolicies().addAll(oMap.get(oc));
             beM.getPolicies().addAll(oMap.get(ock));
             if(!shouldIMerge(oc, ock, beM)) continue;
-            double mBenefit = new BEExpression(oMap.get(oc)).estimateCostForSelection(false)
-                    + new BEExpression(oMap.get(ock)).estimateCostForSelection(false);
-            mBenefit -= beM.estimateCostOfGuardRep(oc.union(ock), false);
+            double mBenefit = beM.estimateCostOfGuardRep(oc.union(ock), false) -
+                    (new BEExpression(oMap.get(oc)).estimateCostForSelection(false)
+                    + new BEExpression(oMap.get(ock)).estimateCostForSelection(false));
             memoized.put(oc.hashCode() + "." + ock.hashCode(), mBenefit);
         }
     }
@@ -129,8 +130,78 @@ public class FactorExtension {
         }
     }
 
+//    /**
+//     * Returns the number of extensions performed for the expression
+//     * Includes only final version of the extended predicate
+//     * @return
+//     */
+//    public int doYourThing() {
+//        int numberOfExtensions = 0;
+//        for (String attribute: aMap.keySet()) {
+//            List<ObjectCondition> attrToOc = aMap.get(attribute);
+//            Map<String, Double> memoized = new HashMap<>();
+//            for (int j = 0; j < attrToOc.size(); j++) {
+//                memoize(memoized, attrToOc.get(j), j);
+//            }
+//            while(true){
+//                if(memoized.size() == 0) break;
+//                Map.Entry<String, Double> maxBenefitKey = memoized.entrySet().stream()
+//                        .max(Map.Entry.comparingByValue()).get();
+//                if(maxBenefitKey.getValue() < 0) break;
+//                ObjectCondition m1 = null;
+//                ObjectCondition m2 = null;
+//                for (ObjectCondition g: attrToOc) {
+//                    if(m1 != null && m2 != null) break;
+//                    if (g.hashCode() == Integer.parseInt(maxBenefitKey.getKey().split("\\.")[0])) m1 = g;
+//                    if (g.hashCode() == Integer.parseInt(maxBenefitKey.getKey().split("\\.")[1])) m2 = g;
+//                }
+//                Boolean deleteOne = false;
+//                if(m1.compareTo(m2) == 0) { //TODO: SANITY CHECK, DELETE AFTERWARDS
+//                    if(m1.getPolicy_id().equalsIgnoreCase(m2.getPolicy_id())){
+//                        deleteOne = true;
+//                    }
+//                }
+//                ObjectCondition ocM = m1.union(m2);
+//                BEExpression beM = new BEExpression();
+//                beM.getPolicies().addAll(oMap.get(m1));
+//                beM.getPolicies().addAll(oMap.get(m2));
+//                numberOfExtensions += 1;
+//                //remove from aMap
+//                if(!aMap.get(m1.getAttribute()).remove(m1)) {
+//                    throw new PolicyEngineException(m1.toString() + " not removed from aMap");
+//                }
+//                if(!deleteOne) {
+//                    if(!aMap.get(m2.getAttribute()).remove(m2)){
+//                        throw new PolicyEngineException(m1.toString() + " not removed from aMap");
+//                    }
+//                }
+//                //remove from oMap
+//                oMap.remove(m1);
+//                oMap.remove(m2);
+//                //remove from memoized
+//                removeFromMemoized(memoized, m1);
+//                removeFromMemoized(memoized, m2);
+//                //add merged oc to oMap
+//                oMap.put(ocM, beM.getPolicies());
+//                //memoize the new object condition benefit
+//                memoize(memoized, ocM, -1);
+//                //add to replacement map
+//                smartReplace(m1, ocM);
+//                smartReplace(m2, ocM);
+//                //add merged oc to aMap
+//                aMap.get(ocM.getAttribute()).add(ocM);
+//            }
+//        }
+//        //Rewriting the original expression
+//        for(ObjectCondition original:replacementMap.keySet()) {
+//            this.genExpression.replenishFromPolicies(original, replacementMap.get(original));
+//        }
+//        return numberOfExtensions;
+//    }
+
     /**
      * Returns the number of extensions performed for the expression
+     * Includes intermediate versions of the merged predicate
      * @return
      */
     public int doYourThing() {
@@ -186,13 +257,11 @@ public class FactorExtension {
                 //add to replacement map
                 smartReplace(m1, ocM);
                 smartReplace(m2, ocM);
+                this.genExpression.replenishFromPolicies(m1, ocM);
+                this.genExpression.replenishFromPolicies(m2, ocM);
                 //add merged oc to aMap
                 aMap.get(ocM.getAttribute()).add(ocM);
             }
-        }
-        //Rewriting the original expression
-        for(ObjectCondition original:replacementMap.keySet()) {
-            this.genExpression.replenishFromPolicies(original, replacementMap.get(original));
         }
         return numberOfExtensions;
     }
