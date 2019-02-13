@@ -32,9 +32,9 @@ public class FactorExtension {
         oMap = new HashMap<>();
         aMap = new HashMap<>();
         replacementMap = new HashMap<>();
-        for (int i = 0; i < PolicyConstants.INDEXED_ATTRS.size(); i++) {
+        for (int i = 0; i < PolicyConstants.ATTR_LIST.size(); i++) {
             List<ObjectCondition> attrToOc = new ArrayList<>();
-            String attr = PolicyConstants.INDEXED_ATTRS.get(i);
+            String attr = PolicyConstants.ATTR_LIST.get(i);
             aMap.put(attr, attrToOc);
         }
         constructMaps();

@@ -29,6 +29,11 @@ public class Term implements Comparable<Term> {
         this.hscore = 0.0;
     }
 
+    public Term(ObjectCondition factor, BEExpression quotient){
+        this.factor = factor;
+        this.quotient = quotient;
+    }
+
     public ObjectCondition getFactor() {
         return factor;
     }
@@ -106,7 +111,7 @@ public class Term implements Comparable<Term> {
         query.append(factor.print());
         query.append(PolicyConstants.CONJUNCTION);
         query.append("(");
-        query.append(this.quotient.createQueryFromPolices());
+        query.append(this.quotient.cleanQueryFromPolices());
         query.append(")");
         return query.toString();
     }

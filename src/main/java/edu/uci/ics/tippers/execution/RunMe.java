@@ -37,7 +37,7 @@ public class RunMe {
         System.out.println(beExpression.createQueryFromPolices());
 
         FactorSearch fs = new FactorSearch(beExpression);
-        System.out.println(fs.search());
+        fs.search();
 
 //        FactorExtension gg = new FactorExtension(beExpression);
 //        gg.doYourThing();

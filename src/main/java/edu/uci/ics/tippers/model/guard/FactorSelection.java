@@ -3,16 +3,11 @@ package edu.uci.ics.tippers.model.guard;
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.db.MySQLQueryManager;
 import edu.uci.ics.tippers.db.MySQLResult;
-import edu.uci.ics.tippers.model.data.Presence;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
-import edu.uci.ics.tippers.model.policy.BooleanPredicate;
 import edu.uci.ics.tippers.model.policy.ObjectCondition;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.Duration;
-import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -84,7 +79,7 @@ public class FactorSelection {
     public void selectGuards() {
         Set<ObjectCondition> singletonSet = this.expression.getPolicies().stream()
                 .flatMap(p -> p.getObject_conditions().stream())
-                .filter(o -> PolicyConstants.INDEXED_ATTRS.contains(o.getAttribute()))
+                .filter(o -> PolicyConstants.ATTR_LIST.contains(o.getAttribute()))
                 .collect(Collectors.toSet());
         selectFactor(singletonSet, false);
     }
@@ -179,7 +174,7 @@ public class FactorSelection {
                 double freq = PolicyConstants.NUMBER_OR_TUPLES;
                 ObjectCondition gOC = new ObjectCondition();
                 for (ObjectCondition oc : bePolicy.getObject_conditions()) {
-                    if (!PolicyConstants.INDEXED_ATTRS.contains(oc.getAttribute())) continue;
+                    if (!PolicyConstants.ATTR_LIST.contains(oc.getAttribute())) continue;
                     if (oc.computeL() < freq) {
                         freq = oc.computeL();
                         gOC = oc;
@@ -212,7 +207,7 @@ public class FactorSelection {
                 double freq = PolicyConstants.NUMBER_OR_TUPLES;
                 ObjectCondition gOC = new ObjectCondition();
                 for (ObjectCondition oc : bePolicy.getObject_conditions()) {
-                    if (!PolicyConstants.INDEXED_ATTRS.contains(oc.getAttribute())) continue;
+                    if (!PolicyConstants.ATTR_LIST.contains(oc.getAttribute())) continue;
                     if (oc.computeL() < freq) {
                         freq = oc.computeL();
                         gOC = oc;
