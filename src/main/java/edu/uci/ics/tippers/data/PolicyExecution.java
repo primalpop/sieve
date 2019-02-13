@@ -91,12 +91,12 @@ public class PolicyExecution {
                 try {
                     /** Traditional approach **/
                     System.out.println(beExpression.createQueryFromPolices());
-//                    tradResult = mySQLQueryManager.runTimedQuery(beExpression.createQueryFromPolices(), resultCheck);
-//                    runTime = runTime.plus(tradResult.getTimeTaken());
-//
-//                    policyRunTimes.put(file.getName(), String.valueOf(runTime.toMillis()));
-//                    if(!(runTime.toMillis() == PolicyConstants.MAX_DURATION.toMillis())) resultCheck = true;
-//                    System.out.println("** " + file.getName() + " completed and took " + runTime.toMillis());
+                    tradResult = mySQLQueryManager.runTimedQuery(beExpression.createQueryFromPolices(), resultCheck);
+                    runTime = runTime.plus(tradResult.getTimeTaken());
+
+                    policyRunTimes.put(file.getName(), String.valueOf(runTime.toMillis()));
+                    if(!(runTime.toMillis() == PolicyConstants.MAX_DURATION.toMillis())) resultCheck = true;
+                    System.out.println("** " + file.getName() + " completed and took " + runTime.toMillis());
 
                     FactorSearch fs = new FactorSearch(beExpression);
                     fs.search();
@@ -110,6 +110,7 @@ public class PolicyExecution {
 //                    int ext = f.doYourThing();
 //                    policyRunTimes.put("Number of Extensions", String.valueOf(ext));
 //                    Instant feEnd = Instant.now();
+//                    System.out.println("Intermediate query: " + f.getGenExpression().createQueryFromPolices());
 //                    guardGen = guardGen.plus(Duration.between(feStart, feEnd));
 
                     /** Result checking after factor extension **/
