@@ -15,6 +15,7 @@ public class FactorSearch {
 
     //Original expression
     Term input;
+    Term finalTerm;
     PriorityQueue<Term> open;
     HashSet<Term> closed;
     HashMap<Term, Term> parentMap;
@@ -23,7 +24,6 @@ public class FactorSearch {
     int maxDepth;
     Set<ObjectCondition> canFactors;
     double epsilon;
-    Map<String, String> gMap;
     MySQLQueryManager mySQLQueryManager;
 
 
@@ -53,8 +53,8 @@ public class FactorSearch {
             if(!match) canFactors.add(pf);
         }
         this.epsilon = 1.0;
-        this.gMap = new HashMap<>();
         this.mySQLQueryManager = new MySQLQueryManager();
+        this.finalTerm = null;
     }
 
     private boolean utility(BEExpression original, ObjectCondition factor, boolean costEvalOnly){
@@ -148,7 +148,7 @@ public class FactorSearch {
                 this.closed.add(current);
                 List<Term> candidates = factorize(current.getRemainder());
                 if(candidates.isEmpty()) {
-                    createQueryMap(current); //Factorization complete
+                    this.finalTerm = current; //Factorization complete
                     break;
                 }
                 this.depth += 1;
@@ -174,11 +174,27 @@ public class FactorSearch {
         }
     }
 
+    /**
+     * Creates the complete guarded query string
+     * @return
+     */
+    public String createCompleteQuery(){
+        Map <String, String> gMap = createQueryMap();
+        StringBuilder queryExp = new StringBuilder();
+        String delim = "";
+        for (String g: gMap.keySet()) {
+            queryExp.append(delim);
+            queryExp.append(gMap.get(g));
+            delim = PolicyConstants.DISJUNCTION;
+        }
+        return queryExp.toString();
+    }
 
 
-    private void createQueryMap(Term current){
+    private Map<String, String> createQueryMap(){
+        Map<String, String> gMap = new HashMap<>();
         //for remainder with no guard
-        for (BEPolicy bePolicy : current.getRemainder().getPolicies()) {
+        for (BEPolicy bePolicy : finalTerm.getRemainder().getPolicies()) {
             double freq = PolicyConstants.NUMBER_OR_TUPLES;
             ObjectCondition gOC = new ObjectCondition();
             for (ObjectCondition oc : bePolicy.getObject_conditions()) {
@@ -188,22 +204,31 @@ public class FactorSearch {
                     gOC = oc;
                 }
             }
-            gMap.put(gOC.print(), bePolicy.createQueryFromObjectConditions());
+            String remainderQuery = gOC.print() +
+                    PolicyConstants.CONJUNCTION + "(" + bePolicy.cleanQueryFromObjectConditions() + ")";
+            gMap.put(gOC.print(), remainderQuery);
         }
         //for the factorized expression
         while(true){
-            gMap.put(current.getFactor().print(), current.printFQ());
-            Term parent = parentMap.get(current);
+            BEExpression quotientExp = new BEExpression(finalTerm.getQuotient());
+            quotientExp.removeFromPolicies(finalTerm.getFactor());
+            FactorSelection gf = new FactorSelection(finalTerm.getQuotient());
+            gf.selectGuards(true);
+            String quotientQuery = finalTerm.getFactor().print() +
+                    PolicyConstants.CONJUNCTION + "(" + gf.createQueryFromExactFactor() + ")";
+            gMap.put(finalTerm.getFactor().print(), quotientQuery);
+            Term parent = parentMap.get(finalTerm);
             if(parent.getFscore() == Double.POSITIVE_INFINITY) break;
-            current = parent;
+            finalTerm = parent;
         }
+        return gMap;
     }
 
 
-    public List<String> printDetailedResults() {
+    public List<String> printDetailedResults(int repetitions) {
         List<String> guardResults = new ArrayList<>();
-        int repetitions = 3;
         Duration totalEval = Duration.ofMillis(0);
+        Map <String, String> gMap = createQueryMap();
         for (String kOb : gMap.keySet()) {
             System.out.println("Executing Guard " + kOb);
             StringBuilder guardString = new StringBuilder();
@@ -219,12 +244,19 @@ public class FactorSearch {
                 cList.add(completeResult.getTimeTaken().toMillis());
 
             }
-            Collections.sort(gList);
-            List<Long> clippedGList = gList.subList(1, repetitions - 1);
-            Duration gCost = Duration.ofMillis(clippedGList.stream().mapToLong(i -> i).sum() / clippedGList.size());
-            Collections.sort(cList);
-            List<Long> clippedCList = cList.subList(1, repetitions - 1);
-            Duration gAndPcost = Duration.ofMillis(clippedCList.stream().mapToLong(i -> i).sum() / clippedCList.size());
+            Duration gCost, gAndPcost;
+            if(repetitions >= 3) {
+                Collections.sort(gList);
+                List<Long> clippedGList = gList.subList(1, repetitions - 1);
+                gCost = Duration.ofMillis(clippedGList.stream().mapToLong(i -> i).sum() / clippedGList.size());
+                Collections.sort(cList);
+                List<Long> clippedCList = cList.subList(1, repetitions - 1);
+                gAndPcost = Duration.ofMillis(clippedCList.stream().mapToLong(i -> i).sum() / clippedCList.size());
+            }
+            else{
+                gCost =  Duration.ofMillis(gList.stream().mapToLong(i -> i).sum() / gList.size());
+                gAndPcost = Duration.ofMillis(cList.stream().mapToLong(i -> i).sum() / cList.size());
+            }
 
             guardString.append(gCount);
             guardString.append(",");

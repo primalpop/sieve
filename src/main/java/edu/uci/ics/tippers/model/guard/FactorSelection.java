@@ -76,12 +76,12 @@ public class FactorSelection {
         this.cost = cost;
     }
 
-    public void selectGuards() {
+    public void selectGuards(Boolean evalOnly) {
         Set<ObjectCondition> singletonSet = this.expression.getPolicies().stream()
                 .flatMap(p -> p.getObject_conditions().stream())
                 .filter(o -> PolicyConstants.ATTR_LIST.contains(o.getAttribute()))
                 .collect(Collectors.toSet());
-        selectFactor(singletonSet, false);
+        selectFactor(singletonSet, evalOnly);
     }
 
     private boolean isFactorGood(BEExpression original, ObjectCondition factor, boolean quotient){

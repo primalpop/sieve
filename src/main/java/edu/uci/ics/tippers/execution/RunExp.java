@@ -52,7 +52,7 @@ public class RunExp {
         /** Factorization **/
         FactorSelection gf = new FactorSelection(f.getGenExpression());
         Instant fsStart = Instant.now();
-        gf.selectGuards();
+        gf.selectGuards(false);
         Instant fsEnd = Instant.now();
         guardGen = guardGen.plus(Duration.between(fsStart, fsEnd));
         System.out.println("Number of guards: " + gf.getIndexFilters().size());
