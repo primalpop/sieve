@@ -15,11 +15,11 @@ public class RunMe {
 //        DataGeneration dataGeneration = new DataGeneration();
 //        dataGeneration.runScript("mysql/schema.sql");
 
-//        BEExpression beExpression = new BEExpression();
-//        beExpression.parseJSONList(Reader.readFile("/policies/deprecated/policyext2.json"));
-//
-//        Persistor persistor = new Persistor();
-//        persistor.insertPolicy(beExpression.getPolicies().get(0));
+        BEExpression beExpression = new BEExpression();
+        beExpression.parseJSONList(Reader.readFile("/policies/policyfs1.json"));
+
+        Persistor persistor = new Persistor();
+        persistor.insertPolicy(beExpression.getPolicies().get(0));
 
 //        for(int i = 0; i <Histogram.getInstance().getBucketMap().get(PolicyConstants.TIMESTAMP_ATTR).size(); i++){
 //            System.out.println(Histogram.getInstance().getBucketMap().get(PolicyConstants.TIMESTAMP_ATTR).get(i).toStringEH());
@@ -32,12 +32,12 @@ public class RunMe {
 //        System.out.println(-s);
 //        System.out.println(Histogram.getInstance().getBucketMap().get(PolicyConstants.TIMESTAMP_ATTR).get(-s -1 ).toStringEH());
 //
-        BEExpression beExpression = new BEExpression();
-        beExpression.parseJSONList(Reader.readFile("/policies/policyfs1.json"));
-        System.out.println(beExpression.createQueryFromPolices());
-
-        FactorSearch fs = new FactorSearch(beExpression);
-        fs.search();
+//        BEExpression beExpression = new BEExpression();
+//        beExpression.parseJSONList(Reader.readFile("/policies/policyfs1.json"));
+//        System.out.println(beExpression.createQueryFromPolices());
+//
+//        FactorSearch fs = new FactorSearch(beExpression);
+//        fs.search();
 
 //        FactorExtension gg = new FactorExtension(beExpression);
 //        gg.doYourThing();
