@@ -16,10 +16,11 @@ public class RunMe {
 //        dataGeneration.runScript("mysql/schema.sql");
 
         BEExpression beExpression = new BEExpression();
-        beExpression.parseJSONList(Reader.readFile("/policies/policyfs1.json"));
+        beExpression.parseJSONList(Reader.readFile("/policies/policytest.json"));
 
         Persistor persistor = new Persistor();
-        persistor.insertPolicy(beExpression.getPolicies().get(0));
+//        persistor.insertPolicy(beExpression.getPolicies().get(0));
+        persistor.retrievePolicy("10001", "user");
 
 //        for(int i = 0; i <Histogram.getInstance().getBucketMap().get(PolicyConstants.TIMESTAMP_ATTR).size(); i++){
 //            System.out.println(Histogram.getInstance().getBucketMap().get(PolicyConstants.TIMESTAMP_ATTR).get(i).toStringEH());

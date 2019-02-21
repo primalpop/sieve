@@ -32,4 +32,12 @@ public class QuerierCondition extends BooleanCondition {
         this.booleanPredicates = booleanPredicates;
     }
 
+    /**
+     * Returns true if user policy, false otherwise
+     * @return
+     */
+    public boolean checkTypeOfPolicy(){
+        return this.booleanPredicates.get(0).getValue().equalsIgnoreCase("user");
+    }
+
 }
