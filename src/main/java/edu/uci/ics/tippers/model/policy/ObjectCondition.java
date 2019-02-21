@@ -206,7 +206,7 @@ public class ObjectCondition extends BooleanCondition {
      * @return
      */
     public ObjectCondition union(ObjectCondition objectCondition){
-        ObjectCondition extended = new ObjectCondition(this.policy_id + ":" + objectCondition.getPolicy_id(), this.getAttribute(), this.getType());
+        ObjectCondition extended = new ObjectCondition(this.policy_id + ":" +  objectCondition.getPolicy_id(), this.getAttribute(), this.getType());
         String begValue = this.getBooleanPredicates().get(0).getValue()
                 .compareTo(objectCondition.getBooleanPredicates().get(0).getValue()) < 0  ?
                 this.getBooleanPredicates().get(0).getValue(): objectCondition.getBooleanPredicates().get(0).getValue();
@@ -232,7 +232,7 @@ public class ObjectCondition extends BooleanCondition {
      * @return
      */
     public ObjectCondition intersect(ObjectCondition objectCondition){
-        ObjectCondition extended = new ObjectCondition(this.policy_id + "-" +  objectCondition.getPolicy_id(), this.getAttribute(), this.getType());
+        ObjectCondition extended = new ObjectCondition(this.policy_id + ":" + objectCondition.getPolicy_id(), this.getAttribute(), this.getType());
         String begValue = this.getBooleanPredicates().get(0).getValue()
                 .compareTo(objectCondition.getBooleanPredicates().get(0).getValue()) > 0  ?
                 this.getBooleanPredicates().get(0).getValue(): objectCondition.getBooleanPredicates().get(0).getValue();

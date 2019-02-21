@@ -1,5 +1,6 @@
 package edu.uci.ics.tippers.model.policy;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.davidmoten.guavamini.Lists;
@@ -8,6 +9,7 @@ import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.db.MySQLQueryManager;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -55,6 +57,11 @@ public class BEPolicy {
      */
     @JsonProperty("action")
     private String action;
+
+    @JsonProperty("inserted_at")
+    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss", locale = "America/Phoenix")
+    private Timestamp inserted_at;
+
     private MySQLQueryManager mySQLQueryManager = new MySQLQueryManager();
 
     public BEPolicy(){
@@ -83,6 +90,16 @@ public class BEPolicy {
         this.purpose = purpose;
         this.action = action;
     }
+    public BEPolicy(String id, List<ObjectCondition> object_conditions, List<QuerierCondition> querier_conditions, String purpose, String action, Timestamp inserted_at) {
+        this.id = id;
+        this.description = description;
+        this.object_conditions = object_conditions;
+        this.querier_conditions = querier_conditions;
+        this.purpose = purpose;
+        this.action = action;
+        this.inserted_at = inserted_at;
+    }
+
 
     public BEPolicy(List<ObjectCondition> objectConditions){
 
@@ -143,6 +160,14 @@ public class BEPolicy {
 
     public void setAction(String action) {
         this.action = action;
+    }
+
+    public Timestamp getInserted_at() {
+        return inserted_at;
+    }
+
+    public void setInserted_at(Timestamp inserted_at) {
+        this.inserted_at = inserted_at;
     }
 
     public List<String> retrieveObjCondAttributes(){
@@ -405,6 +430,21 @@ public class BEPolicy {
             else count += 2;
         }
         return count;
+    }
+
+
+    public boolean isUserPolicy(){
+        for (QuerierCondition querier_condition : this.querier_conditions)
+            if (querier_condition.getAttribute().equalsIgnoreCase("policy_type"))
+                return querier_condition.checkTypeOfPolicy();
+        return false;
+    }
+
+    public String getQuerier(){
+        for (QuerierCondition querier_condition : this.querier_conditions)
+            if (querier_condition.getAttribute().equalsIgnoreCase("querier"))
+                return querier_condition.getBooleanPredicates().get(0).getValue();
+            return null;
     }
 
 }

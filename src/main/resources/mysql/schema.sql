@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS SEMANTIC_OBSERVATION  (
 
 
 CREATE TABLE IF NOT EXISTS USER_POLICY  (
-  id integer NOT NULL AUTO_INCREMENT,
+  id varchar(255) NOT NULL,
   querier varchar(255) NOT NULL,
   purpose varchar(255) NOT NULL,
   enforcement_action varchar(255) DEFAULT NULL,
@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS USER_POLICY  (
 ) ;
 
 CREATE TABLE IF NOT EXISTS GROUP_POLICY  (
-  id integer NOT NULL AUTO_INCREMENT,
+  id varchar(255) NOT NULL,
   querier varchar(255) NOT NULL,
   purpose varchar(255) NOT NULL,
   enforcement_action varchar(255) DEFAULT NULL,
@@ -69,8 +69,9 @@ CREATE TABLE IF NOT EXISTS GROUP_POLICY  (
 
 CREATE TABLE IF NOT EXISTS USER_POLICY_OBJECT_CONDITION  (
   id integer NOT NULL AUTO_INCREMENT,
-  policy_id integer NOT NULL,
+  policy_id varchar(255) NOT NULL,
   attribute varchar(255) NOT NULL,
+  attribute_type varchar(255) NOT NULL,
   operator varchar(255) NOT NULL,
   comp_value varchar(255) DEFAULT NULL,
   PRIMARY KEY (id),
@@ -80,8 +81,9 @@ CREATE TABLE IF NOT EXISTS USER_POLICY_OBJECT_CONDITION  (
 
 CREATE TABLE IF NOT EXISTS GROUP_POLICY_OBJECT_CONDITION  (
   id integer NOT NULL AUTO_INCREMENT,
-  policy_id integer NOT NULL,
+  policy_id varchar(255) NOT NULL,
   attribute varchar(255) NOT NULL,
+  attribute_type varchar(255) NOT NULL,
   operator varchar(255) NOT NULL,
   comp_value varchar(255) DEFAULT NULL,
   PRIMARY KEY (id),
