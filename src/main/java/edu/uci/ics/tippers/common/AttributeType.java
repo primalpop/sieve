@@ -37,9 +37,4 @@ public enum AttributeType {
     public int getID() {
         return id;
     }
-
-    public static AttributeType get(String id) {
-        return lookup.get(id);
-
-    }
 }
