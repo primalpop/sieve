@@ -2,6 +2,7 @@ package edu.uci.ics.tippers.execution;
 
 import edu.uci.ics.tippers.fileop.Reader;
 import edu.uci.ics.tippers.manager.Persistor;
+import edu.uci.ics.tippers.model.data.User;
 import edu.uci.ics.tippers.model.guard.FactorSearch;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 
@@ -20,7 +21,10 @@ public class RunMe {
 
         Persistor persistor = new Persistor();
 //        persistor.insertPolicy(beExpression.getPolicies().get(0));
-        persistor.retrievePolicy("10001", "user");
+        System.out.println(persistor.retrievePolicy("10", "group", null).createQueryFromObjectConditions());
+
+//        User user = new User(10001);
+//        user.getUserGroups();
 
 //        for(int i = 0; i <Histogram.getInstance().getBucketMap().get(PolicyConstants.TIMESTAMP_ATTR).size(); i++){
 //            System.out.println(Histogram.getInstance().getBucketMap().get(PolicyConstants.TIMESTAMP_ATTR).get(i).toStringEH());

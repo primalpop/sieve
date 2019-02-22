@@ -1,5 +1,12 @@
 package edu.uci.ics.tippers.model.data;
 
+import edu.uci.ics.tippers.db.MySQLConnectionManager;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,6 +24,9 @@ public class User {
 
     List<Integer> groups;
 
+    private static Connection connection = MySQLConnectionManager.getInstance().getConnection();
+
+
     public User(int user_id, String name, List<Integer> groups) {
         this.user_id = user_id;
         this.name = name;
@@ -29,6 +39,10 @@ public class User {
         this.email = email;
         this.office = office;
         this.groups = groups;
+    }
+
+    public User(int user_id) {
+        this.user_id = user_id;
     }
 
     public int getUser_id() {
@@ -69,5 +83,29 @@ public class User {
 
     public void setOffice(String office) {
         this.office = office;
+    }
+
+    public List<UserGroup> getUserGroups(){
+        List<UserGroup> userGroups = new ArrayList<>();
+        PreparedStatement queryStm = null;
+        try {
+            queryStm = connection.prepareStatement("SELECT ug.id, ug.description, ug.name, ug.owner " +
+                    "FROM USER_GROUP as ug, USER_GROUP_MEMBERSHIP as ugm where ugm.USER_ID = ? " +
+                    " AND ugm.USER_GROUP_ID = ug.id");
+
+            queryStm.setInt(1, this.getUser_id());
+            ResultSet rs = queryStm.executeQuery();
+            while (rs.next()) {
+               UserGroup ug = new UserGroup();
+               ug.setGroup_id(Integer.parseInt(rs.getString("ug.id")));
+               ug.setDescription(rs.getString("ug.description"));
+               ug.setName(rs.getString("ug.name"));
+               ug.setOwner(new User(Integer.parseInt(rs.getString("ug.owner"))));
+               userGroups.add(ug);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return userGroups;
     }
 }

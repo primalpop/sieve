@@ -32,6 +32,10 @@ public class UserGroup {
         this.users = users;
     }
 
+    public UserGroup() {
+
+    }
+
     public User getOwner() {
         return owner;
     }
@@ -71,4 +75,6 @@ public class UserGroup {
     public void setUsers(List<Integer> users) {
         this.users = users;
     }
+
+
 }
