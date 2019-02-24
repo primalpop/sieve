@@ -15,21 +15,28 @@ public class UserGroup {
 
     private String description;
 
-    private List<Integer> users;
+    private List<TimePeriod> timePeriods;
 
+    private String group_type;
 
-    public UserGroup(int group_id, String name, List<Integer> users) {
+    private String location;
+
+    private double overlap;
+
+    private List<Integer> members;
+
+    public UserGroup(int group_id, String name, List<Integer> members) {
         this.group_id = group_id;
         this.name = name;
-        this.users = users;
+        this.members = members;
     }
 
-    public UserGroup(int group_id, String name, User owner, String description, List<Integer> users) {
+    public UserGroup(int group_id, String name, User owner, String description, List<Integer> members) {
         this.group_id = group_id;
         this.name = name;
         this.owner = owner;
         this.description = description;
-        this.users = users;
+        this.members = members;
     }
 
     public UserGroup() {
@@ -68,12 +75,12 @@ public class UserGroup {
         this.name = name;
     }
 
-    public List<Integer> getUsers() {
-        return users;
+    public List<Integer> getMembers() {
+        return members;
     }
 
-    public void setUsers(List<Integer> users) {
-        this.users = users;
+    public void setMembers(List<Integer> members) {
+        this.members = members;
     }
 
 

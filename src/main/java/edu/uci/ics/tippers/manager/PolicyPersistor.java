@@ -10,13 +10,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Persistor {
+public class PolicyPersistor {
 
-    private static Persistor _instance = new Persistor();
+    private static PolicyPersistor _instance = new PolicyPersistor();
 
     private static Connection connection = MySQLConnectionManager.getInstance().getConnection();
 
-    public static Persistor getInstance() {
+    public static PolicyPersistor getInstance() {
         return _instance;
     }
 

@@ -27,7 +27,7 @@ def get_distinct_users():
 
 """
 TODO: Improve this to read start and end timestamps and return the share for the person based on
-time duration, where longer time period means larger share for the users involved.
+time duration, where longer time period means larger share for the members involved.
 """
 def parse_payload(jsonstr):
     payload = json.loads(jsonstr)
