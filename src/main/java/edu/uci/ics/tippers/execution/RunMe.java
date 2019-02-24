@@ -1,9 +1,10 @@
 package edu.uci.ics.tippers.execution;
 
 import edu.uci.ics.tippers.fileop.Reader;
-import edu.uci.ics.tippers.manager.Persistor;
-import edu.uci.ics.tippers.model.data.User;
+import edu.uci.ics.tippers.manager.GuardPersistor;
+import edu.uci.ics.tippers.manager.PolicyPersistor;
 import edu.uci.ics.tippers.model.guard.FactorSearch;
+import edu.uci.ics.tippers.model.guard.GuardExp;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 
 /**
@@ -15,13 +16,21 @@ public class RunMe {
 
 //        DataGeneration dataGeneration = new DataGeneration();
 //        dataGeneration.runScript("mysql/schema.sql");
+//
+//        BEExpression beExpression = new BEExpression();
+//        beExpression.parseJSONList(Reader.readFile("/policies/policytestlong.json"));
+//
+//        FactorSearch fs = new FactorSearch(beExpression);
+//        fs.search();
+//        GuardExp ge  = fs.create("10001", "user");
 
-        BEExpression beExpression = new BEExpression();
-        beExpression.parseJSONList(Reader.readFile("/policies/policytest.json"));
+        GuardPersistor gp = new GuardPersistor();
+//        gp.insertGuard(ge);
+        System.out.println(gp.retrieveGuard("10001", "user").createQuery());
 
-        Persistor persistor = new Persistor();
+//        PolicyPersistor persistor = new PolicyPersistor();
 //        persistor.insertPolicy(beExpression.getPolicies().get(0));
-        System.out.println(persistor.retrievePolicy("10", "group", null).createQueryFromObjectConditions());
+//        System.out.println(persistor.retrievePolicy("10", "group", null).createQueryFromObjectConditions());
 
 //        User user = new User(10001);
 //        user.getUserGroups();

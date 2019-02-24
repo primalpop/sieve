@@ -83,12 +83,54 @@ CREATE TABLE IF NOT EXISTS GROUP_POLICY_OBJECT_CONDITION  (
   id integer NOT NULL AUTO_INCREMENT,
   policy_id varchar(255) NOT NULL,
   attribute varchar(255) NOT NULL,
-  attribute_type varchar(255) NOT NULL,
+  attribute_type varchar(255) NOT NULL,sx
   operator varchar(255) NOT NULL,
   comp_value varchar(255) DEFAULT NULL,
   PRIMARY KEY (id),
   FOREIGN KEY (policy_id) REFERENCES GROUP_POLICY (id)
 ) ;
+
+CREATE TABLE IF NOT EXISTS USER_GUARD  (
+  id varchar(255) NOT NULL,
+  querier varchar(255) NOT NULL,
+  purpose varchar(255) NOT NULL,
+  enforcement_action varchar(255) DEFAULT NULL,
+  last_updated timestamp NOT NULL,
+  dirty varchar(255) NOT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (querier) REFERENCES USER (ID)
+) ;
+
+CREATE TABLE IF NOT EXISTS GROUP_GUARD  (
+  id varchar(255) NOT NULL,
+  querier varchar(255) NOT NULL,
+  purpose varchar(255) NOT NULL,
+  enforcement_action varchar(255) DEFAULT NULL,
+  last_updated timestamp NOT NULL,
+  dirty varchar(255) NOT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (querier) REFERENCES USER_GROUP (ID)
+) ;
+
+
+CREATE TABLE IF NOT EXISTS USER_GUARD_EXPRESSION  (
+  id integer NOT NULL AUTO_INCREMENT,
+  guard_exp_id varchar(255) NOT NULL,
+  guard varchar(255) NOT NULL,
+  remainder TEXT NOT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (guard_exp_id) REFERENCES USER_GUARD (id)
+) ;
+
+CREATE TABLE IF NOT EXISTS GROUP_GUARD_EXPRESSION  (
+  id integer NOT NULL AUTO_INCREMENT,
+  guard_exp_id varchar(255) NOT NULL,
+  guard varchar(255) NOT NULL,
+  remainder TEXT NOT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (guard_exp_id) REFERENCES GROUP_GUARD (id)
+) ;
+
 
 --
 --CREATE INDEX so_ts ON SEMANTIC_OBSERVATION(timeStamp);

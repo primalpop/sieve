@@ -7,6 +7,8 @@ import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
 import edu.uci.ics.tippers.model.policy.ObjectCondition;
 
+import java.security.Guard;
+import java.sql.Timestamp;
 import java.time.Duration;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -191,22 +193,71 @@ public class FactorSearch {
     }
 
 
+    public GuardExp create(String querier, String querier_type){
+        List<GuardPart> gps = new ArrayList<>();
+        if(finalTerm.getRemainder().getPolicies().size() > 0) {
+            for (BEPolicy bePolicy : finalTerm.getRemainder().getPolicies()) {
+                double freq = PolicyConstants.NUMBER_OR_TUPLES;
+                ObjectCondition gOC = new ObjectCondition();
+                for (ObjectCondition oc : bePolicy.getObject_conditions()) {
+                    if (!PolicyConstants.INDEX_ATTRS.contains(oc.getAttribute())) continue;
+                    if (oc.computeL() < freq) {
+                        freq = oc.computeL();
+                        gOC = oc;
+                    }
+                }
+                String remainderQuery =  "(" + bePolicy.cleanQueryFromObjectConditions() + ")";
+                GuardPart gp = new GuardPart();
+                gp.setGuardFactor(gOC.print());
+                gp.setGuardPartition(remainderQuery);
+                gps.add(gp);
+            }
+        }
+
+        while(true){
+            BEExpression quotientExp = new BEExpression(finalTerm.getQuotient());
+            quotientExp.removeFromPolicies(finalTerm.getFactor());
+            FactorSelection gf = new FactorSelection(finalTerm.getQuotient());
+            gf.selectGuards(true);
+            String quotientQuery = finalTerm.getFactor().print() +
+                    PolicyConstants.CONJUNCTION + "(" + gf.createQueryFromExactFactor() + ")";
+            GuardPart gp = new GuardPart();
+            gp.setGuardFactor(finalTerm.getFactor().print());
+            gp.setGuardPartition(quotientQuery);
+            gps.add(gp);
+            Term parent = parentMap.get(finalTerm);
+            if(parent.getFscore() == Double.POSITIVE_INFINITY) break;
+            finalTerm = parent;
+        }
+        GuardExp guardExp = new GuardExp();
+        guardExp.setGuardParts(gps);
+        guardExp.setAction(finalTerm.getQuotient().getPolicies().get(0).getAction());
+        guardExp.setPurpose(finalTerm.getQuotient().getPolicies().get(0).getPurpose());
+        guardExp.setQuerier(querier);
+        guardExp.setQuerier_type(querier_type);
+        guardExp.setDirty("false");
+        guardExp.setLast_updated(new Timestamp(new Date().getTime()));
+        return guardExp;
+    }
+
     private Map<String, String> createQueryMap(){
         Map<String, String> gMap = new HashMap<>();
         //for remainder with no guard
-        for (BEPolicy bePolicy : finalTerm.getRemainder().getPolicies()) {
-            double freq = PolicyConstants.NUMBER_OR_TUPLES;
-            ObjectCondition gOC = new ObjectCondition();
-            for (ObjectCondition oc : bePolicy.getObject_conditions()) {
-                if (!PolicyConstants.INDEX_ATTRS.contains(oc.getAttribute())) continue;
-                if (oc.computeL() < freq) {
-                    freq = oc.computeL();
-                    gOC = oc;
+        if(finalTerm.getRemainder().getPolicies().size()>0){
+            for (BEPolicy bePolicy : finalTerm.getRemainder().getPolicies()) {
+                double freq = PolicyConstants.NUMBER_OR_TUPLES;
+                ObjectCondition gOC = new ObjectCondition();
+                for (ObjectCondition oc : bePolicy.getObject_conditions()) {
+                    if (!PolicyConstants.INDEX_ATTRS.contains(oc.getAttribute())) continue;
+                    if (oc.computeL() < freq) {
+                        freq = oc.computeL();
+                        gOC = oc;
+                    }
                 }
+                String remainderQuery = gOC.print() +
+                        PolicyConstants.CONJUNCTION + "(" + bePolicy.cleanQueryFromObjectConditions() + ")";
+                gMap.put(gOC.print(), remainderQuery);
             }
-            String remainderQuery = gOC.print() +
-                    PolicyConstants.CONJUNCTION + "(" + bePolicy.cleanQueryFromObjectConditions() + ")";
-            gMap.put(gOC.print(), remainderQuery);
         }
         //for the factorized expression
         while(true){
