@@ -1,5 +1,6 @@
 package edu.uci.ics.tippers.execution;
 
+import edu.uci.ics.tippers.data.GroupGeneration;
 import edu.uci.ics.tippers.fileop.Reader;
 import edu.uci.ics.tippers.manager.GuardPersistor;
 import edu.uci.ics.tippers.manager.PolicyPersistor;
@@ -7,12 +8,17 @@ import edu.uci.ics.tippers.model.guard.FactorSearch;
 import edu.uci.ics.tippers.model.guard.GuardExp;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 
+import java.io.File;
+
 /**
  * Created by cygnus on 9/25/17.
  */
 public class RunMe {
 
     public static void main(String args[]) {
+
+        GroupGeneration groupGeneration = new GroupGeneration();
+        groupGeneration.readCSVFile("/data/policy_groups.csv");
 
 //        DataGeneration dataGeneration = new DataGeneration();
 //        dataGeneration.runScript("mysql/schema.sql");
@@ -24,9 +30,9 @@ public class RunMe {
 //        fs.search();
 //        GuardExp ge  = fs.create("10001", "user");
 
-        GuardPersistor gp = new GuardPersistor();
+//        GuardPersistor gp = new GuardPersistor();
 //        gp.insertGuard(ge);
-        System.out.println(gp.retrieveGuard("10001", "user").createQuery());
+//        System.out.println(gp.retrieveGuard("10001", "user").createQuery());
 
 //        PolicyPersistor persistor = new PolicyPersistor();
 //        persistor.insertPolicy(beExpression.getPolicies().get(0));
