@@ -4,11 +4,13 @@ import edu.uci.ics.tippers.data.GroupGeneration;
 import edu.uci.ics.tippers.fileop.Reader;
 import edu.uci.ics.tippers.manager.GuardPersistor;
 import edu.uci.ics.tippers.manager.PolicyPersistor;
+import edu.uci.ics.tippers.model.data.UserGroup;
 import edu.uci.ics.tippers.model.guard.FactorSearch;
 import edu.uci.ics.tippers.model.guard.GuardExp;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 
 import java.io.File;
+import java.util.List;
 
 /**
  * Created by cygnus on 9/25/17.
@@ -18,7 +20,12 @@ public class RunMe {
     public static void main(String args[]) {
 
         GroupGeneration groupGeneration = new GroupGeneration();
-        groupGeneration.readCSVFile("/data/policy_groups.csv");
+        List<UserGroup> userGroups = groupGeneration.readCSVFile("/data/policy_groups.csv");
+        for (UserGroup ug: userGroups) {
+            ug.retrieveMembers();
+            System.out.println(ug.toString());
+        }
+
 
 //        DataGeneration dataGeneration = new DataGeneration();
 //        dataGeneration.runScript("mysql/schema.sql");
