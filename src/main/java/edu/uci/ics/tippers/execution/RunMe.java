@@ -1,6 +1,9 @@
 package edu.uci.ics.tippers.execution;
 
 import edu.uci.ics.tippers.data.GroupGeneration;
+import edu.uci.ics.tippers.data.QueryGeneration;
+import edu.uci.ics.tippers.db.MySQLQueryManager;
+import edu.uci.ics.tippers.db.MySQLResult;
 import edu.uci.ics.tippers.fileop.Reader;
 import edu.uci.ics.tippers.manager.GuardPersistor;
 import edu.uci.ics.tippers.manager.PolicyPersistor;
@@ -10,6 +13,8 @@ import edu.uci.ics.tippers.model.guard.GuardExp;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -19,13 +24,24 @@ public class RunMe {
 
     public static void main(String args[]) {
 
-        GroupGeneration groupGeneration = new GroupGeneration();
-        List<UserGroup> userGroups = groupGeneration.readCSVFile("/data/policy_groups.csv");
-        for (UserGroup ug: userGroups) {
-            ug.retrieveMembers();
-            System.out.println(ug.toString());
-        }
+//        GroupGeneration groupGeneration = new GroupGeneration();
+//        List<UserGroup> userGroups = groupGeneration.readCSVFile("/data/policy_groups.csv");
+//        for (UserGroup ug: userGroups) {
+//            ug.retrieveMembers();
+//            System.out.println(ug.toString());
+//        }
 
+        QueryGeneration qg = new QueryGeneration();
+        boolean [] templates = {true, false, false, false};
+        List<Double> selectivity = new ArrayList<Double>(Arrays.asList(0.00001, 0.00002, 0.00003));
+        int numOfQueries = 3;
+        List<String> queries = qg.constructWorkload(templates, selectivity, numOfQueries);
+        for (String q: queries) {
+            System.out.println(q);
+            MySQLQueryManager mq = new MySQLQueryManager();
+            MySQLResult mqr = mq.runTimedQueryWithResultCount(q);
+            System.out.println(mqr.getTimeTaken() + " : " + mqr.getResultCount());
+        }
 
 //        DataGeneration dataGeneration = new DataGeneration();
 //        dataGeneration.runScript("mysql/schema.sql");

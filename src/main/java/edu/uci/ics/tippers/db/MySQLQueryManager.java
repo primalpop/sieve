@@ -157,4 +157,29 @@ public class MySQLQueryManager {
         }
     }
 
+
+// explaining query
+//    public Duration explainQuery(PreparedStatement stmt, int queryNum){
+//        try {
+//            Instant start = Instant.now();
+//            ResultSet rs = stmt.executeQuery();
+//            ResultSetMetaData rsmd = rs.getMetaData();
+//            int columnsNumber = rsmd.getColumnCount();
+//
+//            RowWriter<String> writer = new RowWriter<>(outputDir+"/explains/", getDatabase(), mapping, getFileFromQuery(queryNum));
+//            while(rs.next()) {
+//                StringBuilder line = new StringBuilder("");
+//                for(int i = 1; i <= columnsNumber; i++)
+//                    line.append(rs.getString(i)).append("\t");
+//                writer.writeString(line.toString());
+//            }
+//            writer.close();
+//            rs.close();
+//            Instant end = Instant.now();
+//            return Duration.between(start, end);
+//        } catch (SQLException | IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
+
 }
