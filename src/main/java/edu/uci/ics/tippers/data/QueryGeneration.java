@@ -5,6 +5,7 @@ import edu.uci.ics.tippers.db.MySQLConnectionManager;
 import edu.uci.ics.tippers.db.MySQLQueryManager;
 import edu.uci.ics.tippers.db.MySQLResult;
 import edu.uci.ics.tippers.fileop.Writer;
+import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
 import edu.uci.ics.tippers.model.policy.ObjectCondition;
 import edu.uci.ics.tippers.model.query.RangeQuery;
@@ -17,6 +18,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -29,7 +31,8 @@ public class QueryGeneration {
     MySQLQueryManager mySQLQueryManager = new MySQLQueryManager();
     Connection connection = MySQLConnectionManager.getInstance().getConnection();
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
+    List<Double> selectivity = new ArrayList<Double>(Arrays.asList(0.001, 0.002, 0.003));
+    List<Double> hours = new ArrayList<Double>(Arrays.asList(24.0, 48.0, 72.0, 96.0, 120.0, 200.0, 300.0, 500.0));
 
 
     public QueryGeneration(){
@@ -54,65 +57,81 @@ public class QueryGeneration {
     private Timestamp getEndingTimeInterval(Timestamp timestamp){
         if (timestamp == null)
             return getRandomTimeStamp();
-        int hourIndex = new Random().nextInt(PolicyConstants.HOUR_EXTENSIONS.size());
-        double rHour = PolicyConstants.HOUR_EXTENSIONS.get(hourIndex);
+        int hourIndex = new Random().nextInt(hours.size());
+        double rHour = hours.get(hourIndex);
 
         rHour = rHour * Math.random();
         Long milliseconds = (long)(rHour * 60.0 * 60.0 * 1000.0);
         return new Timestamp(timestamp.getTime() + milliseconds);
     }
 
-    public List<String> constructWorkload(boolean [] templates, List<Double> selectivity, int numOfQueries){
+
+    private String createQuery1(double selectivity){
+        double selOfPolicy = 0.0;
+        List<ObjectCondition> objectConditions;
+        do {
+            RangeQuery rq = new RangeQuery();
+            rq.setUser_id(String.valueOf(users.get(new Random().nextInt(users.size())).getUser_id()));
+            rq.setStart_timestamp(getRandomTimeStamp());
+            rq.setEnd_timestamp(getEndingTimeInterval(rq.getStart_timestamp()));
+            objectConditions = rq.createObjectCondition(-1);
+            selOfPolicy = BEPolicy.computeL(objectConditions);
+        } while (!(selOfPolicy > selectivity/1000 && selOfPolicy < selectivity));
+        BEPolicy dummyPolicy = new BEPolicy(objectConditions);
+        return dummyPolicy.cleanQueryFromObjectConditions();
+    }
+
+    private String createQuery2(int elemCount, double selectivity, boolean user){
+        BEExpression dummyExp = new BEExpression();
+        double selOfExp = 0.0;
+        int c = 0;
+        do{
+            RangeQuery rq = new RangeQuery();
+            rq.setStart_timestamp(getRandomTimeStamp());
+            rq.setEnd_timestamp(getEndingTimeInterval(rq.getStart_timestamp()));
+            while(c < elemCount){
+                List<ObjectCondition> objectConditions;
+                if(user) rq.setUser_id(String.valueOf(users.get(new Random().nextInt(users.size())).getUser_id()));
+                else rq.setLocation_id(String.valueOf(infras.get(new Random().nextInt(infras.size())).getName()));
+                objectConditions = rq.createObjectCondition(-1);
+                BEPolicy dummyPolicy = new BEPolicy(objectConditions);
+                dummyExp.getPolicies().add(dummyPolicy);
+                c += 1;
+            }
+            selOfExp = dummyExp.computeL();
+            c = 0;
+        } while (!(selOfExp > selectivity/1000 && selOfExp < selectivity));
+        return dummyExp.cleanQueryFromPolices();
+    }
+
+
+    private List<String> getQueries(int templateNum, int numOfQueries){
         List<String> queries = new ArrayList<>();
-        if(templates[0]){
-            for (int i = 0; i < selectivity.size(); i++) {
-                int count = 0;
-                double sel = selectivity.get(i);
-                while(count < numOfQueries){
-                    count += 1;
-                    double selOfPolicy = 0.0;
-                    List<ObjectCondition> objectConditions;
-                    do {
-                        RangeQuery rq = new RangeQuery();
-                        rq.setUser_id(String.valueOf(users.get(new Random().nextInt(users.size())).getUser_id()));
-                        rq.setStart_timestamp(getRandomTimeStamp());
-                        rq.setEnd_timestamp(getEndingTimeInterval(rq.getStart_timestamp()));
-                        objectConditions = rq.createObjectCondition(-1);
-                        selOfPolicy = BEPolicy.computeL(objectConditions);
-                    } while (!(selOfPolicy > sel/10 && selOfPolicy < sel*10));
-                    BEPolicy dummyPolicy = new BEPolicy(objectConditions);
-                    queries.add(dummyPolicy.createQueryFromObjectConditions());
+        for (int i = 0; i < selectivity.size(); i++) {
+            int count = 0;
+            double sel = selectivity.get(i);
+            while(count < numOfQueries){
+                count += 1;
+                if(templateNum == 0) queries.add(createQuery1(sel));
+                else if(templateNum == 1) {
+                    int [] numUsers = {5, 10, 15, 20, 25, 30, 50};
+                    int userCount = numUsers[(new Random().nextInt(numUsers.length))];
+                    queries.add(createQuery2(userCount, sel, true));
+                }
+                else if(templateNum == 2){
+                    int [] numLocations = {3, 6, 9, 10, 15, 20};
+                    int locCount = numLocations[(new Random().nextInt(numLocations.length))];
+                    queries.add(createQuery2(locCount, sel, false));
                 }
             }
         }
-        if(templates[1]){
-            int [] numUsers = {5, 10, 15, 20, 25, 30, 50};
-            for (int i = 0; i < selectivity.size(); i++) {
-                int count = 0;
-                double sel = selectivity.get(i);
-                while(count < numOfQueries){
-                    count += 1;
-                    double selOfPolicy = 0.0;
-                    List<ObjectCondition> objectConditions;
-                    do {
-                        RangeQuery rq = new RangeQuery();
-                        rq.setUser_id(String.valueOf(users.get(new Random().nextInt(users.size())).getUser_id()));
-                        rq.setStart_timestamp(getRandomTimeStamp());
-                        rq.setEnd_timestamp(getEndingTimeInterval(rq.getStart_timestamp()));
-                        objectConditions = rq.createObjectCondition(-1);
-                        selOfPolicy = BEPolicy.computeL(objectConditions);
-                    } while (!(selOfPolicy > sel/10 && selOfPolicy < sel*10));
-                    BEPolicy dummyPolicy = new BEPolicy(objectConditions);
-                    queries.add(dummyPolicy.createQueryFromObjectConditions());
-                }
-            }
-        }
-        if(templates[2]){
-            int [] numLocations = {3, 6, 9, 10, 15, 20};
+        return queries;
+    }
 
-        }
-        if(templates[3]){
-
+    public List<String> constructWorkload(boolean [] templates, int numOfQueries){
+        List<String> queries = new ArrayList<>();
+        for (int i = 0; i < templates.length; i++) {
+            if(templates[i]) queries.addAll(getQueries(i, numOfQueries));
         }
         return queries;
     }

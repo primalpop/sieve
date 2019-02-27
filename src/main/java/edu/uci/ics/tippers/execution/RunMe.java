@@ -32,10 +32,9 @@ public class RunMe {
 //        }
 
         QueryGeneration qg = new QueryGeneration();
-        boolean [] templates = {true, false, false, false};
-        List<Double> selectivity = new ArrayList<Double>(Arrays.asList(0.00001, 0.00002, 0.00003));
+        boolean [] templates = {true, true, true, false};
         int numOfQueries = 3;
-        List<String> queries = qg.constructWorkload(templates, selectivity, numOfQueries);
+        List<String> queries = qg.constructWorkload(templates, numOfQueries);
         for (String q: queries) {
             System.out.println(q);
             MySQLQueryManager mq = new MySQLQueryManager();
