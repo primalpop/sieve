@@ -67,6 +67,18 @@ public class PolicyExecution {
             Files.delete(Paths.get(policyDir + exptResultsFile));
         } catch (IOException ioException) { }
 
+        QueryGeneration qg = new QueryGeneration();
+        boolean [] templates = {true, true, true, false};
+        int numOfQueries = 3;
+        List<String> queries = qg.constructWorkload(templates, numOfQueries);
+        for (String q: queries) {
+            System.out.println(q);
+            MySQLQueryManager mq = new MySQLQueryManager();
+            MySQLResult mqr = mq.runTimedQueryWithResultCount(q);
+            System.out.println(mqr.getTimeTaken() + " : " + mqr.getResultCount());
+        }
+
+
         if (policyFiles != null) {
             for (File file : policyFiles) {
                 TreeMap<String, String> policyRunTimes = new TreeMap<>();
@@ -74,10 +86,9 @@ public class PolicyExecution {
                 BEExpression beExpression = new BEExpression();
                 beExpression.parseJSONList(Reader.readTxt(policyDir + file.getName()));
                 Duration runTime = Duration.ofMillis(0);
-                Boolean resultCheck = true;
+                boolean resultCheck = true;
                 MySQLResult tradResult;
                 int numOfRepetitions = 3;
-
 
                 try {
                     /** Traditional approach **/
@@ -177,11 +188,11 @@ public class PolicyExecution {
         for (int i = 0; i < policyNumbers.length; i++) {
             List<String> attributes = new ArrayList<>();
             attributes.add(PolicyConstants.TIMESTAMP_ATTR);
-            attributes.add(PolicyConstants.ENERGY_ATTR);
-            attributes.add(PolicyConstants.TEMPERATURE_ATTR);
+//            attributes.add(PolicyConstants.ENERGY_ATTR);
+//            attributes.add(PolicyConstants.TEMPERATURE_ATTR);
             attributes.add(PolicyConstants.LOCATIONID_ATTR);
-            attributes.add(PolicyConstants.USERID_ATTR); //TODO: remove for experiments?
-            attributes.add(PolicyConstants.ACTIVITY_ATTR);
+            attributes.add(PolicyConstants.USERID_ATTR);
+//            attributes.add(PolicyConstants.ACTIVITY_ATTR);
             List<BEPolicy> genPolicy = policyGen.generateOverlappingPolicies(policyNumbers[i], 0.3, attributes, bePolicies);
             bePolicies.clear();
             bePolicies.addAll(genPolicy);
@@ -191,7 +202,7 @@ public class PolicyExecution {
 
     public static void main(String args[]) {
         PolicyExecution pe = new PolicyExecution();
-//        pe.generatePolicies(PolicyConstants.BE_POLICY_DIR);
-        pe.runBEPolicies(PolicyConstants.BE_POLICY_DIR);
+        pe.generatePolicies(PolicyConstants.BE_POLICY_DIR);
+//        pe.runBEPolicies(PolicyConstants.BE_POLICY_DIR);
     }
 }
