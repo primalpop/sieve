@@ -23,12 +23,12 @@ public class QuerierCondition extends BooleanCondition {
         }
     }
 
-    public QuerierCondition(String attribute, AttributeType attributeType, String o1, String v1, String o2, String v2){
+    public QuerierCondition(String policyID, String attribute, AttributeType attributeType, String o1, String v1){
+        this.policy_id = policyID;
         this.attribute = attribute;
         this.type = attributeType;
         List<BooleanPredicate> booleanPredicates = new ArrayList<>();
         booleanPredicates.add(new BooleanPredicate(o1, v1));
-        booleanPredicates.add(new BooleanPredicate(o2, v2));
         this.booleanPredicates = booleanPredicates;
     }
 

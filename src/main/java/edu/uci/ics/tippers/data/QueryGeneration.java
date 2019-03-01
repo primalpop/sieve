@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 public class QueryGeneration {
 
@@ -31,7 +32,7 @@ public class QueryGeneration {
     MySQLQueryManager mySQLQueryManager = new MySQLQueryManager();
     Connection connection = MySQLConnectionManager.getInstance().getConnection();
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    List<Double> selectivity = new ArrayList<Double>(Arrays.asList(0.001, 0.002, 0.003));
+    List<Double> selectivity = new ArrayList<Double>(Arrays.asList(0.0001, 0.01));
     List<Double> hours = new ArrayList<Double>(Arrays.asList(24.0, 48.0, 72.0, 96.0, 120.0, 200.0, 300.0, 500.0));
 
 
@@ -65,43 +66,49 @@ public class QueryGeneration {
         return new Timestamp(timestamp.getTime() + milliseconds);
     }
 
+    private boolean checkSelectivity(String query, double selectivity){
+        MySQLResult mySQLResult = mySQLQueryManager.runTimedQueryWithResultCount(query);
+        double selQuery = (double) mySQLResult.getResultCount()/(double)PolicyConstants.NUMBER_OR_TUPLES;
+        return selQuery > selectivity/100 && selQuery < selectivity*100;
+    }
+
 
     private String createQuery1(double selectivity){
-        double selOfPolicy = 0.0;
-        List<ObjectCondition> objectConditions;
-        do {
-            RangeQuery rq = new RangeQuery();
-            rq.setUser_id(String.valueOf(users.get(new Random().nextInt(users.size())).getUser_id()));
-            rq.setStart_timestamp(getRandomTimeStamp());
-            rq.setEnd_timestamp(getEndingTimeInterval(rq.getStart_timestamp()));
-            objectConditions = rq.createObjectCondition(-1);
-            selOfPolicy = BEPolicy.computeL(objectConditions);
-        } while (!(selOfPolicy > selectivity/1000 && selOfPolicy < selectivity));
-        BEPolicy dummyPolicy = new BEPolicy(objectConditions);
-        return dummyPolicy.cleanQueryFromObjectConditions();
+        String query;
+        do{
+            String user = String.valueOf(users.get(new Random().nextInt(users.size())).getUser_id());
+            Timestamp startTS = getRandomTimeStamp();
+            String start = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(startTS);
+            String end = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(getEndingTimeInterval(startTS));
+            query = String.format(" (user_id = %s) AND (timeStamp >= \"%s\") AND (timeStamp <= \"%s\")", user, start, end);
+        } while(!(checkSelectivity(query, selectivity)));
+        return query;
     }
 
     private String createQuery2(int elemCount, double selectivity, boolean user){
-        BEExpression dummyExp = new BEExpression();
-        double selOfExp = 0.0;
         int c = 0;
+        String query;
         do{
-            RangeQuery rq = new RangeQuery();
-            rq.setStart_timestamp(getRandomTimeStamp());
-            rq.setEnd_timestamp(getEndingTimeInterval(rq.getStart_timestamp()));
+            Timestamp startTS = getRandomTimeStamp();
+            String start = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(startTS);
+            String end = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(getEndingTimeInterval(startTS));
+            query = String.format("timeStamp >= \"%s\" AND timeStamp <= \"%s\" ", start, end);
+            List<String> preds = new ArrayList<>();
             while(c < elemCount){
-                List<ObjectCondition> objectConditions;
-                if(user) rq.setUser_id(String.valueOf(users.get(new Random().nextInt(users.size())).getUser_id()));
-                else rq.setLocation_id(String.valueOf(infras.get(new Random().nextInt(infras.size())).getName()));
-                objectConditions = rq.createObjectCondition(-1);
-                BEPolicy dummyPolicy = new BEPolicy(objectConditions);
-                dummyExp.getPolicies().add(dummyPolicy);
+                if(user)
+                    preds.add(String.valueOf(users.get(new Random().nextInt(users.size())).getUser_id()));
+                else
+                    preds.add(String.valueOf(infras.get(new Random().nextInt(infras.size())).getName()));
                 c += 1;
             }
-            selOfExp = dummyExp.computeL();
+            if(user) query += "AND user_id in ( ";
+            else query += "AND location_id in ( ";
+            query += preds.stream().map(item -> item + ", " ).collect(Collectors.joining(" "));
+            query = query.substring(0, query.length()-2); //removing the extra comma
+            query += ")";
             c = 0;
-        } while (!(selOfExp > selectivity/1000 && selOfExp < selectivity));
-        return dummyExp.cleanQueryFromPolices();
+        } while (!checkSelectivity(query, selectivity));
+        return query;
     }
 
 
@@ -114,12 +121,12 @@ public class QueryGeneration {
                 count += 1;
                 if(templateNum == 0) queries.add(createQuery1(sel));
                 else if(templateNum == 1) {
-                    int [] numUsers = {5, 10, 15, 20, 25, 30, 50};
+                    int [] numUsers = {50};
                     int userCount = numUsers[(new Random().nextInt(numUsers.length))];
                     queries.add(createQuery2(userCount, sel, true));
                 }
                 else if(templateNum == 2){
-                    int [] numLocations = {3, 6, 9, 10, 15, 20};
+                    int [] numLocations = {15};
                     int locCount = numLocations[(new Random().nextInt(numLocations.length))];
                     queries.add(createQuery2(locCount, sel, false));
                 }
@@ -128,11 +135,11 @@ public class QueryGeneration {
         return queries;
     }
 
-    public List<String> constructWorkload(boolean [] templates, int numOfQueries){
+    public void constructWorkload(boolean [] templates, int numOfQueries){
         List<String> queries = new ArrayList<>();
         for (int i = 0; i < templates.length; i++) {
             if(templates[i]) queries.addAll(getQueries(i, numOfQueries));
         }
-        return queries;
+        writer.writeToFile(queries, "queries.txt", PolicyConstants.BE_POLICY_DIR);
     }
 }

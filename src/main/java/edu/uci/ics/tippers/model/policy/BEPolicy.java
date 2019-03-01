@@ -92,7 +92,6 @@ public class BEPolicy {
     }
     public BEPolicy(String id, List<ObjectCondition> object_conditions, List<QuerierCondition> querier_conditions, String purpose, String action, Timestamp inserted_at) {
         this.id = id;
-        this.description = description;
         this.object_conditions = object_conditions;
         this.querier_conditions = querier_conditions;
         this.purpose = purpose;
@@ -433,14 +432,14 @@ public class BEPolicy {
     }
 
 
-    public boolean isUserPolicy(){
+    public boolean typeOfPolicy(){
         for (QuerierCondition querier_condition : this.querier_conditions)
             if (querier_condition.getAttribute().equalsIgnoreCase("policy_type"))
                 return querier_condition.checkTypeOfPolicy();
         return false;
     }
 
-    public String getQuerier(){
+    public String fetchQuerier(){
         for (QuerierCondition querier_condition : this.querier_conditions)
             if (querier_condition.getAttribute().equalsIgnoreCase("querier"))
                 return querier_condition.getBooleanPredicates().get(0).getValue();

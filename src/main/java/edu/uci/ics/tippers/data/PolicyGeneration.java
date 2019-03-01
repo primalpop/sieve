@@ -3,11 +3,13 @@ package edu.uci.ics.tippers.data;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import edu.uci.ics.tippers.common.AttributeType;
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.db.MySQLQueryManager;
 import edu.uci.ics.tippers.fileop.Writer;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
 import edu.uci.ics.tippers.model.policy.ObjectCondition;
+import edu.uci.ics.tippers.model.policy.QuerierCondition;
 import edu.uci.ics.tippers.model.query.BasicQuery;
 import edu.uci.ics.tippers.model.query.RangeQuery;
 import edu.uci.ics.tippers.model.tippers.Infrastructure;
@@ -204,9 +206,14 @@ public class PolicyGeneration {
         bePolicies.addAll(previous);
         boolean overlap = false;
         for (int i = previous.size(); i < numberOfPolicies; i++) {
+            String policyID =  UUID.randomUUID().toString();
+            List<QuerierCondition> querierConditions = new ArrayList<>(Arrays.asList(
+                    new QuerierCondition(policyID, "policy_type", AttributeType.STRING, "=","user"),
+                    new QuerierCondition(policyID, "querier", AttributeType.STRING, "=", "10")));
             if (overlap) {
                 BEPolicy oPolicy = new BEPolicy(bePolicies.get(new Random().nextInt(i)));
-                oPolicy.setId("Generated Overlapping Policy " + i);
+                oPolicy.setId(policyID);
+                oPolicy.setQuerier_conditions(querierConditions);
                 for (ObjectCondition objC: oPolicy.getObject_conditions()) {
                     objC.setPolicy_id(String.valueOf(i));
                     objC.shift();
@@ -219,8 +226,10 @@ public class PolicyGeneration {
                 do {
                     objectConditions = generatePredicates(i, attributes);
                     selOfPolicy = BEPolicy.computeL(objectConditions);
-                } while (selOfPolicy < 0.00001 || selOfPolicy > 0.00005);
-                BEPolicy bePolicy = new BEPolicy(String.valueOf(i), "Generated Policy " + i + "with selectivity " + selOfPolicy, objectConditions, PolicyConstants.DEFAULT_QC.asList(), "", "");
+                } while (selOfPolicy > 0.000001 && selOfPolicy < 0.005);
+                BEPolicy bePolicy = new BEPolicy(policyID,
+                        objectConditions, querierConditions, "analysis",
+                        "allow", new Timestamp(System.currentTimeMillis()));
                 bePolicies.add(bePolicy);
             }
             double rand = Math.random();

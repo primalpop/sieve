@@ -7,6 +7,9 @@ import org.apache.commons.dbutils.DbUtils;
 import java.sql.*;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.*;
 
 /**
@@ -16,7 +19,7 @@ public class MySQLQueryManager {
 
     private static final Connection connection = MySQLConnectionManager.getInstance().getConnection();
 
-    private static long timeout = 3000000;
+    private static long timeout = 300000;
 
     public MySQLResult runWithThread(String query, MySQLResult mySQLResult) {
 
@@ -118,11 +121,25 @@ public class MySQLQueryManager {
      * @throws PolicyEngineException
      */
 
-    public MySQLResult runTimedQuery(String predicates, Boolean resultCheck) throws PolicyEngineException {
+    public MySQLResult runTimedQuery(String predicates, Boolean resultCheck, int repetitions) throws PolicyEngineException {
         try {
             MySQLResult mySQLResult = new MySQLResult();
             mySQLResult.setResultsCheck(resultCheck);
-            runWithThread(PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS + predicates, mySQLResult);
+            List<Long> gList = new ArrayList<>();
+            for (int i = 0; i < repetitions; i++)
+                gList.add(runWithThread(PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS + predicates,
+                        mySQLResult).getTimeTaken().toMillis());
+            Duration gCost;
+            if(repetitions >= 3) {
+                Collections.sort(gList);
+                List<Long> clippedGList = gList.subList(1, repetitions - 1);
+                gCost = Duration.ofMillis(clippedGList.stream().mapToLong(i -> i).sum() / clippedGList.size());
+            }
+            else{
+                gCost =  Duration.ofMillis(gList.stream().mapToLong(i -> i).sum() / gList.size());
+
+            }
+            mySQLResult.setTimeTaken(gCost);
             return mySQLResult;
         } catch (Exception e) {
             e.printStackTrace();

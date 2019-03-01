@@ -32,15 +32,9 @@ public class RunMe {
 //        }
 
         QueryGeneration qg = new QueryGeneration();
-        boolean [] templates = {true, true, true, false};
+        boolean [] templates = {false, true, false, false};
         int numOfQueries = 3;
-        List<String> queries = qg.constructWorkload(templates, numOfQueries);
-        for (String q: queries) {
-            System.out.println(q);
-            MySQLQueryManager mq = new MySQLQueryManager();
-            MySQLResult mqr = mq.runTimedQueryWithResultCount(q);
-            System.out.println(mqr.getTimeTaken() + " : " + mqr.getResultCount());
-        }
+        qg.constructWorkload(templates, numOfQueries);
 
 //        DataGeneration dataGeneration = new DataGeneration();
 //        dataGeneration.runScript("mysql/schema.sql");

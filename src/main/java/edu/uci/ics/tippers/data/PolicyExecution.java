@@ -33,7 +33,7 @@ public class PolicyExecution {
 
     private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-    private static final int[] policyNumbers = {10, 25, 50, 100, 200, 300, 400, 500, 750, 1000, 2000};
+    private static final int[] policyNumbers = {100, 200, 300};
 
     private static final int[] policyEpochs = {0};
 
@@ -67,18 +67,6 @@ public class PolicyExecution {
             Files.delete(Paths.get(policyDir + exptResultsFile));
         } catch (IOException ioException) { }
 
-        QueryGeneration qg = new QueryGeneration();
-        boolean [] templates = {true, true, true, false};
-        int numOfQueries = 3;
-        List<String> queries = qg.constructWorkload(templates, numOfQueries);
-        for (String q: queries) {
-            System.out.println(q);
-            MySQLQueryManager mq = new MySQLQueryManager();
-            MySQLResult mqr = mq.runTimedQueryWithResultCount(q);
-            System.out.println(mqr.getTimeTaken() + " : " + mqr.getResultCount());
-        }
-
-
         if (policyFiles != null) {
             for (File file : policyFiles) {
                 TreeMap<String, String> policyRunTimes = new TreeMap<>();
@@ -93,7 +81,7 @@ public class PolicyExecution {
                 try {
                     /** Traditional approach **/
                     System.out.println(beExpression.createQueryFromPolices());
-                    tradResult = mySQLQueryManager.runTimedQuery(beExpression.createQueryFromPolices(), resultCheck);
+                    tradResult = mySQLQueryManager.runTimedQuery(beExpression.createQueryFromPolices(), resultCheck, numOfRepetitions);
                     runTime = runTime.plus(tradResult.getTimeTaken());
 
                     policyRunTimes.put(file.getName(), String.valueOf(runTime.toMillis()));
@@ -152,7 +140,7 @@ public class PolicyExecution {
                     if(resultCheck){
                         System.out.println("Verifying results......");
                         System.out.println("Guard query: " + fs.createCompleteQuery());
-                        MySQLResult guardResult = mySQLQueryManager.runTimedQuery(fs.createCompleteQuery(),true);
+                        MySQLResult guardResult = mySQLQueryManager.runTimedQuery(fs.createCompleteQuery(),true, numOfRepetitions);
                         Boolean resultSame = tradResult.checkResults(guardResult);
                         if(!resultSame){
                             System.out.println("*** Query results don't match with generated guard!!! Halting Execution ***");
@@ -188,11 +176,11 @@ public class PolicyExecution {
         for (int i = 0; i < policyNumbers.length; i++) {
             List<String> attributes = new ArrayList<>();
             attributes.add(PolicyConstants.TIMESTAMP_ATTR);
-//            attributes.add(PolicyConstants.ENERGY_ATTR);
-//            attributes.add(PolicyConstants.TEMPERATURE_ATTR);
+            attributes.add(PolicyConstants.ENERGY_ATTR);
+            attributes.add(PolicyConstants.TEMPERATURE_ATTR);
             attributes.add(PolicyConstants.LOCATIONID_ATTR);
             attributes.add(PolicyConstants.USERID_ATTR);
-//            attributes.add(PolicyConstants.ACTIVITY_ATTR);
+            attributes.add(PolicyConstants.ACTIVITY_ATTR);
             List<BEPolicy> genPolicy = policyGen.generateOverlappingPolicies(policyNumbers[i], 0.3, attributes, bePolicies);
             bePolicies.clear();
             bePolicies.addAll(genPolicy);
