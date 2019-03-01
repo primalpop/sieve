@@ -83,7 +83,8 @@ public class PolicyConstants {
 
     //TEMPORARY FIX: Querier Conditions
     public static final ImmutableList<QuerierCondition> DEFAULT_QC = ImmutableList.
-            of(new QuerierCondition("user_name",AttributeType.STRING, "=","John Doe", "=", "John Doe"));
+            of(new QuerierCondition("test", "policy_type",AttributeType.STRING, "=","user"),
+                    new QuerierCondition("test", "querier", AttributeType.STRING, "=", "10"));
 
     //ATTRIBUTE NAMES, ,
     public static final ImmutableList<String> ATTR_LIST = ImmutableList.of("timeStamp", "energy", "temperature",
@@ -122,6 +123,8 @@ public class PolicyConstants {
     public static final String BE_POLICY_DIR = "results/be_policies/";
 
     public static final String HISTOGRAM_DIR = "histogram/";
+
+    public static final String QUERY_FILE = "queries.txt";
 
     public static final String QUERY_RESULTS_DIR = "query_results/"; //results from traditional query rewrite
 

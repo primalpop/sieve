@@ -28,14 +28,14 @@ public class PolicyPersistor {
 
         try{
 
-            if(bePolicy.isUserPolicy()){ //User Policy
+            if(bePolicy.typeOfPolicy()){ //User Policy
 
                 String userPolicyInsert = "INSERT INTO USER_POLICY " +
                         "(id, querier, purpose, enforcement_action, inserted_at) VALUES (?, ?, ?, ?, ?)";
 
                 PreparedStatement userPolicyStmt = connection.prepareStatement(userPolicyInsert);
                 userPolicyStmt.setString(1, bePolicy.getId());
-                userPolicyStmt.setInt(2, Integer.parseInt(bePolicy.getQuerier()));
+                userPolicyStmt.setInt(2, Integer.parseInt(bePolicy.fetchQuerier()));
                 userPolicyStmt.setString(3, bePolicy.getPurpose());
                 userPolicyStmt.setString(4, bePolicy.getAction());
                 userPolicyStmt.setTimestamp(5, bePolicy.getInserted_at());
@@ -66,7 +66,7 @@ public class PolicyPersistor {
                 PreparedStatement groupPolicyStmt = connection.prepareStatement(groupPolicyInsert);
 
                 groupPolicyStmt.setString(1, bePolicy.getId());
-                groupPolicyStmt.setInt(2, Integer.parseInt(bePolicy.getQuerier()));
+                groupPolicyStmt.setInt(2, Integer.parseInt(bePolicy.fetchQuerier()));
                 groupPolicyStmt.setString(3, bePolicy.getPurpose());
                 groupPolicyStmt.setString(4, bePolicy.getAction());
                 groupPolicyStmt.setTimestamp(5, bePolicy.getInserted_at());

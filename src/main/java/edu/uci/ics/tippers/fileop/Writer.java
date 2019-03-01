@@ -112,4 +112,20 @@ public class Writer {
             e.printStackTrace();
         }
     }
+
+    public void writeToFile(List<String> entries, String fileName, String fileDir){
+        FileWriter writer = null;
+        try {
+            writer = new FileWriter(fileDir + fileName);
+            for(String entry: entries) {
+                writer.write(entry);
+                writer.write("\n");
+            }
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }
