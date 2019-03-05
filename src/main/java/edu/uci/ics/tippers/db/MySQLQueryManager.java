@@ -164,6 +164,25 @@ public class MySQLQueryManager {
         }
     }
 
+    /**
+     * Compute the cost by execution time of the query which includes a subquery clause
+     * @param completeQuery - including the FROM clause
+     * @return
+     * @throws PolicyEngineException
+     */
+
+    public Duration runTimedSubQuery(String completeQuery) throws PolicyEngineException {
+        try {
+            MySQLResult mySQLResult = new MySQLResult();
+            return runWithThread(completeQuery, mySQLResult).getTimeTaken();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new PolicyEngineException("Error Running Query");
+        }
+    }
+
+
+
     public MySQLResult runTimedQueryWithResultCount(String predicates) throws PolicyEngineException {
         try {
             MySQLResult mySQLResult = new MySQLResult();

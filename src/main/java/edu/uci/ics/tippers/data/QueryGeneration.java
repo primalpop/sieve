@@ -28,8 +28,8 @@ public class QueryGeneration {
     private MySQLQueryManager mySQLQueryManager = new MySQLQueryManager();
     private Connection connection = MySQLConnectionManager.getInstance().getConnection();
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    private List<Double> hours = new ArrayList<Double>(Arrays.asList(24.0, 72.0, 120.0, 200.0, 300.0, 500.0, 1000.0, 2000.0));
-    private List<Integer> userPreds = new ArrayList<Integer>(Arrays.asList(5, 10, 15, 20, 30, 50, 100, 200, 300, 500));
+    private List<Double> hours = new ArrayList<Double>(Arrays.asList(500.0, 1000.0, 2000.0, 5000.0, 10000.0));
+    private List<Integer> userPreds = new ArrayList<Integer>(Arrays.asList(500, 1000, 2000));
     private List<Integer> locPreds = new ArrayList<Integer>(Arrays.asList(5, 10, 15, 20, 30, 50));
 
 
@@ -124,7 +124,7 @@ public class QueryGeneration {
             selQuery = checkSelectivity(query);
             selType = checkSelectivityType(selQuery);
             c = 0;
-        } while (selType.isEmpty());
+        } while (!selType.equalsIgnoreCase("high"));
         return new QueryStatement(query, 2, selQuery, selType, new Timestamp(System.currentTimeMillis()));
     }
 
@@ -138,6 +138,7 @@ public class QueryGeneration {
             else if (templateNum == 1) {
                 int userCount = userPreds.get(new Random().nextInt(userPreds.size()));
                 queries.add(createQuery2(userCount, true));
+                System.out.println("Generated query " + count);
             } else if (templateNum == 2) {
                 int locCount = locPreds.get(new Random().nextInt(locPreds.size()));
                 queries.add(createQuery2(locCount, false));
@@ -173,6 +174,28 @@ public class QueryGeneration {
             e.printStackTrace();
         }
     }
+
+
+    public List<QueryStatement> retrieveQueries(String selectivity_type, int query_count){
+        List<QueryStatement> queryStatements = new ArrayList<>();
+        PreparedStatement queryStm = null;
+        try {
+            queryStm = connection.prepareStatement("SELECT id, query_statement FROM menagerie.queries as q " +
+                    "WHERE q.selectivity_type = ? limit " + query_count);
+            queryStm.setString(1, selectivity_type);
+            ResultSet rs = queryStm.executeQuery();
+            while (rs.next()) {
+                QueryStatement qs = new QueryStatement();
+                qs.setQuery(rs.getString("query_statement"));
+                qs.setId(rs.getInt("id"));
+                queryStatements.add(qs);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return queryStatements;
+    }
+
 
     public void constructWorkload(boolean[] templates, int numOfQueries) {
 //        DataGeneration dataGeneration = new DataGeneration();

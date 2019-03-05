@@ -33,7 +33,7 @@ public class RunMe {
 
         QueryGeneration qg = new QueryGeneration();
         boolean [] templates = {false, true, false, false};
-        int numOfQueries = 1000;
+        int numOfQueries = 50;
         qg.constructWorkload(templates, numOfQueries);
 
 //        DataGeneration dataGeneration = new DataGeneration();
