@@ -116,10 +116,11 @@ public class Writer {
     public void writeToFile(List<String> entries, String fileName, String fileDir){
         FileWriter writer = null;
         try {
-            writer = new FileWriter(fileDir + fileName);
+            File file = new File(fileDir + fileName);
+            writer = new FileWriter(file);
             for(String entry: entries) {
                 writer.write(entry);
-                writer.write("\n");
+                writer.write(",");
             }
             writer.close();
         } catch (IOException e) {

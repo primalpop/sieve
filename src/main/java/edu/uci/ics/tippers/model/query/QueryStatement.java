@@ -24,6 +24,10 @@ public class QueryStatement {
         this.inserted_at = inserted_at;
     }
 
+    public QueryStatement() {
+
+    }
+
     public int getId() {
         return id;
     }
