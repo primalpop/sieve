@@ -17,7 +17,6 @@ import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.*;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 public class PolicyExecutionWithQueries {
@@ -46,13 +45,13 @@ public class PolicyExecutionWithQueries {
             Files.delete(Paths.get(policyDir + exptResultsFile));
         } catch (IOException ioException) { }
 
-//        List<QueryStatement> highQueries = queryGeneration.retrieveQueries("high", 10);
-//        List<QueryStatement> mediumQueries = queryGeneration.retrieveQueries("medium", 10);
-        List<QueryStatement> lowQueries = queryGeneration.retrieveQueries("low", 1);
+        List<QueryStatement> highQueries = queryGeneration.retrieveQueries("high", 10);
+        List<QueryStatement> mediumQueries = queryGeneration.retrieveQueries("medium", 10);
+        List<QueryStatement> lowQueries = queryGeneration.retrieveQueries("low", 10);
         Map<String, List<QueryStatement>> queries = new HashMap<>();
-//        queries.put("high", highQueries);
+        queries.put("high", highQueries);
         queries.put("low", lowQueries);
-//        queries.put("medium", mediumQueries);
+        queries.put("medium", mediumQueries);
 
         if (policyFiles != null) {
             for (File file : policyFiles) {
@@ -65,27 +64,27 @@ public class PolicyExecutionWithQueries {
                 MySQLResult tradResult;
                 int numOfRepetitions = 3;
 
-//                MySQLResult policyResult = mySQLQueryManager.runTimedQuery(beExpression.createQueryFromPolices(), resultCheck, numOfRepetitions);
-//                System.out.println("Policy only: " + policyResult.getTimeTaken());
-//                System.out.println(beExpression.createQueryFromPolices());
+                MySQLResult policyResult = mySQLQueryManager.runTimedQuery(beExpression.createQueryFromPolices(), resultCheck, numOfRepetitions);
+                System.out.println("Policy only: " + policyResult.getTimeTaken());
+                System.out.println(beExpression.createQueryFromPolices());
 
-//                System.out.println("Starting Generation......");
-//                Duration guardGen = Duration.ofMillis(0);
-//                FactorExtension f = new FactorExtension(beExpression);
-//                Instant feStart = Instant.now();
-//                int ext = f.doYourThing();
-//                policyRunTimes.put("Number of Extensions", String.valueOf(ext));
-//                Instant feEnd = Instant.now();
-//                guardGen = guardGen.plus(Duration.between(feStart, feEnd));
-//
-//                FactorSearch fs = new FactorSearch(beExpression);
-//                Instant fsStart = Instant.now();
-//                fs.search();
-//                Instant fsEnd = Instant.now();
-//                guardGen = guardGen.plus(Duration.between(fsStart, fsEnd));
-//                writer.addGuardReport(fs.printDetailedResults(numOfRepetitions), policyDir, exptResultsFile);
-//                policyRunTimes.put(file.getName() + "-guardGeneration", String.valueOf(guardGen.toMillis()));
-//                writer.appendToCSVReport(policyRunTimes, policyDir, exptResultsFile);
+                System.out.println("Starting Generation......");
+                Duration guardGen = Duration.ofMillis(0);
+                FactorExtension f = new FactorExtension(beExpression);
+                Instant feStart = Instant.now();
+                int ext = f.doYourThing();
+                policyRunTimes.put("Number of Extensions", String.valueOf(ext));
+                Instant feEnd = Instant.now();
+                guardGen = guardGen.plus(Duration.between(feStart, feEnd));
+
+                FactorSearch fs = new FactorSearch(beExpression);
+                Instant fsStart = Instant.now();
+                fs.search();
+                Instant fsEnd = Instant.now();
+                guardGen = guardGen.plus(Duration.between(fsStart, fsEnd));
+                writer.addGuardReport(fs.printDetailedResults(numOfRepetitions), policyDir, exptResultsFile);
+                policyRunTimes.put(file.getName() + "-guardGeneration", String.valueOf(guardGen.toMillis()));
+                writer.appendToCSVReport(policyRunTimes, policyDir, exptResultsFile);
                 int queryCount = 1;
 
                 for (String key: queries.keySet()) {
@@ -100,10 +99,10 @@ public class PolicyExecutionWithQueries {
                         try {
                             /** Traditional approach **/
                             String query = qs.getQuery();
-                            String subQuery = "SELECT * FROM ( SELECT * FROM SEMANTIC_OBSERVATION WHERE " + (query) + ") AS temp WHERE " +
-                                    beExpression.createQueryFromPolices();
-                            Duration subQueryDuration = mySQLQueryManager.runTimedSubQuery(subQuery);
-                            System.out.println("Executing as subquery " + subQueryDuration.toMillis());
+//                            String subQuery = "SELECT * FROM ( SELECT * FROM SEMANTIC_OBSERVATION WHERE " + (query) + ") AS temp WHERE " +
+//                                    beExpression.createQueryFromPolices();
+//                            Duration subQueryDuration = mySQLQueryManager.runTimedSubQuery(subQuery);
+//                            System.out.println("Executing as subquery " + subQueryDuration.toMillis());
                             String tradQuery = "(" + query + ") AND (" + beExpression.createQueryFromPolices() + ")";
                             tradResult = mySQLQueryManager.runTimedQuery(tradQuery, resultCheck, numOfRepetitions);
                             runTime = runTime.plus(tradResult.getTimeTaken());
@@ -122,8 +121,6 @@ public class PolicyExecutionWithQueries {
                     writer.appendToCSVReport(queryRunTimes, policyDir, exptResultsFile);
                     writer.appendToCSVReport(queryPolicyRunTimes, policyDir, exptResultsFile);
                 }
-
-
             }
         }
     }
