@@ -64,8 +64,8 @@ public class PolicyExecutionWithQueries {
                 MySQLResult tradResult;
                 int numOfRepetitions = 3;
 
-                MySQLResult policyResult = mySQLQueryManager.runTimedQuery(beExpression.createQueryFromPolices(), resultCheck, numOfRepetitions);
-                System.out.println("Policy only: " + policyResult.getTimeTaken());
+//                MySQLResult policyResult = mySQLQueryManager.runTimedQuery(beExpression.createQueryFromPolices(), resultCheck, numOfRepetitions);
+//                System.out.println("Policy only: " + policyResult.getTimeTaken());
                 System.out.println(beExpression.createQueryFromPolices());
 
                 System.out.println("Starting Generation......");

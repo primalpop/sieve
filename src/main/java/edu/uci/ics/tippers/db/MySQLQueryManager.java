@@ -85,6 +85,7 @@ public class MySQLQueryManager {
                 }
                 else if (rs.last()) {
                     rowcount = rs.getRow();
+                    rs.beforeFirst();
                 }
                 if(mySQLResult.getPathName() != null && mySQLResult.getFileName() != null){
                     mySQLResult.writeResultsToFile(rs);
@@ -182,11 +183,17 @@ public class MySQLQueryManager {
     }
 
 
-
+    /**
+     * Execution time for guards which includes cost of sorting the results
+     * @param predicates
+     * @return
+     * @throws PolicyEngineException
+     */
     public MySQLResult runTimedQueryWithResultCount(String predicates) throws PolicyEngineException {
         try {
             MySQLResult mySQLResult = new MySQLResult();
-            return runWithThread(PolicyConstants.SELECT_COUNT_STAR_SEMANTIC_OBSERVATIONS + predicates, mySQLResult);
+            return runWithThread(PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS + predicates +
+                    PolicyConstants.ORDER_BY_ID, mySQLResult);
         } catch (Exception e) {
             e.printStackTrace();
             throw new PolicyEngineException("Error Running Query");
