@@ -21,3 +21,5 @@ target/
 db2*
 results.txt
 useful_queries/
+
+*.sql

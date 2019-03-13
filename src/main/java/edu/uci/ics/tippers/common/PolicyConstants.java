@@ -58,6 +58,7 @@ public class PolicyConstants {
 
     public static final String SELECT_COUNT_STAR_SEMANTIC_OBSERVATIONS = "Select count(*) as total from SEMANTIC_OBSERVATION WHERE ";
 
+    public static final String ORDER_BY_ID = " order by id ";
 
 
 

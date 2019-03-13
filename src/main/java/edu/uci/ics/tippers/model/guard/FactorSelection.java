@@ -81,7 +81,7 @@ public class FactorSelection {
                 .flatMap(p -> p.getObject_conditions().stream())
                 .filter(o -> PolicyConstants.ATTR_LIST.contains(o.getAttribute()))
                 .collect(Collectors.toSet());
-        selectFactor(singletonSet, evalOnly);
+        oneTimeFactor(singletonSet, evalOnly);
     }
 
     private boolean isFactorGood(BEExpression original, ObjectCondition factor, boolean quotient){
@@ -357,4 +357,44 @@ public class FactorSelection {
         }
         return indexFilters;
     }
+
+
+    /**
+     * Factorization based on a single object condition and not all the possible combinations
+     * Used for nested factorization and factorizes only once
+     */
+    public void oneTimeFactor(Set<ObjectCondition> objectConditionSet, boolean quotient) {
+        boolean factorized = false;
+        FactorSelection currentBestFactor = new FactorSelection(this.expression);
+        currentBestFactor.setCost(currentBestFactor.expression.estimateCostForSelection(false));
+        for (ObjectCondition objectCondition : objectConditionSet) {
+            BEExpression tempQuotient = new BEExpression(this.expression);
+            tempQuotient.checkAgainstPolices(objectCondition);
+            if (tempQuotient.getPolicies().size() > 1) { //was able to factorize
+                if (isFactorGood(tempQuotient, objectCondition, quotient)) { //factorized is better than original
+                    BEExpression tempRemainder = new BEExpression(this.expression);
+                    tempRemainder.getPolicies().removeAll(tempQuotient.getPolicies());
+                    double totalCost = tempQuotient.estimateCostOfGuardRep(objectCondition, quotient)
+                            + tempRemainder.estimateCostForSelection(quotient);
+                    if (currentBestFactor.cost > totalCost) { //greedy checking
+                        factorized = true;
+                        currentBestFactor.multiplier = new ArrayList<>();
+                        currentBestFactor.multiplier.add(objectCondition);
+                        currentBestFactor.remainder = new FactorSelection(this.expression);
+                        currentBestFactor.remainder.expression.getPolicies().removeAll(tempQuotient.getPolicies());
+                        currentBestFactor.quotient = new FactorSelection(tempQuotient);
+                        currentBestFactor.quotient.expression.removeFromPolicies(objectCondition); //added to debug
+                        currentBestFactor.cost = totalCost;
+                    }
+                }
+            }
+        }
+        if (factorized) {
+            this.setMultiplier(currentBestFactor.getMultiplier());
+            this.setQuotient(currentBestFactor.getQuotient());
+            this.setRemainder(currentBestFactor.getRemainder());
+            this.setCost(currentBestFactor.cost);
+        }
+    }
+
 }

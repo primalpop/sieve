@@ -266,7 +266,7 @@ public class FactorSearch {
             FactorSelection gf = new FactorSelection(finalTerm.getQuotient());
             gf.selectGuards(true);
             String quotientQuery = finalTerm.getFactor().print() +
-                    PolicyConstants.CONJUNCTION + "(" + gf.createQueryFromExactFactor() + ")";
+                    PolicyConstants.CONJUNCTION + "(" + finalTerm.getQuotient().cleanQueryFromPolices() + ")";
             gMap.put(finalTerm.getFactor().print(), quotientQuery);
             Term parent = parentMap.get(finalTerm);
             if(parent.getFscore() == Double.POSITIVE_INFINITY) break;
@@ -281,7 +281,7 @@ public class FactorSearch {
         Duration totalEval = Duration.ofMillis(0);
         Map <String, String> gMap = createQueryMap();
         for (String kOb : gMap.keySet()) {
-            System.out.println("Executing Guard " + kOb);
+            System.out.println("Executing Guard " + gMap.get(kOb));
             StringBuilder guardString = new StringBuilder();
             List<Long> gList = new ArrayList<>();
             List<Long> cList = new ArrayList<>();
