@@ -59,14 +59,14 @@ public class PolicyExecutionWithQueries {
                 System.out.println(file.getName() + " being processed......");
                 BEExpression beExpression = new BEExpression();
                 beExpression.parseJSONList(Reader.readTxt(policyDir + file.getName()));
+                System.out.println(beExpression.createQueryFromPolices());
                 Duration runTime = Duration.ofMillis(0);
                 boolean resultCheck = false;
                 MySQLResult tradResult;
-                int numOfRepetitions = 3;
+                int numOfRepetitions = 5;
 
-//                MySQLResult policyResult = mySQLQueryManager.runTimedQuery(beExpression.createQueryFromPolices(), resultCheck, numOfRepetitions);
-//                System.out.println("Policy only: " + policyResult.getTimeTaken());
-                System.out.println(beExpression.createQueryFromPolices());
+                MySQLResult policyResult = mySQLQueryManager.runTimedQueryWithSorting(beExpression.createQueryFromPolices());
+                System.out.println("Policy only: " + policyResult.getTimeTaken());
 
                 System.out.println("Starting Generation......");
                 Duration guardGen = Duration.ofMillis(0);
@@ -99,17 +99,14 @@ public class PolicyExecutionWithQueries {
                         try {
                             /** Traditional approach **/
                             String query = qs.getQuery();
-//                            String subQuery = "SELECT * FROM ( SELECT * FROM SEMANTIC_OBSERVATION WHERE " + (query) + ") AS temp WHERE " +
-//                                    beExpression.createQueryFromPolices();
-//                            Duration subQueryDuration = mySQLQueryManager.runTimedSubQuery(subQuery);
-//                            System.out.println("Executing as subquery " + subQueryDuration.toMillis());
+                            runTime = Duration.ofMillis(0);
                             String tradQuery = "(" + query + ") AND (" + beExpression.createQueryFromPolices() + ")";
-                            tradResult = mySQLQueryManager.runTimedQuery(tradQuery, resultCheck, numOfRepetitions);
+                            tradResult = mySQLQueryManager.runTimedQueryWithRepetitions(tradQuery, resultCheck, numOfRepetitions);
                             runTime = runTime.plus(tradResult.getTimeTaken());
                             queryPolicyRunTimes.put(String.valueOf(queryCount), String.valueOf(runTime.toMillis()));
                             if (!(runTime.toMillis() == PolicyConstants.MAX_DURATION.toMillis())) resultCheck = true;
                             System.out.println("** " + file.getName() + " " + queryCount + " completed and took " + runTime.toMillis());
-                            MySQLResult queryResult = mySQLQueryManager.runTimedQuery(query, resultCheck, numOfRepetitions);
+                            MySQLResult queryResult = mySQLQueryManager.runTimedQueryWithRepetitions(query, resultCheck, numOfRepetitions);
                             queryRunTimes.put(String.valueOf(queryCount), String.valueOf(queryResult.getTimeTaken().toMillis()));
                             queryCount+= 1;
                         }catch (Exception e) {

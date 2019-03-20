@@ -7,7 +7,6 @@ import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
 import edu.uci.ics.tippers.model.policy.ObjectCondition;
 
-import java.security.Guard;
 import java.sql.Timestamp;
 import java.time.Duration;
 import java.util.*;
@@ -206,7 +205,8 @@ public class FactorSearch {
                         gOC = oc;
                     }
                 }
-                String remainderQuery =  "(" + bePolicy.cleanQueryFromObjectConditions() + ")";
+                bePolicy.cleanDuplicates();
+                String remainderQuery =  "(" + bePolicy.createQueryFromObjectConditions()  + ")";
                 GuardPart gp = new GuardPart();
                 gp.setGuardFactor(gOC.print());
                 gp.setGuardPartition(remainderQuery);
@@ -254,21 +254,25 @@ public class FactorSearch {
                         gOC = oc;
                     }
                 }
+                BEPolicy remPolicy = new BEPolicy(bePolicy);
+                remPolicy.cleanDuplicates();
                 String remainderQuery = gOC.print() +
-                        PolicyConstants.CONJUNCTION + "(" + bePolicy.cleanQueryFromObjectConditions() + ")";
+                        PolicyConstants.CONJUNCTION + "(" + remPolicy.createQueryFromObjectConditions() + ")";
                 gMap.put(gOC.print(), remainderQuery);
             }
         }
         //for the factorized expression
         while(true){
+            Term parent = parentMap.get(finalTerm);
+            //Factorizing the quotient expression once
             BEExpression quotientExp = new BEExpression(finalTerm.getQuotient());
             quotientExp.removeFromPolicies(finalTerm.getFactor());
             FactorSelection gf = new FactorSelection(finalTerm.getQuotient());
             gf.selectGuards(true);
             String quotientQuery = finalTerm.getFactor().print() +
-                    PolicyConstants.CONJUNCTION + "(" + finalTerm.getQuotient().cleanQueryFromPolices() + ")";
+                    PolicyConstants.CONJUNCTION + "(" +  gf.createQueryFromExactFactor() + ")";
             gMap.put(finalTerm.getFactor().print(), quotientQuery);
-            Term parent = parentMap.get(finalTerm);
+//            Term parent = parentMap.get(finalTerm);
             if(parent.getFscore() == Double.POSITIVE_INFINITY) break;
             finalTerm = parent;
         }
@@ -287,10 +291,10 @@ public class FactorSearch {
             List<Long> cList = new ArrayList<>();
             int gCount = 0, tCount = 0;
             for (int i = 0; i < repetitions; i++) {
-                MySQLResult guardResult = mySQLQueryManager.runTimedQueryWithResultCount(kOb);
+                MySQLResult guardResult = mySQLQueryManager.runTimedQueryWithSorting(kOb);
                 if (gCount == 0) gCount = guardResult.getResultCount();
                 gList.add(guardResult.getTimeTaken().toMillis());
-                MySQLResult completeResult = mySQLQueryManager.runTimedQueryWithResultCount(gMap.get(kOb));
+                MySQLResult completeResult = mySQLQueryManager.runTimedQueryWithSorting(gMap.get(kOb));
                 if (tCount == 0) tCount = completeResult.getResultCount();
                 cList.add(completeResult.getTimeTaken().toMillis());
 

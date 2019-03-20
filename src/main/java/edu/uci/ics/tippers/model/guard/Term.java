@@ -111,7 +111,8 @@ public class Term implements Comparable<Term> {
         query.append(factor.print());
         query.append(PolicyConstants.CONJUNCTION);
         query.append("(");
-        query.append(this.quotient.cleanQueryFromPolices());
+        this.quotient.cleanQueryFromPolices();
+        query.append(this.quotient.createQueryFromPolices());
         query.append(")");
         return query.toString();
     }

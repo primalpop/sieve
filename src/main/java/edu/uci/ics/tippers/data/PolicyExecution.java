@@ -2,29 +2,23 @@ package edu.uci.ics.tippers.data;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.uci.ics.tippers.common.PolicyConstants;
-import edu.uci.ics.tippers.db.MySQLConnectionManager;
 import edu.uci.ics.tippers.db.MySQLQueryManager;
 import edu.uci.ics.tippers.db.MySQLResult;
 import edu.uci.ics.tippers.fileop.Reader;
 import edu.uci.ics.tippers.fileop.Writer;
 import edu.uci.ics.tippers.model.guard.FactorExtension;
 import edu.uci.ics.tippers.model.guard.FactorSearch;
-import edu.uci.ics.tippers.model.guard.FactorSelection;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
 
 import java.io.File;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.*;
-import java.util.Date;
 
 /**
  * Created by cygnus on 12/12/17.
@@ -80,13 +74,13 @@ public class PolicyExecution {
 
                 try {
                     /** Traditional approach **/
-                    System.out.println(beExpression.createQueryFromPolices());
-                    tradResult = mySQLQueryManager.runTimedQuery(beExpression.createQueryFromPolices(), resultCheck, numOfRepetitions);
-                    runTime = runTime.plus(tradResult.getTimeTaken());
-
-                    policyRunTimes.put(file.getName(), String.valueOf(runTime.toMillis()));
-                    if(!(runTime.toMillis() == PolicyConstants.MAX_DURATION.toMillis())) resultCheck = true;
-                    System.out.println("** " + file.getName() + " completed and took " + runTime.toMillis());
+//                    System.out.println(beExpression.createQueryFromPolices());
+//                    tradResult = mySQLQueryManager.runTimedQueryWithRepetitions(beExpression.createQueryFromPolices(), resultCheck, numOfRepetitions);
+//                    runTime = runTime.plus(tradResult.getTimeTaken());
+//
+//                    policyRunTimes.put(file.getName(), String.valueOf(runTime.toMillis()));
+//                    if(!(runTime.toMillis() == PolicyConstants.MAX_DURATION.toMillis())) resultCheck = true;
+//                    System.out.println("** " + file.getName() + " completed and took " + runTime.toMillis());
 
 
 //                /** Extension **/
@@ -103,7 +97,7 @@ public class PolicyExecution {
                     /** Result checking after factor extension **/
 //                    System.out.println("Verifying results after factor extension......");
 //                    System.out.println("Intermediate query: " + f.getGenExpression().createQueryFromPolices());
-//                    MySQLResult interResult = mySQLQueryManager.runTimedQuery(f.getGenExpression().createQueryFromPolices(),resultCheck);
+//                    MySQLResult interResult = mySQLQueryManager.runTimedQueryWithRepetitions(f.getGenExpression().createQueryFromPolices(),resultCheck);
 //                    Boolean interSame = tradResult.checkResults(interResult);
 //                    if(!interSame){
 //                        System.out.println("*** Query results don't match after Extension!!! Halting Execution ***");
@@ -133,21 +127,21 @@ public class PolicyExecution {
                     guardGen = guardGen.plus(Duration.between(fsStart, fsEnd));
                     writer.addGuardReport(fs.printDetailedResults(numOfRepetitions), policyDir, exptResultsFile);
                     policyRunTimes.put(file.getName() + "-guardGeneration", String.valueOf(guardGen.toMillis()));
-                    writer.appendToCSVReport(policyRunTimes, policyDir, exptResultsFile);
+//                    writer.appendToCSVReport(policyRunTimes, policyDir, exptResultsFile);
 
 
                     /** Result checking **/
-                    if(resultCheck){
-                        System.out.println("Verifying results......");
-                        System.out.println("Guard query: " + fs.createCompleteQuery());
-                        MySQLResult guardResult = mySQLQueryManager.runTimedQuery(fs.createCompleteQuery(),true, numOfRepetitions);
-                        Boolean resultSame = tradResult.checkResults(guardResult);
-                        if(!resultSame){
-                            System.out.println("*** Query results don't match with generated guard!!! Halting Execution ***");
-                            policyRunTimes.put(file.getName() + "-results-incorrect", String.valueOf(PolicyConstants.MAX_DURATION.toMillis()));
-                            return;
-                        }
-                    }
+//                    if(resultCheck){
+//                        System.out.println("Verifying results......");
+//                        System.out.println("Guard query: " + fs.createCompleteQuery());
+//                        MySQLResult guardResult = mySQLQueryManager.runTimedQueryWithRepetitions(fs.createCompleteQuery(),true, numOfRepetitions);
+//                        Boolean resultSame = tradResult.checkResults(guardResult);
+//                        if(!resultSame){
+//                            System.out.println("*** Query results don't match with generated guard!!! Halting Execution ***");
+//                            policyRunTimes.put(file.getName() + "-results-incorrect", String.valueOf(PolicyConstants.MAX_DURATION.toMillis()));
+//                            return;
+//                        }
+//                    }
 
 
 //                    guardGen = guardGen.plus(Duration.between(fsStart, fsEnd));
@@ -190,7 +184,7 @@ public class PolicyExecution {
 
     public static void main(String args[]) {
         PolicyExecution pe = new PolicyExecution();
-        pe.generatePolicies(PolicyConstants.BE_POLICY_DIR);
-//        pe.runBEPolicies(PolicyConstants.BE_POLICY_DIR);
+//        pe.generatePolicies(PolicyConstants.BE_POLICY_DIR);
+        pe.runBEPolicies(PolicyConstants.BE_POLICY_DIR);
     }
 }

@@ -210,18 +210,6 @@ public class BEPolicy {
         return result.toString();
     }
 
-    public void print(){
-        System.out.println(
-                "Policy ID: " + this.getId() +
-                        " Description: " + this.getDescription() +
-                        " Object Conditions: " + serializeObjectConditions(this.getObject_conditions()) +
-                        " Querier Conditions: " + serializeQuerierConditions(this.getQuerier_conditions()) +
-                        " Action: " + this.getAction() +
-                        " Purpose: " + this.getPurpose()
-        );
-    }
-
-
     /**
      * Check if a set of object conditions is contained in a policy
      * @param objectConditionSet
@@ -297,45 +285,31 @@ public class BEPolicy {
     /**
      * For each attribute,
      * if the boolean predicates are range predicates, it selects the maximum for the >= predicate and minimum
-     * for the <= predicate
+     * for the <= predicate (tightens bounds)
      * @return
      */
-    public String cleanQueryFromObjectConditions() {
+    public void cleanDuplicates() {
         StringBuilder query = new StringBuilder();
         String delim = "";
-        List<ObjectCondition> toPrint = new ArrayList<>();
-        Map<String, List<ObjectCondition>> aMap = new HashMap<>();
-        for (int i = 0; i < PolicyConstants.ATTR_LIST.size(); i++) { //Constructing attribute map
-            List<ObjectCondition> attrToOc = new ArrayList<>();
-            String attr = PolicyConstants.ATTR_LIST.get(i);
-            aMap.put(attr, attrToOc);
-        }
-        for (int j = 0; j < this.getObject_conditions().size(); j++) {
-            ObjectCondition oc = this.getObject_conditions().get(j);
-            aMap.get(oc.getAttribute()).add(oc);
-        }
-        for (String attribute: aMap.keySet()) {
-            if(aMap.get(attribute).size() == 0) continue;
-            ObjectCondition finalOC;
-            finalOC = new ObjectCondition(aMap.get(attribute).get(0).getAttribute(),
-                    aMap.get(attribute).get(0).getType(), aMap.get(attribute).get(0).getBooleanPredicates());
-            for (int i = 1; i < aMap.get(attribute).size(); i++) {
-                ObjectCondition oc = aMap.get(attribute).get(i);
-                if (oc.getBooleanPredicates().get(0).compareOnType(finalOC.getBooleanPredicates().get(0), attribute) > 0) {
-                    finalOC.getBooleanPredicates().get(0).setValue(oc.getBooleanPredicates().get(0).getValue());
+        Map<String, ObjectCondition> dupRemoval = new HashMap<>();
+        for (ObjectCondition oc : this.getObject_conditions()) {
+            if (dupRemoval.containsKey(oc.getAttribute())) {
+                if (oc.getBooleanPredicates().get(0).compareOnType
+                        (dupRemoval.get(oc.getAttribute()).getBooleanPredicates().get(0), oc.getAttribute()) > 0) {
+                    dupRemoval.get(oc.getAttribute()).getBooleanPredicates().get(0).setValue
+                            (oc.getBooleanPredicates().get(0).getValue());
                 }
-                if (oc.getBooleanPredicates().get(1).compareOnType(finalOC.getBooleanPredicates().get(1), attribute) < 0) {
-                    finalOC.getBooleanPredicates().get(1).setValue(oc.getBooleanPredicates().get(1).getValue());
+                if (oc.getBooleanPredicates().get(1).compareOnType
+                        (dupRemoval.get(oc.getAttribute()).getBooleanPredicates().get(1), oc.getAttribute()) < 0) {
+                    dupRemoval.get(oc.getAttribute()).getBooleanPredicates().get(1).setValue
+                            (oc.getBooleanPredicates().get(1).getValue());
                 }
+            } else {
+                dupRemoval.put(oc.getAttribute(), oc);
             }
-            toPrint.add(finalOC);
         }
-        for (ObjectCondition oc : toPrint) {
-            query.append(delim);
-            query.append(oc.print());
-            delim = PolicyConstants.CONJUNCTION;
-        }
-        return query.toString();
+        this.getObject_conditions().clear();
+        this.getObject_conditions().addAll(dupRemoval.values());
     }
 
 

@@ -267,26 +267,16 @@ public class BEExpression{
      * Removes identical policies with different ids from the expression
      * @return
      */
-    public String cleanQueryFromPolices() {
-        StringBuilder query = new StringBuilder();
-        String delim = "";
-        List<BEPolicy> dupElim = new BEExpression(this.getPolicies()).getPolicies();
+    public void cleanQueryFromPolices() {
         for (int i = 0; i < this.getPolicies().size(); i++) {
-            for (int j = i + 1; j < this.getPolicies().size(); j++) {
-                BEPolicy bp1 = this.getPolicies().get(i);
-                BEPolicy bp2 = this.getPolicies().get(j);
-                if (bp1.equalsWithoutId(bp2)) {
-                    dupElim.remove(bp1);
-                    break;
-                }
-            }
+            this.getPolicies().get(i).cleanDuplicates();
         }
-        for (BEPolicy beP : dupElim) {
-            query.append(delim);
-            query.append("(" + beP.cleanQueryFromObjectConditions() + ")");
-            delim = PolicyConstants.DISJUNCTION;
-        }
-        return query.toString();
+        Set<BEPolicy> s = new TreeSet<>((bp1, bp2) -> {
+            if (bp1.equalsWithoutId(bp2)) return 0;
+            else return -1;
+        });
+        s.addAll(this.getPolicies());
+        this.getPolicies().clear();
+        this.getPolicies().addAll(s);
     }
-
 }

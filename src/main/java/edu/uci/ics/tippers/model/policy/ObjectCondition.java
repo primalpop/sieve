@@ -297,7 +297,6 @@ public class ObjectCondition extends BooleanCondition {
         this.getBooleanPredicates().get(1).setValue(end);
     }
 
-
     //TODO: Remove this
     public static Calendar timestampStrToCal(String timestamp) {
         Calendar cal = Calendar.getInstance();
