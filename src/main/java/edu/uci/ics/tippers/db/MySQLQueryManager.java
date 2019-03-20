@@ -19,7 +19,7 @@ public class MySQLQueryManager {
 
     private static final Connection connection = MySQLConnectionManager.getInstance().getConnection();
 
-    private static long timeout = 3000000;
+    private static long timeout = 1000000;
 
     public MySQLResult runWithThread(String query, MySQLResult mySQLResult) {
 
@@ -122,7 +122,7 @@ public class MySQLQueryManager {
      * @throws PolicyEngineException
      */
 
-    public MySQLResult runTimedQuery(String predicates, Boolean resultCheck, int repetitions) throws PolicyEngineException {
+    public MySQLResult runTimedQueryWithRepetitions(String predicates, Boolean resultCheck, int repetitions) throws PolicyEngineException {
         try {
             MySQLResult mySQLResult = new MySQLResult();
             mySQLResult.setResultsCheck(resultCheck);
@@ -189,11 +189,10 @@ public class MySQLQueryManager {
      * @return
      * @throws PolicyEngineException
      */
-    public MySQLResult runTimedQueryWithResultCount(String predicates) throws PolicyEngineException {
+    public MySQLResult runTimedQueryWithSorting(String predicates) throws PolicyEngineException {
         try {
             MySQLResult mySQLResult = new MySQLResult();
-            return runWithThread(PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS + predicates +
-                    PolicyConstants.ORDER_BY_ID, mySQLResult);
+            return runWithThread(PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS + predicates , mySQLResult);
         } catch (Exception e) {
             e.printStackTrace();
             throw new PolicyEngineException("Error Running Query");

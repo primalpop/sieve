@@ -140,7 +140,9 @@ public class FactorSelection {
     public String createQueryFromExactFactor() {
         if (multiplier.isEmpty()) {
             if (expression != null) {
-                return this.expression.cleanQueryFromPolices();
+                BEExpression remExp = new BEExpression(this.expression);
+                remExp.cleanQueryFromPolices();
+                return remExp.createQueryFromPolices();
             } else
                 return "";
         }
@@ -248,7 +250,8 @@ public class FactorSelection {
         query.append(guard.print());
         query.append(PolicyConstants.CONJUNCTION);
         query.append("(");
-        query.append(partition.cleanQueryFromPolices());
+        partition.cleanQueryFromPolices();
+        query.append(partition.createQueryFromPolices());
         query.append(")");
 //        System.out.println(query.toString());
         return query.toString();
@@ -270,7 +273,7 @@ public class FactorSelection {
             List<Long> cList = new ArrayList<>();
             MySQLResult mySQLResult = new MySQLResult();
             for (int i = 0; i < repetitions; i++) {
-                mySQLResult = mySQLQueryManager.runTimedQueryWithResultCount(createCleanQueryFromGQ(kOb, gMap.get(kOb)));
+                mySQLResult = mySQLQueryManager.runTimedQueryWithSorting(createCleanQueryFromGQ(kOb, gMap.get(kOb)));
                 cList.add(mySQLResult.getTimeTaken().toMillis());
             }
             Collections.sort(cList);
@@ -311,10 +314,10 @@ public class FactorSelection {
             List<Long> cList = new ArrayList<>();
             int gCount = 0, tCount = 0;
             for (int i = 0; i < repetitions; i++) {
-                MySQLResult guardResult = mySQLQueryManager.runTimedQueryWithResultCount(kOb.print());
+                MySQLResult guardResult = mySQLQueryManager.runTimedQueryWithSorting(kOb.print());
                 if (gCount == 0) gCount = guardResult.getResultCount();
                 gList.add(guardResult.getTimeTaken().toMillis());
-                MySQLResult completeResult = mySQLQueryManager.runTimedQueryWithResultCount(createCleanQueryFromGQ(kOb, gMap.get(kOb)));
+                MySQLResult completeResult = mySQLQueryManager.runTimedQueryWithSorting(createCleanQueryFromGQ(kOb, gMap.get(kOb)));
                 if (tCount == 0) tCount = completeResult.getResultCount();
                 cList.add(completeResult.getTimeTaken().toMillis());
 

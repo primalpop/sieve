@@ -4,12 +4,10 @@ import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.db.MySQLConnectionManager;
 import edu.uci.ics.tippers.db.MySQLQueryManager;
 import edu.uci.ics.tippers.db.MySQLResult;
-import edu.uci.ics.tippers.fileop.Writer;
 import edu.uci.ics.tippers.model.query.QueryStatement;
 import edu.uci.ics.tippers.model.tippers.Infrastructure;
 import edu.uci.ics.tippers.model.tippers.User;
 
-import javax.management.Query;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
@@ -78,7 +76,7 @@ public class QueryGeneration {
      * @return
      */
     private float checkSelectivity(String query) {
-        MySQLResult mySQLResult = mySQLQueryManager.runTimedQueryWithResultCount(query);
+        MySQLResult mySQLResult = mySQLQueryManager.runTimedQueryWithSorting(query);
         return (float) mySQLResult.getResultCount() / (float) PolicyConstants.NUMBER_OR_TUPLES;
     }
 
