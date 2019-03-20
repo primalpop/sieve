@@ -1,5 +1,6 @@
 package edu.uci.ics.tippers.model.guard;
 
+import com.rits.cloning.Cloner;
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.db.MySQLQueryManager;
 import edu.uci.ics.tippers.db.MySQLResult;
@@ -21,7 +22,6 @@ public class FactorSearch {
     HashSet<Term> closed;
     HashMap<Term, Term> parentMap;
     HashMap<Term, Double> scores;
-    int depth;
     int maxDepth;
     Set<ObjectCondition> canFactors;
     double epsilon;
@@ -39,7 +39,6 @@ public class FactorSearch {
         this.scores = new HashMap<Term, Double>();
         this.closed = new HashSet<Term>();
         this.parentMap = new HashMap<Term, Term>();
-        this.depth = 0;
         this.maxDepth = (int) Math.round(Math.log(input.getPolicies().size())/Math.log(2.0));
         this.canFactors = new HashSet<>();
         Set<ObjectCondition> pFactors = input.getPolicies().stream()
@@ -138,21 +137,33 @@ public class FactorSearch {
         return treeNodes;
     }
 
+    private int countDepth(Term node){
+        int depth = 0;
+        Term current = node;
+        while(true){
+            Term parent = parentMap.get(current);
+            if(parent == null) break;
+            current = parent;
+            depth+= 1;
+        }
+        return depth;
+    }
+
     /**
      * Returns the final factorized expression through A-star search
      */
     public void search(){
         Term current;
+        int depth = 0;
         while(!this.open.isEmpty()) {
             current = this.open.remove();
             if(!this.closed.contains(current)){
                 this.closed.add(current);
                 List<Term> candidates = factorize(current.getRemainder());
-                if(candidates.isEmpty()) {
+                if(candidates.isEmpty() || depth > this.maxDepth) {
                     this.finalTerm = current; //Factorization complete
                     break;
                 }
-                this.depth += 1;
                 for (Term c: candidates) {
                     if(!this.closed.contains(c)){
                         if(this.open.contains(c)){
@@ -167,8 +178,9 @@ public class FactorSearch {
                     }
                 }
                 for (Term oc: open) {
+                    depth = countDepth(oc) + 1;
                     oc.setFscore(oc.getGscore() + oc.getHscore()
-                            * (1 + this.epsilon) - ((epsilon * this.depth)/this.maxDepth));
+                            * ((1 + this.epsilon) - ((epsilon * depth)/this.maxDepth)));
                     this.scores.replace(oc, oc.getFscore());
                 }
             }
@@ -261,20 +273,21 @@ public class FactorSearch {
                 gMap.put(gOC.print(), remainderQuery);
             }
         }
+        Term node = finalTerm;
         //for the factorized expression
         while(true){
-            Term parent = parentMap.get(finalTerm);
+            Term parent = parentMap.get(node);
             //Factorizing the quotient expression once
-            BEExpression quotientExp = new BEExpression(finalTerm.getQuotient());
-            quotientExp.removeFromPolicies(finalTerm.getFactor());
-            FactorSelection gf = new FactorSelection(finalTerm.getQuotient());
+            BEExpression quotientExp = new BEExpression(node.getQuotient());
+            quotientExp.removeFromPolicies(node.getFactor());
+            FactorSelection gf = new FactorSelection(node.getQuotient());
             gf.selectGuards(true);
-            String quotientQuery = finalTerm.getFactor().print() +
+            String quotientQuery = node.getFactor().print() +
                     PolicyConstants.CONJUNCTION + "(" +  gf.createQueryFromExactFactor() + ")";
-            gMap.put(finalTerm.getFactor().print(), quotientQuery);
-//            Term parent = parentMap.get(finalTerm);
+            gMap.put(node.getFactor().print(), quotientQuery);
+//            Term parent = parentMap.get(node);
             if(parent.getFscore() == Double.POSITIVE_INFINITY) break;
-            finalTerm = parent;
+            node = parent;
         }
         return gMap;
     }

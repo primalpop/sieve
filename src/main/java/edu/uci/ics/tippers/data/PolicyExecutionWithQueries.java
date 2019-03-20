@@ -63,10 +63,10 @@ public class PolicyExecutionWithQueries {
                 Duration runTime = Duration.ofMillis(0);
                 boolean resultCheck = false;
                 MySQLResult tradResult;
-                int numOfRepetitions = 5;
-
-                MySQLResult policyResult = mySQLQueryManager.runTimedQueryWithSorting(beExpression.createQueryFromPolices());
-                System.out.println("Policy only: " + policyResult.getTimeTaken());
+                int numOfRepetitions = 3;
+//
+//                MySQLResult policyResult = mySQLQueryManager.runTimedQueryWithSorting(beExpression.createQueryFromPolices());
+//                System.out.println("Policy only: " + policyResult.getTimeTaken());
 
                 System.out.println("Starting Generation......");
                 Duration guardGen = Duration.ofMillis(0);
@@ -85,39 +85,39 @@ public class PolicyExecutionWithQueries {
                 writer.addGuardReport(fs.printDetailedResults(numOfRepetitions), policyDir, exptResultsFile);
                 policyRunTimes.put(file.getName() + "-guardGeneration", String.valueOf(guardGen.toMillis()));
                 writer.appendToCSVReport(policyRunTimes, policyDir, exptResultsFile);
-                int queryCount = 1;
 
-                for (String key: queries.keySet()) {
-                    policyRunTimes.clear();
-                    policyRunTimes.put(key, "12345");
-                    writer.appendToCSVReport(policyRunTimes, policyDir, exptResultsFile);
-                    TreeMap<String,String> queryRunTimes = new TreeMap<>(Comparator.comparingInt(Integer::parseInt));
-                    TreeMap<String,String> queryPolicyRunTimes = new TreeMap<>(Comparator.comparingInt(Integer::parseInt));
-                    List<String> query_ids = queries.get(key).stream().map(qs -> String.valueOf(qs.getId())).collect(Collectors.toList());
-                    writer.writeToFile(query_ids, key + "_queries.txt", PolicyConstants.BE_POLICY_DIR);
-                    for (QueryStatement qs: queries.get(key)) {
-                        try {
-                            /** Traditional approach **/
-                            String query = qs.getQuery();
-                            runTime = Duration.ofMillis(0);
-                            String tradQuery = "(" + query + ") AND (" + beExpression.createQueryFromPolices() + ")";
-                            tradResult = mySQLQueryManager.runTimedQueryWithRepetitions(tradQuery, resultCheck, numOfRepetitions);
-                            runTime = runTime.plus(tradResult.getTimeTaken());
-                            queryPolicyRunTimes.put(String.valueOf(queryCount), String.valueOf(runTime.toMillis()));
-                            if (!(runTime.toMillis() == PolicyConstants.MAX_DURATION.toMillis())) resultCheck = true;
-                            System.out.println("** " + file.getName() + " " + queryCount + " completed and took " + runTime.toMillis());
-                            MySQLResult queryResult = mySQLQueryManager.runTimedQueryWithRepetitions(query, resultCheck, numOfRepetitions);
-                            queryRunTimes.put(String.valueOf(queryCount), String.valueOf(queryResult.getTimeTaken().toMillis()));
-                            queryCount+= 1;
-                        }catch (Exception e) {
-                            e.printStackTrace();
-                            queryPolicyRunTimes.put(file.getName(), PolicyConstants.MAX_DURATION.toString());
-                            queryRunTimes.put(file.getName(), PolicyConstants.MAX_DURATION.toString());
-                        }
-                    }
-                    writer.appendToCSVReport(queryRunTimes, policyDir, exptResultsFile);
-                    writer.appendToCSVReport(queryPolicyRunTimes, policyDir, exptResultsFile);
-                }
+//                int queryCount = 1;
+//                for (String key: queries.keySet()) {
+//                    policyRunTimes.clear();
+//                    policyRunTimes.put(key, "12345");
+//                    writer.appendToCSVReport(policyRunTimes, policyDir, exptResultsFile);
+//                    TreeMap<String,String> queryRunTimes = new TreeMap<>(Comparator.comparingInt(Integer::parseInt));
+//                    TreeMap<String,String> queryPolicyRunTimes = new TreeMap<>(Comparator.comparingInt(Integer::parseInt));
+//                    List<String> query_ids = queries.get(key).stream().map(qs -> String.valueOf(qs.getId())).collect(Collectors.toList());
+//                    writer.writeToFile(query_ids, key + "_queries.txt", PolicyConstants.BE_POLICY_DIR);
+//                    for (QueryStatement qs: queries.get(key)) {
+//                        try {
+//                            /** Traditional approach **/
+//                            String query = qs.getQuery();
+//                            runTime = Duration.ofMillis(0);
+//                            String tradQuery = "(" + query + ") AND (" + beExpression.createQueryFromPolices() + ")";
+//                            tradResult = mySQLQueryManager.runTimedQueryWithRepetitions(tradQuery, resultCheck, numOfRepetitions);
+//                            runTime = runTime.plus(tradResult.getTimeTaken());
+//                            queryPolicyRunTimes.put(String.valueOf(queryCount), String.valueOf(runTime.toMillis()));
+//                            if (!(runTime.toMillis() == PolicyConstants.MAX_DURATION.toMillis())) resultCheck = true;
+//                            System.out.println("** " + file.getName() + " " + queryCount + " completed and took " + runTime.toMillis());
+//                            MySQLResult queryResult = mySQLQueryManager.runTimedQueryWithRepetitions(query, resultCheck, numOfRepetitions);
+//                            queryRunTimes.put(String.valueOf(queryCount), String.valueOf(queryResult.getTimeTaken().toMillis()));
+//                            queryCount+= 1;
+//                        }catch (Exception e) {
+//                            e.printStackTrace();
+//                            queryPolicyRunTimes.put(file.getName(), PolicyConstants.MAX_DURATION.toString());
+//                            queryRunTimes.put(file.getName(), PolicyConstants.MAX_DURATION.toString());
+//                        }
+//                    }
+//                    writer.appendToCSVReport(queryRunTimes, policyDir, exptResultsFile);
+//                    writer.appendToCSVReport(queryPolicyRunTimes, policyDir, exptResultsFile);
+//                }
             }
         }
     }
