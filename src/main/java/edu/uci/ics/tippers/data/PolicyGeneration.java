@@ -7,6 +7,7 @@ import edu.uci.ics.tippers.common.AttributeType;
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.db.MySQLQueryManager;
 import edu.uci.ics.tippers.fileop.Writer;
+import edu.uci.ics.tippers.manager.SimplePersistor;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
 import edu.uci.ics.tippers.model.policy.ObjectCondition;
 import edu.uci.ics.tippers.model.policy.QuerierCondition;
@@ -226,7 +227,7 @@ public class PolicyGeneration {
                 do {
                     objectConditions = generatePredicates(i, attributes);
                     selOfPolicy = BEPolicy.computeL(objectConditions);
-                } while (selOfPolicy > 0.001 && selOfPolicy < 0.1);
+                } while (!(selOfPolicy > 0.001 && selOfPolicy < 0.1));
                 BEPolicy bePolicy = new BEPolicy(policyID,
                         objectConditions, querierConditions, "analysis",
                         "allow", new Timestamp(System.currentTimeMillis()));
@@ -239,6 +240,102 @@ public class PolicyGeneration {
         }
         writer.writeJSONToFile(bePolicies, PolicyConstants.BE_POLICY_DIR, null);
         return bePolicies;
+    }
+
+    /**
+     * Generates policies with user id predicates (which is the owner attribute of policy)
+     * @param policyID
+     * @param attributes
+     * @return
+     */
+    private List<ObjectCondition> generateOwnerPolicies(int policyID, List<String> attributes){
+        RangeQuery rq = new RangeQuery();
+        int attrCount = (int) (r.nextGaussian() * 2 + 4); //mean - 4, SD - 2
+        if (attrCount <= 1 || attrCount > attributes.size()) attrCount = 4;
+        ArrayList<String> attrList = new ArrayList<>();
+        rq.setUser_id(String.valueOf(users.get(new Random().nextInt(users.size())).getUser_id()));
+        attrList.add(PolicyConstants.USERID_ATTR);
+        double rand = Math.random();
+        double TIMESTAMP_INCLUDE = 0.1;
+        if (rand > TIMESTAMP_INCLUDE) {
+            rq.setStart_timestamp(getRandomTimeStamp());
+            rq.setEnd_timestamp(getEndingTimeInterval(rq.getStart_timestamp()));
+            attrList.add(PolicyConstants.TIMESTAMP_ATTR);
+        }
+        while(attrCount - attrList.size() > 0) {
+            String attribute = attributes.get(r.nextInt(attributes.size()));
+            if (attrList.contains(attribute)) continue;
+            if (attribute.equalsIgnoreCase(PolicyConstants.LOCATIONID_ATTR)) {
+                rq.setLocation_id(infras.get(new Random().nextInt(infras.size())).getName());
+            } else if (attribute.equalsIgnoreCase(PolicyConstants.ENERGY_ATTR)){
+                rq.setStart_wemo(String.valueOf(getEnergy(null)));
+                rq.setEnd_wemo(String.valueOf(getEnergy(rq.getStart_wemo())));
+            } else if (attribute.equalsIgnoreCase(PolicyConstants.ACTIVITY_ATTR)) {
+                rq.setActivity(PolicyConstants.ACTIVITIES.get(new Random().nextInt(PolicyConstants.ACTIVITIES.size())));
+            } else if (attribute.equalsIgnoreCase(PolicyConstants.TEMPERATURE_ATTR)){
+                rq.setStart_temp(String.valueOf(getTemperature(null)));
+                rq.setEnd_temp(String.valueOf(getTemperature(rq.getStart_temp())));
+            }
+            attrList.add(attribute);
+        }
+        return rq.createObjectCondition(policyID);
+    }
+
+
+    /**
+     * Generates overlapping policies and stores them in the database
+     * Policy Template: <id, querier, owner, purpose, object_conditions, action, inserted_at>
+     * id: random UUID
+     * querier: same user always
+     * owner: same as object_conditions.user_id
+     * action: allow
+     * purpose: analysis
+     * inserted_at: current_timestamp
+     * @param numberOfPolicies
+     * @param threshold
+     * @param attributes
+     * @return
+     */
+    public void persistOverlappingPolicies(int numberOfPolicies, double threshold, List<String> attributes){
+        SimplePersistor sp = SimplePersistor.getInstance();
+        List<BEPolicy> bePolicies = new ArrayList<>();
+        boolean overlap = false;
+        for (int i = 0; i < numberOfPolicies; i++) {
+            String policyID =  UUID.randomUUID().toString();
+            List<QuerierCondition> querierConditions = new ArrayList<>(Arrays.asList(
+                    new QuerierCondition(policyID, "policy_type", AttributeType.STRING, "=","user"),
+                    new QuerierCondition(policyID, "querier", AttributeType.STRING, "=", "10")));
+            if (overlap) {
+                BEPolicy oPolicy = new BEPolicy(bePolicies.get(new Random().nextInt(i)));
+                oPolicy.setId(policyID);
+                oPolicy.setQuerier_conditions(querierConditions);
+                oPolicy.setAction("allow");
+                oPolicy.setInserted_at(new Timestamp(System.currentTimeMillis()));
+                oPolicy.setPurpose("analysis");
+                for (ObjectCondition objC: oPolicy.getObject_conditions()) {
+                    objC.setPolicy_id(String.valueOf(i));
+                    objC.shift();
+                }
+                bePolicies.add(oPolicy);
+            }
+            else {
+                double selOfPolicy = 0.0;
+                List<ObjectCondition> objectConditions;
+                do {
+                    objectConditions = generateOwnerPolicies(i, attributes);
+                    selOfPolicy = BEPolicy.computeL(objectConditions);
+                } while (!(selOfPolicy > 0.00000001 && selOfPolicy < 0.1));
+                BEPolicy bePolicy = new BEPolicy(policyID,
+                        objectConditions, querierConditions, "analysis",
+                        "allow", new Timestamp(System.currentTimeMillis()));
+                bePolicies.add(bePolicy);
+            }
+            double rand = Math.random();
+            if (rand > threshold) overlap = true;
+            else overlap = false;
+
+        }
+        sp.insertPolicies(bePolicies);
     }
 
     /**

@@ -277,6 +277,7 @@ public class FactorSearch {
         //for the factorized expression
         while(true){
             Term parent = parentMap.get(node);
+            if(parent == null) break;
             //Factorizing the quotient expression once
             BEExpression quotientExp = new BEExpression(node.getQuotient());
             quotientExp.removeFromPolicies(node.getFactor());
@@ -285,8 +286,6 @@ public class FactorSearch {
             String quotientQuery = node.getFactor().print() +
                     PolicyConstants.CONJUNCTION + "(" +  gf.createQueryFromExactFactor() + ")";
             gMap.put(node.getFactor().print(), quotientQuery);
-//            Term parent = parentMap.get(node);
-            if(parent.getFscore() == Double.POSITIVE_INFINITY) break;
             node = parent;
         }
         return gMap;

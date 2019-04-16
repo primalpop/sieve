@@ -59,6 +59,7 @@ public class PolicyConstants {
     public static final String ORDER_BY_ID = " order by id ";
 
 
+
     //POLICY GENERATION PARAMETERS
     public static final int LOW_TEMPERATURE = 55;
 
@@ -94,7 +95,6 @@ public class PolicyConstants {
 
     //RANGED ATTRIBUTE NAMES
     public static final ImmutableList<String> RANGE_ATTR_LIST = ImmutableList.of("timeStamp", "energy", "temperature");
-
 
 
     public static final String TIMESTAMP_ATTR = "timeStamp";

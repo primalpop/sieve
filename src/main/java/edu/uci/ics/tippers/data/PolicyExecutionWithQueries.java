@@ -59,7 +59,6 @@ public class PolicyExecutionWithQueries {
                 System.out.println(file.getName() + " being processed......");
                 BEExpression beExpression = new BEExpression();
                 beExpression.parseJSONList(Reader.readTxt(policyDir + file.getName()));
-                System.out.println(beExpression.createQueryFromPolices());
                 Duration runTime = Duration.ofMillis(0);
                 boolean resultCheck = false;
                 MySQLResult tradResult;
@@ -76,12 +75,14 @@ public class PolicyExecutionWithQueries {
                 policyRunTimes.put("Number of Extensions", String.valueOf(ext));
                 Instant feEnd = Instant.now();
                 guardGen = guardGen.plus(Duration.between(feStart, feEnd));
+                System.out.println("Finished Predicate Extension: " + guardGen.toMillis()/1000 + " seconds");
 
                 FactorSearch fs = new FactorSearch(beExpression);
                 Instant fsStart = Instant.now();
                 fs.search();
                 Instant fsEnd = Instant.now();
                 guardGen = guardGen.plus(Duration.between(fsStart, fsEnd));
+                System.out.println("Finished Guard Generation, total time: " + guardGen.toMillis()/1000 + " seconds");
                 writer.addGuardReport(fs.printDetailedResults(numOfRepetitions), policyDir, exptResultsFile);
                 policyRunTimes.put(file.getName() + "-guardGeneration", String.valueOf(guardGen.toMillis()));
                 writer.appendToCSVReport(policyRunTimes, policyDir, exptResultsFile);
