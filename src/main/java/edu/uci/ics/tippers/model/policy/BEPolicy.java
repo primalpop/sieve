@@ -420,4 +420,16 @@ public class BEPolicy {
             return null;
     }
 
+    /**
+     * Returns the owner of the tuple for which policy is specified based on the object condition
+     * declared on user_id attribute
+     * @return
+     */
+    public String fetchOwner(){
+        for (ObjectCondition objectCondition : this.object_conditions)
+            if (objectCondition.getAttribute().equalsIgnoreCase(PolicyConstants.USERID_ATTR))
+                return objectCondition.getBooleanPredicates().get(0).getValue();
+        return null;
+    }
+
 }
