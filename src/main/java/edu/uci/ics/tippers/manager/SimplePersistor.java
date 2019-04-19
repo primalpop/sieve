@@ -27,7 +27,9 @@ public class SimplePersistor {
             connection.setAutoCommit(true);
 
             String policyInsert = "INSERT INTO SIMPLE_POLICY " +
-                    "(id, querier, owner, purpose, oc, enforcement_action, inserted_at) VALUES (?, ?, ?, ?, ?, ?, ?)";
+                    "(id, querier, owner, purpose, enforcement_action, inserted_at, uPol, " +
+                    "lPol, templPol, tempgPol, elPol, egPol, aPol, tslPol, tsgPol) VALUES (?, ?, ?, ?, ?, ?, ?," +
+                    "?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement policyStmt = connection.prepareStatement(policyInsert);
 
             for (BEPolicy bePolicy : bePolicyList) {
@@ -35,9 +37,17 @@ public class SimplePersistor {
                 policyStmt.setString(2, bePolicy.fetchQuerier());
                 policyStmt.setString(3, bePolicy.fetchOwner());
                 policyStmt.setString(4, bePolicy.getPurpose());
-                policyStmt.setString(5, bePolicy.createQueryFromObjectConditions());
-                policyStmt.setString(6, bePolicy.getAction());
-                policyStmt.setTimestamp(7, bePolicy.getInserted_at());
+                policyStmt.setString(5, bePolicy.getAction());
+                policyStmt.setTimestamp(6, bePolicy.getInserted_at());
+                policyStmt.setString(7, bePolicy.fetchOwner());
+                policyStmt.setString(8, bePolicy.fetchLocation());
+                policyStmt.setString(9, bePolicy.fetchTemperatureLowValue());
+                policyStmt.setString(10, bePolicy.fetchTemperatureHighValue());
+                policyStmt.setString( 11, bePolicy.fetchEnergyLowValue());
+                policyStmt.setString( 12, bePolicy.fetchEnergyHighValue());
+                policyStmt.setString( 13, bePolicy.fetchActivity());
+                policyStmt.setTimestamp( 14, bePolicy.fetchTimestampLowValue());
+                policyStmt.setTimestamp( 15, bePolicy.fetchTimestampHighValue());
                 policyStmt.addBatch();
             }
             policyStmt.executeBatch();

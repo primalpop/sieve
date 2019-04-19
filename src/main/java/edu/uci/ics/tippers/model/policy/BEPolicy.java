@@ -5,11 +5,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.davidmoten.guavamini.Lists;
 import com.google.common.collect.Sets;
+import com.ibatis.common.jdbc.SimpleDataSource;
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.db.MySQLQueryManager;
 
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -432,4 +435,76 @@ public class BEPolicy {
         return null;
     }
 
+    public String fetchLocation() {
+        for (ObjectCondition objectCondition : this.object_conditions)
+            if (objectCondition.getAttribute().equalsIgnoreCase(PolicyConstants.LOCATIONID_ATTR))
+                return objectCondition.getBooleanPredicates().get(0).getValue();
+        return null;
+
+    }
+
+    public String fetchTemperatureLowValue() {
+        for (ObjectCondition objectCondition : this.object_conditions)
+            if (objectCondition.getAttribute().equalsIgnoreCase(PolicyConstants.TEMPERATURE_ATTR))
+                return objectCondition.getBooleanPredicates().get(0).getValue();
+        return null;
+    }
+
+    public String fetchTemperatureHighValue() {
+        for (ObjectCondition objectCondition : this.object_conditions)
+            if (objectCondition.getAttribute().equalsIgnoreCase(PolicyConstants.TEMPERATURE_ATTR))
+                return objectCondition.getBooleanPredicates().get(1).getValue();
+        return null;
+    }
+
+    public String fetchEnergyLowValue() {
+        for (ObjectCondition objectCondition : this.object_conditions)
+            if (objectCondition.getAttribute().equalsIgnoreCase(PolicyConstants.ENERGY_ATTR))
+                return objectCondition.getBooleanPredicates().get(0).getValue();
+        return null;
+    }
+
+    public String fetchEnergyHighValue() {
+        for (ObjectCondition objectCondition : this.object_conditions)
+            if (objectCondition.getAttribute().equalsIgnoreCase(PolicyConstants.ENERGY_ATTR))
+                return objectCondition.getBooleanPredicates().get(1).getValue();
+        return null;
+    }
+
+    public String fetchActivity() {
+        for (ObjectCondition objectCondition : this.object_conditions)
+            if (objectCondition.getAttribute().equalsIgnoreCase(PolicyConstants.ACTIVITY_ATTR))
+                return objectCondition.getBooleanPredicates().get(0).getValue();
+        return null;
+    }
+
+    public Timestamp fetchTimestampLowValue() {
+        SimpleDateFormat sdf = new SimpleDateFormat(PolicyConstants.TIMESTAMP_FORMAT);
+        for (ObjectCondition objectCondition : this.object_conditions)
+            if (objectCondition.getAttribute().equalsIgnoreCase(PolicyConstants.TIMESTAMP_ATTR)) {
+                Date parsedDate = null;
+                try {
+                    parsedDate = sdf.parse(objectCondition.getBooleanPredicates().get(0).getValue());
+                    return new java.sql.Timestamp(parsedDate.getTime());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+       return null;
+    }
+
+    public Timestamp fetchTimestampHighValue() {
+        SimpleDateFormat sdf = new SimpleDateFormat(PolicyConstants.TIMESTAMP_FORMAT);
+        for (ObjectCondition objectCondition : this.object_conditions)
+            if (objectCondition.getAttribute().equalsIgnoreCase(PolicyConstants.TIMESTAMP_ATTR)) {
+                Date parsedDate = null;
+                try {
+                    parsedDate = sdf.parse(objectCondition.getBooleanPredicates().get(1).getValue());
+                    return new java.sql.Timestamp(parsedDate.getTime());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+        return null;
+    }
 }
