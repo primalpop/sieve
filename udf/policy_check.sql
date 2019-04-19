@@ -7,7 +7,7 @@ DELIMITER //
 -- https://dev.mysql.com/doc/refman/8.0/en/cursors.html
 -- https://dev.mysql.com/doc/refman/8.0/en/flow-control-statements.html
 
-CREATE FUNCTION pcheck(que VARCHAR(255), pur VARCHAR(255), user_id VARCHAR(255), 
+CREATE FUNCTION pcheck(user_id VARCHAR(255), 
     location VARCHAR(255), ts timestamp, temperature VARCHAR(255), energy VARCHAR(255), 
     activity VARCHAR(255)) RETURNS INT
     DETERMINISTIC
@@ -23,16 +23,18 @@ CREATE FUNCTION pcheck(que VARCHAR(255), pur VARCHAR(255), user_id VARCHAR(255),
         DECLARE tslVal TIMESTAMP;
         DECLARE tsgVal TIMESTAMP;
         DECLARE satisfied INT;
+        DECLARE result VARCHAR(255);
         DECLARE uSat INT;
         DECLARE lSat INT;
         DECLARE tsSat INT;
         DECLARE tempSat INT;
         DECLARE enSat INT;
         DECLARE aSat INT;
+        DECLARE policyCount INT;
         DECLARE cursor1 CURSOR
         FOR SELECT uPol, lPol, templPol, tempgPol, elPol, egPol, aPol, tslPol, tsgPol
-        FROM SIMPLE_POLICY
-        where querier = que AND owner = user_id AND purpose = pur;
+        FROM bigtest.SIMPLE_POLICY
+        where querier = "10" AND owner = user_id AND purpose = "analysis";
         DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
         SET satisfied = -1;
         SET uSat = -1;
@@ -41,9 +43,14 @@ CREATE FUNCTION pcheck(que VARCHAR(255), pur VARCHAR(255), user_id VARCHAR(255),
         SET tempSat = -1;
         SET enSat = -1;
         SET aSat = -1;
+        SET policyCount = 0;
         OPEN cursor1;
         read_loop: loop
             fetch cursor1 into uVal, lVal, templVal, tempgVal, elVal, egVal, aVal, tslVal, tsgVal;
+            IF done THEN
+                LEAVE read_loop;
+            END IF;
+            SET policyCount = policyCount + 1;
             IF uVal is NOT NULL AND uVal = user_id THEN 
                 SET uSat = 1;
             ELSE 
@@ -89,12 +96,12 @@ CREATE FUNCTION pcheck(que VARCHAR(255), pur VARCHAR(255), user_id VARCHAR(255),
                 ELSE SET aSat = -1;
                 END IF;
             END IF;
-            IF done THEN
-                LEAVE read_loop;
-            END IF;
             IF(uSat = 1 AND lSat = 1 AND tempSat = 1 AND enSat = 1 AND tsSat = 1 AND aSat = 1) THEN
                 SET satisfied = 1;
-                RETURN satisfied;
+                SET result = CONCAT(uSat, lSat, tempSat, enSat, tsSat, aSat, ' ', satisfied, ' ', policyCount, ' ');
+                LEAVE read_loop;
+            ELSE
+                SET result = CONCAT(uSat, lSat, tempSat, enSat, tsSat, aSat, ' ', satisfied, ' ', policyCount, ' ');
             END IF;   
         END loop;
         close cursor1;
