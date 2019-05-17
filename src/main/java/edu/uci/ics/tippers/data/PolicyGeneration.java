@@ -227,7 +227,7 @@ public class PolicyGeneration {
                 do {
                     objectConditions = generatePredicates(i, attributes);
                     selOfPolicy = BEPolicy.computeL(objectConditions);
-                } while (!(selOfPolicy > 0.001 && selOfPolicy < 0.1));
+                } while (!(selOfPolicy > 0.00001 && selOfPolicy < 0.1));
                 BEPolicy bePolicy = new BEPolicy(policyID,
                         objectConditions, querierConditions, "analysis",
                         "allow", new Timestamp(System.currentTimeMillis()));

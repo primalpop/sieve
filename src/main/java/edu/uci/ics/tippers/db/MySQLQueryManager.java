@@ -127,8 +127,9 @@ public class MySQLQueryManager {
             MySQLResult mySQLResult = new MySQLResult();
             mySQLResult.setResultsCheck(resultCheck);
             List<Long> gList = new ArrayList<>();
+            System.out.println(PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS + predicates + ")");
             for (int i = 0; i < repetitions; i++)
-                gList.add(runWithThread(PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS + predicates,
+                gList.add(runWithThread(PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS + predicates + ")",
                         mySQLResult).getTimeTaken().toMillis());
             Duration gCost;
             if(repetitions >= 3) {
