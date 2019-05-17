@@ -6,6 +6,7 @@ import com.ibatis.common.jdbc.ScriptRunner;
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.common.PolicyEngineException;
 import edu.uci.ics.tippers.db.MySQLConnectionManager;
+import edu.uci.ics.tippers.db.PGSQLConnectionManager;
 import edu.uci.ics.tippers.model.tippers.Infrastructure;
 import edu.uci.ics.tippers.model.tippers.SemanticObservation;
 import edu.uci.ics.tippers.model.tippers.User;
@@ -33,7 +34,12 @@ public class DataGeneration {
     private static String dataDir = "/data/";
 
     public DataGeneration(){
-        this.connection = MySQLConnectionManager.getInstance().getConnection();
+        this.connection = PGSQLConnectionManager.getInstance().getConnection();
+        try {
+            this.connection.setAutoCommit(true);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         this.parser = new JSONParser();
     }
 
@@ -281,10 +287,12 @@ public class DataGeneration {
                 if (presenceCount % PolicyConstants.BATCH_SIZE_INSERTION == 0) {
                     presenceStmt.executeBatch();
                     System.out.println("# " + presenceCount + " inserted");
+//                    presenceStmt.close(); // needed for postgres
                 }
             }
 
             presenceStmt.executeBatch();
+            presenceStmt.close();
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -307,8 +315,8 @@ public class DataGeneration {
 
     public static void main (String [] args){
         DataGeneration dataGeneration = new DataGeneration();
-        dataGeneration.runScript("mysql/schema.sql");
-//        dataGeneration.generateAll();
+//        dataGeneration.runScript("mysql/schema.sql");
+        dataGeneration.generateAll();
 //        dataGeneration.runScript("mysql/drop.sql");
     }
 

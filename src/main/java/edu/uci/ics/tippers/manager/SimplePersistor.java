@@ -1,6 +1,7 @@
 package edu.uci.ics.tippers.manager;
 
 import edu.uci.ics.tippers.db.MySQLConnectionManager;
+import edu.uci.ics.tippers.db.PGSQLConnectionManager;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
 
 import java.sql.Connection;
@@ -12,7 +13,7 @@ public class SimplePersistor {
 
     private static SimplePersistor _instance = new SimplePersistor();
 
-    private static Connection connection = MySQLConnectionManager.getInstance().getConnection();
+    private static Connection connection = PGSQLConnectionManager.getInstance().getConnection();
 
     public static SimplePersistor getInstance() {
         return _instance;

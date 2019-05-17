@@ -58,6 +58,9 @@ public class PGSQLConnectionManager {
             connection = DriverManager.getConnection(
                     String.format("jdbc:postgresql://%s:%s/%s", SERVER, PORT, DATABASE), USER, PASSWORD);
 
+            System.out.println("--- Connected to pSQL " + DATABASE + " on server " + SERVER + "---");
+
+
             return connection;
         } catch (SQLException e) {
             e.printStackTrace();
