@@ -22,6 +22,10 @@ public class PolicyConstants {
 
     public static final String DISJUNCTION = " OR ";
 
+    public static final String UNION  = " UNION ";
+
+    public static final String UNION_ALL = " UNION ALL ";
+
     //EXPERIMENTAL PARAMETERS
     //TODO: Initialize this from the database
     public static final long NUMBER_OR_TUPLES = 14675437;
@@ -54,7 +58,7 @@ public class PolicyConstants {
 
 
     //QUERIES FOR EXPERIMENTATION
-    public static final String SELECT_ALL_SEMANTIC_OBSERVATIONS = "Select SQL_NO_CACHE * from SEMANTIC_OBSERVATION WHERE ";
+    public static final String SELECT_ALL_SEMANTIC_OBSERVATIONS = "Select * from SEMANTIC_OBSERVATION WHERE ";
 
     public static final String ORDER_BY_ID = " order by id ";
 

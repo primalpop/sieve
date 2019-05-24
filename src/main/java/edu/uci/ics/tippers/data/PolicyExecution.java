@@ -27,7 +27,7 @@ public class PolicyExecution {
 
     private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-    private static final int[] policyNumbers = {10000, 25000, 50000};
+    private static final int[] policyNumbers = {100, 500, 1000, 2000, 5000, 10000, 25000, 50000};
 
     private static final int[] policyEpochs = {0};
 
@@ -48,6 +48,20 @@ public class PolicyExecution {
     }
 
 
+    private List <Integer> generateDepths(int numOfPolicies){
+        List <Integer> depths = new ArrayList<>();
+        for (int i = 2; i < 10; i++) {
+            depths.add((int) Math.round(Math.log(numOfPolicies)/Math.log(i)));
+        }
+        Set<Integer> set = new LinkedHashSet<>();
+        set.addAll(depths);
+        depths.clear();
+        depths.addAll(set);
+        return depths;
+    }
+
+
+
     //TODO: Fix the result checker by passing the fileName to write to
     public void runBEPolicies(String policyDir) {
 
@@ -61,10 +75,13 @@ public class PolicyExecution {
             Files.delete(Paths.get(policyDir + exptResultsFile));
         } catch (IOException ioException) { }
 
+        boolean extension = false;
+
         if (policyFiles != null) {
             for (File file : policyFiles) {
                 TreeMap<String, String> policyRunTimes = new TreeMap<>();
-                System.out.println(file.getName() + " being processed......");
+                int numOfPolicies = Integer.parseInt(file.getName().replaceAll("\\D+",""));
+                System.out.println(numOfPolicies + " being processed......");
                 BEExpression beExpression = new BEExpression();
                 beExpression.parseJSONList(Reader.readTxt(policyDir + file.getName()));
                 Duration runTime = Duration.ofMillis(0);
@@ -83,42 +100,31 @@ public class PolicyExecution {
 //                    System.out.println("** " + file.getName() + " completed and took " + runTime.toMillis());
 
 
-//                /** Extension **/
-                    System.out.println("Starting Generation......");
-                    Duration guardGen = Duration.ofMillis(0);
-//                    FactorExtension f = new FactorExtension(beExpression);
-//                    Instant feStart = Instant.now();
-//                    int ext = f.doYourThing();
-//                    policyRunTimes.put("Number of Extensions", String.valueOf(ext));
-//                    Instant feEnd = Instant.now();
-//                    System.out.println("Intermediate query: " + f.getGenExpression().createQueryFromPolices());
-//                    guardGen = guardGen.plus(Duration.between(feStart, feEnd));
+                    List<Integer> depths = generateDepths(numOfPolicies);
+                    for (int i = 0; i < depths.size(); i++) {
+                        Duration guardGen = Duration.ofMillis(0);
+                        Instant fsStart = Instant.now();
+                        if(extension){
+                            FactorExtension f = new FactorExtension(beExpression);
+                            f.doYourThing();
+                        }
+                        FactorSearch fs = new FactorSearch(beExpression);
+                        fs.search(depths.get(i));
+                        Instant fsEnd = Instant.now();
+                        guardGen = guardGen.plus(Duration.between(fsStart, fsEnd));
+                        policyRunTimes.put(file.getName() + "-depth" + depths.get(i) + "-guardGeneration", String.valueOf(guardGen.toMillis()));
+                        int numberOfGuards = fs.createQueryMap().keySet().size();
+                        policyRunTimes.put(file.getName() + "-depth-NumberOfGuards" + depths.get(i), String.valueOf(numberOfGuards));
+                        Duration execTime = Duration.ofMillis(0);
+                        MySQLResult execResult = mySQLQueryManager.
+                                runTimedQueryExp(fs.createGuardedExpQuery(false));
+                        execTime = execTime.plus(execResult.getTimeTaken());
+                        policyRunTimes.put(file.getName() + "-depth" + depths.get(i), String.valueOf(execTime.toMillis()));
+                        writer.appendToCSVReport(policyRunTimes, policyDir, exptResultsFile);
+                        policyRunTimes.clear();
+                    }
 
-                    /** Result checking after factor extension **/
-//                    System.out.println("Verifying results after factor extension......");
-//                    System.out.println("Intermediate query: " + f.getGenExpression().createQueryFromPolices());
-//                    MySQLResult interResult = mySQLQueryManager.runTimedQueryWithRepetitions(f.getGenExpression().createQueryFromPolices(),resultCheck);
-//                    Boolean interSame = tradResult.checkResults(interResult);
-//                    if(!interSame){
-//                        System.out.println("*** Query results don't match after Extension!!! Halting Execution ***");
-//                        policyRunTimes.put(file.getName() + "-results-incorrect", String.valueOf(PolicyConstants.MAX_DURATION.toMillis()));
-//                        return;
-//                    }
-//                    else{
-//                        System.out.println("Results match after factor extension");
-//                    }
-
-                    FactorSearch fs = new FactorSearch(beExpression);
-                    Instant fsStart = Instant.now();
-                    fs.search();
-                    Instant fsEnd = Instant.now();
-                    guardGen = guardGen.plus(Duration.between(fsStart, fsEnd));
-                    writer.addGuardReport(fs.printDetailedResults(numOfRepetitions), policyDir, exptResultsFile);
-                    policyRunTimes.put(file.getName() + "-guardGeneration", String.valueOf(guardGen.toMillis()));
-                    writer.appendToCSVReport(policyRunTimes, policyDir, exptResultsFile);
-
-
-                    /** Result checking **/
+                    /** Result checking **/ //TODO: Include as part of Query Manager
 //                    if(resultCheck){
 //                        System.out.println("Verifying results......");
 //                        System.out.println("Guard query: " + fs.createCompleteQuery());
@@ -130,10 +136,6 @@ public class PolicyExecution {
 //                            return;
 //                        }
 //                    }
-
-
-
-
 
                 } catch (Exception e) {
                     e.printStackTrace();

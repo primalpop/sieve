@@ -77,15 +77,15 @@ public class PolicyExecutionWithQueries {
                 guardGen = guardGen.plus(Duration.between(feStart, feEnd));
                 System.out.println("Finished Predicate Extension: " + guardGen.toMillis()/1000 + " seconds");
 
-                FactorSearch fs = new FactorSearch(beExpression);
-                Instant fsStart = Instant.now();
-                fs.search();
-                Instant fsEnd = Instant.now();
-                guardGen = guardGen.plus(Duration.between(fsStart, fsEnd));
-                System.out.println("Finished Guard Generation, total time: " + guardGen.toMillis()/1000 + " seconds");
-                writer.addGuardReport(fs.printDetailedResults(numOfRepetitions), policyDir, exptResultsFile);
-                policyRunTimes.put(file.getName() + "-guardGeneration", String.valueOf(guardGen.toMillis()));
-                writer.appendToCSVReport(policyRunTimes, policyDir, exptResultsFile);
+//                FactorSearch fs = new FactorSearch(beExpression);
+//                Instant fsStart = Instant.now();
+//                fs.search();
+//                Instant fsEnd = Instant.now();
+//                guardGen = guardGen.plus(Duration.between(fsStart, fsEnd));
+//                System.out.println("Finished Guard Generation, total time: " + guardGen.toMillis()/1000 + " seconds");
+//                writer.addGuardReport(fs.printDetailedResults(numOfRepetitions), policyDir, exptResultsFile);
+//                policyRunTimes.put(file.getName() + "-guardGeneration", String.valueOf(guardGen.toMillis()));
+//                writer.appendToCSVReport(policyRunTimes, policyDir, exptResultsFile);
 
 //                int queryCount = 1;
 //                for (String key: queries.keySet()) {
