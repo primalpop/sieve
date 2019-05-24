@@ -224,9 +224,9 @@ public class FactorExtension {
                     if (g.hashCode() == Integer.parseInt(maxBenefitKey.getKey().split("\\.")[0])) m1 = g;
                     if (g.hashCode() == Integer.parseInt(maxBenefitKey.getKey().split("\\.")[1])) m2 = g;
                 }
-                Boolean deleteOne = false;
-                if(m1.compareTo(m2) == 0) { //TODO: SANITY CHECK, DELETE AFTERWARDS
-                    if(m1.getPolicy_id().equalsIgnoreCase(m2.getPolicy_id())){
+                boolean deleteOne = false;
+                if (m2 != null && m1 != null && m1.compareTo(m2) == 0) { //TODO: SANITY CHECK, DELETE AFTERWARDS
+                    if (m1.getPolicy_id().equalsIgnoreCase(m2.getPolicy_id())) {
                         deleteOne = true;
                     }
                 }
