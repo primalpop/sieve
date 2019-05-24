@@ -22,7 +22,6 @@ public class FactorSearch {
     HashSet<Term> closed;
     HashMap<Term, Term> parentMap;
     HashMap<Term, Double> scores;
-    int maxDepth;
     Set<ObjectCondition> canFactors;
     double epsilon;
     MySQLQueryManager mySQLQueryManager;
@@ -39,7 +38,6 @@ public class FactorSearch {
         this.scores = new HashMap<Term, Double>();
         this.closed = new HashSet<Term>();
         this.parentMap = new HashMap<Term, Term>();
-        this.maxDepth = (int) Math.round(Math.log(input.getPolicies().size())/Math.log(2.0));
         this.canFactors = new HashSet<>();
         Set<ObjectCondition> pFactors = input.getPolicies().stream()
                 .flatMap(p -> p.getObject_conditions().stream())
@@ -152,7 +150,7 @@ public class FactorSearch {
     /**
      * Returns the final factorized expression through A-star search
      */
-    public void search(){
+    public void search(int depthAllowed){
         Term current;
         int depth = 0;
         while(!this.open.isEmpty()) {
@@ -160,7 +158,7 @@ public class FactorSearch {
             if(!this.closed.contains(current)){
                 this.closed.add(current);
                 List<Term> candidates = factorize(current.getRemainder());
-                if(candidates.isEmpty() || depth > this.maxDepth) {
+                if(candidates.isEmpty() || depth > depthAllowed) {
                     this.finalTerm = current; //Factorization complete
                     break;
                 }
@@ -180,7 +178,7 @@ public class FactorSearch {
                 for (Term oc: open) {
                     depth = countDepth(oc) + 1;
                     oc.setFscore(oc.getGscore() + oc.getHscore()
-                            * ((1 + this.epsilon) - ((epsilon * depth)/this.maxDepth)));
+                            * ((1 + this.epsilon) - ((epsilon * depth)/depthAllowed)));
                     this.scores.replace(oc, oc.getFscore());
                 }
             }
@@ -188,17 +186,17 @@ public class FactorSearch {
     }
 
     /**
-     * Creates the complete guarded query string
+     * Creates the complete guarded expression query string with UNION or UNION ALL based on the boolean flag
      * @return
      */
-    public String createCompleteQuery(){
+    public String createGuardedExpQuery(boolean noDuplicates){
         Map <String, String> gMap = createQueryMap();
         StringBuilder queryExp = new StringBuilder();
         String delim = "";
         for (String g: gMap.keySet()) {
             queryExp.append(delim);
-            queryExp.append(gMap.get(g));
-            delim = PolicyConstants.DISJUNCTION;
+            queryExp.append(PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS + gMap.get(g));
+            delim = noDuplicates ? PolicyConstants.UNION : PolicyConstants.UNION_ALL;
         }
         return queryExp.toString();
     }
@@ -252,7 +250,7 @@ public class FactorSearch {
         return guardExp;
     }
 
-    private Map<String, String> createQueryMap(){
+    public Map<String, String> createQueryMap(){
         Map<String, String> gMap = new HashMap<>();
         //for remainder with no guard
         if(finalTerm.getRemainder().getPolicies().size()>0){

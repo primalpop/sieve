@@ -116,6 +116,27 @@ public class MySQLQueryManager {
 
     /**
      * Compute the cost by execution time of the query and writes the results to file
+     * @return
+     * @throws PolicyEngineException
+     */
+
+    public MySQLResult runTimedQueryExp(String query) throws PolicyEngineException {
+        try {
+            MySQLResult mySQLResult = new MySQLResult();
+            mySQLResult.setResultsCheck(false);
+            List<Long> gList = new ArrayList<>();
+            System.out.println(query);
+            Duration gCost = runWithThread(query, mySQLResult).getTimeTaken();
+            mySQLResult.setTimeTaken(gCost);
+            return mySQLResult;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new PolicyEngineException("Error Running Query");
+        }
+    }
+
+    /**
+     * Compute the cost by execution time of the query and writes the results to file
      * @param predicates
      * @param resultCheck
      * @return
