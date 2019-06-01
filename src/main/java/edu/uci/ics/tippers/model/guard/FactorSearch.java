@@ -1,6 +1,5 @@
 package edu.uci.ics.tippers.model.guard;
 
-import com.rits.cloning.Cloner;
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.db.MySQLQueryManager;
 import edu.uci.ics.tippers.db.MySQLResult;
@@ -24,6 +23,7 @@ public class FactorSearch {
     HashMap<Term, Double> scores;
     Set<ObjectCondition> canFactors;
     double epsilon;
+    double totalCost;
     MySQLQueryManager mySQLQueryManager;
 
 
@@ -51,6 +51,7 @@ public class FactorSearch {
             if(!match) canFactors.add(pf);
         }
         this.epsilon = 1.0;
+        this.totalCost = input.getPolicies().stream().mapToDouble(BEPolicy::getEstCost).sum();
         this.mySQLQueryManager = new MySQLQueryManager();
         this.finalTerm = null;
     }
@@ -111,21 +112,23 @@ public class FactorSearch {
                         aMap.keySet().size());
     }
 
-    private List<Term> factorize(BEExpression toFactorize){
+
+
+    private List<Term> factorize(Term current){
         Set<ObjectCondition> removal = new HashSet<>();
         List<Term> treeNodes = new ArrayList<Term>();
         for (ObjectCondition objectCondition : this.canFactors) {
-            BEExpression tempQuotient = new BEExpression(toFactorize);
+            BEExpression tempQuotient = new BEExpression(current.getRemainder());
             tempQuotient.checkAgainstPolices(objectCondition);
             if (tempQuotient.getPolicies().size() > 1) { //was able to factorize
                 if (utility(tempQuotient, objectCondition, false)) { //factorized is better than original
                     Term canTerm = new Term();
                     canTerm.setQuotient(tempQuotient);
-                    canTerm.setRemainder(new BEExpression(toFactorize));
+                    canTerm.setRemainder(new BEExpression(current.getRemainder()));
                     canTerm.getRemainder().getPolicies().removeAll(canTerm.getQuotient().getPolicies());
                     canTerm.setFactor(objectCondition);
-                    canTerm.setGscore(canTerm.getQuotient().estimateCostOfGuardRep(objectCondition, false));
-                    canTerm.setHscore(superPolicyCost(canTerm.getRemainder()));
+                    canTerm.setGscore(current.getGscore() + canTerm.getQuotient().estimateCostOfGuardRep(objectCondition, false));
+                    canTerm.setHscore(this.totalCost - canTerm.getGscore());
                     canTerm.setFscore(canTerm.getGscore() + canTerm.getHscore());
                     treeNodes.add(canTerm);
                 }
@@ -157,7 +160,7 @@ public class FactorSearch {
             current = this.open.remove();
             if(!this.closed.contains(current)){
                 this.closed.add(current);
-                List<Term> candidates = factorize(current.getRemainder());
+                List<Term> candidates = factorize(current);
                 if(candidates.isEmpty() || depth > depthAllowed) {
                     this.finalTerm = current; //Factorization complete
                     break;

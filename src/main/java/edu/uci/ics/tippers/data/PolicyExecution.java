@@ -50,11 +50,11 @@ public class PolicyExecution {
 
     private List <Integer> generateDepths(int numOfPolicies){
         List <Integer> depths = new ArrayList<>();
-        for (int i = 2; i < 10; i++) {
-            depths.add((int) Math.round(Math.log(numOfPolicies)/Math.log(i)));
-        }
-        Set<Integer> set = new LinkedHashSet<>();
-        set.addAll(depths);
+//        for (int i = 2; i < 10; i++) {
+//            depths.add((int) Math.round(Math.log(numOfPolicies)/Math.log(i)));
+//        }
+        depths.add((int) Math.round(Math.log(numOfPolicies)/Math.log(2)));
+        Set<Integer> set = new LinkedHashSet<>(depths);
         depths.clear();
         depths.addAll(set);
         return depths;
@@ -84,6 +84,7 @@ public class PolicyExecution {
                 System.out.println(numOfPolicies + " being processed......");
                 BEExpression beExpression = new BEExpression();
                 beExpression.parseJSONList(Reader.readTxt(policyDir + file.getName()));
+                beExpression.setEstCost();
                 Duration runTime = Duration.ofMillis(0);
                 boolean resultCheck = true;
                 MySQLResult tradResult;
