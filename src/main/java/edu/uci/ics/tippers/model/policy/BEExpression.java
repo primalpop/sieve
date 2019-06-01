@@ -279,4 +279,10 @@ public class BEExpression{
         this.getPolicies().clear();
         this.getPolicies().addAll(s);
     }
+
+    public void setEstCost(){
+        for (BEPolicy bp: this.getPolicies()) {
+            bp.setEstCost(bp.estimateCost(false));
+        }
+    }
 }

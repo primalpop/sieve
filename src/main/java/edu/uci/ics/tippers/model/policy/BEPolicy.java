@@ -1,6 +1,7 @@
 package edu.uci.ics.tippers.model.policy;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.davidmoten.guavamini.Lists;
@@ -60,6 +61,9 @@ public class BEPolicy {
      */
     @JsonProperty("action")
     private String action;
+
+    @JsonIgnore
+    private double estCost;
 
     @JsonProperty("inserted_at")
     @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss", locale = "America/Phoenix")
@@ -170,6 +174,14 @@ public class BEPolicy {
 
     public void setInserted_at(Timestamp inserted_at) {
         this.inserted_at = inserted_at;
+    }
+
+    public double getEstCost() {
+        return estCost;
+    }
+
+    public void setEstCost(double estCost) {
+        this.estCost = estCost;
     }
 
     public List<String> retrieveObjCondAttributes(){
