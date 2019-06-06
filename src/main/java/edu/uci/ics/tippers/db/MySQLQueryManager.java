@@ -19,7 +19,15 @@ public class MySQLQueryManager {
 
     private static final Connection connection = MySQLConnectionManager.getInstance().getConnection();
 
-    private static long timeout = 1000000;
+    private long timeout;
+
+    public MySQLQueryManager(long timeout){
+        this.timeout = timeout;
+    }
+
+    public MySQLQueryManager(){
+        this.timeout = 100000;
+    }
 
     public MySQLResult runWithThread(String query, MySQLResult mySQLResult) {
 
