@@ -13,6 +13,7 @@ import edu.uci.ics.tippers.model.policy.BEPolicy;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
@@ -24,42 +25,52 @@ import java.util.*;
  * Created by cygnus on 12/12/17.
  */
 public class PolicyExecution {
+    private PolicyGeneration policyGen;
 
-    private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private Writer writer;
+    private MySQLQueryManager mySQLQueryManager;
 
-    private static final int[] policyNumbers = {100, 500, 1000, 2000, 5000, 10000, 25000, 50000};
+    private static boolean BASE_LINE;
+    private static boolean RESULT_CHECK;
 
-    private static final int[] policyEpochs = {0};
+    private static boolean EXTEND_PREDICATES;
+    private static int SEARCH_DEPTH;
 
-    private static PolicyGeneration policyGen;
+    private static boolean GUARD_UNION;
+    private static int NUM_OF_REPS;
+    private static long QUERY_TIMEOUT;
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
-
-    Writer writer;
-
-    MySQLQueryManager mySQLQueryManager;
+    private static String RESULTS_FILE;
 
 
     public PolicyExecution() {
+
+        try {
+            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("config/basic.properties");
+            Properties props = new Properties();
+            if (inputStream != null) {
+                props.load(inputStream);
+                BASE_LINE = Boolean.parseBoolean(props.getProperty("base_line"));
+                RESULT_CHECK = Boolean.parseBoolean(props.getProperty("resultCheck"));
+                EXTEND_PREDICATES = Boolean.parseBoolean(props.getProperty("factor_extension"));
+                SEARCH_DEPTH = Integer.parseInt(props.getProperty("search_depth"));
+                GUARD_UNION = Boolean.parseBoolean(props.getProperty("union"));
+                NUM_OF_REPS = Integer.parseInt(props.getProperty("numberOfRepetitions"));
+                QUERY_TIMEOUT = Long.parseLong(props.getProperty("timeout"));
+                RESULTS_FILE = props.getProperty("results_file");
+            }
+
+        } catch (IOException ie) {
+           ie.printStackTrace();
+        }
+
         policyGen = new PolicyGeneration();
         writer = new Writer();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.setDateFormat(sdf);
-        mySQLQueryManager = new MySQLQueryManager();
+        mySQLQueryManager = new MySQLQueryManager(QUERY_TIMEOUT);
     }
-
-
-    private List <Integer> generateDepths(int numOfPolicies){
-        List <Integer> depths = new ArrayList<>();
-//        for (int i = 2; i < 10; i++) {
-//            depths.add((int) Math.round(Math.log(numOfPolicies)/Math.log(i)));
-//        }
-        depths.add((int) Math.round(Math.log(numOfPolicies)/Math.log(2)));
-        Set<Integer> set = new LinkedHashSet<>(depths);
-        depths.clear();
-        depths.addAll(set);
-        return depths;
-    }
-
 
 
     //TODO: Fix the result checker by passing the fileName to write to
@@ -70,12 +81,9 @@ public class PolicyExecution {
         File[] policyFiles = dir.listFiles((dir1, name) -> name.toLowerCase().endsWith(".json"));
         Arrays.sort(policyFiles != null ? policyFiles : new File[0]);
 
-        String exptResultsFile = "results.csv";
         try {
-            Files.delete(Paths.get(policyDir + exptResultsFile));
+            Files.delete(Paths.get(policyDir + RESULTS_FILE));
         } catch (IOException ioException) { }
-
-        boolean extension = false;
 
         if (policyFiles != null) {
             for (File file : policyFiles) {
@@ -85,58 +93,37 @@ public class PolicyExecution {
                 BEExpression beExpression = new BEExpression();
                 beExpression.parseJSONList(Reader.readTxt(policyDir + file.getName()));
                 beExpression.setEstCost();
-                Duration runTime = Duration.ofMillis(0);
-                boolean resultCheck = true;
-                MySQLResult tradResult;
-                int numOfRepetitions = 1;
 
                 try {
-                    /** Traditional approach **/
+
 //                    System.out.println(beExpression.createQueryFromPolices());
-//                    tradResult = mySQLQueryManager.runTimedQueryWithRepetitions(beExpression.createQueryFromPolices(), resultCheck, numOfRepetitions);
-//                    runTime = runTime.plus(tradResult.getTimeTaken());
-//
-//                    policyRunTimes.put(file.getName(), String.valueOf(runTime.toMillis()));
-//                    if(!(runTime.toMillis() == PolicyConstants.MAX_DURATION.toMillis())) resultCheck = true;
-//                    System.out.println("** " + file.getName() + " completed and took " + runTime.toMillis());
-
-
-                    List<Integer> depths = generateDepths(numOfPolicies);
-                    for (int i = 0; i < depths.size(); i++) {
-                        Duration guardGen = Duration.ofMillis(0);
-                        Instant fsStart = Instant.now();
-                        if(extension){
-                            FactorExtension f = new FactorExtension(beExpression);
-                            f.doYourThing();
-                        }
-                        FactorSearch fs = new FactorSearch(beExpression);
-                        fs.search(depths.get(i));
-                        Instant fsEnd = Instant.now();
-                        guardGen = guardGen.plus(Duration.between(fsStart, fsEnd));
-                        policyRunTimes.put(file.getName() + "-depth" + depths.get(i) + "-guardGeneration", String.valueOf(guardGen.toMillis()));
-                        int numberOfGuards = fs.createQueryMap().keySet().size();
-                        policyRunTimes.put(file.getName() + "-depth-NumberOfGuards" + depths.get(i), String.valueOf(numberOfGuards));
-                        Duration execTime = Duration.ofMillis(0);
-                        MySQLResult execResult = mySQLQueryManager.
-                                runTimedQueryExp(fs.createGuardedExpQuery(false));
-                        execTime = execTime.plus(execResult.getTimeTaken());
-                        policyRunTimes.put(file.getName() + "-depth" + depths.get(i), String.valueOf(execTime.toMillis()));
-                        writer.appendToCSVReport(policyRunTimes, policyDir, exptResultsFile);
-                        policyRunTimes.clear();
+                    if(BASE_LINE) {
+                        MySQLResult tradResult = mySQLQueryManager.runTimedQueryWithRepetitions(beExpression.createQueryFromPolices(),
+                                RESULT_CHECK, NUM_OF_REPS);
+                        Duration runTime = Duration.ofMillis(0);
+                        runTime = runTime.plus(tradResult.getTimeTaken());
+                        policyRunTimes.put(file.getName(), String.valueOf(runTime.toMillis()));
+                        System.out.println("Baseline approach for " + file.getName() + " policies took " + runTime.toMillis());
                     }
 
-                    /** Result checking **/ //TODO: Include as part of Query Manager
-//                    if(resultCheck){
-//                        System.out.println("Verifying results......");
-//                        System.out.println("Guard query: " + fs.createCompleteQuery());
-//                        MySQLResult guardResult = mySQLQueryManager.runTimedQueryWithRepetitions(fs.createCompleteQuery(),true, numOfRepetitions);
-//                        Boolean resultSame = tradResult.checkResults(guardResult);
-//                        if(!resultSame){
-//                            System.out.println("*** Query results don't match with generated guard!!! Halting Execution ***");
-//                            policyRunTimes.put(file.getName() + "-results-incorrect", String.valueOf(PolicyConstants.MAX_DURATION.toMillis()));
-//                            return;
-//                        }
-//                    }
+
+                    Duration guardGen = Duration.ofMillis(0);
+                    Instant fsStart = Instant.now();
+                    if(EXTEND_PREDICATES){
+                        FactorExtension f = new FactorExtension(beExpression);
+                        f.doYourThing();
+                    }
+                    FactorSearch fs = new FactorSearch(beExpression);
+                    fs.search(SEARCH_DEPTH);
+                    Instant fsEnd = Instant.now();
+                    guardGen = guardGen.plus(Duration.between(fsStart, fsEnd));
+                    policyRunTimes.put(file.getName() + "-guardGeneration", String.valueOf(guardGen.toMillis()));
+                    Duration execTime = Duration.ofMillis(0);
+                    MySQLResult execResult = mySQLQueryManager.runTimedQueryExp(fs.createGuardedExpQuery(GUARD_UNION));
+                    execTime = execTime.plus(execResult.getTimeTaken());
+                    policyRunTimes.put(file.getName() + "-executionTime", String.valueOf(execTime.toMillis()));
+                    writer.appendToCSVReport(policyRunTimes, policyDir, RESULTS_FILE);
+                    policyRunTimes.clear();
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -146,8 +133,9 @@ public class PolicyExecution {
         }
     }
 
-    //Only handles BEPolicies
     private void generatePolicies(String policyDir) {
+        int[] policyNumbers = {100, 500, 1000, 2000, 5000, 10000, 25000, 50000};
+        int[] policyEpochs = {0};
         System.out.println("Generating Policies ..........");
         List<BEPolicy> bePolicies = new ArrayList<>();
         for (int i = 0; i < policyNumbers.length; i++) {
