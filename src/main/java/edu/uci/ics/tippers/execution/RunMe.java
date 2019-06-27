@@ -1,5 +1,6 @@
 package edu.uci.ics.tippers.execution;
 
+import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.data.GroupGeneration;
 import edu.uci.ics.tippers.data.QueryGeneration;
 import edu.uci.ics.tippers.db.MySQLQueryManager;
@@ -10,9 +11,15 @@ import edu.uci.ics.tippers.manager.PolicyPersistor;
 import edu.uci.ics.tippers.model.data.UserGroup;
 import edu.uci.ics.tippers.model.guard.FactorSearch;
 import edu.uci.ics.tippers.model.guard.GuardExp;
+import edu.uci.ics.tippers.model.guard.GuardHit;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -24,6 +31,23 @@ public class RunMe {
 
     public static void main(String args[]) {
 
+        String policyDir = PolicyConstants.BE_POLICY_DIR;
+        File dir = new File(policyDir);
+        File[] policyFiles = dir.listFiles((dir1, name) -> name.toLowerCase().endsWith(".json"));
+        Arrays.sort(policyFiles != null ? policyFiles : new File[0]);
+
+        if (policyFiles != null) {
+            for (File file : policyFiles) {
+                int numOfPolicies = Integer.parseInt(file.getName().replaceAll("\\D+", ""));
+                System.out.println(numOfPolicies + " being processed......");
+                BEExpression beExpression = new BEExpression();
+                beExpression.parseJSONList(Reader.readTxt(policyDir + file.getName()));
+                GuardHit gh = new GuardHit(beExpression);
+                gh.printAllGuards();
+            }
+        }
+
+
 //        GroupGeneration groupGeneration = new GroupGeneration();
 //        List<UserGroup> userGroups = groupGeneration.readCSVFile("/data/policy_groups.csv");
 //        for (UserGroup ug: userGroups) {
@@ -31,10 +55,10 @@ public class RunMe {
 //            System.out.println(ug.toString());
 //        }
 
-        QueryGeneration qg = new QueryGeneration();
-        boolean [] templates = {false, true, false, false};
-        int numOfQueries = 50;
-        qg.constructWorkload(templates, numOfQueries);
+//        QueryGeneration qg = new QueryGeneration();
+//        boolean [] templates = {false, true, false, false};
+//        int numOfQueries = 50;
+//        qg.constructWorkload(templates, numOfQueries);
 
 //        DataGeneration dataGeneration = new DataGeneration();
 //        dataGeneration.runScript("mysql/schema.sql");
