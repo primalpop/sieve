@@ -118,10 +118,18 @@ public class PolicyExecution {
                     Instant fsEnd = Instant.now();
                     guardGen = guardGen.plus(Duration.between(fsStart, fsEnd));
                     policyRunTimes.put(file.getName() + "-guardGeneration", String.valueOf(guardGen.toMillis()));
-                    Duration execTime = Duration.ofMillis(0);
-                    MySQLResult execResult = mySQLQueryManager.runTimedQueryExp(fs.createGuardedExpQuery(GUARD_UNION));
-                    execTime = execTime.plus(execResult.getTimeTaken());
-                    policyRunTimes.put(file.getName() + "-executionTime", String.valueOf(execTime.toMillis()));
+                    List<String> gList = fs.createGuardQueries();
+                    int i = 0;
+                    for (String k : gList) {
+                        i += 1;
+                        System.out.println("guard " + i + " " + k);
+                    }
+                    System.out.println("Total number of guards: " + i);
+
+//                    Duration execTime = Duration.ofMillis(0);
+//                    MySQLResult execResult = mySQLQueryManager.runTimedQueryExp(fs.createGuardedExpQuery(GUARD_UNION));
+//                    execTime = execTime.plus(execResult.getTimeTaken());
+//                    policyRunTimes.put(file.getName() + "-executionTime", String.valueOf(execTime.toMillis()));
                     writer.appendToCSVReport(policyRunTimes, policyDir, RESULTS_FILE);
                     policyRunTimes.clear();
 

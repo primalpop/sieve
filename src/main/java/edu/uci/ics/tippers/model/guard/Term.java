@@ -8,17 +8,17 @@ import java.util.Objects;
 
 public class Term implements Comparable<Term> {
 
-    ObjectCondition factor;
+    private ObjectCondition factor;
 
-    BEExpression quotient;
+    private BEExpression quotient;
 
-    BEExpression remainder;
+    private BEExpression remainder;
 
-    double fscore;
+    private double fscore;
 
-    double gscore;
+    private double gscore;
 
-    double hscore;
+    private double hscore;
 
     public Term(){
         this.factor = new ObjectCondition();
