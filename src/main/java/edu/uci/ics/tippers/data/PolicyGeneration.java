@@ -117,7 +117,7 @@ public class PolicyGeneration {
             return energy + 1;
     }
 
-    private List<ObjectCondition> generatePredicates(int policyID, List<String> attributes){
+    private List<ObjectCondition> generatePredicates(String policyID, List<String> attributes){
         RangeQuery rq = new RangeQuery();
         int attrCount = (int) (r.nextGaussian() * 2 + 4); //mean - 4, SD - 2
         if (attrCount <= 1 || attrCount > attributes.size()) attrCount = 4;
@@ -161,7 +161,7 @@ public class PolicyGeneration {
 
         for (int i = 0; i < numberOfPolicies; i++) {
             List<ObjectCondition> objectConditions;
-            objectConditions = generatePredicates(i, attributes);
+            objectConditions = generatePredicates(String.valueOf(i), attributes);
             BEPolicy bePolicy = new BEPolicy(String.valueOf(i), "Generated Policy " + i , objectConditions, PolicyConstants.DEFAULT_QC.asList(), "", "");
             bePolicies.add(bePolicy);
         }
@@ -182,7 +182,7 @@ public class PolicyGeneration {
             double selOfPolicy = 0.0;
             List<ObjectCondition> objectConditions;
             do {
-                objectConditions = generatePredicates(i, attributes);
+                objectConditions = generatePredicates(String.valueOf(i), attributes);
                 selOfPolicy = BEPolicy.computeL(objectConditions);
             } while (selOfPolicy < 0.00001 || selOfPolicy > 0.00005);
             BEPolicy bePolicy = new BEPolicy(String.valueOf(i), "Generated Policy " + i + "with selectivity " + selOfPolicy, objectConditions, PolicyConstants.DEFAULT_QC.asList(), "", "");
@@ -216,7 +216,7 @@ public class PolicyGeneration {
                 oPolicy.setId(policyID);
                 oPolicy.setQuerier_conditions(querierConditions);
                 for (ObjectCondition objC: oPolicy.getObject_conditions()) {
-                    objC.setPolicy_id(String.valueOf(i));
+                    objC.setPolicy_id(policyID);
                     objC.shift();
                 }
                 bePolicies.add(oPolicy);
@@ -225,7 +225,7 @@ public class PolicyGeneration {
                 double selOfPolicy = 0.0;
                 List<ObjectCondition> objectConditions;
                 do {
-                    objectConditions = generatePredicates(i, attributes);
+                    objectConditions = generatePredicates(policyID, attributes);
                     selOfPolicy = BEPolicy.computeL(objectConditions);
                 } while (!(selOfPolicy > 0.00001 && selOfPolicy < 0.1));
                 BEPolicy bePolicy = new BEPolicy(policyID,
@@ -248,7 +248,7 @@ public class PolicyGeneration {
      * @param attributes
      * @return
      */
-    private List<ObjectCondition> generateOwnerPolicies(int policyID, List<String> attributes){
+    private List<ObjectCondition> generateOwnerPolicies(String policyID, List<String> attributes){
         RangeQuery rq = new RangeQuery();
         int attrCount = (int) (r.nextGaussian() * 2 + 4); //mean - 4, SD - 2
         if (attrCount <= 1 || attrCount > attributes.size()) attrCount = 4;
@@ -322,7 +322,7 @@ public class PolicyGeneration {
                 double selOfPolicy = 0.0;
                 List<ObjectCondition> objectConditions;
                 do {
-                    objectConditions = generateOwnerPolicies(i, attributes);
+                    objectConditions = generateOwnerPolicies(policyID, attributes);
                     selOfPolicy = BEPolicy.computeL(objectConditions);
                 } while (!(selOfPolicy > 0.00000001 && selOfPolicy < 0.1));
                 BEPolicy bePolicy = new BEPolicy(policyID,
@@ -361,7 +361,7 @@ public class PolicyGeneration {
                 double selOfPolicy = 0.0;
                 List<ObjectCondition> objectConditions;
                 do {
-                    objectConditions = generatePredicates(i, attributes);
+                    objectConditions = generatePredicates(String.valueOf(i), attributes);
                     selOfPolicy = BEPolicy.computeL(objectConditions);
                 } while (selOfPolicy < 0.00001 || selOfPolicy > 0.00005);
                 BEPolicy bePolicy = new BEPolicy(String.valueOf(i), "Generated Policy " + i + "with selectivity " + selOfPolicy, objectConditions, PolicyConstants.DEFAULT_QC.asList(), "", "");
@@ -446,7 +446,7 @@ public class PolicyGeneration {
                 }
                 attrList.add(attribute);
             }
-            List<ObjectCondition> objectConditions = rq.createObjectCondition(i);
+            List<ObjectCondition> objectConditions = rq.createObjectCondition(String.valueOf(i));
             BEPolicy bePolicy = new BEPolicy(String.valueOf(i), "Generated Policy " + i, objectConditions, PolicyConstants.DEFAULT_QC.asList(), "", "");
             bePolicies.add(bePolicy);
         }

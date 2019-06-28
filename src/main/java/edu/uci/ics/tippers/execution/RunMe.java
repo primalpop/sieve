@@ -12,7 +12,9 @@ import edu.uci.ics.tippers.model.data.UserGroup;
 import edu.uci.ics.tippers.model.guard.FactorSearch;
 import edu.uci.ics.tippers.model.guard.GuardExp;
 import edu.uci.ics.tippers.model.guard.GuardHit;
+import edu.uci.ics.tippers.model.guard.PredicateMerge;
 import edu.uci.ics.tippers.model.policy.BEExpression;
+import edu.uci.ics.tippers.model.policy.BEPolicy;
 
 import java.io.File;
 import java.io.IOException;
@@ -42,8 +44,14 @@ public class RunMe {
                 System.out.println(numOfPolicies + " being processed......");
                 BEExpression beExpression = new BEExpression();
                 beExpression.parseJSONList(Reader.readTxt(policyDir + file.getName()));
-                GuardHit gh = new GuardHit(beExpression);
-                gh.printAllGuards();
+                System.out.println(beExpression.getPolicies().stream().mapToInt(BEPolicy::countNumberOfPredicates).sum());
+                System.out.println(beExpression.createQueryFromPolices());
+                PredicateMerge pm = new PredicateMerge(beExpression);
+                pm.extend();
+                System.out.println(beExpression.getPolicies().stream().mapToInt(BEPolicy::countNumberOfPredicates).sum());
+                System.out.println(beExpression.createQueryFromPolices());
+//                GuardHit gh = new GuardHit(beExpression);
+//                gh.printAllGuards();
             }
         }
 
