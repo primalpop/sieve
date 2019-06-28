@@ -142,7 +142,7 @@ public class PolicyExecution {
     }
 
     private void generatePolicies(String policyDir) {
-        int[] policyNumbers = {100, 500, 1000, 2000, 5000, 10000, 25000, 50000};
+        int[] policyNumbers = {1000};
         int[] policyEpochs = {0};
         System.out.println("Generating Policies ..........");
         List<BEPolicy> bePolicies = new ArrayList<>();
@@ -177,7 +177,7 @@ public class PolicyExecution {
     public static void main(String args[]) {
         PolicyExecution pe = new PolicyExecution();
 //        pe.persistPolicies(100);
-//        pe.generatePolicies(PolicyConstants.BE_POLICY_DIR);
-        pe.runBEPolicies(PolicyConstants.BE_POLICY_DIR);
+        pe.generatePolicies(PolicyConstants.BE_POLICY_DIR);
+//        pe.runBEPolicies(PolicyConstants.BE_POLICY_DIR);
     }
 }

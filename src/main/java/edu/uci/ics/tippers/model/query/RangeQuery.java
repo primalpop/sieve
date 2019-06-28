@@ -189,7 +189,7 @@ public class RangeQuery {
         return sqlPredicate.toString();
     }
 
-    public List<ObjectCondition> createObjectCondition(int policy_id){
+    public List<ObjectCondition> createObjectCondition(String policy_id){
         List<ObjectCondition> objectConditions = new ArrayList<>();
         if(checkAllNull()) return objectConditions;
 
@@ -210,7 +210,7 @@ public class RangeQuery {
         }
         if(start_timestamp != null && end_timestamp != null) {
             SimpleDateFormat sdf = new SimpleDateFormat(PolicyConstants.TIMESTAMP_FORMAT);
-            objectConditions.add(new ObjectCondition(String.valueOf(policy_id),"timeStamp", AttributeType.TIMESTAMP, ">=",
+            objectConditions.add(new ObjectCondition(policy_id,"timeStamp", AttributeType.TIMESTAMP, ">=",
                     sdf.format(start_timestamp), "<=", sdf.format(end_timestamp)));
         }
         return  objectConditions;

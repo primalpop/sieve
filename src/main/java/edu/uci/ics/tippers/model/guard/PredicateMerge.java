@@ -9,13 +9,11 @@ import java.util.*;
 
 public class PredicateMerge {
 
-    BEExpression genExpression;
-
-    Map<String, List<ObjectCondition>> aMap;
-    Map<ObjectCondition, List<BEPolicy>> oMap;
+    private Map<String, List<ObjectCondition>> aMap;
+    private Map<ObjectCondition, BEPolicy> oMap;
 
 
-    public PredicateMerge() {
+    public PredicateMerge(BEExpression inputExp) {
         oMap = new HashMap<>();
         aMap = new HashMap<>();
         for (int i = 0; i < PolicyConstants.RANGE_ATTR_LIST.size(); i++) {
@@ -23,29 +21,32 @@ public class PredicateMerge {
             String attr = PolicyConstants.RANGE_ATTR_LIST.get(i);
             aMap.put(attr, attrToOc);
         }
-        constructMaps();
+        constructMaps(inputExp);
     }
 
-    private void constructMaps() {
-        for (int i = 0; i < genExpression.getPolicies().size(); i++) {
-            BEPolicy pol = genExpression.getPolicies().get(i);
+    private void constructMaps(BEExpression inputExp) {
+        for (int i = 0; i < inputExp.getPolicies().size(); i++) {
+            BEPolicy pol = inputExp.getPolicies().get(i);
             for (int j = 0; j < pol.getObject_conditions().size(); j++) {
                 ObjectCondition oc = pol.getObject_conditions().get(j);
                 if (!PolicyConstants.RANGE_ATTR_LIST.contains(oc.getAttribute())) continue;
                 aMap.get(oc.getAttribute()).add(oc);
                 if (oMap.containsKey(oc)) {
-                    oMap.get(oc).add(pol);
-                } else {
-                    List<BEPolicy> bePolicies = new ArrayList<>();
-                    bePolicies.add(pol);
-                    oMap.put(oc, bePolicies);
+                    System.out.println("Duplicate policy id or object condition id");
                 }
+                oMap.put(oc, pol);
             }
         }
     }
 
+    /**
+     * TODO: Check if this matches with the paper definition
+     * @param oc1
+     * @param oc2
+     * @param beMerged
+     * @return
+     */
     private boolean shouldIMerge(ObjectCondition oc1, ObjectCondition oc2, BEExpression beMerged) {
-        if (!oc1.overlaps(oc2)) return false;
         ObjectCondition intersect = oc1.intersect(oc2);
         ObjectCondition union = oc1.union(oc2);
         double lhs = intersect.computeL() / union.computeL();
@@ -55,33 +56,69 @@ public class PredicateMerge {
         return lhs > rhs;
     }
 
+    private ObjectCondition mergeEm(ObjectCondition oc1, ObjectCondition oc2){
+        ObjectCondition subMerged = null;
+        BEExpression beM = new BEExpression();
+        beM.getPolicies().add(oMap.get(oc1));
+        beM.getPolicies().add(oMap.get(oc2));
+        if (!oc1.overlaps(oc2)) return null;
+        if(shouldIMerge(oc1, oc2, beM)) subMerged = oc1.union(oc2);
+        return subMerged;
+    }
 
-    private List<ObjectCondition> extendOnAttribute(String attribute) {
+
+    /**
+     * For each @param attribute,
+     *      1. we collect all the predicates on that attribute
+     *      2. predicates are sorted based on their left range
+     *      3. for each predicate (i)
+     *          3.a. we retrieve the i+1 predicate and check if it satisfies merge condition
+     *          3.b. then, merge it and add it to the original policies, update i = merged predicate
+     *          3.c  else update nextCount and check if it's greater than 2
+     *
+     * @param attribute
+     * @return
+     */
+    private void extendOnAttribute(String attribute) {
         List<ObjectCondition> preds = aMap.get(attribute);
-        List<ObjectCondition> pGuards = new ArrayList<>();
         Collections.sort(preds);
         for (int i = 0; i < preds.size(); i++) {
-            ObjectCondition puc = preds.get(i);
-            ObjectCondition cp = preds.get(i+1);
-            ObjectCondition cMerged = preds.get(i);
-            BEExpression beM = new BEExpression();
-            beM.getPolicies().addAll(oMap.get(puc));
-            beM.getPolicies().addAll(oMap.get(cp));
-            if(shouldIMerge(puc, cp, beM)) {
-                cMerged = puc.union(cp);
-                pGuards.add(cMerged);
-            }
-            else{
-                ObjectCondition peek = preds.get(i+2);
-                BEExpression mBxp = new BEExpression();
-                beM.getPolicies().addAll(oMap.get(puc));
-                beM.getPolicies().addAll(oMap.get(peek));
-                if(shouldIMerge(puc, peek, mBxp)) {
-
+            ObjectCondition oc1 = preds.get(i);
+            int nextCount = 0;
+            List<ObjectCondition> eqObjs = new ArrayList<>();
+            eqObjs.add(oc1);
+            for (int j = i+1; j < preds.size(); j++) {
+                ObjectCondition oc2 = preds.get(j);
+                if(oc1.equalsWithoutId(oc2)) eqObjs.add(oc2); //TODO: remove equivalent count
+                ObjectCondition cMerged = mergeEm(oc1, oc2);
+                if (cMerged != null) {
+                    BEPolicy mPolicy = new BEPolicy();
+                    mPolicy.getObject_conditions().addAll(oMap.get(oc1).getObject_conditions());
+                    mPolicy.getObject_conditions().addAll(oMap.get(oc2).getObject_conditions());
+                    oMap.get(oc1).getObject_conditions().add(cMerged);
+                    oMap.get(oc2).getObject_conditions().add(cMerged);
+                    oMap.put(cMerged, mPolicy);
+                    for (ObjectCondition og: eqObjs) {
+                        if(!og.getPolicy_id().equalsIgnoreCase(oc1.getPolicy_id()) ||
+                                !og.getPolicy_id().equalsIgnoreCase(oc2.getPolicy_id()))
+                            oMap.get(og).getObject_conditions().add(cMerged);
+                    }
+                    oc1 = cMerged;
                 }
+                else{
+                    nextCount += 1;
+                    if(nextCount >= 2) {
+                        break;
+                    }
+                }
+                i+= eqObjs.size();
             }
-
         }
+    }
 
+    public void extend(){
+        for (String attrKey: aMap.keySet()) {
+            if(aMap.get(attrKey).size()>1) extendOnAttribute(attrKey);
+        }
     }
 }
