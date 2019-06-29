@@ -52,7 +52,7 @@ public class GuardHit {
     private Term generateGuard(Term current){
         Set<ObjectCondition> removal = new HashSet<>();
         double maxUtility = 0.0;
-        Term mTerm = new Term();
+        Term mTerm = null;
         for (ObjectCondition objectCondition : this.canFactors) {
             BEExpression tempQuotient = new BEExpression(current.getRemainder());
             tempQuotient.checkAgainstPolices(objectCondition);
@@ -60,6 +60,7 @@ public class GuardHit {
                 double utility = benefit(tempQuotient)/cost(objectCondition, tempQuotient);
                 if (utility > maxUtility) { //factorized is better than original
                     maxUtility = utility;
+                    mTerm = new Term();
                     mTerm.setQuotient(tempQuotient);
                     mTerm.setRemainder(new BEExpression(current.getRemainder()));
                     mTerm.getRemainder().getPolicies().removeAll(mTerm.getQuotient().getPolicies());
@@ -71,39 +72,45 @@ public class GuardHit {
         return mTerm;
     }
 
+    private Term forSinglePolicy(BEPolicy bePolicy){
+        double freq = PolicyConstants.NUMBER_OR_TUPLES;
+        ObjectCondition gOC = new ObjectCondition();
+        for (ObjectCondition oc : bePolicy.getObject_conditions()) {
+            if (!PolicyConstants.INDEX_ATTRS.contains(oc.getAttribute())) continue;
+            if (oc.computeL() < freq) {
+                freq = oc.computeL();
+                gOC = oc;
+            }
+        }
+        Term rTerm = new Term();
+        rTerm.setFactor(gOC);
+        BEExpression quotient = new BEExpression();
+        quotient.getPolicies().add(bePolicy);
+        rTerm.setQuotient(quotient);
+        return rTerm;
+    }
 
     private void generateAllGuards(Term current) {
+        int realG = 0;
         while (true) {
             if (current.getRemainder().getPolicies().size() > 1) {
                 if (canFactors.size() > 1) {
                     Term nTerm = generateGuard(current);
-                    if (!nTerm.getQuotient().getPolicies().isEmpty()) {
-                        System.out.println("Guard generated" + nTerm.getFactor().print() );
+                    if (nTerm != null) {
+//                        System.out.println("Guard generated" + nTerm.getFactor().print());
                         finalForm.add(nTerm);
                         current = nTerm;
-                    } else { //for remainder with no guards
-                        for (BEPolicy bePolicy : current.getRemainder().getPolicies()) {
-                            double freq = PolicyConstants.NUMBER_OR_TUPLES;
-                            ObjectCondition gOC = new ObjectCondition();
-                            for (ObjectCondition oc : bePolicy.getObject_conditions()) {
-                                if (!PolicyConstants.INDEX_ATTRS.contains(oc.getAttribute())) continue;
-                                if (oc.computeL() < freq) {
-                                    freq = oc.computeL();
-                                    gOC = oc;
-                                }
-                            }
-                            Term rTerm = new Term();
-                            rTerm.setFactor(gOC);
-                            BEExpression quotient = new BEExpression();
-                            quotient.getPolicies().add(bePolicy);
-                            rTerm.setQuotient(quotient);
-                            finalForm.add(rTerm);
-                        }
-                        break;
+                        realG += 1;
+                        continue;
                     }
-                } else break;
-            } else break;
+                }
+            }
+            break;
         }
+        for (BEPolicy bePolicy : current.getRemainder().getPolicies()) {
+            finalForm.add(forSinglePolicy(bePolicy));
+        }
+        System.out.println("**** Real Guards " + realG);
     }
 
     public void printAllGuards(){
@@ -112,10 +119,10 @@ public class GuardHit {
         int numOfPolicies = 0;
         for (Term mt: finalForm) {
             count += 1;
-            System.out.println(mt.getFactor().print() + PolicyConstants.CONJUNCTION
-                    + mt.getQuotient().createQueryFromPolices());
+//            System.out.println(mt.getFactor().print() + PolicyConstants.CONJUNCTION
+//                    + mt.getQuotient().createQueryFromPolices());
             numOfPolicies += mt.getQuotient().getPolicies().size();
         }
-        System.out.println("Number of Guards: " + count + "| Total Policies: " + numOfPolicies);
+        System.out.println("** Number of Guards: " + count + "| Total Policies: " + numOfPolicies + " **");
     }
 }

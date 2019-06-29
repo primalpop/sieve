@@ -45,13 +45,13 @@ public class RunMe {
                 BEExpression beExpression = new BEExpression();
                 beExpression.parseJSONList(Reader.readTxt(policyDir + file.getName()));
                 System.out.println(beExpression.getPolicies().stream().mapToInt(BEPolicy::countNumberOfPredicates).sum());
-                System.out.println(beExpression.createQueryFromPolices());
-                PredicateMerge pm = new PredicateMerge(beExpression);
-                pm.extend();
-                System.out.println(beExpression.getPolicies().stream().mapToInt(BEPolicy::countNumberOfPredicates).sum());
-                System.out.println(beExpression.createQueryFromPolices());
-//                GuardHit gh = new GuardHit(beExpression);
-//                gh.printAllGuards();
+//                System.out.println(beExpression.createQueryFromPolices());
+//                PredicateMerge pm = new PredicateMerge(beExpression);
+//                pm.extend();
+//                System.out.println(beExpression.getPolicies().stream().mapToInt(BEPolicy::countNumberOfPredicates).sum());
+//                System.out.println(beExpression.createQueryFromPolices());
+                GuardHit gh = new GuardHit(beExpression);
+                gh.printAllGuards();
             }
         }
 

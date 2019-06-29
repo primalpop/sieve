@@ -61,7 +61,6 @@ public class PredicateMerge {
         BEExpression beM = new BEExpression();
         beM.getPolicies().add(oMap.get(oc1));
         beM.getPolicies().add(oMap.get(oc2));
-        if (!oc1.overlaps(oc2)) return null;
         if(shouldIMerge(oc1, oc2, beM)) subMerged = oc1.union(oc2);
         return subMerged;
     }
@@ -82,6 +81,8 @@ public class PredicateMerge {
     private void extendOnAttribute(String attribute) {
         List<ObjectCondition> preds = aMap.get(attribute);
         Collections.sort(preds);
+        int mergeCount = 0;
+        int identicalCount = 0;
         for (int i = 0; i < preds.size(); i++) {
             ObjectCondition oc1 = preds.get(i);
             int nextCount = 0;
@@ -89,19 +90,28 @@ public class PredicateMerge {
             eqObjs.add(oc1);
             for (int j = i+1; j < preds.size(); j++) {
                 ObjectCondition oc2 = preds.get(j);
-                if(oc1.equalsWithoutId(oc2)) eqObjs.add(oc2); //TODO: remove equivalent count
+                if (!oc1.overlaps(oc2)) {
+                    continue;
+                }
+                if(oc1.equalsWithoutId(oc2)) {
+                    identicalCount += 1;
+                    eqObjs.add(oc2);
+                }
                 ObjectCondition cMerged = mergeEm(oc1, oc2);
                 if (cMerged != null) {
+                    mergeCount += 1;
                     BEPolicy mPolicy = new BEPolicy();
                     mPolicy.getObject_conditions().addAll(oMap.get(oc1).getObject_conditions());
                     mPolicy.getObject_conditions().addAll(oMap.get(oc2).getObject_conditions());
-                    oMap.get(oc1).getObject_conditions().add(cMerged);
-                    oMap.get(oc2).getObject_conditions().add(cMerged);
+                    if(!oMap.get(oc1).containsObjCond(cMerged)) oMap.get(oc1).getObject_conditions().add(cMerged);
+                    if(!oMap.get(oc2).containsObjCond(cMerged)) oMap.get(oc2).getObject_conditions().add(cMerged);
                     oMap.put(cMerged, mPolicy);
                     for (ObjectCondition og: eqObjs) {
                         if(!og.getPolicy_id().equalsIgnoreCase(oc1.getPolicy_id()) ||
-                                !og.getPolicy_id().equalsIgnoreCase(oc2.getPolicy_id()))
-                            oMap.get(og).getObject_conditions().add(cMerged);
+                                !og.getPolicy_id().equalsIgnoreCase(oc2.getPolicy_id())) {
+                            if (!oMap.get(og).containsObjCond(cMerged))
+                                oMap.get(og).getObject_conditions().add(cMerged);
+                        }
                     }
                     oc1 = cMerged;
                 }
@@ -114,11 +124,16 @@ public class PredicateMerge {
                 i+= eqObjs.size();
             }
         }
+        System.out.println("Attribute: " + attribute
+                + " Merge Count " + mergeCount + " Identical Count " + identicalCount);
     }
 
     public void extend(){
         for (String attrKey: aMap.keySet()) {
-            if(aMap.get(attrKey).size()>1) extendOnAttribute(attrKey);
+            if (!PolicyConstants.RANGE_ATTR_LIST.contains(attrKey)) continue;
+            if(aMap.get(attrKey).size()>1) {
+                extendOnAttribute(attrKey);
+            }
         }
     }
 }
