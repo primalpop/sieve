@@ -8,6 +8,7 @@ import edu.uci.ics.tippers.fileop.Reader;
 import edu.uci.ics.tippers.fileop.Writer;
 import edu.uci.ics.tippers.model.guard.FactorExtension;
 import edu.uci.ics.tippers.model.guard.FactorSearch;
+import edu.uci.ics.tippers.model.guard.PredicateMerge;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
 
@@ -110,8 +111,8 @@ public class PolicyExecution {
                     Duration guardGen = Duration.ofMillis(0);
                     Instant fsStart = Instant.now();
                     if(EXTEND_PREDICATES){
-                        FactorExtension f = new FactorExtension(beExpression);
-                        f.doYourThing();
+                        PredicateMerge pm = new PredicateMerge(beExpression);
+                        pm.extend();
                     }
                     FactorSearch fs = new FactorSearch(beExpression);
                     fs.search(SEARCH_DEPTH);
@@ -119,12 +120,7 @@ public class PolicyExecution {
                     guardGen = guardGen.plus(Duration.between(fsStart, fsEnd));
                     policyRunTimes.put(file.getName() + "-guardGeneration", String.valueOf(guardGen.toMillis()));
                     List<String> gList = fs.createGuardQueries();
-                    int i = 0;
-                    for (String k : gList) {
-                        i += 1;
-                        System.out.println("guard " + i + " " + k);
-                    }
-                    System.out.println("Total number of guards: " + i);
+                    System.out.println("Total number of guards: " + gList.size());
 
 //                    Duration execTime = Duration.ofMillis(0);
 //                    MySQLResult execResult = mySQLQueryManager.runTimedQueryExp(fs.createGuardedExpQuery(GUARD_UNION));
@@ -142,7 +138,7 @@ public class PolicyExecution {
     }
 
     private void generatePolicies(String policyDir) {
-        int[] policyNumbers = {1000};
+        int[] policyNumbers = {100};
         int[] policyEpochs = {0};
         System.out.println("Generating Policies ..........");
         List<BEPolicy> bePolicies = new ArrayList<>();
@@ -177,7 +173,7 @@ public class PolicyExecution {
     public static void main(String args[]) {
         PolicyExecution pe = new PolicyExecution();
 //        pe.persistPolicies(100);
-        pe.generatePolicies(PolicyConstants.BE_POLICY_DIR);
-//        pe.runBEPolicies(PolicyConstants.BE_POLICY_DIR);
+//        pe.generatePolicies(PolicyConstants.BE_POLICY_DIR);
+        pe.runBEPolicies(PolicyConstants.BE_POLICY_DIR);
     }
 }

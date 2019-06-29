@@ -123,6 +123,26 @@ public class BooleanCondition  implements Comparable<BooleanCondition>  {
         return r.toString();
     }
 
+    /**
+     * Removes duplicate predicates
+     * @return
+     */
+    public String printRange(){
+        StringBuilder r = new StringBuilder();
+        BooleanCondition dupElim = new BooleanCondition(this);
+        Set<BooleanPredicate> og = new HashSet<>(dupElim.getBooleanPredicates());
+        dupElim.getBooleanPredicates().clear();
+        dupElim.getBooleanPredicates().addAll(og);
+        String lr = "", hr = "";
+        for (BooleanPredicate bp: dupElim.getBooleanPredicates()) {
+            if(bp.getOperator().equals(">=")) lr =  bp.getValue();
+            if(bp.getOperator().equals("<=")) hr = bp.getValue();
+        }
+        r.append("[").append(lr).append(", ").append(hr).append("]");
+        return r.toString();
+    }
+
+
     //TODO: Compare it using String instead?
     public static LocalDateTime timeStampToLDT(String timestamp) {
         return LocalDateTime.parse(timestamp, PolicyConstants.TIME_FORMATTER);
