@@ -1,14 +1,14 @@
 package edu.uci.ics.tippers.model.guard;
 
 import edu.uci.ics.tippers.common.PolicyConstants;
+import edu.uci.ics.tippers.db.MySQLQueryManager;
+import edu.uci.ics.tippers.db.MySQLResult;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
 import edu.uci.ics.tippers.model.policy.ObjectCondition;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.time.Duration;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class GuardHit {
@@ -17,6 +17,9 @@ public class GuardHit {
     Term input;
     Set<ObjectCondition> canFactors;
     List<Term> finalForm;
+
+    MySQLQueryManager mySQLQueryManager = new MySQLQueryManager();
+
 
     public GuardHit(BEExpression originalExp){
 
@@ -37,6 +40,7 @@ public class GuardHit {
             }
             if(!match) canFactors.add(pf);
         }
+        generateAllGuards(this.input);
     }
 
 
@@ -110,19 +114,102 @@ public class GuardHit {
         for (BEPolicy bePolicy : current.getRemainder().getPolicies()) {
             finalForm.add(forSinglePolicy(bePolicy));
         }
-        System.out.println("**** Real Guards " + realG);
     }
 
-    public void printAllGuards(){
-        generateAllGuards(this.input);
-        int count = 0;
-        int numOfPolicies = 0;
-        for (Term mt: finalForm) {
-            count += 1;
-//            System.out.println(mt.getFactor().print() + PolicyConstants.CONJUNCTION
-//                    + mt.getQuotient().createQueryFromPolices());
-            numOfPolicies += mt.getQuotient().getPolicies().size();
+    public String createGuardedQuery(boolean noDuplicates){
+        List<String> gList = createGuardQueries();
+        StringBuilder queryExp = new StringBuilder();
+        String delim = "";
+        for (String g: gList) {
+            queryExp.append(delim);
+            queryExp.append(PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS + g);
+            delim = noDuplicates ? PolicyConstants.UNION : PolicyConstants.UNION_ALL;
         }
-        System.out.println("** Number of Guards: " + count + "| Total Policies: " + numOfPolicies + " **");
+        return queryExp.toString();
     }
+
+    public List<String> createGuardQueries(){
+        List<String> guardQueries = new ArrayList<>();
+        for (Term mt: finalForm)
+           guardQueries.add(mt.getFactor().print() + PolicyConstants.CONJUNCTION + mt.getQuotient().createQueryFromPolices());
+        return  guardQueries;
+    }
+
+    private String createCleanQueryFromGQ(ObjectCondition guard, BEExpression partition) {
+        StringBuilder query = new StringBuilder();
+        query.append(guard.print());
+        query.append(PolicyConstants.CONJUNCTION);
+        query.append("(");
+        partition.cleanQueryFromPolices();
+        query.append(partition.createQueryFromPolices());
+        query.append(")");
+        return query.toString();
+    }
+
+
+    public List<String> guardAnalysis(int repetitions) {
+        List<String> guardResults = new ArrayList<>();
+        Duration totalEval = Duration.ofMillis(0);
+        for (Term mt : finalForm) {
+            System.out.println("Executing Guard " + mt.getFactor().print());
+            StringBuilder guardString = new StringBuilder();
+            guardString.append(mt.getQuotient().getPolicies().size());
+            guardString.append(",");
+            int numOfPreds = mt.getQuotient().getPolicies().stream().mapToInt(BEPolicy::countNumberOfPredicates).sum();
+            guardString.append(numOfPreds);
+            guardString.append(",");
+            List<Long> gList = new ArrayList<>();
+            List<Long> cList = new ArrayList<>();
+            int gCount = 0, tCount = 0;
+            for (int i = 0; i < repetitions; i++) {
+                MySQLResult guardResult = mySQLQueryManager.runTimedQueryWithSorting(mt.getFactor().print());
+                if (gCount == 0) gCount = guardResult.getResultCount();
+                gList.add(guardResult.getTimeTaken().toMillis());
+                MySQLResult completeResult = mySQLQueryManager.runTimedQueryWithSorting(createCleanQueryFromGQ(mt.getFactor(),
+                        mt.getQuotient()));
+                if (tCount == 0) tCount = completeResult.getResultCount();
+                cList.add(completeResult.getTimeTaken().toMillis());
+
+            }
+
+            Duration gCost, gAndPcost;
+            if(repetitions >= 3) {
+                Collections.sort(gList);
+                List<Long> clippedGList = gList.subList(1, repetitions - 1);
+                gCost = Duration.ofMillis(clippedGList.stream().mapToLong(i -> i).sum() / clippedGList.size());
+                Collections.sort(cList);
+                List<Long> clippedCList = cList.subList(1, repetitions - 1);
+                gAndPcost = Duration.ofMillis(clippedCList.stream().mapToLong(i -> i).sum() / clippedCList.size());
+            }
+            else{
+                gCost =  Duration.ofMillis(gList.stream().mapToLong(i -> i).sum() / gList.size());
+                gAndPcost = Duration.ofMillis(cList.stream().mapToLong(i -> i).sum() / cList.size());
+            }
+
+            guardString.append(gCount);
+            guardString.append(",");
+            guardString.append(tCount);
+            guardString.append(",");
+
+            double rCount = 0.0;
+            if(tCount != 0 ){
+                rCount = gCount / tCount;
+            }
+            guardString.append(rCount);
+            guardString.append(",");
+
+            guardString.append(gCost.toMillis());
+            guardString.append(",");
+            guardString.append(gAndPcost.toMillis());
+            guardString.append(",");
+            guardString.append(createCleanQueryFromGQ(mt.getFactor(), mt.getQuotient()));
+            guardResults.add(guardString.toString());
+            totalEval = totalEval.plus(gAndPcost);
+        }
+        System.out.println("Total Guard Evaluation time: " + totalEval);
+        guardResults.add("Total Guard Evaluation time," + totalEval.toMillis());
+        return guardResults;
+
+    }
+
 }

@@ -48,10 +48,9 @@ public class RunMe {
 //                System.out.println(beExpression.createQueryFromPolices());
 //                PredicateMerge pm = new PredicateMerge(beExpression);
 //                pm.extend();
-//                System.out.println(beExpression.getPolicies().stream().mapToInt(BEPolicy::countNumberOfPredicates).sum());
+                System.out.println(beExpression.getPolicies().stream().mapToInt(BEPolicy::countNumberOfPredicates).sum());
 //                System.out.println(beExpression.createQueryFromPolices());
                 GuardHit gh = new GuardHit(beExpression);
-                gh.printAllGuards();
             }
         }
 
