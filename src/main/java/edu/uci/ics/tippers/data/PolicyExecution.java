@@ -8,6 +8,7 @@ import edu.uci.ics.tippers.fileop.Reader;
 import edu.uci.ics.tippers.fileop.Writer;
 import edu.uci.ics.tippers.model.guard.FactorExtension;
 import edu.uci.ics.tippers.model.guard.FactorSearch;
+import edu.uci.ics.tippers.model.guard.GuardHit;
 import edu.uci.ics.tippers.model.guard.PredicateMerge;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
@@ -111,23 +112,43 @@ public class PolicyExecution {
                     Duration guardGen = Duration.ofMillis(0);
                     Instant fsStart = Instant.now();
                     if(EXTEND_PREDICATES){
+                        System.out.println("Before Merge: " + beExpression.getPolicies().stream().mapToInt(BEPolicy::countNumberOfPredicates).sum());
                         PredicateMerge pm = new PredicateMerge(beExpression);
                         pm.extend();
+                        System.out.println("After Merge: " + beExpression.getPolicies().stream().mapToInt(BEPolicy::countNumberOfPredicates).sum());
                     }
-                    FactorSearch fs = new FactorSearch(beExpression);
-                    fs.search(SEARCH_DEPTH);
+                    GuardHit gh = new GuardHit(beExpression);
                     Instant fsEnd = Instant.now();
                     guardGen = guardGen.plus(Duration.between(fsStart, fsEnd));
                     policyRunTimes.put(file.getName() + "-guardGeneration", String.valueOf(guardGen.toMillis()));
-                    List<String> gList = fs.createGuardQueries();
-                    System.out.println("Total number of guards: " + gList.size());
+                    System.out.println("Guard Generation time: " + guardGen);
 
-//                    Duration execTime = Duration.ofMillis(0);
-//                    MySQLResult execResult = mySQLQueryManager.runTimedQueryExp(fs.createGuardedExpQuery(GUARD_UNION));
-//                    execTime = execTime.plus(execResult.getTimeTaken());
-//                    policyRunTimes.put(file.getName() + "-executionTime", String.valueOf(execTime.toMillis()));
-                    writer.appendToCSVReport(policyRunTimes, policyDir, RESULTS_FILE);
-                    policyRunTimes.clear();
+                    Duration execTime = Duration.ofMillis(0);
+                    if(GUARD_UNION) {
+                        MySQLResult execResult = mySQLQueryManager.runTimedQueryExp(gh.createGuardedQuery(GUARD_UNION));
+                        execTime = execTime.plus(execResult.getTimeTaken());
+                        policyRunTimes.put(file.getName() + "-executionTime with UNION", String.valueOf(execTime.toMillis()));
+                        writer.appendToCSVReport(policyRunTimes, policyDir, RESULTS_FILE);
+                        policyRunTimes.clear();
+                    }
+                    else{
+//                        List<String> guardResults = new ArrayList<>();
+//                        List <String> guardList = gh.createGuardQueries();
+//                        Duration totalEval = Duration.ofMillis(0);
+//                        for (String kOb : guardList) {
+//                            System.out.println("Executing Guard Expression: " + kOb);
+//                            StringBuilder guardString = new StringBuilder();
+//                            MySQLResult completeResult = mySQLQueryManager.runTimedQueryWithSorting(kOb);
+//                            guardString.append(completeResult.getTimeTaken().toMillis());
+//                            guardString.append(",");
+//                            guardString.append(kOb);
+//                            guardResults.add(guardString.toString());
+//                            totalEval = totalEval.plus(completeResult.getTimeTaken());
+//                        }
+//                        System.out.println("Total Guard Evaluation time: " + totalEval);
+//                        guardResults.add("Total Guard Evaluation time," + totalEval.toMillis());
+                        writer.addGuardReport(gh.guardAnalysis(1), policyDir, RESULTS_FILE);
+                    }
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -138,7 +159,7 @@ public class PolicyExecution {
     }
 
     private void generatePolicies(String policyDir) {
-        int[] policyNumbers = {100};
+        int[] policyNumbers = {50};
         int[] policyEpochs = {0};
         System.out.println("Generating Policies ..........");
         List<BEPolicy> bePolicies = new ArrayList<>();

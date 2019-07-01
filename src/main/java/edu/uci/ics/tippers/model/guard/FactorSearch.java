@@ -298,6 +298,7 @@ public class FactorSearch {
     }
 
 
+
     public List<String> printDetailedResults(int repetitions) {
         List<String> guardResults = new ArrayList<>();
         Duration totalEval = Duration.ofMillis(0);
@@ -348,5 +349,4 @@ public class FactorSearch {
         guardResults.add("Total Guard Evaluation time," + totalEval.toMillis());
         return guardResults;
     }
-
 }

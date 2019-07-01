@@ -98,7 +98,15 @@ public class Writer {
     }
 
     public void addGuardReport(List<String> guardStrings, String fileDir, String fileName) {
-        String FILE_HEADER = "Coverage_of_guard,Coverage_of_guard_and_partition,Time_taken_by_each_guard,Time_taken_by_each_guard_and_partition, Guard_and_Partition";
+        String FILE_HEADER =
+                "Number of policies in the partition, " +
+                "Number of predicates in policies, " +
+                "Coverage_of_guard," +
+                "Coverage_of_guard_and_partition," +
+                        "Ratio of guard to the partition, " +
+                "Time_taken_by_each_guard," +
+                "Time_taken_by_each_guard_and_partition, " +
+                "Guard_and_Partition";
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(fileDir + fileName, true));
             writer.write(FILE_HEADER);
