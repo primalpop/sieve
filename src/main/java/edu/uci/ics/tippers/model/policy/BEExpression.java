@@ -232,6 +232,14 @@ public class BEExpression{
      * Estimates the cost of evaluation of policies as the sum of evaluating individual policies
      * @return
      */
+    public double estimateCostForTableScan(){
+        return this.getPolicies().stream().mapToDouble(BEPolicy::estimateTableScanCost).sum();
+    }
+
+    /**
+     * Estimates the cost of evaluation of policies as the sum of evaluating individual policies
+     * @return
+     */
     public double estimateCostForSelection(boolean evalOnly){
         return this.getPolicies().stream().mapToDouble(p -> p.estimateCost(evalOnly)).sum();
     }

@@ -141,22 +141,22 @@ public class PolicyExecution {
                         policyRunTimes.clear();
                     }
                     else{
-                        List<String> guardResults = new ArrayList<>();
-                        List <String> guardList = gh.createGuardQueries();
-                        Duration totalEval = Duration.ofMillis(0);
-                        for (String kOb : guardList) {
-                            System.out.println("Executing Guard Expression: " + kOb);
-                            StringBuilder guardString = new StringBuilder();
-                            MySQLResult completeResult = mySQLQueryManager.runTimedQueryWithSorting(kOb);
-                            guardString.append(completeResult.getTimeTaken().toMillis());
-                            guardString.append(",");
-                            guardString.append(kOb);
-                            guardResults.add(guardString.toString());
-                            totalEval = totalEval.plus(completeResult.getTimeTaken());
-                        }
-                        System.out.println("Total Guard Evaluation time: " + totalEval);
-                        guardResults.add("Total Guard Evaluation time," + totalEval.toMillis());
-//                        writer.addGuardReport(gh.guardAnalysis(1), policyDir, RESULTS_FILE);
+//                        List<String> guardResults = new ArrayList<>();
+//                        List <String> guardList = gh.createGuardQueries();
+//                        Duration totalEval = Duration.ofMillis(0);
+//                        for (String kOb : guardList) {
+//                            System.out.println("Executing Guard Expression: " + kOb);
+//                            StringBuilder guardString = new StringBuilder();
+//                            MySQLResult completeResult = mySQLQueryManager.runTimedQueryWithSorting(kOb);
+//                            guardString.append(completeResult.getTimeTaken().toMillis());
+//                            guardString.append(",");
+//                            guardString.append(kOb);
+//                            guardResults.add(guardString.toString());
+//                            totalEval = totalEval.plus(completeResult.getTimeTaken());
+//                        }
+//                        System.out.println("Total Guard Evaluation time: " + totalEval);
+//                        guardResults.add("Total Guard Evaluation time," + totalEval.toMillis());
+                        writer.addGuardReport(gh.guardAnalysis(1), policyDir, RESULTS_FILE);
                     }
 //
                 } catch (Exception e) {
