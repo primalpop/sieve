@@ -64,10 +64,8 @@ public class BooleanPredicate {
 
     @Override
     public String toString() {
-        return "BooleanPredicate{" +
-                "value='" + value + '\'' +
-                ", operator='" + operator + '\'' +
-                '}';
+        return
+                value + operator;
     }
 
     public int compareOnType(BooleanPredicate o, String attribute) {

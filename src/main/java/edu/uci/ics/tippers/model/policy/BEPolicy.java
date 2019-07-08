@@ -338,6 +338,12 @@ public class BEPolicy {
         return result;
     }
 
+    public double estimateTableScanCost() {
+        return PolicyConstants.NUMBER_OR_TUPLES * (PolicyConstants.IO_BLOCK_READ_COST  +
+                    PolicyConstants.ROW_EVALUATE_COST * PolicyConstants.NUMBER_OF_PREDICATES_EVALUATED *
+                            countNumberOfPredicates());
+    }
+
     /**
      * If eval
      * Estimates the upper bound of the cost of evaluating an individual policy by adding up

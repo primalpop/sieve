@@ -44,12 +44,12 @@ public class GuardHit {
     }
 
 
-    private long benefit(BEExpression quotient){
-        return quotient.getPolicies().size();
+    private double benefit(ObjectCondition factor, BEExpression quotient){
+        return quotient.estimateCostForTableScan() - quotient.estimateCostOfGuardRep(factor,false);
     }
 
-    private double cost(ObjectCondition factor, BEExpression quotient){
-        return quotient.estimateCostOfGuardRep(factor, false);
+    private double cost(ObjectCondition factor){
+        return PolicyConstants.NUMBER_OR_TUPLES * factor.computeL() * PolicyConstants.IO_BLOCK_READ_COST;
     }
 
 
@@ -61,7 +61,7 @@ public class GuardHit {
             BEExpression tempQuotient = new BEExpression(current.getRemainder());
             tempQuotient.checkAgainstPolices(objectCondition);
             if (tempQuotient.getPolicies().size() > 1) { //was able to factorize
-                double utility = benefit(tempQuotient)/cost(objectCondition, tempQuotient);
+                double utility = benefit(objectCondition, tempQuotient)/cost(objectCondition);
                 if (utility > maxUtility) { //factorized is better than original
                     maxUtility = utility;
                     mTerm = new Term();
@@ -69,8 +69,8 @@ public class GuardHit {
                     mTerm.setRemainder(new BEExpression(current.getRemainder()));
                     mTerm.getRemainder().getPolicies().removeAll(mTerm.getQuotient().getPolicies());
                     mTerm.setFactor(objectCondition);
-                    mTerm.setBenefit(benefit(mTerm.getQuotient()));
-                    mTerm.setCost(cost(mTerm.getFactor(), mTerm.getQuotient()));
+                    mTerm.setBenefit(benefit(mTerm.getFactor(), mTerm.getQuotient()));
+                    mTerm.setCost(cost(mTerm.getFactor()));
                     mTerm.setUtility(utility);
                 }
             } else removal.add(objectCondition); //not a factor of at least two policies
