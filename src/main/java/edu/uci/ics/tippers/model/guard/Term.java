@@ -20,6 +20,12 @@ public class Term implements Comparable<Term> {
 
     private double hscore;
 
+    private double benefit;
+
+    private double cost;
+
+    private double utility;
+
     public Term(){
         this.factor = new ObjectCondition();
         this.quotient = new BEExpression();
@@ -27,6 +33,9 @@ public class Term implements Comparable<Term> {
         this.fscore = 0.0;
         this.gscore = 0.0;
         this.hscore = 0.0;
+        this.benefit = 0.0;
+        this.cost = 0.0;
+        this.utility = 0.0;
     }
 
     public Term(ObjectCondition factor, BEExpression quotient){
@@ -80,6 +89,30 @@ public class Term implements Comparable<Term> {
 
     public void setHscore(double hscore) {
         this.hscore = hscore;
+    }
+
+    public double getBenefit() {
+        return benefit;
+    }
+
+    public void setBenefit(double benefit) {
+        this.benefit = benefit;
+    }
+
+    public double getCost() {
+        return cost;
+    }
+
+    public void setCost(double cost) {
+        this.cost = cost;
+    }
+
+    public double getUtility() {
+        return utility;
+    }
+
+    public void setUtility(double utility) {
+        this.utility = utility;
     }
 
     @Override

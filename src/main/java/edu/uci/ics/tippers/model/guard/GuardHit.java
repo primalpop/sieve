@@ -69,6 +69,9 @@ public class GuardHit {
                     mTerm.setRemainder(new BEExpression(current.getRemainder()));
                     mTerm.getRemainder().getPolicies().removeAll(mTerm.getQuotient().getPolicies());
                     mTerm.setFactor(objectCondition);
+                    mTerm.setBenefit(benefit(mTerm.getQuotient()));
+                    mTerm.setCost(cost(mTerm.getFactor(), mTerm.getQuotient()));
+                    mTerm.setUtility(utility);
                 }
             } else removal.add(objectCondition); //not a factor of at least two policies
         }
@@ -95,7 +98,6 @@ public class GuardHit {
     }
 
     private void generateAllGuards(Term current) {
-        int realG = 0;
         while (true) {
             if (current.getRemainder().getPolicies().size() > 1) {
                 if (canFactors.size() > 1) {
@@ -104,7 +106,6 @@ public class GuardHit {
 //                        System.out.println("Guard generated" + nTerm.getFactor().print());
                         finalForm.add(nTerm);
                         current = nTerm;
-                        realG += 1;
                         continue;
                     }
                 }
@@ -196,6 +197,15 @@ public class GuardHit {
                 rCount = gCount / tCount;
             }
             guardString.append(rCount);
+            guardString.append(",");
+
+            guardString.append(mt.getBenefit());
+            guardString.append(",");
+
+            guardString.append(mt.getCost());
+            guardString.append(",");
+
+            guardString.append(mt.getUtility());
             guardString.append(",");
 
             guardString.append(gCost.toMillis());
