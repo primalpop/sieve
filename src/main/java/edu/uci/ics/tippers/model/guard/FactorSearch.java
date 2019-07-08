@@ -272,7 +272,7 @@ public class FactorSearch {
                 }
                 BEPolicy remPolicy = new BEPolicy(bePolicy);
                 remPolicy.cleanDuplicates();
-                String remainderQuery = "from remainder " + gOC.print() +
+                String remainderQuery = gOC.print() +
                         PolicyConstants.CONJUNCTION + "(" + remPolicy.createQueryFromObjectConditions() + ")";
                 guardList.add(remainderQuery);
                 guardCount+= 1;

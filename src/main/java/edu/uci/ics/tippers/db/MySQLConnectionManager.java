@@ -27,7 +27,7 @@ public class MySQLConnectionManager {
 
     private MySQLConnectionManager() {
         try {
-            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("mysql/smalltest.properties");
+            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("mysql/bigtest.properties");
             props = new Properties();
             props.load(inputStream);
 

@@ -104,6 +104,9 @@ public class Writer {
                 "Coverage_of_guard," +
                 "Coverage_of_guard_and_partition," +
                         "Ratio of guard to the partition, " +
+                        "Benefit of guard, " +
+                        "Cost of guard, " +
+                        "Utility of guard, " +
                 "Time_taken_by_each_guard," +
                 "Time_taken_by_each_guard_and_partition, " +
                 "Guard_and_Partition";
