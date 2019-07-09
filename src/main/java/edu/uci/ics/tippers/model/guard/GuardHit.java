@@ -49,7 +49,8 @@ public class GuardHit {
     }
 
     private double cost(ObjectCondition factor){
-        return PolicyConstants.NUMBER_OR_TUPLES * factor.computeL() * PolicyConstants.IO_BLOCK_READ_COST;
+        return PolicyConstants.NUMBER_OR_TUPLES * factor.computeL() * PolicyConstants.IO_BLOCK_READ_COST +
+                PolicyConstants.NUMBER_OR_TUPLES * factor.computeL() * PolicyConstants.ROW_EVALUATE_COST;
     }
 
 
@@ -138,6 +139,8 @@ public class GuardHit {
 
     private String createCleanQueryFromGQ(ObjectCondition guard, BEExpression partition) {
         StringBuilder query = new StringBuilder();
+        query.append("USE INDEX (" + PolicyConstants.ATTRIBUTE_IND.get(guard.getAttribute()) + ")");
+        query.append(" WHERE ");
         query.append(guard.print());
         query.append(PolicyConstants.CONJUNCTION);
         query.append("(");
@@ -163,11 +166,11 @@ public class GuardHit {
             List<Long> cList = new ArrayList<>();
             int gCount = 0, tCount = 0;
             for (int i = 0; i < repetitions; i++) {
-                MySQLResult guardResult = mySQLQueryManager.runTimedQueryWithSorting(mt.getFactor().print());
+                MySQLResult guardResult = mySQLQueryManager.runTimedQueryWithSorting(mt.getFactor().print(), true);
                 if (gCount == 0) gCount = guardResult.getResultCount();
                 gList.add(guardResult.getTimeTaken().toMillis());
                 MySQLResult completeResult = mySQLQueryManager.runTimedQueryWithSorting(createCleanQueryFromGQ(mt.getFactor(),
-                        mt.getQuotient()));
+                        mt.getQuotient()), false);
                 if (tCount == 0) tCount = completeResult.getResultCount();
                 cList.add(completeResult.getTimeTaken().toMillis());
 

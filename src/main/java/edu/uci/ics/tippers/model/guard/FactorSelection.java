@@ -273,7 +273,7 @@ public class FactorSelection {
             List<Long> cList = new ArrayList<>();
             MySQLResult mySQLResult = new MySQLResult();
             for (int i = 0; i < repetitions; i++) {
-                mySQLResult = mySQLQueryManager.runTimedQueryWithSorting(createCleanQueryFromGQ(kOb, gMap.get(kOb)));
+                mySQLResult = mySQLQueryManager.runTimedQueryWithSorting(createCleanQueryFromGQ(kOb, gMap.get(kOb)), true);
                 cList.add(mySQLResult.getTimeTaken().toMillis());
             }
             Collections.sort(cList);
@@ -314,10 +314,10 @@ public class FactorSelection {
             List<Long> cList = new ArrayList<>();
             int gCount = 0, tCount = 0;
             for (int i = 0; i < repetitions; i++) {
-                MySQLResult guardResult = mySQLQueryManager.runTimedQueryWithSorting(kOb.print());
+                MySQLResult guardResult = mySQLQueryManager.runTimedQueryWithSorting(kOb.print(), true);
                 if (gCount == 0) gCount = guardResult.getResultCount();
                 gList.add(guardResult.getTimeTaken().toMillis());
-                MySQLResult completeResult = mySQLQueryManager.runTimedQueryWithSorting(createCleanQueryFromGQ(kOb, gMap.get(kOb)));
+                MySQLResult completeResult = mySQLQueryManager.runTimedQueryWithSorting(createCleanQueryFromGQ(kOb, gMap.get(kOb)), true);
                 if (tCount == 0) tCount = completeResult.getResultCount();
                 cList.add(completeResult.getTimeTaken().toMillis());
 

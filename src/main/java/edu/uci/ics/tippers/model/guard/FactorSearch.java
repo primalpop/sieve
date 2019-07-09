@@ -310,10 +310,10 @@ public class FactorSearch {
             List<Long> cList = new ArrayList<>();
             int gCount = 0, tCount = 0;
             for (int i = 0; i < repetitions; i++) {
-                MySQLResult guardResult = mySQLQueryManager.runTimedQueryWithSorting(kOb);
+                MySQLResult guardResult = mySQLQueryManager.runTimedQueryWithSorting(kOb, true);
                 if (gCount == 0) gCount = guardResult.getResultCount();
                 gList.add(guardResult.getTimeTaken().toMillis());
-                MySQLResult completeResult = mySQLQueryManager.runTimedQueryWithSorting(kOb);
+                MySQLResult completeResult = mySQLQueryManager.runTimedQueryWithSorting(kOb, true);
                 if (tCount == 0) tCount = completeResult.getResultCount();
                 cList.add(completeResult.getTimeTaken().toMillis());
 
