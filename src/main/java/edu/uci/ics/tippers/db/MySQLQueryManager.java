@@ -156,9 +156,8 @@ public class MySQLQueryManager {
             MySQLResult mySQLResult = new MySQLResult();
             mySQLResult.setResultsCheck(resultCheck);
             List<Long> gList = new ArrayList<>();
-            System.out.println(PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS + predicates + ")");
             for (int i = 0; i < repetitions; i++)
-                gList.add(runWithThread(PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS + predicates + ")",
+                gList.add(runWithThread(PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS + predicates,
                         mySQLResult).getTimeTaken().toMillis());
             Duration gCost;
             if(repetitions >= 3) {
@@ -219,11 +218,15 @@ public class MySQLQueryManager {
      * @return
      * @throws PolicyEngineException
      */
-    public MySQLResult runTimedQueryWithSorting(String predicates) throws PolicyEngineException {
+    public MySQLResult runTimedQueryWithSorting(String predicates, boolean where) throws PolicyEngineException {
         try {
             MySQLResult mySQLResult = new MySQLResult();
-            return runWithThread(PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS + predicates +
+            if(!where)
+                return runWithThread(PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS + predicates +
                     PolicyConstants.ORDER_BY_ID, mySQLResult);
+            else
+                return runWithThread(PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS_WHERE + predicates +
+                        PolicyConstants.ORDER_BY_ID, mySQLResult);
         } catch (Exception e) {
             e.printStackTrace();
             throw new PolicyEngineException("Error Running Query");

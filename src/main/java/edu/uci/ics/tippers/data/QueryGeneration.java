@@ -76,7 +76,7 @@ public class QueryGeneration {
      * @return
      */
     private float checkSelectivity(String query) {
-        MySQLResult mySQLResult = mySQLQueryManager.runTimedQueryWithSorting(query);
+        MySQLResult mySQLResult = mySQLQueryManager.runTimedQueryWithSorting(query, true);
         return (float) mySQLResult.getResultCount() / (float) PolicyConstants.NUMBER_OR_TUPLES;
     }
 

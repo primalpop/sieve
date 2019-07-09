@@ -131,34 +131,34 @@ public class PolicyExecution {
                     guardGen = guardGen.plus(Duration.between(fsStart, fsEnd));
                     policyRunTimes.put(file.getName() + "-guardGeneration", String.valueOf(guardGen.toMillis()));
                     System.out.println("Guard Generation time: " + guardGen);
-
-                    Duration execTime = Duration.ofMillis(0);
-                    if(GUARD_UNION) {
-                        MySQLResult execResult = mySQLQueryManager.runTimedQueryExp(gh.createGuardedQuery(GUARD_UNION));
-                        execTime = execTime.plus(execResult.getTimeTaken());
-                        policyRunTimes.put(file.getName() + "-executionTime with UNION", String.valueOf(execTime.toMillis()));
-                        writer.appendToCSVReport(policyRunTimes, policyDir, RESULTS_FILE);
-                        policyRunTimes.clear();
-                    }
-                    else{
-//                        List<String> guardResults = new ArrayList<>();
-//                        List <String> guardList = gh.createGuardQueries();
-//                        Duration totalEval = Duration.ofMillis(0);
-//                        for (String kOb : guardList) {
-//                            System.out.println("Executing Guard Expression: " + kOb);
-//                            StringBuilder guardString = new StringBuilder();
-//                            MySQLResult completeResult = mySQLQueryManager.runTimedQueryWithSorting(kOb);
-//                            guardString.append(completeResult.getTimeTaken().toMillis());
-//                            guardString.append(",");
-//                            guardString.append(kOb);
-//                            guardResults.add(guardString.toString());
-//                            totalEval = totalEval.plus(completeResult.getTimeTaken());
-//                        }
-//                        System.out.println("Total Guard Evaluation time: " + totalEval);
-//                        guardResults.add("Total Guard Evaluation time," + totalEval.toMillis());
-                        writer.addGuardReport(gh.guardAnalysis(1), policyDir, RESULTS_FILE);
-                    }
 //
+//                    Duration execTime = Duration.ofMillis(0);
+//                    if(GUARD_UNION) {
+//                        MySQLResult execResult = mySQLQueryManager.runTimedQueryExp(gh.createGuardedQuery(GUARD_UNION));
+//                        execTime = execTime.plus(execResult.getTimeTaken());
+//                        policyRunTimes.put(file.getName() + "-executionTime with UNION", String.valueOf(execTime.toMillis()));
+//                        writer.appendToCSVReport(policyRunTimes, policyDir, RESULTS_FILE);
+//                        policyRunTimes.clear();
+//                    }
+//                    else{
+////                        List<String> guardResults = new ArrayList<>();
+////                        List <String> guardList = gh.createGuardQueries();
+////                        Duration totalEval = Duration.ofMillis(0);
+////                        for (String kOb : guardList) {
+////                            System.out.println("Executing Guard Expression: " + kOb);
+////                            StringBuilder guardString = new StringBuilder();
+////                            MySQLResult completeResult = mySQLQueryManager.runTimedQueryWithSorting(kOb);
+////                            guardString.append(completeResult.getTimeTaken().toMillis());
+////                            guardString.append(",");
+////                            guardString.append(kOb);
+////                            guardResults.add(guardString.toString());
+////                            totalEval = totalEval.plus(completeResult.getTimeTaken());
+////                        }
+////                        System.out.println("Total Guard Evaluation time: " + totalEval);
+////                        guardResults.add("Total Guard Evaluation time," + totalEval.toMillis());
+                        writer.addGuardReport(gh.guardAnalysis(1), policyDir, RESULTS_FILE);
+//                    }
+
                 } catch (Exception e) {
                     e.printStackTrace();
                     policyRunTimes.put(file.getName(), PolicyConstants.MAX_DURATION.toString());
@@ -168,7 +168,7 @@ public class PolicyExecution {
     }
 
     private void generatePolicies(String policyDir) {
-        int[] policyNumbers = {50};
+        int[] policyNumbers = {1, 2, 3, 4, 5};
         int[] policyEpochs = {0};
         System.out.println("Generating Policies ..........");
         List<BEPolicy> bePolicies = new ArrayList<>();
