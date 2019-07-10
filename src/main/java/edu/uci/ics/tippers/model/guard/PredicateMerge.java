@@ -71,9 +71,14 @@ public class PredicateMerge {
      *      1. we collect all the predicates on that attribute
      *      2. predicates are sorted based on their left range
      *      3. for each predicate (i)
-     *          3.a. we retrieve the i+1 predicate and check if it satisfies merge condition
-     *          3.b. then, merge it and add it to the original policies, update i = merged predicate
-     *          3.c  else update nextCount and check if it's greater than 2
+     *          3.a. for each predicate (j)
+     *          3.a.1. we check if i and j overlaps; continue if it doesn't
+     *          3.a.2 we check if they if they are identical and add them to eqObjs and continue the inner loop
+     *          3.a.2 then, we check the merge condition and merge them if it satisfies
+     *          3.a.3 the merged predicate is added to all the identical policies (stored in eqObjs)
+     *          3.a.4  if not merged, update nextCount (based on the merge theorem)
+     *          3.a.5  break and continue the outer loop if nextCount >=2
+     *          3.b increment the outer loop by the size of eqObjs
      *
      * @param attribute
      * @return
@@ -128,6 +133,10 @@ public class PredicateMerge {
                 + " Merge Count " + mergeCount + " Identical Count " + identicalCount);
     }
 
+    /**
+     * for each indexed attribute
+     *  call extendOnAttribute
+     */
     public void extend(){
         for (String attrKey: aMap.keySet()) {
             if (!PolicyConstants.RANGE_ATTR_LIST.contains(attrKey)) continue;

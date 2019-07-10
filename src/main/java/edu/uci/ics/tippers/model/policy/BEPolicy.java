@@ -339,7 +339,7 @@ public class BEPolicy {
     }
 
     public double estimateTableScanCost() {
-        return PolicyConstants.NUMBER_OR_TUPLES * (PolicyConstants.IO_BLOCK_READ_COST  +
+        return PolicyConstants.NUMBER_OR_TUPLES * (
                     PolicyConstants.ROW_EVALUATE_COST * PolicyConstants.NUMBER_OF_PREDICATES_EVALUATED *
                             countNumberOfPredicates());
     }
@@ -375,7 +375,6 @@ public class BEPolicy {
 
 
 
-    //TODO: Change into a non-static method
     /**
      * Selectivity of a conjunctive expression
      * e.g., A = u and B = v
@@ -384,7 +383,7 @@ public class BEPolicy {
      * @param objectConditions
      * @return
      */
-    public static double computeL(Collection<ObjectCondition> objectConditions){
+    public double computeL(Collection<ObjectCondition> objectConditions){
         double selectivity = 1;
         for (ObjectCondition obj: objectConditions) {
             selectivity *= obj.computeL();

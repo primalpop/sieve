@@ -59,7 +59,7 @@ public class BooleanPredicate {
             return false;
 
         BooleanPredicate bp = (BooleanPredicate) obj;
-        return bp.value.equals(value) && bp.operator.equals(operator);
+        return bp.value.equalsIgnoreCase(value) && bp.operator.equalsIgnoreCase(operator);
     }
 
     @Override

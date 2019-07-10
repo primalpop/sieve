@@ -60,7 +60,8 @@ public class ObjectCondition extends BooleanCondition {
         for (int i = 0; i < Histogram.getInstance().getBucketMap().get(this.getAttribute()).size(); i++) {
             Bucket b = Histogram.getInstance().getBucketMap().get(this.getAttribute()).get(i);
             if (Integer.parseInt(b.getValue()) >=
-                    Integer.parseInt(this.getBooleanPredicates().get(0).getValue())){
+                    Integer.parseInt(this.getBooleanPredicates().get(0).getValue()) && Integer.parseInt(b.getValue()) <=
+                    Integer.parseInt(this.getBooleanPredicates().get(1).getValue())){
                 frequency += b.getFreq();
             }
         }

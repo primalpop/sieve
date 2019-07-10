@@ -156,7 +156,7 @@ public class PolicyExecution {
 ////                        }
 ////                        System.out.println("Total Guard Evaluation time: " + totalEval);
 ////                        guardResults.add("Total Guard Evaluation time," + totalEval.toMillis());
-                        writer.addGuardReport(gh.guardAnalysis(1), policyDir, RESULTS_FILE);
+                        // writer.addGuardReport(gh.guardAnalysis(NUM_OF_REPS), policyDir, RESULTS_FILE);
 //                    }
 
                 } catch (Exception e) {
@@ -168,7 +168,7 @@ public class PolicyExecution {
     }
 
     private void generatePolicies(String policyDir) {
-        int[] policyNumbers = {1, 2, 3, 4, 5};
+        int[] policyNumbers = {100};
         int[] policyEpochs = {0};
         System.out.println("Generating Policies ..........");
         List<BEPolicy> bePolicies = new ArrayList<>();
