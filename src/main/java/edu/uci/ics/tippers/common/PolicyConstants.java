@@ -58,10 +58,9 @@ public class PolicyConstants {
 
 
     //QUERIES FOR EXPERIMENTATION
-    public static final String SELECT_ALL_SEMANTIC_OBSERVATIONS = "Select * from SEMANTIC_OBSERVATION  ";
+    public static final String SELECT_ALL_SEMANTIC_OBSERVATIONS = "Select SQL_NO_CACHE * from SEMANTIC_OBSERVATION  ";
 
-    public static final String SELECT_ALL_SEMANTIC_OBSERVATIONS_WHERE = "Select * from SEMANTIC_OBSERVATION WHERE ";
-
+    public static final String SELECT_ALL_SEMANTIC_OBSERVATIONS_WHERE = "Select SQL_NO_CACHE * from SEMANTIC_OBSERVATION WHERE ";
 
     public static final String ORDER_BY_ID = " order by id ";
 

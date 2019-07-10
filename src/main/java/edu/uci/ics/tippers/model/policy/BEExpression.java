@@ -245,6 +245,18 @@ public class BEExpression{
     }
 
     /**
+     * Estimates the CPU cost of evaluating the policies in the expression
+     * @param oc
+     * @return
+     */
+    public double estimateCPUCost(ObjectCondition oc){
+        long numOfPreds = this.getPolicies().stream().mapToInt(BEPolicy::countNumberOfPredicates).sum();
+        return PolicyConstants.NUMBER_OR_TUPLES * oc.computeL() * (
+                    PolicyConstants.ROW_EVALUATE_COST * numOfPreds * PolicyConstants.NUMBER_OF_PREDICATES_EVALUATED);
+    }
+
+
+    /**
      * TODO: In the case of identical predicates does it include savings from reading only once?
      * Estimates the cost of a evaluating the expression based on the object condition where the object condition
      * is evaluated using index scan and the rest of the policies are evaluated as filter.

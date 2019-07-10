@@ -45,12 +45,15 @@ public class GuardHit {
 
 
     private double benefit(ObjectCondition factor, BEExpression quotient){
-        return quotient.estimateCostForTableScan() - quotient.estimateCostOfGuardRep(factor,false);
+//        System.out.println("TS: " + quotient.estimateCostForTableScan());
+//        System.out.println("Number of Policies: " + quotient.getPolicies().stream().mapToInt(BEPolicy::countNumberOfPredicates).sum());
+//        System.out.println("Guard cost " + quotient.estimateCPUCost(factor));
+        return quotient.estimateCostForTableScan() - quotient.estimateCPUCost(factor);
     }
 
     private double cost(ObjectCondition factor){
-        return PolicyConstants.NUMBER_OR_TUPLES * factor.computeL() * PolicyConstants.IO_BLOCK_READ_COST +
-                PolicyConstants.NUMBER_OR_TUPLES * factor.computeL() * PolicyConstants.ROW_EVALUATE_COST;
+        return PolicyConstants.NUMBER_OR_TUPLES * factor.computeL() * PolicyConstants.IO_BLOCK_READ_COST ;
+        //+ PolicyConstants.NUMBER_OR_TUPLES * factor.computeL() * PolicyConstants.ROW_EVALUATE_COST;
     }
 
 
@@ -59,24 +62,29 @@ public class GuardHit {
         double maxUtility = 0.0;
         Term mTerm = null;
         for (ObjectCondition objectCondition : this.canFactors) {
+            System.out.print(objectCondition.print()+ ", ");
             BEExpression tempQuotient = new BEExpression(current.getRemainder());
             tempQuotient.checkAgainstPolices(objectCondition);
-            if (tempQuotient.getPolicies().size() > 1) { //was able to factorize
-                double utility = benefit(objectCondition, tempQuotient)/cost(objectCondition);
-                if (utility > maxUtility) { //factorized is better than original
-                    maxUtility = utility;
-                    mTerm = new Term();
-                    mTerm.setQuotient(tempQuotient);
-                    mTerm.setRemainder(new BEExpression(current.getRemainder()));
-                    mTerm.getRemainder().getPolicies().removeAll(mTerm.getQuotient().getPolicies());
-                    mTerm.setFactor(objectCondition);
-                    mTerm.setBenefit(benefit(mTerm.getFactor(), mTerm.getQuotient()));
-                    mTerm.setCost(cost(mTerm.getFactor()));
-                    mTerm.setUtility(utility);
-                }
+            System.out.print(benefit(objectCondition, tempQuotient) + ", ");
+            System.out.print(cost(objectCondition) + ", ");
+            double utility = benefit(objectCondition, tempQuotient)/cost(objectCondition);
+            System.out.print(utility );
+            System.out.println();
+            if (utility > maxUtility) { //factorized is better than original
+                maxUtility = utility;
+                mTerm = new Term();
+                mTerm.setQuotient(tempQuotient);
+                mTerm.setRemainder(new BEExpression(current.getRemainder()));
+                mTerm.getRemainder().getPolicies().removeAll(mTerm.getQuotient().getPolicies());
+                mTerm.setFactor(objectCondition);
+                mTerm.setBenefit(benefit(mTerm.getFactor(), mTerm.getQuotient()));
+                mTerm.setCost(cost(mTerm.getFactor()));
+                mTerm.setUtility(utility);
+
             } else removal.add(objectCondition); //not a factor of at least two policies
         }
         this.canFactors.removeAll(removal);
+        System.out.println("Guard selected "+ mTerm.getFactor() + " Policies  " + mTerm.getQuotient().getPolicies().size());
         return mTerm;
     }
 
@@ -166,9 +174,11 @@ public class GuardHit {
             List<Long> cList = new ArrayList<>();
             int gCount = 0, tCount = 0;
             for (int i = 0; i < repetitions; i++) {
+                System.out.println(mt.getFactor().print());
                 MySQLResult guardResult = mySQLQueryManager.runTimedQueryWithSorting(mt.getFactor().print(), true);
                 if (gCount == 0) gCount = guardResult.getResultCount();
                 gList.add(guardResult.getTimeTaken().toMillis());
+                System.out.println(mt.getQuotient());
                 MySQLResult completeResult = mySQLQueryManager.runTimedQueryWithSorting(createCleanQueryFromGQ(mt.getFactor(),
                         mt.getQuotient()), false);
                 if (tCount == 0) tCount = completeResult.getResultCount();
