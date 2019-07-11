@@ -50,7 +50,7 @@ public class RunMe {
 //                pm.extend();
                 System.out.println(beExpression.getPolicies().stream().mapToInt(BEPolicy::countNumberOfPredicates).sum());
 //                System.out.println(beExpression.createQueryFromPolices());
-                GuardHit gh = new GuardHit(beExpression);
+                GuardHit gh = new GuardHit(beExpression, true);
             }
         }
 

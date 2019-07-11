@@ -150,7 +150,7 @@ public class BooleanCondition  implements Comparable<BooleanCondition>  {
 
     @Override
     public String toString() {
-        return attribute + booleanPredicates;
+        return policy_id + attribute + booleanPredicates;
     }
 
     public String getPolicy_id() {

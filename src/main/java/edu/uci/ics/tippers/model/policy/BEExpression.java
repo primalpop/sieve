@@ -249,10 +249,9 @@ public class BEExpression{
      * @param oc
      * @return
      */
-    public double estimateCPUCost(ObjectCondition oc){
-        long numOfPreds = this.getPolicies().stream().mapToInt(BEPolicy::countNumberOfPredicates).sum();
+    public double estimateCPUCost(ObjectCondition oc, long numPreds){
         return PolicyConstants.NUMBER_OR_TUPLES * oc.computeL() * (
-                    PolicyConstants.ROW_EVALUATE_COST * numOfPreds * PolicyConstants.NUMBER_OF_PREDICATES_EVALUATED);
+                    PolicyConstants.ROW_EVALUATE_COST * numPreds * PolicyConstants.NUMBER_OF_PREDICATES_EVALUATED);
     }
 
 

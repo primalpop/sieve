@@ -108,15 +108,6 @@ public class PolicyExecution {
                         System.out.println("Baseline approach for " + file.getName() + " policies took " + runTime.toMillis());
                     }
 
-
-                    Duration guardGen = Duration.ofMillis(0);
-                    Instant fsStart = Instant.now();
-                    if (EXTEND_PREDICATES) {
-                        System.out.println("Before Merge: " + beExpression.getPolicies().stream().mapToInt(BEPolicy::countNumberOfPredicates).sum());
-                        PredicateMerge pm = new PredicateMerge(beExpression);
-                        pm.extend();
-                        System.out.println("After Merge: " + beExpression.getPolicies().stream().mapToInt(BEPolicy::countNumberOfPredicates).sum());
-                    }
 //                    FactorSearch fs = new FactorSearch(beExpression);
 //                    fs.search(SEARCH_DEPTH);
 //                    Instant fsEnd = Instant.now();
@@ -125,8 +116,9 @@ public class PolicyExecution {
 //                    System.out.println("Guard Generation time: " + guardGen);
 //                    writer.addGuardReport(fs.printDetailedResults(1), policyDir, RESULTS_FILE);
 
-
-                    GuardHit gh = new GuardHit(beExpression);
+                    Duration guardGen = Duration.ofMillis(0);
+                    Instant fsStart = Instant.now();
+                    GuardHit gh = new GuardHit(beExpression, EXTEND_PREDICATES);
                     Instant fsEnd = Instant.now();
                     guardGen = guardGen.plus(Duration.between(fsStart, fsEnd));
                     policyRunTimes.put(file.getName() + "-guardGeneration", String.valueOf(guardGen.toMillis()));
@@ -156,7 +148,7 @@ public class PolicyExecution {
 ////                        }
 ////                        System.out.println("Total Guard Evaluation time: " + totalEval);
 ////                        guardResults.add("Total Guard Evaluation time," + totalEval.toMillis());
-                        // writer.addGuardReport(gh.guardAnalysis(NUM_OF_REPS), policyDir, RESULTS_FILE);
+//                         writer.addGuardReport(gh.guardAnalysis(NUM_OF_REPS), policyDir, RESULTS_FILE);
 //                    }
 
                 } catch (Exception e) {
@@ -168,7 +160,7 @@ public class PolicyExecution {
     }
 
     private void generatePolicies(String policyDir) {
-        int[] policyNumbers = {100};
+        int[] policyNumbers = {10};
         int[] policyEpochs = {0};
         System.out.println("Generating Policies ..........");
         List<BEPolicy> bePolicies = new ArrayList<>();
