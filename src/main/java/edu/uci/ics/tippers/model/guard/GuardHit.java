@@ -17,38 +17,59 @@ public class GuardHit {
     Term input;
     Set<ObjectCondition> canFactors;
     List<Term> finalForm;
+    Map<String, BEPolicy> pMap;
 
     MySQLQueryManager mySQLQueryManager = new MySQLQueryManager();
 
 
-    public GuardHit(BEExpression originalExp){
-
+    public GuardHit(BEExpression originalExp, boolean extend){
         this.input = new Term();
         this.input.setRemainder(originalExp);
         this.input.setQuotient(originalExp);
         finalForm = new ArrayList<>();
+        this.pMap = new HashMap<>();
+        houseKeep();
+        if(extend){
+            PredicateMerge pm = new PredicateMerge(this.input.getRemainder());
+            pm.extend();
+        }
+        this.canFactors = collectAllFactors(this.input.getRemainder());
+        generateAllGuards(this.input);
+    }
 
-        this.canFactors = new HashSet<>();
+    /**
+     * Backing up original policies by id before they are extended
+     */
+    private void houseKeep(){
+        for (BEPolicy bp: this.input.getRemainder().getPolicies()) {
+            pMap.put(bp.getId(), new BEPolicy(bp));
+        }
+    }
+
+    private Set<ObjectCondition> collectAllFactors(BEExpression originalExp){
         Set<ObjectCondition> pFactors = originalExp.getPolicies().stream()
                 .flatMap(p -> p.getObject_conditions().stream())
                 .filter(o -> PolicyConstants.INDEX_ATTRS.contains(o.getAttribute()))
                 .collect(Collectors.toSet());
+        Set<ObjectCondition> pGuards = new HashSet<>();
         for (ObjectCondition pf: pFactors) {
-            Boolean match = false;
-            for (ObjectCondition cf: canFactors) {
+            boolean match = false;
+            for (ObjectCondition cf: pGuards) {
                 if(pf.equalsWithoutId(cf)) match = true;
             }
-            if(!match) canFactors.add(pf);
+            if(!match) pGuards.add(pf);
         }
-        generateAllGuards(this.input);
+        return pGuards;
     }
 
-
     private double benefit(ObjectCondition factor, BEExpression quotient){
-//        System.out.println("TS: " + quotient.estimateCostForTableScan());
-//        System.out.println("Number of Policies: " + quotient.getPolicies().stream().mapToInt(BEPolicy::countNumberOfPredicates).sum());
-//        System.out.println("Guard cost " + quotient.estimateCPUCost(factor));
-        return quotient.estimateCostForTableScan() - quotient.estimateCPUCost(factor);
+        double ben = 0.0;
+        long numPreds = 0;
+        for (BEPolicy bp: quotient.getPolicies()) {
+            ben += pMap.get(bp.getId()).estimateTableScanCost();
+            numPreds += pMap.get(bp.getId()).countNumberOfPredicates();
+        }
+        return ben - quotient.estimateCPUCost(factor, numPreds);
     }
 
     private double cost(ObjectCondition factor){
@@ -178,7 +199,7 @@ public class GuardHit {
                 MySQLResult guardResult = mySQLQueryManager.runTimedQueryWithSorting(mt.getFactor().print(), true);
                 if (gCount == 0) gCount = guardResult.getResultCount();
                 gList.add(guardResult.getTimeTaken().toMillis());
-                System.out.println(mt.getQuotient());
+                System.out.println(mt.getQuotient().createQueryFromPolices());
                 MySQLResult completeResult = mySQLQueryManager.runTimedQueryWithSorting(createCleanQueryFromGQ(mt.getFactor(),
                         mt.getQuotient()), false);
                 if (tCount == 0) tCount = completeResult.getResultCount();

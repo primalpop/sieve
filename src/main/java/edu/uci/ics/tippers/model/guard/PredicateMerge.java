@@ -78,7 +78,7 @@ public class PredicateMerge {
      *          3.a.3 the merged predicate is added to all the identical policies (stored in eqObjs)
      *          3.a.4  if not merged, update nextCount (based on the merge theorem)
      *          3.a.5  break and continue the outer loop if nextCount >=2
-     *          3.b increment the outer loop by the size of eqObjs
+     *          3.b increment the outer loop by the size of eqObjs to skip over identical predicates
      *
      * @param attribute
      * @return
@@ -88,7 +88,8 @@ public class PredicateMerge {
         Collections.sort(preds);
         int mergeCount = 0;
         int identicalCount = 0;
-        for (int i = 0; i < preds.size(); i++) {
+        int i = 0;
+        while(i< preds.size()){
             ObjectCondition oc1 = preds.get(i);
             int nextCount = 0;
             List<ObjectCondition> eqObjs = new ArrayList<>();
@@ -96,7 +97,7 @@ public class PredicateMerge {
             for (int j = i+1; j < preds.size(); j++) {
                 ObjectCondition oc2 = preds.get(j);
                 if (!oc1.overlaps(oc2)) {
-                    continue;
+                    break;
                 }
                 if(oc1.equalsWithoutId(oc2)) {
                     identicalCount += 1;
@@ -112,7 +113,7 @@ public class PredicateMerge {
                     if(!oMap.get(oc2).containsObjCond(cMerged)) oMap.get(oc2).getObject_conditions().add(cMerged);
                     oMap.put(cMerged, mPolicy);
                     for (ObjectCondition og: eqObjs) {
-                        if(!og.getPolicy_id().equalsIgnoreCase(oc1.getPolicy_id()) ||
+                        if(!og.getPolicy_id().equalsIgnoreCase(oc1.getPolicy_id()) &&
                                 !og.getPolicy_id().equalsIgnoreCase(oc2.getPolicy_id())) {
                             if (!oMap.get(og).containsObjCond(cMerged))
                                 oMap.get(og).getObject_conditions().add(cMerged);
@@ -126,8 +127,8 @@ public class PredicateMerge {
                         break;
                     }
                 }
-                i+= eqObjs.size();
             }
+            i += eqObjs.size();
         }
         System.out.println("Attribute: " + attribute
                 + " Merge Count " + mergeCount + " Identical Count " + identicalCount);

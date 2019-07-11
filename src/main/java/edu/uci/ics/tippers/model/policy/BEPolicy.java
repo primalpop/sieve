@@ -383,7 +383,7 @@ public class BEPolicy {
      * @param objectConditions
      * @return
      */
-    public double computeL(Collection<ObjectCondition> objectConditions){
+    public static double computeL(Collection<ObjectCondition> objectConditions){
         double selectivity = 1;
         for (ObjectCondition obj: objectConditions) {
             selectivity *= obj.computeL();
@@ -409,7 +409,6 @@ public class BEPolicy {
     /**
      * Equality predicates are counted as 1
      * Range predicates are counted as 2
-     *
      * @return
      */
     public int countNumberOfPredicates() {
