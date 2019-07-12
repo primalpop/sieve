@@ -52,7 +52,7 @@ public class PolicyExecution {
             Properties props = new Properties();
             if (inputStream != null) {
                 props.load(inputStream);
-                BASE_LINE = Boolean.parseBoolean(props.getProperty("base_line"));
+                BASE_LINE = Boolean.parseBoolean(props.getProperty("baseline"));
                 RESULT_CHECK = Boolean.parseBoolean(props.getProperty("resultCheck"));
                 EXTEND_PREDICATES = Boolean.parseBoolean(props.getProperty("factor_extension"));
                 SEARCH_DEPTH = Integer.parseInt(props.getProperty("search_depth"));
@@ -98,9 +98,10 @@ public class PolicyExecution {
 
                 try {
 
-//                    System.out.println(beExpression.createQueryFromPolices());
+                    MySQLResult tradResult = new MySQLResult();
+
                     if (BASE_LINE) {
-                        MySQLResult tradResult = mySQLQueryManager.runTimedQueryWithRepetitions(beExpression.createQueryFromPolices(),
+                        tradResult = mySQLQueryManager.runTimedQueryWithRepetitions(beExpression.createQueryFromPolices(),
                                 RESULT_CHECK, NUM_OF_REPS);
                         Duration runTime = Duration.ofMillis(0);
                         runTime = runTime.plus(tradResult.getTimeTaken());
@@ -122,7 +123,21 @@ public class PolicyExecution {
                     Instant fsEnd = Instant.now();
                     guardGen = guardGen.plus(Duration.between(fsStart, fsEnd));
                     policyRunTimes.put(file.getName() + "-guardGeneration", String.valueOf(guardGen.toMillis()));
-                    System.out.println("Guard Generation time: " + guardGen);
+                    System.out.println("Guard Generation time: " + guardGen + " Number of Guards: " + gh.numberOfGuards());
+
+                    /** Result checking **/
+                    if(RESULT_CHECK){
+                        System.out.println("Verifying results......");
+                        System.out.println("Guard query: " + gh.createGuardedQuery(false));
+                        MySQLResult guardResult = mySQLQueryManager.runTimedSubQuery(gh.createGuardedQuery(false),
+                                RESULT_CHECK);
+                        Boolean resultSame = tradResult.checkResults(guardResult);
+                        if(!resultSame){
+                            System.out.println("*** Query results don't match with generated guard!!! Halting Execution ***");
+                            policyRunTimes.put(file.getName() + "-results-incorrect", String.valueOf(PolicyConstants.MAX_DURATION.toMillis()));
+                            return;
+                        }
+                    }
 //
 //                    Duration execTime = Duration.ofMillis(0);
 //                    if(GUARD_UNION) {
@@ -139,7 +154,7 @@ public class PolicyExecution {
 ////                        for (String kOb : guardList) {
 ////                            System.out.println("Executing Guard Expression: " + kOb);
 ////                            StringBuilder guardString = new StringBuilder();
-////                            MySQLResult completeResult = mySQLQueryManager.runTimedQueryWithSorting(kOb);
+////                            MySQLResult completeResult = mySQLQueryManager.runTimedQueryWithOutSorting(kOb);
 ////                            guardString.append(completeResult.getTimeTaken().toMillis());
 ////                            guardString.append(",");
 ////                            guardString.append(kOb);
@@ -160,7 +175,7 @@ public class PolicyExecution {
     }
 
     private void generatePolicies(String policyDir) {
-        int[] policyNumbers = {10};
+        int[] policyNumbers = {100, 1000, 50000};
         int[] policyEpochs = {0};
         System.out.println("Generating Policies ..........");
         List<BEPolicy> bePolicies = new ArrayList<>();

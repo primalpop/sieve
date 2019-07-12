@@ -286,7 +286,7 @@ public class BEExpression{
      * Removes identical policies with different ids from the expression
      * @return
      */
-    public void cleanQueryFromPolices() {
+    public void removeDuplicates() {
         for (int i = 0; i < this.getPolicies().size(); i++) {
             this.getPolicies().get(i).cleanDuplicates();
         }

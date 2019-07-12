@@ -37,6 +37,10 @@ public class GuardHit {
         generateAllGuards(this.input);
     }
 
+    public int numberOfGuards(){
+        return finalForm.size();
+    }
+
     /**
      * Backing up original policies by id before they are extended
      */
@@ -62,6 +66,9 @@ public class GuardHit {
         return pGuards;
     }
 
+
+
+
     private double benefit(ObjectCondition factor, BEExpression quotient){
         double ben = 0.0;
         long numPreds = 0;
@@ -83,14 +90,14 @@ public class GuardHit {
         double maxUtility = 0.0;
         Term mTerm = null;
         for (ObjectCondition objectCondition : this.canFactors) {
-            System.out.print(objectCondition.print()+ ", ");
+//            System.out.print(objectCondition.print()+ ", ");
             BEExpression tempQuotient = new BEExpression(current.getRemainder());
             tempQuotient.checkAgainstPolices(objectCondition);
-            System.out.print(benefit(objectCondition, tempQuotient) + ", ");
-            System.out.print(cost(objectCondition) + ", ");
+//            System.out.print(benefit(objectCondition, tempQuotient) + ", ");
+//            System.out.print(cost(objectCondition) + ", ");
             double utility = benefit(objectCondition, tempQuotient)/cost(objectCondition);
-            System.out.print(utility );
-            System.out.println();
+//            System.out.print(utility );
+//            System.out.println();
             if (utility > maxUtility) { //factorized is better than original
                 maxUtility = utility;
                 mTerm = new Term();
@@ -101,11 +108,10 @@ public class GuardHit {
                 mTerm.setBenefit(benefit(mTerm.getFactor(), mTerm.getQuotient()));
                 mTerm.setCost(cost(mTerm.getFactor()));
                 mTerm.setUtility(utility);
-
-            } else removal.add(objectCondition); //not a factor of at least two policies
+            }
+            else if (utility <= 0) removal.add(objectCondition);
         }
         this.canFactors.removeAll(removal);
-        System.out.println("Guard selected "+ mTerm.getFactor() + " Policies  " + mTerm.getQuotient().getPolicies().size());
         return mTerm;
     }
 
@@ -153,7 +159,7 @@ public class GuardHit {
         String delim = "";
         for (String g: gList) {
             queryExp.append(delim);
-            queryExp.append(PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS + g);
+            queryExp.append(PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS_WHERE + g);
             delim = noDuplicates ? PolicyConstants.UNION : PolicyConstants.UNION_ALL;
         }
         return queryExp.toString();
@@ -162,7 +168,7 @@ public class GuardHit {
     public List<String> createGuardQueries(){
         List<String> guardQueries = new ArrayList<>();
         for (Term mt: finalForm)
-           guardQueries.add(mt.getFactor().print() + PolicyConstants.CONJUNCTION + mt.getQuotient().createQueryFromPolices());
+           guardQueries.add(mt.getFactor().print() + PolicyConstants.CONJUNCTION +  "(" + mt.getQuotient().createQueryFromPolices() + ")");
         return  guardQueries;
     }
 
@@ -173,12 +179,19 @@ public class GuardHit {
         query.append(guard.print());
         query.append(PolicyConstants.CONJUNCTION);
         query.append("(");
-        partition.cleanQueryFromPolices();
+        partition.removeDuplicates();
         query.append(partition.createQueryFromPolices());
         query.append(")");
         return query.toString();
     }
 
+    private long getOriginalNumPreds(BEExpression beExpression){
+        long numPreds = 0;
+        for (BEPolicy bp: beExpression.getPolicies()) {
+            numPreds += pMap.get(bp.getId()).countNumberOfPredicates();
+        }
+        return numPreds;
+    }
 
     public List<String> guardAnalysis(int repetitions) {
         List<String> guardResults = new ArrayList<>();
@@ -188,23 +201,23 @@ public class GuardHit {
             StringBuilder guardString = new StringBuilder();
             guardString.append(mt.getQuotient().getPolicies().size());
             guardString.append(",");
-            int numOfPreds = mt.getQuotient().getPolicies().stream().mapToInt(BEPolicy::countNumberOfPredicates).sum();
+            long numOfPreds = getOriginalNumPreds(mt.getQuotient());
             guardString.append(numOfPreds);
             guardString.append(",");
             List<Long> gList = new ArrayList<>();
             List<Long> cList = new ArrayList<>();
             int gCount = 0, tCount = 0;
             for (int i = 0; i < repetitions; i++) {
-                System.out.println(mt.getFactor().print());
-                MySQLResult guardResult = mySQLQueryManager.runTimedQueryWithSorting(mt.getFactor().print(), true);
-                if (gCount == 0) gCount = guardResult.getResultCount();
-                gList.add(guardResult.getTimeTaken().toMillis());
-                System.out.println(mt.getQuotient().createQueryFromPolices());
-                MySQLResult completeResult = mySQLQueryManager.runTimedQueryWithSorting(createCleanQueryFromGQ(mt.getFactor(),
+                MySQLResult completeResult = mySQLQueryManager.runTimedQueryWithOutSorting(createCleanQueryFromGQ(mt.getFactor(),
                         mt.getQuotient()), false);
                 if (tCount == 0) tCount = completeResult.getResultCount();
                 cList.add(completeResult.getTimeTaken().toMillis());
-
+                MySQLResult guardResult = mySQLQueryManager.runTimedQueryWithOutSorting(mt.getFactor().print(), true);
+                if (gCount == 0) gCount = guardResult.getResultCount();
+                gList.add(guardResult.getTimeTaken().toMillis());
+                if(guardResult.getTimeTaken().toMillis() > completeResult.getTimeTaken().toMillis()){
+                    System.out.println("Hol'up a min");
+                }
             }
 
             Duration gCost, gAndPcost;
