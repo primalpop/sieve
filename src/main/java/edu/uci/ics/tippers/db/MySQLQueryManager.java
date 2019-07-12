@@ -157,7 +157,7 @@ public class MySQLQueryManager {
             mySQLResult.setResultsCheck(resultCheck);
             List<Long> gList = new ArrayList<>();
             for (int i = 0; i < repetitions; i++)
-                gList.add(runWithThread(PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS + predicates,
+                gList.add(runWithThread(PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS_WHERE + predicates,
                         mySQLResult).getTimeTaken().toMillis());
             Duration gCost;
             if(repetitions >= 3) {
@@ -201,10 +201,11 @@ public class MySQLQueryManager {
      * @throws PolicyEngineException
      */
 
-    public Duration runTimedSubQuery(String completeQuery) throws PolicyEngineException {
+    public MySQLResult runTimedSubQuery(String completeQuery, boolean resultCheck) throws PolicyEngineException {
         try {
             MySQLResult mySQLResult = new MySQLResult();
-            return runWithThread(completeQuery, mySQLResult).getTimeTaken();
+            mySQLResult.setResultsCheck(resultCheck);
+            return runWithThread(completeQuery, mySQLResult);
         } catch (Exception e) {
             e.printStackTrace();
             throw new PolicyEngineException("Error Running Query");
@@ -218,15 +219,13 @@ public class MySQLQueryManager {
      * @return
      * @throws PolicyEngineException
      */
-    public MySQLResult runTimedQueryWithSorting(String predicates, boolean where) throws PolicyEngineException {
+    public MySQLResult runTimedQueryWithOutSorting(String predicates, boolean where) throws PolicyEngineException {
         try {
             MySQLResult mySQLResult = new MySQLResult();
             if(!where)
-                return runWithThread(PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS + predicates +
-                    PolicyConstants.ORDER_BY_ID, mySQLResult);
+                return runWithThread(PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS + predicates, mySQLResult);
             else
-                return runWithThread(PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS_WHERE + predicates +
-                        PolicyConstants.ORDER_BY_ID, mySQLResult);
+                return runWithThread(PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS_WHERE + predicates, mySQLResult);
         } catch (Exception e) {
             e.printStackTrace();
             throw new PolicyEngineException("Error Running Query");

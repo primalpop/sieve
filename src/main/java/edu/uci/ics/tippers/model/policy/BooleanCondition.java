@@ -124,7 +124,7 @@ public class BooleanCondition  implements Comparable<BooleanCondition>  {
     }
 
     /**
-     * Removes duplicate predicates
+     * Prints the predicate as a range
      * @return
      */
     public String printRange(){

@@ -130,8 +130,6 @@ public class PredicateMerge {
             }
             i += eqObjs.size();
         }
-        System.out.println("Attribute: " + attribute
-                + " Merge Count " + mergeCount + " Identical Count " + identicalCount);
     }
 
     /**
