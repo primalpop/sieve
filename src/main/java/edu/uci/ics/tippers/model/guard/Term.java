@@ -124,15 +124,14 @@ public class Term implements Comparable<Term> {
 
     @Override
     public int hashCode() {
-        return Objects.hash(factor, quotient, remainder);
+        return Objects.hash(factor, quotient);
     }
 
     @Override
     public boolean equals(Object o) {
         if (o == null) return false;
         Term term = (Term) o;
-        return this.factor.equals(term.factor) && this.quotient.equals(term.quotient)
-                && this.remainder.equals(term.remainder);
+        return this.factor.equals(term.factor) && this.quotient.equals(term.quotient);
     }
 
     /**

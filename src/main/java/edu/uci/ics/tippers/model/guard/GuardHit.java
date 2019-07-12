@@ -98,7 +98,7 @@ public class GuardHit {
             double utility = benefit(objectCondition, tempQuotient)/cost(objectCondition);
 //            System.out.print(utility );
 //            System.out.println();
-            if (utility > maxUtility) { //factorized is better than original
+            if (utility > maxUtility) {
                 maxUtility = utility;
                 mTerm = new Term();
                 mTerm.setQuotient(tempQuotient);
@@ -109,9 +109,7 @@ public class GuardHit {
                 mTerm.setCost(cost(mTerm.getFactor()));
                 mTerm.setUtility(utility);
             }
-            else if (utility <= 0) removal.add(objectCondition);
         }
-        this.canFactors.removeAll(removal);
         return mTerm;
     }
 
@@ -197,54 +195,51 @@ public class GuardHit {
         List<String> guardResults = new ArrayList<>();
         Duration totalEval = Duration.ofMillis(0);
         for (Term mt : finalForm) {
-            System.out.println("Executing Guard " + mt.getFactor().print());
+//            System.out.println("Executing Guard " + mt.getFactor().print());
             StringBuilder guardString = new StringBuilder();
             guardString.append(mt.getQuotient().getPolicies().size());
             guardString.append(",");
             long numOfPreds = getOriginalNumPreds(mt.getQuotient());
             guardString.append(numOfPreds);
             guardString.append(",");
-            List<Long> gList = new ArrayList<>();
-            List<Long> cList = new ArrayList<>();
-            int gCount = 0, tCount = 0;
-            for (int i = 0; i < repetitions; i++) {
-                MySQLResult completeResult = mySQLQueryManager.runTimedQueryWithOutSorting(createCleanQueryFromGQ(mt.getFactor(),
-                        mt.getQuotient()), false);
-                if (tCount == 0) tCount = completeResult.getResultCount();
-                cList.add(completeResult.getTimeTaken().toMillis());
-                MySQLResult guardResult = mySQLQueryManager.runTimedQueryWithOutSorting(mt.getFactor().print(), true);
-                if (gCount == 0) gCount = guardResult.getResultCount();
-                gList.add(guardResult.getTimeTaken().toMillis());
-                if(guardResult.getTimeTaken().toMillis() > completeResult.getTimeTaken().toMillis()){
-                    System.out.println("Hol'up a min");
-                }
-            }
-
-            Duration gCost, gAndPcost;
-            if(repetitions >= 3) {
-                Collections.sort(gList);
-                List<Long> clippedGList = gList.subList(1, repetitions - 1);
-                gCost = Duration.ofMillis(clippedGList.stream().mapToLong(i -> i).sum() / clippedGList.size());
-                Collections.sort(cList);
-                List<Long> clippedCList = cList.subList(1, repetitions - 1);
-                gAndPcost = Duration.ofMillis(clippedCList.stream().mapToLong(i -> i).sum() / clippedCList.size());
-            }
-            else{
-                gCost =  Duration.ofMillis(gList.stream().mapToLong(i -> i).sum() / gList.size());
-                gAndPcost = Duration.ofMillis(cList.stream().mapToLong(i -> i).sum() / cList.size());
-            }
-
-            guardString.append(gCount);
-            guardString.append(",");
-            guardString.append(tCount);
-            guardString.append(",");
-
-            double rCount = 0.0;
-            if(tCount != 0 ){
-                rCount = gCount / tCount;
-            }
-            guardString.append(rCount);
-            guardString.append(",");
+//            List<Long> gList = new ArrayList<>();
+//            List<Long> cList = new ArrayList<>();
+//            int gCount = 0, tCount = 0;
+//            for (int i = 0; i < repetitions; i++) {
+//                MySQLResult completeResult = mySQLQueryManager.runTimedQueryWithOutSorting(createCleanQueryFromGQ(mt.getFactor(),
+//                        mt.getQuotient()), false);
+//                if (tCount == 0) tCount = completeResult.getResultCount();
+//                cList.add(completeResult.getTimeTaken().toMillis());
+//                MySQLResult guardResult = mySQLQueryManager.runTimedQueryWithOutSorting(mt.getFactor().print(), true);
+//                if (gCount == 0) gCount = guardResult.getResultCount();
+//                gList.add(guardResult.getTimeTaken().toMillis());
+//            }
+//
+//            Duration gCost, gAndPcost;
+//            if(repetitions >= 3) {
+//                Collections.sort(gList);
+//                List<Long> clippedGList = gList.subList(1, repetitions - 1);
+//                gCost = Duration.ofMillis(clippedGList.stream().mapToLong(i -> i).sum() / clippedGList.size());
+//                Collections.sort(cList);
+//                List<Long> clippedCList = cList.subList(1, repetitions - 1);
+//                gAndPcost = Duration.ofMillis(clippedCList.stream().mapToLong(i -> i).sum() / clippedCList.size());
+//            }
+//            else{
+//                gCost =  Duration.ofMillis(gList.stream().mapToLong(i -> i).sum() / gList.size());
+//                gAndPcost = Duration.ofMillis(cList.stream().mapToLong(i -> i).sum() / cList.size());
+//            }
+//
+//            guardString.append(gCount);
+//            guardString.append(",");
+//            guardString.append(tCount);
+//            guardString.append(",");
+//
+//            double rCount = 0.0;
+//            if(tCount != 0 ){
+//                rCount = gCount / tCount;
+//            }
+//            guardString.append(rCount);
+//            guardString.append(",");
 
             guardString.append(mt.getBenefit());
             guardString.append(",");
@@ -255,13 +250,13 @@ public class GuardHit {
             guardString.append(mt.getUtility());
             guardString.append(",");
 
-            guardString.append(gCost.toMillis());
-            guardString.append(",");
-            guardString.append(gAndPcost.toMillis());
-            guardString.append(",");
+//            guardString.append(gCost.toMillis());
+//            guardString.append(",");
+//            guardString.append(gAndPcost.toMillis());
+//            guardString.append(",");
             guardString.append(createCleanQueryFromGQ(mt.getFactor(), mt.getQuotient()));
             guardResults.add(guardString.toString());
-            totalEval = totalEval.plus(gAndPcost);
+//            totalEval = totalEval.plus(gAndPcost);
         }
         System.out.println("Total Guard Evaluation time: " + totalEval);
         guardResults.add("Total Guard Evaluation time," + totalEval.toMillis());
