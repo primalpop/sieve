@@ -18,6 +18,9 @@ public class GuardHit {
     Set<ObjectCondition> canFactors;
     List<Term> finalForm;
     Map<String, BEPolicy> pMap;
+    Map<ObjectCondition, Double> costMap;
+    Map<Term, Double> benefitMap;
+    Map<BEPolicy, List<Term>> ptMap;
 
     MySQLQueryManager mySQLQueryManager = new MySQLQueryManager();
 
@@ -28,6 +31,9 @@ public class GuardHit {
         this.input.setQuotient(originalExp);
         finalForm = new ArrayList<>();
         this.pMap = new HashMap<>();
+        this.costMap = new HashMap<>();
+        this.benefitMap = new HashMap<>();
+        this.ptMap = new HashMap<>();
         houseKeep();
         if(extend){
             PredicateMerge pm = new PredicateMerge(this.input.getRemainder());
@@ -67,8 +73,6 @@ public class GuardHit {
     }
 
 
-
-
     private double benefit(ObjectCondition factor, BEExpression quotient){
         double ben = 0.0;
         long numPreds = 0;
@@ -89,26 +93,34 @@ public class GuardHit {
         Set<ObjectCondition> removal = new HashSet<>();
         double maxUtility = 0.0;
         Term mTerm = null;
-        for (ObjectCondition objectCondition : this.canFactors) {
-//            System.out.print(objectCondition.print()+ ", ");
+        for (ObjectCondition tempFactor : this.canFactors) {
+//            System.out.print(tempFactor.print()+ ", ");
             BEExpression tempQuotient = new BEExpression(current.getRemainder());
-            tempQuotient.checkAgainstPolices(objectCondition);
-//            System.out.print(benefit(objectCondition, tempQuotient) + ", ");
-//            System.out.print(cost(objectCondition) + ", ");
-            double utility = benefit(objectCondition, tempQuotient)/cost(objectCondition);
+            tempQuotient.checkAgainstPolices(tempFactor);
+            Term tempTerm = new Term(tempFactor, tempQuotient);
+            if(!costMap.containsKey(tempFactor))
+                costMap.put(tempFactor, cost(tempFactor));
+            if(!benefitMap.containsKey(tempTerm))
+                benefitMap.put(tempTerm, benefit(tempFactor, tempQuotient));
+//            System.out.print(benefit(tempFactor, tempQuotient) + ", ");
+//            System.out.print(cost(tempFactor) + ", ");
+            double utility = benefitMap.get(tempTerm)/costMap.get(tempTerm.getFactor());
 //            System.out.print(utility );
 //            System.out.println();
             if (utility > maxUtility) {
                 maxUtility = utility;
-                mTerm = new Term();
+                mTerm = tempTerm;
                 mTerm.setQuotient(tempQuotient);
                 mTerm.setRemainder(new BEExpression(current.getRemainder()));
                 mTerm.getRemainder().getPolicies().removeAll(mTerm.getQuotient().getPolicies());
-                mTerm.setFactor(objectCondition);
+                mTerm.setFactor(tempFactor);
                 mTerm.setBenefit(benefit(mTerm.getFactor(), mTerm.getQuotient()));
                 mTerm.setCost(cost(mTerm.getFactor()));
                 mTerm.setUtility(utility);
             }
+        }
+        if (mTerm != null) {
+            canFactors.remove(mTerm.getFactor());
         }
         return mTerm;
     }
