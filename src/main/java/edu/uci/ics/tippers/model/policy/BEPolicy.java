@@ -236,8 +236,7 @@ public class BEPolicy {
 
     public boolean containsObjCond(ObjectCondition oc){
         List<ObjectCondition> contained = this.object_conditions.stream()
-                .filter(objCond -> objCond.getAttribute().equalsIgnoreCase(oc.getAttribute()))
-                .filter(objCond -> objCond.compareTo(oc) == 0)
+                .filter(objCond -> objCond.equalsWithoutId(oc))
                 .collect(Collectors.toList());
         return contained.size() != 0;
     }

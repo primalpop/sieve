@@ -92,10 +92,13 @@ public class BEExpression{
      * @return
      */
     public void checkAgainstPolices(ObjectCondition objectCondition){
-        List<BEPolicy> matchingPolicies = this.policies.stream()
-                .filter(pol -> pol.containsObjCond(objectCondition))
-                .collect(Collectors.toList());
-        this.policies = matchingPolicies;
+        List<BEPolicy> contained = new ArrayList<>();
+        for (BEPolicy pol : this.policies) {
+            if (pol.containsObjCond(objectCondition)) {
+                contained.add(pol);
+            }
+        }
+        this.policies = contained;
     }
 
 
