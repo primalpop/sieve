@@ -103,12 +103,10 @@ public class Writer {
                         "Number of predicates in policies, " +
                         "Coverage_of_guard," +
                         "Coverage_of_guard_and_partition," +
-                        "Ratio of guard to the partition, " +
-                        "Benefit of guard, " +
-                        "Cost of guard, " +
-                        "Utility of guard, " +
-                        "Time_taken_by_guard, "
-                        + "Total_time," +
+                        "Ratio_of_coverage, " +
+                        "Benefit, " +
+                        "Utility, " +
+                        "Total_time," +
                         "Guard_and_Partition";
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(fileDir + fileName, true));

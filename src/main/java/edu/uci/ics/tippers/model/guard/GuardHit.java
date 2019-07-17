@@ -17,9 +17,9 @@ public class GuardHit {
     Term input;
     Set<ObjectCondition> canFactors;
     List<Term> finalForm;
+    PriorityQueue<Term> allTerms; //Sorted based on utility
     Map<String, BEPolicy> pMap;
     Map<ObjectCondition, Double> costMap;
-    Map<Term, Double> benefitMap;
     Map<BEPolicy, List<Term>> ptMap;
 
     MySQLQueryManager mySQLQueryManager = new MySQLQueryManager();
@@ -30,9 +30,9 @@ public class GuardHit {
         this.input.setRemainder(originalExp);
         this.input.setQuotient(originalExp);
         finalForm = new ArrayList<>();
+        allTerms = new PriorityQueue<>();
         this.pMap = new HashMap<>();
         this.costMap = new HashMap<>();
-        this.benefitMap = new HashMap<>();
         this.ptMap = new HashMap<>();
         houseKeep();
         if(extend){
@@ -40,7 +40,7 @@ public class GuardHit {
             pm.extend();
         }
         this.canFactors = collectAllFactors(this.input.getRemainder());
-        generateAllGuards(this.input);
+        selectGuards();
     }
 
     public int numberOfGuards(){
@@ -89,77 +89,58 @@ public class GuardHit {
     }
 
 
-    private Term generateGuard(Term current){
-        Set<ObjectCondition> removal = new HashSet<>();
-        double maxUtility = 0.0;
-        Term mTerm = null;
+    /**
+     * Populating costMap, benefitMap, ptMap and allTerms
+     */
+    private void populating(){
         for (ObjectCondition tempFactor : this.canFactors) {
-//            System.out.print(tempFactor.print()+ ", ");
-            BEExpression tempQuotient = new BEExpression(current.getRemainder());
+            BEExpression tempQuotient = new BEExpression(this.input.getRemainder());
             tempQuotient.checkAgainstPolices(tempFactor);
             Term tempTerm = new Term(tempFactor, tempQuotient);
             if(!costMap.containsKey(tempFactor))
                 costMap.put(tempFactor, cost(tempFactor));
-            if(!benefitMap.containsKey(tempTerm))
-                benefitMap.put(tempTerm, benefit(tempFactor, tempQuotient));
-//            System.out.print(benefit(tempFactor, tempQuotient) + ", ");
-//            System.out.print(cost(tempFactor) + ", ");
-            double utility = benefitMap.get(tempTerm)/costMap.get(tempTerm.getFactor());
-//            System.out.print(utility );
-//            System.out.println();
-            if (utility > maxUtility) {
-                maxUtility = utility;
-                mTerm = tempTerm;
-                mTerm.setQuotient(tempQuotient);
-                mTerm.setRemainder(new BEExpression(current.getRemainder()));
-                mTerm.getRemainder().getPolicies().removeAll(mTerm.getQuotient().getPolicies());
-                mTerm.setFactor(tempFactor);
-                mTerm.setBenefit(benefit(mTerm.getFactor(), mTerm.getQuotient()));
-                mTerm.setCost(cost(mTerm.getFactor()));
-                mTerm.setUtility(utility);
-            }
-        }
-        if (mTerm != null) {
-            canFactors.remove(mTerm.getFactor());
-        }
-        return mTerm;
-    }
-
-    private Term forSinglePolicy(BEPolicy bePolicy){
-        double freq = PolicyConstants.NUMBER_OR_TUPLES;
-        ObjectCondition gOC = new ObjectCondition();
-        for (ObjectCondition oc : bePolicy.getObject_conditions()) {
-            if (!PolicyConstants.INDEX_ATTRS.contains(oc.getAttribute())) continue;
-            if (oc.computeL() < freq) {
-                freq = oc.computeL();
-                gOC = oc;
-            }
-        }
-        Term rTerm = new Term();
-        rTerm.setFactor(gOC);
-        BEExpression quotient = new BEExpression();
-        quotient.getPolicies().add(bePolicy);
-        rTerm.setQuotient(quotient);
-        return rTerm;
-    }
-
-    private void generateAllGuards(Term current) {
-        while (true) {
-            if (current.getRemainder().getPolicies().size() > 1) {
-                if (canFactors.size() > 1) {
-                    Term nTerm = generateGuard(current);
-                    if (nTerm != null) {
-//                        System.out.println("Guard generated" + nTerm.getFactor().print());
-                        finalForm.add(nTerm);
-                        current = nTerm;
-                        continue;
-                    }
+            tempTerm.setBenefit(benefit(tempFactor, tempQuotient));
+            tempTerm.setUtility(tempTerm.getBenefit()/costMap.get(tempTerm.getFactor()));
+            for (BEPolicy bp: tempTerm.getQuotient().getPolicies()) {
+                if(ptMap.containsKey(bp)){
+                    ptMap.get(bp).add(tempTerm);
+                }
+                else {
+                    List<Term> terms = new ArrayList<>();
+                    terms.add(tempTerm);
+                    ptMap.put(bp, terms);
                 }
             }
-            break;
+            allTerms.offer(tempTerm);
         }
-        for (BEPolicy bePolicy : current.getRemainder().getPolicies()) {
-            finalForm.add(forSinglePolicy(bePolicy));
+    }
+
+
+    /**
+     * Selecting the best guard from allTerms and updating the benefit of related Terms
+     */
+    private void selectGuards() {
+        populating();
+        Term mTerm;
+        while (!this.allTerms.isEmpty()) {
+            mTerm = this.allTerms.poll();
+            if (mTerm == null) break;
+            if (mTerm.getFactor() == null || mTerm.getQuotient() == null || mTerm.getQuotient().getPolicies().isEmpty())
+                break;
+            finalForm.add(mTerm);
+//            System.out.println(mTerm.getFactor().print());
+            List<Term> toUpdate = new ArrayList<>();
+            for (BEPolicy bp : mTerm.getQuotient().getPolicies())
+                for (Term pTerm : ptMap.get(bp))
+                    if(!pTerm.equals(mTerm))
+                        toUpdate.add(pTerm);
+            for (Term uTerm: toUpdate) {
+                allTerms.remove(uTerm);
+                uTerm.getQuotient().getPolicies().removeAll(mTerm.getQuotient().getPolicies());
+                uTerm.setBenefit(benefit(uTerm.getFactor(), uTerm.getQuotient()));
+                uTerm.setUtility(uTerm.getBenefit() / costMap.get(uTerm.getFactor()));
+                allTerms.offer(uTerm); //the term has to be removed and added again so that it is inserted in PQ at the right position
+            }
         }
     }
 
@@ -203,77 +184,53 @@ public class GuardHit {
         return numPreds;
     }
 
-    public List<String> guardAnalysis(int repetitions) {
+    public List<String> guardAnalysis(int repetitions, boolean execution) {
         List<String> guardResults = new ArrayList<>();
         Duration totalEval = Duration.ofMillis(0);
+        int i = 0;
         for (Term mt : finalForm) {
-//            System.out.println("Executing Guard " + mt.getFactor().print());
+            System.out.println("Guard " + i++ + ": " + mt.getFactor().print());
             StringBuilder guardString = new StringBuilder();
             guardString.append(mt.getQuotient().getPolicies().size());
             guardString.append(",");
-            long numOfPreds = getOriginalNumPreds(mt.getQuotient());
-            guardString.append(numOfPreds);
+            guardString.append(getOriginalNumPreds(mt.getQuotient()));
             guardString.append(",");
-//            List<Long> gList = new ArrayList<>();
-//            List<Long> cList = new ArrayList<>();
-//            int gCount = 0, tCount = 0;
-//            for (int i = 0; i < repetitions; i++) {
-//                MySQLResult completeResult = mySQLQueryManager.runTimedQueryWithOutSorting(createCleanQueryFromGQ(mt.getFactor(),
-//                        mt.getQuotient()), false);
-//                if (tCount == 0) tCount = completeResult.getResultCount();
-//                cList.add(completeResult.getTimeTaken().toMillis());
-//                MySQLResult guardResult = mySQLQueryManager.runTimedQueryWithOutSorting(mt.getFactor().print(), true);
-//                if (gCount == 0) gCount = guardResult.getResultCount();
-//                gList.add(guardResult.getTimeTaken().toMillis());
-//            }
-//
-//            Duration gCost, gAndPcost;
-//            if(repetitions >= 3) {
-//                Collections.sort(gList);
-//                List<Long> clippedGList = gList.subList(1, repetitions - 1);
-//                gCost = Duration.ofMillis(clippedGList.stream().mapToLong(i -> i).sum() / clippedGList.size());
-//                Collections.sort(cList);
-//                List<Long> clippedCList = cList.subList(1, repetitions - 1);
-//                gAndPcost = Duration.ofMillis(clippedCList.stream().mapToLong(i -> i).sum() / clippedCList.size());
-//            }
-//            else{
-//                gCost =  Duration.ofMillis(gList.stream().mapToLong(i -> i).sum() / gList.size());
-//                gAndPcost = Duration.ofMillis(cList.stream().mapToLong(i -> i).sum() / cList.size());
-//            }
-//
-//            guardString.append(gCount);
-//            guardString.append(",");
-//            guardString.append(tCount);
-//            guardString.append(",");
-//
-//            double rCount = 0.0;
-//            if(tCount != 0 ){
-//                rCount = gCount / tCount;
-//            }
-//            guardString.append(rCount);
-//            guardString.append(",");
-
             guardString.append(mt.getBenefit());
             guardString.append(",");
-
-            guardString.append(mt.getCost());
-            guardString.append(",");
-
             guardString.append(mt.getUtility());
             guardString.append(",");
+            if(execution) {
+                MySQLResult completeResult = mySQLQueryManager.executeQuery(createCleanQueryFromGQ(mt.getFactor(), mt.getQuotient()),
+                        false, repetitions);
+                MySQLResult guardResult = mySQLQueryManager.runTimedQueryWithOutSorting(mt.getFactor().print(), true);
+                int gCount = 0, tCount = 0;
+                tCount = completeResult.getResultCount();
+                gCount = guardResult.getResultCount();
 
-//            guardString.append(gCost.toMillis());
-//            guardString.append(",");
-//            guardString.append(gAndPcost.toMillis());
-//            guardString.append(",");
+                guardString.append(gCount);
+                guardString.append(",");
+                guardString.append(tCount);
+                guardString.append(",");
+
+                double rCount = 0.0;
+                if(tCount != 0 ){
+                    rCount = gCount / tCount;
+                }
+                guardString.append(rCount);
+                guardString.append(",");
+
+                guardString.append(completeResult.getTimeTaken().toMillis());
+                guardString.append(",");
+                totalEval = totalEval.plus(completeResult.getTimeTaken());
+            }
             guardString.append(createCleanQueryFromGQ(mt.getFactor(), mt.getQuotient()));
             guardResults.add(guardString.toString());
-//            totalEval = totalEval.plus(gAndPcost);
         }
-        System.out.println("Total Guard Evaluation time: " + totalEval);
-        guardResults.add("Total Guard Evaluation time," + totalEval.toMillis());
+        if(execution) {
+            System.out.println("Total Guard Evaluation time: " + totalEval);
+            guardResults.add("Total Guard Evaluation time," + totalEval.toMillis());
+        }
         return guardResults;
-
     }
 
 }

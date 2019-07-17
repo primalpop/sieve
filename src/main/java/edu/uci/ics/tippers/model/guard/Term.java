@@ -22,8 +22,6 @@ public class Term implements Comparable<Term> {
 
     private double benefit;
 
-    private double cost;
-
     private double utility;
 
     public Term(){
@@ -34,7 +32,6 @@ public class Term implements Comparable<Term> {
         this.gscore = 0.0;
         this.hscore = 0.0;
         this.benefit = 0.0;
-        this.cost = 0.0;
         this.utility = 0.0;
     }
 
@@ -99,14 +96,6 @@ public class Term implements Comparable<Term> {
         this.benefit = benefit;
     }
 
-    public double getCost() {
-        return cost;
-    }
-
-    public void setCost(double cost) {
-        this.cost = cost;
-    }
-
     public double getUtility() {
         return utility;
     }
@@ -115,11 +104,16 @@ public class Term implements Comparable<Term> {
         this.utility = utility;
     }
 
+    /**
+     * Used for sorting of priority queue
+     * @param o
+     * @return
+     */
     @Override
     public int compareTo(Term o) {
-        if(this.fscore == o.fscore)
+        if(this.utility == o.utility)
             return 0;
-        else return this.fscore > o.fscore ? 1: -1;
+        else return Double.compare(o.utility, this.utility);
     }
 
     @Override
@@ -132,6 +126,14 @@ public class Term implements Comparable<Term> {
         if (o == null) return false;
         Term term = (Term) o;
         return this.factor.equals(term.factor) && this.quotient.equals(term.quotient);
+    }
+
+    @Override
+    public String toString() {
+        return "Term{" +
+                "factor=" + factor +
+                ", utility=" + utility +
+                '}';
     }
 
     /**
