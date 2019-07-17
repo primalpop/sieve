@@ -233,6 +233,41 @@ public class MySQLQueryManager {
     }
 
 
+    /**
+     * Execution time for guards which doesn't cost of sorting the results
+     * @throws PolicyEngineException
+     */
+    public MySQLResult executeQuery(String predicates, boolean where, int repetitions) throws PolicyEngineException {
+        try {
+            MySQLResult mySQLResult = new MySQLResult();
+            String query;
+            if (!where)
+                query = PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS + predicates;
+            else
+                query = PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS_WHERE + predicates;
+            List<Long> gList = new ArrayList<>();
+            for (int i = 0; i < repetitions; i++)
+                gList.add(runWithThread(query, mySQLResult).getTimeTaken().toMillis());
+            Duration gCost;
+            if (repetitions >= 3) {
+                Collections.sort(gList);
+                List<Long> clippedGList = gList.subList(1, repetitions - 1);
+                gCost = Duration.ofMillis(clippedGList.stream().mapToLong(i -> i).sum() / clippedGList.size());
+            } else {
+                gCost = Duration.ofMillis(gList.stream().mapToLong(i -> i).sum() / gList.size());
+
+            }
+            mySQLResult.setTimeTaken(gCost);
+            return mySQLResult;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new PolicyEngineException("Error Running Query");
+        }
+
+    }
+
+
+
 // explaining query
 //    public Duration explainQuery(PreparedStatement stmt, int queryNum){
 //        try {
