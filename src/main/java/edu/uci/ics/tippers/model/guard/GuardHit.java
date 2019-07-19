@@ -1,6 +1,7 @@
 package edu.uci.ics.tippers.model.guard;
 
 import edu.uci.ics.tippers.common.PolicyConstants;
+import edu.uci.ics.tippers.common.PolicyEngineException;
 import edu.uci.ics.tippers.db.MySQLQueryManager;
 import edu.uci.ics.tippers.db.MySQLResult;
 import edu.uci.ics.tippers.model.policy.BEExpression;
@@ -168,11 +169,25 @@ public class GuardHit {
         query.append("USE INDEX (" + PolicyConstants.ATTRIBUTE_IND.get(guard.getAttribute()) + ")");
         query.append(" WHERE ");
         query.append(guard.print());
-        query.append(PolicyConstants.CONJUNCTION);
-        query.append("(");
         partition.removeDuplicates();
-        query.append(partition.createQueryFromPolices());
-        query.append(")");
+        BEExpression queryExp = new BEExpression();
+        for (BEPolicy bp: partition.getPolicies()) {
+            BEPolicy tp = pMap.get(bp.getId());
+            for (ObjectCondition oc: tp.getObject_conditions()){
+                if(oc.equalsWithoutId(guard)) {
+                    tp.getObject_conditions().remove(oc);
+                    break;
+                }
+            }
+            if(!tp.getObject_conditions().isEmpty())
+                queryExp.getPolicies().add(tp);
+        }
+        if(!queryExp.getPolicies().isEmpty()){
+            query.append(PolicyConstants.CONJUNCTION);
+            query.append("(");
+            query.append(queryExp.createQueryFromPolices());
+            query.append(")");
+        }
         return query.toString();
     }
 

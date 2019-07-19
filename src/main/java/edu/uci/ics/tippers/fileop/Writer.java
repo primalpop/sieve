@@ -101,11 +101,11 @@ public class Writer {
         String FILE_HEADER =
                 "Number of policies in the partition, " +
                         "Number of predicates in policies, " +
+                        "Benefit, " +
+                        "Utility, " +
                         "Coverage_of_guard," +
                         "Coverage_of_guard_and_partition," +
                         "Ratio_of_coverage, " +
-                        "Benefit, " +
-                        "Utility, " +
                         "Total_time," +
                         "Guard_and_Partition";
         try {
