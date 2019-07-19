@@ -82,7 +82,7 @@ public class PolicyConstants {
     public static final ImmutableList<String> ACTIVITIES = ImmutableList.of("class", "meeting", "seminar",
             "private", "walking", "unknown", "work");
 
-    public static final ImmutableList<Double> HOUR_EXTENSIONS = ImmutableList.of(12.0, 24.0, 48.0, 72.0, 96.0, 120.0, 144.0);
+    public static final ImmutableList<Double> HOUR_EXTENSIONS = ImmutableList.of(12.0, 24.0, 48.0, 72.0, 96.0, 120.0, 144.0, 168.0, 180.0, 200.0);
 
 
 
@@ -140,12 +140,12 @@ public class PolicyConstants {
     //INDICES
     public static final ImmutableMap<String, String> ATTRIBUTE_IND =
             new ImmutableMap.Builder<String, String>()
-                    .put(PolicyConstants.USERID_ATTR, "so_u")
+                    .put(PolicyConstants.USERID_ATTR, "so_user_hash")
                     .put(PolicyConstants.TIMESTAMP_ATTR, "so_ts")
-                    .put(PolicyConstants.LOCATIONID_ATTR, "so_l")
+                    .put(PolicyConstants.LOCATIONID_ATTR, "so_l_hash")
                     .put(PolicyConstants.ENERGY_ATTR, "so_e")
                     .put(PolicyConstants.TEMPERATURE_ATTR, "so_t")
-                    .put(PolicyConstants.ACTIVITY_ATTR, "so_a")
+                    .put(PolicyConstants.ACTIVITY_ATTR, "so_activity_hash")
                     .build();
 
 

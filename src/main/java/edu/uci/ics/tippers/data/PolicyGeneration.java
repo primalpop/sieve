@@ -122,9 +122,7 @@ public class PolicyGeneration {
         int attrCount = (int) (r.nextGaussian() * 2 + 4); //mean - 4, SD - 2
         if (attrCount <= 1 || attrCount > attributes.size()) attrCount = 4;
         ArrayList<String> attrList = new ArrayList<>();
-        double rand = Math.random();
-        double TIMESTAMP_INCLUDE = 0.1;
-        if (rand > TIMESTAMP_INCLUDE) {
+        if(attrCount >=3) {
             rq.setStart_timestamp(getRandomTimeStamp());
             rq.setEnd_timestamp(getEndingTimeInterval(rq.getStart_timestamp()));
             attrList.add(PolicyConstants.TIMESTAMP_ATTR);
@@ -146,10 +144,13 @@ public class PolicyGeneration {
                 rq.setStart_temp(String.valueOf(getTemperature(null)));
                 rq.setEnd_temp(String.valueOf(getTemperature(rq.getStart_temp())));
             }
+            else if (attribute.equalsIgnoreCase(PolicyConstants.TIMESTAMP_ATTR)) {
+                rq.setStart_timestamp(getRandomTimeStamp());
+                rq.setEnd_timestamp(getEndingTimeInterval(rq.getStart_timestamp()));
+            }
             attrList.add(attribute);
         }
-        List<ObjectCondition> objectConditions = rq.createObjectCondition(policyID);
-        return objectConditions;
+        return rq.createObjectCondition(policyID);
     }
 
     /**
@@ -195,7 +196,7 @@ public class PolicyGeneration {
 
 
     /**
-     * Generates overlapping policies
+     * Generates overlapping policies without checking selectivity
      * @param numberOfPolicies
      * @param threshold
      * @param attributes
@@ -222,12 +223,8 @@ public class PolicyGeneration {
                 bePolicies.add(oPolicy);
             }
             else {
-                double selOfPolicy = 0.0;
                 List<ObjectCondition> objectConditions;
-                do {
-                    objectConditions = generatePredicates(policyID, attributes);
-                    selOfPolicy = BEPolicy.computeL(objectConditions);
-                } while (!(selOfPolicy > 0.00001 && selOfPolicy < 0.1));
+                objectConditions = generatePredicates(policyID, attributes);
                 BEPolicy bePolicy = new BEPolicy(policyID,
                         objectConditions, querierConditions, "analysis",
                         "allow", new Timestamp(System.currentTimeMillis()));
