@@ -14,104 +14,91 @@ import java.util.List;
  */
 public class User {
 
-    int user_id;
-
-    String name;
-
-    String email;
-
-    String office;
-
-    List<Integer> groups;
+    int userId;
+    String userType;
+    int totalTime;
+    List<UserGroup> groups;
 
     private static Connection connection = MySQLConnectionManager.getInstance().getConnection();
 
-
-    public User(int user_id, String name, List<Integer> groups) {
-        this.user_id = user_id;
-        this.name = name;
+    public User(int userId, List<UserGroup> groups) {
+        this.userId = userId;
         this.groups = groups;
     }
 
-    public User(int user_id, String name, String email, String office, List<Integer> groups) {
-        this.user_id = user_id;
-        this.name = name;
-        this.email = email;
-        this.office = office;
-        this.groups = groups;
-    }
-
-    public User(int user_id) {
-        this.user_id = user_id;
+    public User(int userId) {
+        this.userId = userId;
     }
 
     public User() {
 
     }
 
-    public int getUser_id() {
-        return user_id;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setUser_id(int user_id) {
-        this.user_id = user_id;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
-    public String getName() {
-        return name;
-    }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public List<Integer> getGroups() {
+    public List<UserGroup> getGroups() {
         return groups;
     }
 
-    public void setGroups(List<Integer> groups) {
+    public void setGroups(List<UserGroup> groups) {
         this.groups = groups;
     }
 
-    public String getEmail() {
-        return email;
+
+    public String getUserType() {
+        return userType;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUserType(String userType) {
+        this.userType = userType;
     }
 
-    public String getOffice() {
-        return office;
+    public int getTotalTime() {
+        return totalTime;
     }
 
-    public void setOffice(String office) {
-        this.office = office;
+    public void setTotalTime(int totalTime) {
+        this.totalTime = totalTime;
     }
 
-    public List<UserGroup> getUserGroups(){
-        List<UserGroup> userGroups = new ArrayList<>();
+    public void retrieveUserGroups(){
         PreparedStatement queryStm = null;
         try {
-            queryStm = connection.prepareStatement("SELECT ug.id, ug.description, ug.name, ug.owner " +
-                    "FROM USER_GROUP as ug, USER_GROUP_MEMBERSHIP as ugm where ugm.USER_ID = ? " +
-                    " AND ugm.USER_GROUP_ID = ug.id");
-
-            queryStm.setInt(1, this.getUser_id());
+            queryStm = connection.prepareStatement("SELECT USER_GROUP_ID as ug_id " +
+                    "FROM USER_GROUP_MEMBERSHIP as ugm where ugm.USER_ID = ? ");
+            queryStm.setInt(1, this.getUserId());
             ResultSet rs = queryStm.executeQuery();
             while (rs.next()) {
                UserGroup ug = new UserGroup();
-               ug.setGroup_id(Integer.parseInt(rs.getString("ug.id")));
-               ug.setDescription(rs.getString("ug.description"));
-               ug.setName(rs.getString("ug.name"));
-               ug.setOwner(new User(Integer.parseInt(rs.getString("ug.owner"))));
-               userGroups.add(ug);
+               ug.setGroup_id(Integer.parseInt(rs.getString("ug_id")));
+               this.getGroups().add(ug);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return userGroups;
     }
 
+    public void retrieveUserDetails() {
+        PreparedStatement queryStm = null;
+        try {
+            queryStm = connection.prepareStatement("SELECT u.user_type, u.totalTime " +
+                    "FROM USER as u where u.ID = ?" );
+            queryStm.setInt(1, this.userId);
+            ResultSet rs = queryStm.executeQuery();
+            while (rs.next()) {
+                this.setTotalTime(rs.getInt("u.totalTime"));
+                this.setUserType(rs.getString("u.user_type"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
 }

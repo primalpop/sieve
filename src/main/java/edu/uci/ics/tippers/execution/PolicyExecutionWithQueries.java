@@ -1,4 +1,4 @@
-package edu.uci.ics.tippers.data;
+package edu.uci.ics.tippers.execution;
 
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.db.MySQLQueryManager;
@@ -6,9 +6,9 @@ import edu.uci.ics.tippers.db.MySQLResult;
 import edu.uci.ics.tippers.fileop.Reader;
 import edu.uci.ics.tippers.fileop.Writer;
 import edu.uci.ics.tippers.model.guard.FactorExtension;
-import edu.uci.ics.tippers.model.guard.FactorSearch;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.query.QueryStatement;
+import edu.uci.ics.tippers.setup.query.QueryGeneration;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,7 +17,6 @@ import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class PolicyExecutionWithQueries {
 

@@ -1,12 +1,12 @@
-package edu.uci.ics.tippers.data;
+package edu.uci.ics.tippers.setup.data;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ibatis.common.jdbc.ScriptRunner;
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.common.PolicyEngineException;
-import edu.uci.ics.tippers.db.MySQLConnectionManager;
 import edu.uci.ics.tippers.db.PGSQLConnectionManager;
+import edu.uci.ics.tippers.fileop.BigJsonReader;
 import edu.uci.ics.tippers.model.tippers.Infrastructure;
 import edu.uci.ics.tippers.model.tippers.SemanticObservation;
 import edu.uci.ics.tippers.model.tippers.User;
@@ -16,7 +16,6 @@ import java.io.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;

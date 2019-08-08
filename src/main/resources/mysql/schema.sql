@@ -152,6 +152,10 @@ CREATE TABLE IF NOT EXISTS SIMPLE_POLICY  (
 ) ;
 
 
+--create index so_user_hash on SEMANTIC_OBSERVATION (user_id) using hash;
+-- create index so_l_hash on SEMANTIC_OBSERVATION (location_id) using hash;
+-- create index so_activity_hash on SEMANTIC_OBSERVATION (activity) using hash;
+
 --
 --CREATE INDEX so_ts ON SEMANTIC_OBSERVATION(timeStamp);
 --CREATE INDEX so_u ON SEMANTIC_OBSERVATION(user_id);

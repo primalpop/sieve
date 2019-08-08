@@ -1,4 +1,4 @@
-package edu.uci.ics.tippers.data;
+package edu.uci.ics.tippers.execution;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.uci.ics.tippers.common.PolicyConstants;
@@ -6,12 +6,10 @@ import edu.uci.ics.tippers.db.MySQLQueryManager;
 import edu.uci.ics.tippers.db.MySQLResult;
 import edu.uci.ics.tippers.fileop.Reader;
 import edu.uci.ics.tippers.fileop.Writer;
-import edu.uci.ics.tippers.model.guard.FactorExtension;
-import edu.uci.ics.tippers.model.guard.FactorSearch;
 import edu.uci.ics.tippers.model.guard.GuardHit;
-import edu.uci.ics.tippers.model.guard.PredicateMerge;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
+import edu.uci.ics.tippers.setup.policy.PolicyGeneration;
 
 import java.io.File;
 import java.io.IOException;
