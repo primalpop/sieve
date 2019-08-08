@@ -1,4 +1,4 @@
-package edu.uci.ics.tippers.data;
+package edu.uci.ics.tippers.setup.query;
 
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.db.MySQLConnectionManager;
@@ -7,6 +7,7 @@ import edu.uci.ics.tippers.db.MySQLResult;
 import edu.uci.ics.tippers.model.query.QueryStatement;
 import edu.uci.ics.tippers.model.tippers.Infrastructure;
 import edu.uci.ics.tippers.model.tippers.User;
+import edu.uci.ics.tippers.setup.data.DataGeneration;
 
 import java.sql.*;
 import java.text.SimpleDateFormat;
@@ -80,7 +81,11 @@ public class QueryGeneration {
         return (float) mySQLResult.getResultCount() / (float) PolicyConstants.NUMBER_OR_TUPLES;
     }
 
-
+    /**
+     * Get location(s) of a user within a period of time
+     * Query 1: Select * from SEMANTIC_OBSERVATION where user_id = x and timeStamp >= y and timeStamp <= z
+     * @return
+     */
     private QueryStatement createQuery1() {
         String query, selType = "";
         float selQuery = 0;
@@ -97,6 +102,14 @@ public class QueryGeneration {
                 new Timestamp(System.currentTimeMillis()));
     }
 
+    /**
+     * Get the list of users and their locations within a specific time period
+     * Query 2: Select * from SEMANTIC_OBSERVATION where user_id in [.....]
+     * and location_id in [......] and timeStamp >= x and timeStamp <= y
+     * @param elemCount
+     * @param user
+     * @return
+     */
     private QueryStatement createQuery2(int elemCount, boolean user) {
         int c = 0;
         String query, selType = "";

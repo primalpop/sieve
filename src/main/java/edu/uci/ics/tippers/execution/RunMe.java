@@ -1,30 +1,13 @@
 package edu.uci.ics.tippers.execution;
 
 import edu.uci.ics.tippers.common.PolicyConstants;
-import edu.uci.ics.tippers.data.GroupGeneration;
-import edu.uci.ics.tippers.data.QueryGeneration;
-import edu.uci.ics.tippers.db.MySQLQueryManager;
-import edu.uci.ics.tippers.db.MySQLResult;
 import edu.uci.ics.tippers.fileop.Reader;
-import edu.uci.ics.tippers.manager.GuardPersistor;
-import edu.uci.ics.tippers.manager.PolicyPersistor;
-import edu.uci.ics.tippers.model.data.UserGroup;
-import edu.uci.ics.tippers.model.guard.FactorSearch;
-import edu.uci.ics.tippers.model.guard.GuardExp;
 import edu.uci.ics.tippers.model.guard.GuardHit;
-import edu.uci.ics.tippers.model.guard.PredicateMerge;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.time.Duration;
-import java.time.Instant;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * Created by cygnus on 9/25/17.

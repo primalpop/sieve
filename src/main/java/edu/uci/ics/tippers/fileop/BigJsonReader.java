@@ -1,4 +1,4 @@
-package edu.uci.ics.tippers.data;
+package edu.uci.ics.tippers.fileop;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

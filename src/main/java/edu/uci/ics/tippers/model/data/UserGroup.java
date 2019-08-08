@@ -3,7 +3,6 @@ package edu.uci.ics.tippers.model.data;
 import edu.uci.ics.tippers.db.MySQLConnectionManager;
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,17 +18,13 @@ public class UserGroup {
 
     private String description;
 
-    private List<TimePeriod> timePeriods;
+    private String region_name;
 
-    private String group_type;
-
-    private String location;
+    private String floor;
 
     private List<User> members;
 
     private static Connection connection = MySQLConnectionManager.getInstance().getConnection();
-
-    private static final long GROUP_MEMBERSHIP = 900000;
 
     public UserGroup(int group_id, String name, List<User> members) {
         this.group_id = group_id;
@@ -81,102 +76,28 @@ public class UserGroup {
         this.name = name;
     }
 
-    public List<TimePeriod> getTimePeriods() {
-        return timePeriods;
+    public String getRegion_name() {
+        return region_name;
     }
 
-    public void setTimePeriods(List<TimePeriod> timePeriods) {
-        this.timePeriods = timePeriods;
+    public void setRegion_name(String region_name) {
+        this.region_name = region_name;
     }
 
-    public String getGroup_type() {
-        return group_type;
+    public String getFloor() {
+        return floor;
     }
 
-    public void setGroup_type(String group_type) {
-        this.group_type = group_type;
+    public void setFloor(String floor) {
+        this.floor = floor;
     }
 
-    public String getLocation() {
-        return location;
+    public List<User> getMembers() {
+        return members;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-
-    private boolean satisfyMembership(TimePeriod tp, Timestamp start, Timestamp end){
-        Timestamp sOverlap, eOverlap;
-        if(tp.getStart().before(start))
-            sOverlap = start;
-        else sOverlap = tp.getStart();
-        if(tp.getEnd().before(end))
-            eOverlap = end;
-        else eOverlap = tp.getEnd();
-        return (eOverlap.getTime() - sOverlap.getTime()) > GROUP_MEMBERSHIP;
-    }
-
-    public void retrieveMembers(){
-        List<User> members = new ArrayList<>();
-        for (TimePeriod tp: this.getTimePeriods()) {
-            PreparedStatement queryStm = null;
-            try {
-                queryStm = connection.prepareStatement("SELECT p.userId, p.startTimestamp, p.endTimestamp " +
-                        "FROM PRESENCE AS p WHERE p.location = ? AND (p.startTimestamp <= ? AND p.endTimestamp >= ?)");
-
-                queryStm.setString(1, this.getLocation());
-                queryStm.setTimestamp(2, tp.getEnd());
-                queryStm.setTimestamp(3, tp.getStart());
-                ResultSet rs = queryStm.executeQuery();
-                while (rs.next()) {
-                    User user = retrieveUser(Integer.parseInt(rs.getString("p.userId")));
-                    if (user != null){
-                        Timestamp start = rs.getTimestamp("p.startTimestamp");
-                        Timestamp end = rs.getTimestamp("p.endTimestamp");
-                        if(satisfyMembership(tp, start, end)){
-                            members.add(user);
-                        }
-                    }
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
+    public void setMembers(List<User> members) {
         this.members = members;
-    }
-
-
-    private User retrieveUser(int userId) {
-        User user = new User();
-        PreparedStatement queryStm = null;
-        try {
-            queryStm = connection.prepareStatement("SELECT u.name, u.email_id, u.SEMANTIC_ENTITY_ID " +
-                    "FROM USER as u where u.SEMANTIC_ENTITY_ID = ?" );
-            queryStm.setInt(1, userId);
-            ResultSet rs = queryStm.executeQuery();
-            while (rs.next()) {
-                user.setName(rs.getString("u.name"));
-                user.setEmail(rs.getString("u.email_id"));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return user;
-    }
-
-    @Override
-    public String toString() {
-        return "UserGroup{" +
-                "group_id=" + group_id +
-                ", name='" + name + '\'' +
-                ", owner=" + owner +
-                ", description='" + description + '\'' +
-                ", timePeriods=" + timePeriods +
-                ", group_type='" + group_type + '\'' +
-                ", location='" + location + '\'' +
-                ", members=" + members +
-                '}';
     }
 }
 

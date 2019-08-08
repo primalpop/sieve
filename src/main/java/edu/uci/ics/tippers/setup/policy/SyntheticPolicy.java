@@ -1,8 +1,5 @@
-package edu.uci.ics.tippers.data;
+package edu.uci.ics.tippers.setup.policy;
 
-import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
 import edu.uci.ics.tippers.common.AttributeType;
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.db.MySQLQueryManager;
@@ -11,27 +8,16 @@ import edu.uci.ics.tippers.manager.SimplePersistor;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
 import edu.uci.ics.tippers.model.policy.ObjectCondition;
 import edu.uci.ics.tippers.model.policy.QuerierCondition;
-import edu.uci.ics.tippers.model.query.BasicQuery;
 import edu.uci.ics.tippers.model.query.RangeQuery;
 import edu.uci.ics.tippers.model.tippers.Infrastructure;
 import edu.uci.ics.tippers.model.tippers.User;
-import org.apache.commons.beanutils.PropertyUtils;
+import edu.uci.ics.tippers.setup.data.DataGeneration;
 
-import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.security.Policy;
 import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
-
-import static edu.uci.ics.tippers.common.PolicyConstants.START_TS;
 
 /**
  * Author primpap
