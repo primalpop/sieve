@@ -1,4 +1,4 @@
-package edu.uci.ics.tippers.setup.query;
+package edu.uci.ics.tippers.generation.query;
 
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.db.MySQLConnectionManager;
@@ -7,7 +7,7 @@ import edu.uci.ics.tippers.db.MySQLResult;
 import edu.uci.ics.tippers.model.query.QueryStatement;
 import edu.uci.ics.tippers.model.tippers.Infrastructure;
 import edu.uci.ics.tippers.model.tippers.User;
-import edu.uci.ics.tippers.setup.data.DataGeneration;
+import edu.uci.ics.tippers.generation.data.DataGeneration;
 
 import java.sql.*;
 import java.text.SimpleDateFormat;

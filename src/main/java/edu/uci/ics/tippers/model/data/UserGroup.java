@@ -93,11 +93,45 @@ public class UserGroup {
     }
 
     public List<User> getMembers() {
+        if(members == null || members.isEmpty()) {
+            retrieveMembers();
+        }
         return members;
     }
 
-    public void setMembers(List<User> members) {
-        this.members = members;
+    public void retrieveUserGroupDetails() {
+        PreparedStatement queryStm = null;
+        try {
+            queryStm = connection.prepareStatement("SELECT ug.regionName, ug.floor " +
+                    "FROM USER_GROUP as ug where ug.ID = ?" );
+            queryStm.setString(1, String.valueOf(this.group_id));
+            ResultSet rs = queryStm.executeQuery();
+            while (rs.next()) {
+                this.setRegion_name(rs.getString("ug.regionName"));
+                this.setFloor(rs.getString("ug.floor"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void retrieveMembers(){
+        PreparedStatement queryStm = null;
+        try {
+            queryStm = connection.prepareStatement("SELECT ugm.USER_ID as user " +
+                    "FROM USER_GROUP_MEMBERSHIP as ugm where ugm.USER_GROUP_ID = ?" );
+            queryStm.setString(1, String.valueOf(this.group_id));
+            ResultSet rs = queryStm.executeQuery();
+            while (rs.next()) {
+                User user = new User();
+                user.setUserId(Integer.parseInt(rs.getString("ugm.user")));
+                user.retrieveUserDetails();
+                this.getMembers().add(user);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 }
 

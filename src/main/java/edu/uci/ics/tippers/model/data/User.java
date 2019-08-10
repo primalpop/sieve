@@ -42,15 +42,9 @@ public class User {
         this.userId = userId;
     }
 
-
     public List<UserGroup> getGroups() {
         return groups;
     }
-
-    public void setGroups(List<UserGroup> groups) {
-        this.groups = groups;
-    }
-
 
     public String getUserType() {
         return userType;
@@ -68,7 +62,19 @@ public class User {
         this.totalTime = totalTime;
     }
 
-    public void retrieveUserGroups(){
+    @Override
+    public int hashCode() {
+        return this.userId;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof User))
+            return false;
+        return (this.userId == ((User) obj).userId && this.userType.equalsIgnoreCase(((User) obj).userType));
+    }
+
+    public void retrieveUserGroups() {
         PreparedStatement queryStm = null;
         try {
             queryStm = connection.prepareStatement("SELECT USER_GROUP_ID as ug_id " +
@@ -76,9 +82,9 @@ public class User {
             queryStm.setInt(1, this.getUserId());
             ResultSet rs = queryStm.executeQuery();
             while (rs.next()) {
-               UserGroup ug = new UserGroup();
-               ug.setGroup_id(Integer.parseInt(rs.getString("ug_id")));
-               this.getGroups().add(ug);
+                UserGroup ug = new UserGroup();
+                ug.setGroup_id(Integer.parseInt(rs.getString("ug_id")));
+                this.getGroups().add(ug);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -89,8 +95,8 @@ public class User {
         PreparedStatement queryStm = null;
         try {
             queryStm = connection.prepareStatement("SELECT u.user_type, u.totalTime " +
-                    "FROM USER as u where u.ID = ?" );
-            queryStm.setInt(1, this.userId);
+                    "FROM USER as u where u.ID = ?");
+            queryStm.setString(1, String.valueOf(this.userId));
             ResultSet rs = queryStm.executeQuery();
             while (rs.next()) {
                 this.setTotalTime(rs.getInt("u.totalTime"));

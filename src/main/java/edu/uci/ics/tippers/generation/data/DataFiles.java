@@ -1,4 +1,4 @@
-package edu.uci.ics.tippers.setup.data;
+package edu.uci.ics.tippers.generation.data;
 
 /**
  * Created by cygnus on 12/8/17.
