@@ -9,7 +9,7 @@ import edu.uci.ics.tippers.fileop.Writer;
 import edu.uci.ics.tippers.model.guard.GuardHit;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
-import edu.uci.ics.tippers.setup.policy.PolicyGeneration;
+import edu.uci.ics.tippers.generation.policy.SyntheticPolicy;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,7 +25,7 @@ import java.util.*;
  * Created by cygnus on 12/12/17.
  */
 public class PolicyExecution {
-    private PolicyGeneration policyGen;
+    private SyntheticPolicy policyGen;
 
     private Writer writer;
     private MySQLQueryManager mySQLQueryManager;
@@ -64,7 +64,7 @@ public class PolicyExecution {
            ie.printStackTrace();
         }
 
-        policyGen = new PolicyGeneration();
+        policyGen = new SyntheticPolicy();
         writer = new Writer();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         ObjectMapper objectMapper = new ObjectMapper();

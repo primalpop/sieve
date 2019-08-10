@@ -8,7 +8,7 @@ import edu.uci.ics.tippers.fileop.Writer;
 import edu.uci.ics.tippers.model.guard.FactorExtension;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.query.QueryStatement;
-import edu.uci.ics.tippers.setup.query.QueryGeneration;
+import edu.uci.ics.tippers.generation.query.QueryGeneration;
 
 import java.io.File;
 import java.io.IOException;

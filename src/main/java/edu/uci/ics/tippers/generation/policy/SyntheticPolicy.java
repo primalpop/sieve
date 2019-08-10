@@ -1,4 +1,4 @@
-package edu.uci.ics.tippers.setup.policy;
+package edu.uci.ics.tippers.generation.policy;
 
 import edu.uci.ics.tippers.common.AttributeType;
 import edu.uci.ics.tippers.common.PolicyConstants;
@@ -11,7 +11,7 @@ import edu.uci.ics.tippers.model.policy.QuerierCondition;
 import edu.uci.ics.tippers.model.query.RangeQuery;
 import edu.uci.ics.tippers.model.tippers.Infrastructure;
 import edu.uci.ics.tippers.model.tippers.User;
-import edu.uci.ics.tippers.setup.data.DataGeneration;
+import edu.uci.ics.tippers.generation.data.DataGeneration;
 
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -24,7 +24,7 @@ import java.util.*;
  */
 
 
-public class PolicyGeneration {
+public class SyntheticPolicy {
 
     List<Infrastructure> infras;
     List<User> users;
@@ -32,8 +32,7 @@ public class PolicyGeneration {
     Writer writer;
     MySQLQueryManager mySQLQueryManager = new MySQLQueryManager();
 
-
-    public PolicyGeneration() {
+    public SyntheticPolicy() {
 
         infras = DataGeneration.getAllInfra();
 
