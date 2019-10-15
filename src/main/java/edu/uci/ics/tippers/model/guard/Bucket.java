@@ -93,7 +93,8 @@ public class Bucket implements Comparable<Bucket> {
 
     public String toStringSingleton() {
         return "Bucket{" +
-                "value='" + value + '\'' +
+                "attribute = " + attribute +
+                ", value='" + value + '\'' +
                 ", cumulfreq=" + cumulfreq +
                 ", freq=" + freq +
                 '}';
@@ -112,7 +113,9 @@ public class Bucket implements Comparable<Bucket> {
 
     @Override
     public int compareTo(Bucket bucket) {
-        if(this.getAttribute().equalsIgnoreCase(PolicyConstants.USERID_ATTR) || this.getAttribute().equalsIgnoreCase(PolicyConstants.TIMESTAMP_ATTR)){
+        if(this.getAttribute().equalsIgnoreCase(PolicyConstants.USERID_ATTR)
+                || this.getAttribute().equalsIgnoreCase(PolicyConstants.START_TIMESTAMP_ATTR)
+                || this.getAttribute().equalsIgnoreCase(PolicyConstants.END_TIMESTAMP_ATTR)){
             return this.getLower().compareTo(bucket.getLower());
         }
         else if(this.getAttribute().equalsIgnoreCase(PolicyConstants.LOCATIONID_ATTR)){

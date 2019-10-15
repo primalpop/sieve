@@ -9,7 +9,9 @@ public enum DataFiles {
     GROUP ("group.json"),
     USER ("user.json"),
     SO ("semanticObservation.json"),
-    SO_FULL ("semanticObservationFull.json");
+    SO_FULL ("semanticObservationFull.json"),
+    PRESENCE_REAL ("fma_2018.csv"),
+    COVERAGE("coverageSensor.txt");
 
 
     private final String path;

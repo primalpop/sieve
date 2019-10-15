@@ -1,7 +1,7 @@
 package edu.uci.ics.tippers.db;
 
 import edu.uci.ics.tippers.fileop.Writer;
-import edu.uci.ics.tippers.model.data.Presence;
+import edu.uci.ics.tippers.model.data.LongPresence;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,7 +18,7 @@ public class MySQLResult {
     String fileName;
     Duration timeTaken;
     int resultCount;
-    List<Presence> queryResult;
+    List<LongPresence> queryResult;
     Boolean resultsCheck;
 
     public MySQLResult() {
@@ -36,7 +36,7 @@ public class MySQLResult {
     }
 
 
-    public List<Presence> getQueryResult() {
+    public List<LongPresence> getQueryResult() {
         return queryResult;
     }
 
@@ -45,7 +45,7 @@ public class MySQLResult {
         Writer writer = new Writer();
         try{
             while(resultSet.next()){
-                Presence so = new Presence();
+                LongPresence so = new LongPresence();
                 so.setId(resultSet.getString("id"));
 //                so.setUser_id(resultSet.getString("user_id"));
 //                so.setLocation(resultSet.getString("location_id"));
@@ -104,11 +104,11 @@ public class MySQLResult {
 
     public void writeResultsToFile(ResultSet resultSet){
 
-        List<Presence> query_results = new ArrayList<>();
+        List<LongPresence> query_results = new ArrayList<>();
         Writer writer = new Writer();
         try{
             while(resultSet.next()){
-                Presence so = new Presence();
+                LongPresence so = new LongPresence();
                 so.setId(resultSet.getString("id"));
                 so.setUser_id(resultSet.getString("user_id"));
                 so.setLocation(resultSet.getString("location_id"));
@@ -127,14 +127,14 @@ public class MySQLResult {
     }
 
     public Boolean checkResults(MySQLResult otherResult) {
-        List<Presence> og = this.getQueryResult();
-        List<Presence> tbc = otherResult.getQueryResult();
+        List<LongPresence> og = this.getQueryResult();
+        List<LongPresence> tbc = otherResult.getQueryResult();
         if(og.size() != tbc.size()) {
             System.out.println("Not of same size: " + og.size() + " != " + tbc.size());
             System.out.println("Set size: " + new HashSet<>(og).size() + " " + new HashSet<>(tbc).size());
             return false;
         }
-        Comparator<Presence> comp = Comparator.comparingInt(so -> Integer.parseInt(so.getId()));
+        Comparator<LongPresence> comp = Comparator.comparingInt(so -> Integer.parseInt(so.getId()));
         og.sort(comp);
         tbc.sort(comp);
         return IntStream.range(0, og.size())

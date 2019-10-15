@@ -193,26 +193,26 @@ public class RangeQuery {
         List<ObjectCondition> objectConditions = new ArrayList<>();
         if(checkAllNull()) return objectConditions;
 
-        if(user_id != null) {
-            objectConditions.add(new ObjectCondition(String.valueOf(policy_id), "user_id", AttributeType.STRING, "=", user_id, "=", user_id));
-        }
-        if(location_id != null) {
-            objectConditions.add(new ObjectCondition(String.valueOf(policy_id), "location_id", AttributeType.STRING, "=", location_id, "=", location_id));
-        }
-        if(start_temp != null && end_temp != null) {
-            objectConditions.add(new ObjectCondition(String.valueOf(policy_id), "temperature", AttributeType.INTEGER, ">=", start_temp, "<=", end_temp));
-        }
-        if(start_wemo != null && end_wemo != null) {
-            objectConditions.add(new ObjectCondition(String.valueOf(policy_id),"energy", AttributeType.INTEGER, ">=", start_wemo, "<=", end_wemo));
-        }
-        if(activity != null) {
-            objectConditions.add(new ObjectCondition(String.valueOf(policy_id),"activity", AttributeType.STRING, "=", activity, "=", activity));
-        }
-        if(start_timestamp != null && end_timestamp != null) {
-            SimpleDateFormat sdf = new SimpleDateFormat(PolicyConstants.TIMESTAMP_FORMAT);
-            objectConditions.add(new ObjectCondition(policy_id,"timeStamp", AttributeType.TIMESTAMP, ">=",
-                    sdf.format(start_timestamp), "<=", sdf.format(end_timestamp)));
-        }
+//        if(user_id != null) {
+//            objectConditions.add(new ObjectCondition(String.valueOf(policy_id), "user_id", AttributeType.STRING, "=", user_id, "=", user_id));
+//        }
+//        if(location_id != null) {
+//            objectConditions.add(new ObjectCondition(String.valueOf(policy_id), "location_id", AttributeType.STRING, "=", location_id, "=", location_id));
+//        }
+//        if(start_temp != null && end_temp != null) {
+//            objectConditions.add(new ObjectCondition(String.valueOf(policy_id), "temperature", AttributeType.INTEGER, ">=", start_temp, "<=", end_temp));
+//        }
+//        if(start_wemo != null && end_wemo != null) {
+//            objectConditions.add(new ObjectCondition(String.valueOf(policy_id),"energy", AttributeType.INTEGER, ">=", start_wemo, "<=", end_wemo));
+//        }
+//        if(activity != null) {
+//            objectConditions.add(new ObjectCondition(String.valueOf(policy_id),"activity", AttributeType.STRING, "=", activity, "=", activity));
+//        }
+//        if(start_timestamp != null && end_timestamp != null) {
+//            SimpleDateFormat sdf = new SimpleDateFormat(PolicyConstants.TIMESTAMP_FORMAT);
+//            objectConditions.add(new ObjectCondition(policy_id,"timeStamp", AttributeType.TIMESTAMP, ">=",
+//                    sdf.format(start_timestamp), "<=", sdf.format(end_timestamp)));
+//        }
         return  objectConditions;
     }
 }

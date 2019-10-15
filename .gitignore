@@ -21,5 +21,6 @@ target/
 db2*
 results.txt
 useful_queries/
+*.csv
 
 *.sql

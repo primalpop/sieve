@@ -23,7 +23,7 @@ public class QuerierCondition extends BooleanCondition {
         }
     }
 
-    public QuerierCondition(String policyID, String attribute, AttributeType attributeType, String o1, String v1){
+    public QuerierCondition(String policyID, String attribute, AttributeType attributeType, Operation o1, String v1){
         this.policy_id = policyID;
         this.attribute = attribute;
         this.type = attributeType;

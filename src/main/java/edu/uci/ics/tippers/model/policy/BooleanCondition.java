@@ -209,9 +209,6 @@ public class BooleanCondition  implements Comparable<BooleanCondition>  {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof BooleanCondition))
-            return false;
-
         BooleanCondition bc = (BooleanCondition) obj;
         return bc.policy_id == (policy_id) && bc.attribute.equals(attribute) && bc.type.equals(type) && bc.booleanPredicates.equals(booleanPredicates);
     }

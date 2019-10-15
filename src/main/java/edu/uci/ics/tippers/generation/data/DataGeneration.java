@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ibatis.common.jdbc.ScriptRunner;
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.common.PolicyEngineException;
-import edu.uci.ics.tippers.db.PGSQLConnectionManager;
+import edu.uci.ics.tippers.db.MySQLConnectionManager;
 import edu.uci.ics.tippers.fileop.BigJsonReader;
 import edu.uci.ics.tippers.model.tippers.Infrastructure;
 import edu.uci.ics.tippers.model.tippers.SemanticObservation;
@@ -33,7 +33,7 @@ public class DataGeneration {
     private static String dataDir = "/data/";
 
     public DataGeneration(){
-        this.connection = PGSQLConnectionManager.getInstance().getConnection();
+        this.connection = MySQLConnectionManager.getInstance().getConnection();
         try {
             this.connection.setAutoCommit(true);
         } catch (SQLException e) {
@@ -314,8 +314,8 @@ public class DataGeneration {
 
     public static void main (String [] args){
         DataGeneration dataGeneration = new DataGeneration();
-//        dataGeneration.runScript("mysql/schema.sql");
-        dataGeneration.generateAll();
+        dataGeneration.runScript("realtest/schema.sql");
+//        dataGeneration.generateAll();
 //        dataGeneration.runScript("mysql/drop.sql");
     }
 
