@@ -26,7 +26,7 @@ public class SimplePersistor {
 
         try {
             connection.setAutoCommit(true);
-
+            //TODO: has to be updated to work with new Presence Schema
             String policyInsert = "INSERT INTO SIMPLE_POLICY " +
                     "(id, querier, owner, purpose, enforcement_action, inserted_at, uPol, " +
                     "lPol, templPol, tempgPol, elPol, egPol, aPol, tslPol, tsgPol) VALUES (?, ?, ?, ?, ?, ?, ?," +

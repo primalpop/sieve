@@ -15,7 +15,7 @@ public class BooleanPredicate {
     private String value;
 
     @JsonProperty("operator")
-    private String operator;
+    private Operation operator;
 
 
     public String getValue() {
@@ -26,15 +26,15 @@ public class BooleanPredicate {
         this.value = value;
     }
 
-    public String getOperator() {
+    public Operation getOperator() {
         return operator;
     }
 
-    public void setOperator(String operator) {
+    public void setOperator(Operation operator) {
         this.operator = operator;
     }
 
-    public BooleanPredicate(String operator, String value) {
+    public BooleanPredicate(Operation operator, String value) {
         this.value = value;
         this.operator = operator;
     }
@@ -59,7 +59,7 @@ public class BooleanPredicate {
             return false;
 
         BooleanPredicate bp = (BooleanPredicate) obj;
-        return bp.value.equalsIgnoreCase(value) && bp.operator.equalsIgnoreCase(operator);
+        return bp.value.equalsIgnoreCase(value) && bp.operator.equals(operator);
     }
 
     @Override

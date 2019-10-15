@@ -51,7 +51,7 @@ public class PolicyPersistor {
                         ocStmt.setString(1, bePolicy.getId());
                         ocStmt.setString(2, oc.getAttribute());
                         ocStmt.setString(3, oc.getType().toString());
-                        ocStmt.setString(4, bp.getOperator());
+                        ocStmt.setString(4, bp.getOperator().toString());
                         ocStmt.setString(5, bp.getValue());
                         ocStmt.addBatch();
                     }
@@ -82,7 +82,7 @@ public class PolicyPersistor {
                         ocStmt.setString(1, bePolicy.getId());
                         ocStmt.setString(2, oc.getAttribute());
                         ocStmt.setString(3, oc.getType().toString());
-                        ocStmt.setString(4, bp.getOperator());
+                        ocStmt.setString(4, bp.getOperator().toString());
                         ocStmt.setString(5, bp.getValue());
                         ocStmt.addBatch();
                     }
@@ -94,6 +94,94 @@ public class PolicyPersistor {
             e.printStackTrace();
         }
     }
+
+    private Operation convertOperator(String operator){
+        if(operator.equalsIgnoreCase("=")) return Operation.EQ;
+        else if (operator.equalsIgnoreCase(">=")) return Operation.GTE;
+        else if (operator.equalsIgnoreCase("<=")) return Operation.LTE;
+        else if (operator.equalsIgnoreCase("<")) return Operation.LT;
+        else return Operation.GT;
+    }
+
+    public List<BEPolicy> retrievePolicies(String querier, String querier_type){
+        List<BEPolicy> bePolicies = new ArrayList<>();
+        String id = null, purpose = null, action = null;
+        Timestamp inserted_at = null;
+        List<ObjectCondition> objectConditions = new ArrayList<>();
+
+        List<QuerierCondition> querierConditions = new ArrayList<>();
+        QuerierCondition qc1 = new QuerierCondition();
+        qc1.setAttribute("policy_type");
+        qc1.setType(AttributeType.STRING);
+        List<BooleanPredicate> qbps1 = new ArrayList<>();
+        BooleanPredicate qbp1 = new BooleanPredicate();
+        qbp1.setOperator(Operation.EQ);
+        qbp1.setValue(querier_type);
+        qbps1.add(qbp1);
+        qc1.setBooleanPredicates(qbps1);
+        querierConditions.add(qc1);
+
+        QuerierCondition qc2 = new QuerierCondition();
+        qc2.setAttribute("querier");
+        qc2.setType(AttributeType.STRING);
+        List<BooleanPredicate> qbps2 = new ArrayList<>();
+        BooleanPredicate qbp2 = new BooleanPredicate();
+        qbp2.setOperator(Operation.EQ);
+        qbp2.setValue(querier);
+        qbps2.add(qbp2);
+        qc2.setBooleanPredicates(qbps2);
+        querierConditions.add(qc2);
+
+        String policy_table = null, oc_table = null;
+        if (querier_type.equalsIgnoreCase("user")) {
+            policy_table = "USER_POLICY";
+            oc_table = "USER_POLICY_OBJECT_CONDITION";
+        } else if (querier_type.equalsIgnoreCase("group")) {
+            policy_table = "GROUP_POLICY";
+            oc_table = "GROUP_POLICY_OBJECT_CONDITION";
+        }
+
+        PreparedStatement queryStm = null;
+        try {
+            queryStm = connection.prepareStatement("SELECT " + policy_table  + ".id, " + policy_table +".querier, " + policy_table +".purpose, " +
+                    policy_table + ".enforcement_action," + policy_table +".inserted_at," + oc_table +".id, " + oc_table +" .policy_id," + oc_table + ".attribute, " +
+                    oc_table + ".attribute_type, " + oc_table +".operator," + oc_table +".comp_value " +
+                    "FROM "  + policy_table +", " + oc_table +
+                    " WHERE " + policy_table + ".querier=? AND "+ policy_table + ".id = " + oc_table + ".policy_id");
+            queryStm.setInt(1, Integer.parseInt(querier));
+            ResultSet rs = queryStm.executeQuery();
+            while (rs.next()) {
+                if (id == null) {
+                    id = rs.getString(policy_table +".id");
+                    purpose = rs.getString(policy_table + ".purpose");
+                    action = rs.getString(policy_table + ".enforcement_action");
+                    inserted_at = rs.getTimestamp(policy_table +".inserted_at");
+                }
+                ObjectCondition oc = new ObjectCondition();
+                oc.setAttribute(rs.getString(oc_table + ".attribute"));
+                oc.setPolicy_id(rs.getString(oc_table + ".policy_id"));
+                oc.setType(AttributeType.valueOf(rs.getString(oc_table + ".attribute_type")));
+                List<BooleanPredicate> booleanPredicates = new ArrayList<>();
+                BooleanPredicate bp1 = new BooleanPredicate();
+                bp1.setOperator(convertOperator(rs.getString(oc_table + ".operator")));
+                bp1.setValue(rs.getString(oc_table +".comp_value"));
+                rs.next();
+                BooleanPredicate bp2 = new BooleanPredicate();
+                bp2.setOperator(convertOperator(rs.getString(oc_table +".operator")));
+                bp2.setValue(rs.getString(oc_table +".comp_value"));
+                booleanPredicates.add(bp1);
+                booleanPredicates.add(bp2);
+                oc.setBooleanPredicates(booleanPredicates);
+                objectConditions.add(oc);
+                BEPolicy bePolicy = new BEPolicy(id, objectConditions, querierConditions, purpose, action, inserted_at);
+                bePolicies.add(bePolicy);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return bePolicies;
+    }
+
 
     public BEPolicy retrievePolicy(String querier, String querier_type, String inserted_after) {
         BEPolicy bePolicy = new BEPolicy();
@@ -107,7 +195,7 @@ public class PolicyPersistor {
         qc1.setType(AttributeType.STRING);
         List<BooleanPredicate> qbps1 = new ArrayList<>();
         BooleanPredicate qbp1 = new BooleanPredicate();
-        qbp1.setOperator("=");
+        qbp1.setOperator(Operation.EQ);
         qbp1.setValue(querier_type);
         qbps1.add(qbp1);
         qc1.setBooleanPredicates(qbps1);
@@ -118,7 +206,7 @@ public class PolicyPersistor {
         qc2.setType(AttributeType.STRING);
         List<BooleanPredicate> qbps2 = new ArrayList<>();
         BooleanPredicate qbp2 = new BooleanPredicate();
-        qbp2.setOperator("=");
+        qbp2.setOperator(Operation.EQ);
         qbp2.setValue(querier);
         qbps2.add(qbp2);
         qc2.setBooleanPredicates(qbps2);
@@ -177,11 +265,11 @@ public class PolicyPersistor {
                 oc.setType(AttributeType.valueOf(rs.getString(oc_table + ".attribute_type")));
                 List<BooleanPredicate> booleanPredicates = new ArrayList<>();
                 BooleanPredicate bp1 = new BooleanPredicate();
-                bp1.setOperator(rs.getString(oc_table + ".operator"));
+                bp1.setOperator(Operation.valueOf(rs.getString(oc_table + ".operator")));
                 bp1.setValue(rs.getString(oc_table +".comp_value"));
                 rs.next();
                 BooleanPredicate bp2 = new BooleanPredicate();
-                bp2.setOperator(rs.getString(oc_table +".operator"));
+                bp2.setOperator(Operation.valueOf(rs.getString(oc_table +".operator")));
                 bp2.setValue(rs.getString(oc_table +".comp_value"));
                 booleanPredicates.add(bp1);
                 booleanPredicates.add(bp2);

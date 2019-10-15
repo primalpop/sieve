@@ -2,6 +2,7 @@ package edu.uci.ics.tippers.common;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import edu.uci.ics.tippers.model.policy.Operation;
 import edu.uci.ics.tippers.model.policy.QuerierCondition;
 
 import java.time.Duration;
@@ -88,10 +89,14 @@ public class PolicyConstants {
 
     //TEMPORARY FIX: Querier Conditions
     public static final ImmutableList<QuerierCondition> DEFAULT_QC = ImmutableList.
-            of(new QuerierCondition("test", "policy_type",AttributeType.STRING, "=","user"),
-                    new QuerierCondition("test", "querier", AttributeType.STRING, "=", "10"));
+            of(new QuerierCondition("test", "policy_type",AttributeType.STRING, Operation.EQ,"user"),
+                    new QuerierCondition("test", "querier", AttributeType.STRING, Operation.EQ, "10"));
 
-    //ATTRIBUTE NAMES, ,
+    //ATTRIBUTE NAMES
+    public static final ImmutableList<String> REAL_ATTR_LIST = ImmutableList.of("user_id", "location_id", "start", "finish");
+
+
+    //ATTRIBUTE NAMES
     public static final ImmutableList<String> ATTR_LIST = ImmutableList.of("timeStamp", "energy", "temperature",
             "location_id", "activity", "user_id");
 
@@ -102,6 +107,9 @@ public class PolicyConstants {
     //RANGED ATTRIBUTE NAMES
     public static final ImmutableList<String> RANGE_ATTR_LIST = ImmutableList.of("timeStamp", "energy", "temperature");
 
+    public static final String START_TIMESTAMP_ATTR = "start";
+
+    public static final String END_TIMESTAMP_ATTR = "finish";
 
     public static final String TIMESTAMP_ATTR = "timeStamp";
 

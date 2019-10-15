@@ -1,4 +1,4 @@
-package edu.uci.ics.tippers.model.guard;
+package edu.uci.ics.tippers.model.guard.deprecated;
 
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.common.PolicyEngineException;

@@ -7,6 +7,7 @@ import edu.uci.ics.tippers.fileop.Writer;
 import edu.uci.ics.tippers.manager.SimplePersistor;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
 import edu.uci.ics.tippers.model.policy.ObjectCondition;
+import edu.uci.ics.tippers.model.policy.Operation;
 import edu.uci.ics.tippers.model.policy.QuerierCondition;
 import edu.uci.ics.tippers.model.query.RangeQuery;
 import edu.uci.ics.tippers.model.tippers.Infrastructure;
@@ -195,8 +196,8 @@ public class SyntheticPolicy {
         for (int i = previous.size(); i < numberOfPolicies; i++) {
             String policyID =  UUID.randomUUID().toString();
             List<QuerierCondition> querierConditions = new ArrayList<>(Arrays.asList(
-                    new QuerierCondition(policyID, "policy_type", AttributeType.STRING, "=","user"),
-                    new QuerierCondition(policyID, "querier", AttributeType.STRING, "=", "10")));
+                    new QuerierCondition(policyID, "policy_type", AttributeType.STRING, Operation.EQ,"user"),
+                    new QuerierCondition(policyID, "querier", AttributeType.STRING, Operation.EQ, "10")));
             if (overlap) {
                 BEPolicy oPolicy = new BEPolicy(bePolicies.get(new Random().nextInt(i)));
                 oPolicy.setId(policyID);
@@ -285,8 +286,8 @@ public class SyntheticPolicy {
         for (int i = 0; i < numberOfPolicies; i++) {
             String policyID =  UUID.randomUUID().toString();
             List<QuerierCondition> querierConditions = new ArrayList<>(Arrays.asList(
-                    new QuerierCondition(policyID, "policy_type", AttributeType.STRING, "=","user"),
-                    new QuerierCondition(policyID, "querier", AttributeType.STRING, "=", "10")));
+                    new QuerierCondition(policyID, "policy_type", AttributeType.STRING, Operation.EQ,"user"),
+                    new QuerierCondition(policyID, "querier", AttributeType.STRING, Operation.EQ, "10")));
             if (overlap) {
                 BEPolicy oPolicy = new BEPolicy(bePolicies.get(new Random().nextInt(i)));
                 oPolicy.setId(policyID);

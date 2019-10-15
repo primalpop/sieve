@@ -106,8 +106,8 @@ public class QueryGeneration {
      * Get the list of users and their locations within a specific time period
      * Query 2: Select * from SEMANTIC_OBSERVATION where user_id in [.....]
      * and location_id in [......] and timeStamp >= x and timeStamp <= y
-     * @param elemCount
-     * @param user
+     * @param elemCount - number of predicates (user/location)
+     * @param user - boolean deciding whether user predicate should be included
      * @return
      */
     private QueryStatement createQuery2(int elemCount, boolean user) {

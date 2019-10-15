@@ -43,9 +43,19 @@ public class ObjectCondition extends BooleanCondition {
         this.booleanPredicates = new ArrayList<>();
     }
 
+    public ObjectCondition(String policy_id, String attribute, AttributeType attributeType, String v1, Operation o1) {
+        this.policy_id = policy_id;
+        this.attribute = attribute;
+        this.type = attributeType;
+        List<BooleanPredicate> booleanPredicates = new ArrayList<>();
+        booleanPredicates.add(new BooleanPredicate(o1, v1));
+        booleanPredicates.add(new BooleanPredicate(o1, v1));
+        this.booleanPredicates = booleanPredicates;
+    }
 
 
-    public ObjectCondition(String policy_id, String attribute, AttributeType attributeType, String o1, String v1, String o2, String v2){
+    public ObjectCondition(String policy_id, String attribute, AttributeType attributeType, String v1,
+                           Operation o1, String v2, Operation o2){
         this.policy_id = policy_id;
         this.attribute = attribute;
         this.type = attributeType;
@@ -145,7 +155,8 @@ public class ObjectCondition extends BooleanCondition {
         else if (this.getAttribute().equalsIgnoreCase(PolicyConstants.USERID_ATTR)){
            return equiheightEquality();
         }
-        else if (this.getAttribute().equalsIgnoreCase(PolicyConstants.TIMESTAMP_ATTR)){
+        else if (this.getAttribute().equalsIgnoreCase(PolicyConstants.START_TIMESTAMP_ATTR)
+                || this.getAttribute().equalsIgnoreCase(PolicyConstants.END_TIMESTAMP_ATTR)){
            return equiheightRange();
         }
         else {
@@ -218,10 +229,10 @@ public class ObjectCondition extends BooleanCondition {
                 this.getBooleanPredicates().get(1).getValue(): objectCondition.getBooleanPredicates().get(1).getValue();
         BooleanPredicate bp1 = new BooleanPredicate();
         bp1.setValue(begValue);
-        bp1.setOperator(">=");
+        bp1.setOperator(Operation.GTE);
         BooleanPredicate bp2 = new BooleanPredicate();
         bp2.setValue(endValue);
-        bp2.setOperator("<=");
+        bp2.setOperator(Operation.LTE);
         extended.getBooleanPredicates().add(bp1);
         extended.getBooleanPredicates().add(bp2);
         return extended;
@@ -244,10 +255,10 @@ public class ObjectCondition extends BooleanCondition {
                 this.getBooleanPredicates().get(1).getValue(): objectCondition.getBooleanPredicates().get(1).getValue();
         BooleanPredicate bp1 = new BooleanPredicate();
         bp1.setValue(begValue);
-        bp1.setOperator(">=");
+        bp1.setOperator(Operation.GTE);
         BooleanPredicate bp2 = new BooleanPredicate();
         bp2.setValue(endValue);
-        bp2.setOperator("<=");
+        bp2.setOperator(Operation.LTE);
         extended.getBooleanPredicates().add(bp1);
         extended.getBooleanPredicates().add(bp2);
         return extended;

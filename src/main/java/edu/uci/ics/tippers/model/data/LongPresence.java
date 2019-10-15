@@ -5,7 +5,7 @@ import java.util.Objects;
 /**
  * Created by cygnus on 7/5/17.
  */
-public class Presence {
+public class LongPresence {
 
     private String id;
 
@@ -21,11 +21,11 @@ public class Presence {
 
     private String activity;
 
-    public Presence(){
+    public LongPresence(){
 
     }
 
-    public Presence(String user_id, String location, String timeStamp, String temperature, String energy, String activity) {
+    public LongPresence(String user_id, String location, String timeStamp, String temperature, String energy, String activity) {
         this.user_id = user_id;
         this.location = location;
         this.timeStamp = timeStamp;
@@ -94,7 +94,7 @@ public class Presence {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Presence that = (Presence) o;
+        LongPresence that = (LongPresence) o;
         return Objects.equals(id, that.id);
     }
 

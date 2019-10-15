@@ -5,6 +5,7 @@ import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
 import edu.uci.ics.tippers.model.policy.ObjectCondition;
+import edu.uci.ics.tippers.model.policy.Operation;
 
 import java.util.*;
 
@@ -174,8 +175,8 @@ public class PredicateExtensionOld {
         }
         extended.getBooleanPredicates().get(0).setValue(minValue);
         extended.getBooleanPredicates().get(1).setValue(maxValue);
-        extended.getBooleanPredicates().get(0).setOperator(">=");
-        extended.getBooleanPredicates().get(1).setOperator("<=");
+        extended.getBooleanPredicates().get(0).setOperator(Operation.GTE);
+        extended.getBooleanPredicates().get(1).setOperator(Operation.LTE);
         return extended;
     }
 
