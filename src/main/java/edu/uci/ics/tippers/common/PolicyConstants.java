@@ -59,9 +59,9 @@ public class PolicyConstants {
 
 
     //QUERIES FOR EXPERIMENTATION
-    public static final String SELECT_ALL_SEMANTIC_OBSERVATIONS = "Select SQL_NO_CACHE * from SEMANTIC_OBSERVATION  ";
+    public static final String SELECT_ALL_SEMANTIC_OBSERVATIONS = "Select SQL_NO_CACHE * from PRESENCE  ";
 
-    public static final String SELECT_ALL_SEMANTIC_OBSERVATIONS_WHERE = "Select SQL_NO_CACHE * from SEMANTIC_OBSERVATION WHERE ";
+    public static final String SELECT_ALL_SEMANTIC_OBSERVATIONS_WHERE = "Select SQL_NO_CACHE * from PRESENCE WHERE ";
 
     public static final String ORDER_BY_ID = " order by id ";
 
@@ -83,7 +83,7 @@ public class PolicyConstants {
     public static final ImmutableList<String> ACTIVITIES = ImmutableList.of("class", "meeting", "seminar",
             "private", "walking", "unknown", "work");
 
-    public static final ImmutableList<Double> HOUR_EXTENSIONS = ImmutableList.of(12.0, 24.0, 48.0, 72.0, 96.0, 120.0, 144.0, 168.0, 180.0, 200.0);
+    public static final ImmutableList<Double> HOUR_EXTENSIONS = ImmutableList.of(144.0, 168.0, 180.0, 200.0, 300.0, 700.0, 1000.0);
 
 
 

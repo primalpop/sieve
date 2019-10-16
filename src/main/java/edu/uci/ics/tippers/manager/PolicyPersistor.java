@@ -143,19 +143,23 @@ public class PolicyPersistor {
 
         PreparedStatement queryStm = null;
         try {
-            queryStm = connection.prepareStatement("SELECT " + policy_table  + ".id, " + policy_table +".querier, " + policy_table +".purpose, " +
-                    policy_table + ".enforcement_action," + policy_table +".inserted_at," + oc_table +".id, " + oc_table +" .policy_id," + oc_table + ".attribute, " +
-                    oc_table + ".attribute_type, " + oc_table +".operator," + oc_table +".comp_value " +
-                    "FROM "  + policy_table +", " + oc_table +
-                    " WHERE " + policy_table + ".querier=? AND "+ policy_table + ".id = " + oc_table + ".policy_id");
+            queryStm = connection.prepareStatement("SELECT " + policy_table + ".id, " + policy_table + ".querier, " + policy_table + ".purpose, " +
+                    policy_table + ".enforcement_action," + policy_table + ".inserted_at," + oc_table + ".id, " + oc_table + " .policy_id," + oc_table + ".attribute, " +
+                    oc_table + ".attribute_type, " + oc_table + ".operator," + oc_table + ".comp_value " +
+                    "FROM " + policy_table + ", " + oc_table +
+                    " WHERE " + policy_table + ".querier=? AND " + policy_table + ".id = " + oc_table + ".policy_id");
             queryStm.setInt(1, Integer.parseInt(querier));
             ResultSet rs = queryStm.executeQuery();
-            while (rs.next()) {
-                if (id == null) {
-                    id = rs.getString(policy_table +".id");
+            if (!rs.next()) return null;
+            String next = null;
+            boolean skip = false;
+            while (true) {
+                if(!skip) {
+                    id = rs.getString(policy_table + ".id");
                     purpose = rs.getString(policy_table + ".purpose");
                     action = rs.getString(policy_table + ".enforcement_action");
-                    inserted_at = rs.getTimestamp(policy_table +".inserted_at");
+                    inserted_at = rs.getTimestamp(policy_table + ".inserted_at");
+                    objectConditions = new ArrayList<>();
                 }
                 ObjectCondition oc = new ObjectCondition();
                 oc.setAttribute(rs.getString(oc_table + ".attribute"));
@@ -164,25 +168,37 @@ public class PolicyPersistor {
                 List<BooleanPredicate> booleanPredicates = new ArrayList<>();
                 BooleanPredicate bp1 = new BooleanPredicate();
                 bp1.setOperator(convertOperator(rs.getString(oc_table + ".operator")));
-                bp1.setValue(rs.getString(oc_table +".comp_value"));
+                bp1.setValue(rs.getString(oc_table + ".comp_value"));
                 rs.next();
                 BooleanPredicate bp2 = new BooleanPredicate();
-                bp2.setOperator(convertOperator(rs.getString(oc_table +".operator")));
-                bp2.setValue(rs.getString(oc_table +".comp_value"));
+                bp2.setOperator(convertOperator(rs.getString(oc_table + ".operator")));
+                bp2.setValue(rs.getString(oc_table + ".comp_value"));
                 booleanPredicates.add(bp1);
                 booleanPredicates.add(bp2);
                 oc.setBooleanPredicates(booleanPredicates);
                 objectConditions.add(oc);
-                BEPolicy bePolicy = new BEPolicy(id, objectConditions, querierConditions, purpose, action, inserted_at);
-                bePolicies.add(bePolicy);
+
+                if (!rs.next()) {
+                    BEPolicy bePolicy = new BEPolicy(id, objectConditions, querierConditions, purpose, action, inserted_at);
+                    bePolicies.add(bePolicy);
+                    break;
+                }
+
+                next = rs.getString(policy_table + ".id");
+                if (!id.equalsIgnoreCase(next)) {
+                    BEPolicy bePolicy = new BEPolicy(id, objectConditions, querierConditions, purpose, action, inserted_at);
+                    bePolicies.add(bePolicy);
+                    skip = false;
+                }
+                else skip = true;
             }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
+        }catch (SQLException e) {
+            e.printStackTrace();
         }
         return bePolicies;
     }
 
-
+    //TODO: fix reading object conditions like above
     public BEPolicy retrievePolicy(String querier, String querier_type, String inserted_after) {
         BEPolicy bePolicy = new BEPolicy();
         String id = null, purpose = null, action = null;
