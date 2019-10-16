@@ -99,7 +99,7 @@ public class PresenceDataGeneration {
                 Presence presence = new Presence();
                 if(nextRecord.length == 6){
                     int user_id = users.get(new JSONObject(nextRecord[2]).getString("client_id"));
-                    presence.setUser_id(String.valueOf(user_id));
+                    presence.setUser_id(user_id);
                     presence.setStart(parseTimeStamp(nextRecord[3]));
                     presence.setFinish(parseTimeStamp(nextRecord[4]));
                     if (coverageMap.get(nextRecord[5]) != null) {
@@ -110,7 +110,7 @@ public class PresenceDataGeneration {
                 }
                 else{
                     int user_id = users.get(new JSONObject(nextRecord[0]).getString("client_id"));
-                    presence.setUser_id(String.valueOf(user_id));
+                    presence.setUser_id(user_id);
                     presence.setStart(parseTimeStamp(nextRecord[1]));
                     presence.setFinish(parseTimeStamp(nextRecord[2]));
                     if (coverageMap.get(nextRecord[3]) != null) {
@@ -118,7 +118,7 @@ public class PresenceDataGeneration {
                                 (coverageMap.get(nextRecord[3]).length)]);
                     }
                 }
-                presenceStmt.setString(1, presence.getUser_id());
+                presenceStmt.setInt(1, presence.getUser_id());
                 presenceStmt.setString(2, presence.getLocation_id());
                 presenceStmt.setTimestamp(3, presence.getStart());
                 presenceStmt.setTimestamp(4, presence.getFinish());
@@ -138,9 +138,9 @@ public class PresenceDataGeneration {
     }
 
     public static void main(String[] args) {
-//        PresenceDataGeneration pdg = new PresenceDataGeneration();
-//        pdg.readCoverage();
-//        pdg.getAllUsers();
-//        pdg.parseAndWrite(dataDir + DataFiles.PRESENCE_REAL.getPath());
+        PresenceDataGeneration pdg = new PresenceDataGeneration();
+        pdg.readCoverage();
+        pdg.getAllUsers();
+        pdg.parseAndWrite(dataDir + DataFiles.PRESENCE_REAL.getPath());
     }
 }

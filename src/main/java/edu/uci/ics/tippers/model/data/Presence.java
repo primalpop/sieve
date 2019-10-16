@@ -6,7 +6,7 @@ public class Presence {
 
     int id;
 
-    String user_id;
+    int user_id;
 
     String location_id;
 
@@ -18,7 +18,7 @@ public class Presence {
 
     }
 
-    public Presence(String user_id, String location_id, Timestamp start, Timestamp finish) {
+    public Presence(int user_id, String location_id, Timestamp start, Timestamp finish) {
         this.user_id = user_id;
         this.location_id = location_id;
         this.start = start;
@@ -33,11 +33,11 @@ public class Presence {
         this.id = id;
     }
 
-    public String getUser_id() {
+    public int getUser_id() {
         return user_id;
     }
 
-    public void setUser_id(String user_id) {
+    public void setUser_id(int user_id) {
         this.user_id = user_id;
     }
 
