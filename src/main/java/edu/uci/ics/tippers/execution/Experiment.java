@@ -73,6 +73,7 @@ public class Experiment {
 
         List<BEPolicy> policies = polper.retrievePolicies("10", "user");
         BEExpression beExpression = new BEExpression(policies);
+        System.out.println("Original Policies: " + beExpression.createQueryFromPolices());
 
         try {
 
@@ -85,7 +86,6 @@ public class Experiment {
                 runTime = runTime.plus(tradResult.getTimeTaken());
                 System.out.println("Baseline approach for " + beExpression.getPolicies().size() + " policies took " + runTime.toMillis());
             }
-
 
             Duration guardGen = Duration.ofMillis(0);
             Instant fsStart = Instant.now();
@@ -110,7 +110,7 @@ public class Experiment {
             Duration execTime = Duration.ofMillis(0);
             MySQLResult execResult = mySQLQueryManager.runTimedQueryExp(gh.createGuardedQuery(GUARD_UNION));
             execTime = execTime.plus(execResult.getTimeTaken());
-            System.out.println("Guard execution with Union " + GUARD_UNION + " took " + execTime.toMillis() / 1000 + " seconds");
+            System.out.println("Guard execution with Union " + GUARD_UNION + " took " + execTime.toMillis() + " milliseconds");
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -2,10 +2,8 @@ package edu.uci.ics.tippers.generation.policy;
 
 import edu.uci.ics.tippers.common.AttributeType;
 import edu.uci.ics.tippers.common.PolicyConstants;
-import edu.uci.ics.tippers.db.Histogram;
 import edu.uci.ics.tippers.db.MySQLConnectionManager;
 import edu.uci.ics.tippers.manager.PolicyPersistor;
-import edu.uci.ics.tippers.manager.SimplePersistor;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
 import edu.uci.ics.tippers.model.policy.ObjectCondition;
 import edu.uci.ics.tippers.model.policy.Operation;
@@ -121,25 +119,42 @@ public class PolicyGen {
      * @param policyID
      * @return
      */
-    private List<ObjectCondition> generateOwnerPolicies(String policyID) {
+    private List<ObjectCondition> generatePredicates(String policyID, List<String> attributes) {
         List<ObjectCondition> objectConditions = new ArrayList<>();
-        ObjectCondition owner = new ObjectCondition(policyID, PolicyConstants.USERID_ATTR, AttributeType.STRING,
-                String.valueOf(user_ids.get(new Random().nextInt(user_ids.size()))), Operation.EQ);
-        objectConditions.add(owner);
-        SimpleDateFormat sdf = new SimpleDateFormat(PolicyConstants.TIMESTAMP_FORMAT);
-        Timestamp start_beg = getRandomTimeStamp(PolicyConstants.START_TIMESTAMP_ATTR);
-        Timestamp start_fin = getEndingTimeInterval(start_beg);
-        ObjectCondition tp_beg = new ObjectCondition(policyID, PolicyConstants.START_TIMESTAMP_ATTR, AttributeType.TIMESTAMP,
-                sdf.format(start_beg), Operation.GTE, sdf.format(start_fin), Operation.LTE);
-        Timestamp end_beg = getRandomTimeStamp(PolicyConstants.END_TIMESTAMP_ATTR);
-        Timestamp end_fin = getEndingTimeInterval(end_beg);
-        ObjectCondition tp_end = new ObjectCondition(policyID, PolicyConstants.END_TIMESTAMP_ATTR, AttributeType.TIMESTAMP,
-                sdf.format(end_beg), Operation.GTE, sdf.format(end_fin), Operation.LTE);
-        objectConditions.add(tp_beg);
-        objectConditions.add(tp_end);
-        ObjectCondition location = new ObjectCondition(policyID, PolicyConstants.LOCATIONID_ATTR, AttributeType.STRING,
-                location_ids.get(new Random().nextInt(location_ids.size())), Operation.EQ);
-        objectConditions.add(location);
+        int attrCount = (int) (r.nextGaussian() * 2 + 4); //mean - 3, SD - 1
+        if (attrCount <= 1 || attrCount > attributes.size()) attrCount = 3;
+        ArrayList<String> attrList = new ArrayList<>();
+
+        while(attrCount - attrList.size() > 0) {
+            String attribute = attributes.get(r.nextInt(attributes.size()));
+            if (attrList.contains(attribute)) continue;
+            attrList.add(attribute);
+            SimpleDateFormat sdf = new SimpleDateFormat(PolicyConstants.TIMESTAMP_FORMAT);
+            if (attribute.equalsIgnoreCase(PolicyConstants.START_TIMESTAMP_ATTR)) {
+                Timestamp start_beg = getRandomTimeStamp(PolicyConstants.START_TIMESTAMP_ATTR);
+                Timestamp start_fin = getEndingTimeInterval(start_beg);
+                ObjectCondition tp_beg = new ObjectCondition(policyID, PolicyConstants.START_TIMESTAMP_ATTR, AttributeType.TIMESTAMP,
+                        sdf.format(start_beg), Operation.GTE, sdf.format(start_fin), Operation.LTE);
+                objectConditions.add(tp_beg);
+            }
+            if (attribute.equalsIgnoreCase(PolicyConstants.LOCATIONID_ATTR)) {
+                ObjectCondition location = new ObjectCondition(policyID, PolicyConstants.LOCATIONID_ATTR, AttributeType.STRING,
+                        location_ids.get(new Random().nextInt(location_ids.size())), Operation.EQ);
+                objectConditions.add(location);
+            }
+            if (attribute.equalsIgnoreCase(PolicyConstants.END_TIMESTAMP_ATTR)) {
+                Timestamp end_beg = getRandomTimeStamp(PolicyConstants.END_TIMESTAMP_ATTR);
+                Timestamp end_fin = getEndingTimeInterval(end_beg);
+                ObjectCondition tp_end = new ObjectCondition(policyID, PolicyConstants.END_TIMESTAMP_ATTR, AttributeType.TIMESTAMP,
+                        sdf.format(end_beg), Operation.GTE, sdf.format(end_fin), Operation.LTE);
+                objectConditions.add(tp_end);
+            }
+            if(attribute.equalsIgnoreCase(PolicyConstants.USERID_ATTR)){
+                ObjectCondition owner = new ObjectCondition(policyID, PolicyConstants.USERID_ATTR, AttributeType.STRING,
+                        String.valueOf(user_ids.get(new Random().nextInt(user_ids.size()))), Operation.EQ);
+                objectConditions.add(owner);
+            }
+        }
         return objectConditions;
     }
 
@@ -183,10 +198,9 @@ public class PolicyGen {
                 double selOfPolicy = 0.0;
                 List<ObjectCondition> objectConditions;
                 do {
-                    objectConditions = generateOwnerPolicies(policyID);
+                    objectConditions = generatePredicates(policyID, attributes);
                     selOfPolicy = BEPolicy.computeL(objectConditions);
-                } while (false);
-//                while (!(selOfPolicy > 0.00000001 && selOfPolicy < 0.1));
+                } while (!(selOfPolicy > 0.00000001 && selOfPolicy < 0.1));
                 BEPolicy bePolicy = new BEPolicy(policyID,
                         objectConditions, querierConditions, "analysis",
                         "allow", new Timestamp(System.currentTimeMillis()));

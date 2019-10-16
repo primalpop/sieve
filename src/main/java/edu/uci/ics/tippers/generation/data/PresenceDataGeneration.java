@@ -138,7 +138,7 @@ public class PresenceDataGeneration {
     }
 
     public static void main(String[] args) {
-        PresenceDataGeneration pdg = new PresenceDataGeneration();
+//        PresenceDataGeneration pdg = new PresenceDataGeneration();
 //        pdg.readCoverage();
 //        pdg.getAllUsers();
 //        pdg.parseAndWrite(dataDir + DataFiles.PRESENCE_REAL.getPath());
