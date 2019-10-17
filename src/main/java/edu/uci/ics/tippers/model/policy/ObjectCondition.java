@@ -69,9 +69,8 @@ public class ObjectCondition extends BooleanCondition {
         double frequency = 0.0001;
         for (int i = 0; i < Histogram.getInstance().getBucketMap().get(this.getAttribute()).size(); i++) {
             Bucket b = Histogram.getInstance().getBucketMap().get(this.getAttribute()).get(i);
-            if (Integer.parseInt(b.getValue()) >=
-                    Integer.parseInt(this.getBooleanPredicates().get(0).getValue()) && Integer.parseInt(b.getValue()) <=
-                    Integer.parseInt(this.getBooleanPredicates().get(1).getValue())){
+            if (Integer.parseInt(b.getValue()) >= Integer.parseInt(this.getBooleanPredicates().get(0).getValue())
+                    && Integer.parseInt(b.getValue()) <= Integer.parseInt(this.getBooleanPredicates().get(1).getValue())){
                 frequency += b.getFreq();
             }
         }
@@ -88,22 +87,36 @@ public class ObjectCondition extends BooleanCondition {
         return frequency/100;
     }
 
-    /**
-     * user_id is stored as varchar and therefore string comparison required to identify the right bucket
-     * @return
-     */
-    private double equiheightEquality() {
+//    /**
+//     * user_id is stored as varchar and therefore string comparison required to identify the right bucket
+//     * @return
+//     */
+//    private double equiheightEquality() {
+//        double frequency = 0.0001;
+//        List<Bucket> buckets = Histogram.getInstance().getBucketMap().get(this.getAttribute());
+//        for (Bucket b : buckets) {
+//            if (b.getLower().compareTo(this.getBooleanPredicates().get(0).getValue()) < 0
+//                    && b.getUpper().compareTo(this.getBooleanPredicates().get(1).getValue()) > 0) {
+//                frequency += b.getFreq() / b.getNumberOfItems();
+//                break;
+//            }
+//        }
+//        return frequency / 100;
+//    }
+
+        private double equiheightEquality() {
         double frequency = 0.0001;
         List<Bucket> buckets = Histogram.getInstance().getBucketMap().get(this.getAttribute());
         for (Bucket b : buckets) {
-            if (b.getLower().compareTo(this.getBooleanPredicates().get(0).getValue()) < 0
-                    && b.getUpper().compareTo(this.getBooleanPredicates().get(1).getValue()) > 0) {
+            if (Integer.parseInt(b.getLower()) <= Integer.parseInt(this.getBooleanPredicates().get(1).getValue())
+                    && Integer.parseInt(b.getUpper()) >= Integer.parseInt(this.getBooleanPredicates().get(0).getValue())) {
                 frequency += b.getFreq() / b.getNumberOfItems();
                 break;
             }
         }
         return frequency / 100;
     }
+
 
     //TODO: Overestimates the selectivity as the partially contained buckets are completely counted
     private double equiheightRange(){
