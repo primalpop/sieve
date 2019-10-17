@@ -2,6 +2,7 @@ package edu.uci.ics.tippers.generation.policy;
 
 import edu.uci.ics.tippers.common.AttributeType;
 import edu.uci.ics.tippers.common.PolicyConstants;
+import edu.uci.ics.tippers.db.Histogram;
 import edu.uci.ics.tippers.db.MySQLConnectionManager;
 import edu.uci.ics.tippers.manager.PolicyPersistor;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
@@ -218,7 +219,8 @@ public class PolicyGen {
     }
 
     public static void main(String [] args){
-        PolicyGen pg = new PolicyGen();
-        pg.persistOverlappingPolicies(5, 0.3, PolicyConstants.REAL_ATTR_LIST);
+        Histogram.getInstance();
+//        PolicyGen pg = new PolicyGen();
+//        pg.persistOverlappingPolicies(5, 0.3, PolicyConstants.REAL_ATTR_LIST);
     }
 }
