@@ -10,6 +10,7 @@ import edu.uci.ics.tippers.model.policy.ObjectCondition;
 import edu.uci.ics.tippers.model.policy.Operation;
 import edu.uci.ics.tippers.model.policy.QuerierCondition;
 
+import java.security.Policy;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
@@ -59,21 +60,21 @@ public class PolicyGen {
         }
     }
 
-    private Timestamp getRandomTimeStamp(String colName) {
+    public Timestamp getRandomTimeStamp(String colName) {
         LocalDateTime randomDate = Instant.ofEpochMilli(getRandomTimeBetweenTwoDates(colName)).atZone(ZoneId.systemDefault()).toLocalDateTime();
         return Timestamp.valueOf(randomDate);
     }
 
-    private Timestamp getEndingTimeInterval(Timestamp start){
+    public Timestamp getEndingTimeInterval(Timestamp start, List<Double> extensions){
         int hourIndex = new Random().nextInt(PolicyConstants.HOUR_EXTENSIONS.size());
-        double rHour = PolicyConstants.HOUR_EXTENSIONS.get(hourIndex);
+        double rHour = extensions.get(hourIndex);
         rHour = rHour * Math.random();
         long milliseconds = (long)(rHour * 60.0 * 60.0 * 1000.0);
         return new Timestamp(start.getTime() + milliseconds);
     }
 
 
-    private List<Integer> getAllUsers() {
+    public List<Integer> getAllUsers() {
         PreparedStatement queryStm = null;
         user_ids = new ArrayList<>();
         try {
@@ -87,7 +88,7 @@ public class PolicyGen {
         return user_ids;
     }
 
-    private List<String> getAllLocations() {
+    public List<String> getAllLocations() {
         PreparedStatement queryStm = null;
         location_ids = new ArrayList<>();
         try {
@@ -101,14 +102,14 @@ public class PolicyGen {
         return location_ids;
     }
 
-    private Timestamp getTimestamp(String colName, String valType){
+    public Timestamp getTimestamp(String colName, String valType){
         PreparedStatement queryStm = null;
         Timestamp ts = null;
         try{
             queryStm = connection.prepareStatement("SELECT " + valType + "(" + colName + ") AS value from PRESENCE");
             ResultSet rs = queryStm.executeQuery();
             while (rs.next()) ts = rs.getTimestamp("value");
-        } catch(SQLException e){
+        } catch(SQLException e) {
             e.printStackTrace();
         }
         return ts;
@@ -133,7 +134,7 @@ public class PolicyGen {
             SimpleDateFormat sdf = new SimpleDateFormat(PolicyConstants.TIMESTAMP_FORMAT);
             if (attribute.equalsIgnoreCase(PolicyConstants.START_TIMESTAMP_ATTR)) {
                 Timestamp start_beg = getRandomTimeStamp(PolicyConstants.START_TIMESTAMP_ATTR);
-                Timestamp start_fin = getEndingTimeInterval(start_beg);
+                Timestamp start_fin = getEndingTimeInterval(start_beg, PolicyConstants.HOUR_EXTENSIONS);
                 ObjectCondition tp_beg = new ObjectCondition(policyID, PolicyConstants.START_TIMESTAMP_ATTR, AttributeType.TIMESTAMP,
                         sdf.format(start_beg), Operation.GTE, sdf.format(start_fin), Operation.LTE);
                 objectConditions.add(tp_beg);
@@ -145,7 +146,7 @@ public class PolicyGen {
             }
             if (attribute.equalsIgnoreCase(PolicyConstants.END_TIMESTAMP_ATTR)) {
                 Timestamp end_beg = getRandomTimeStamp(PolicyConstants.END_TIMESTAMP_ATTR);
-                Timestamp end_fin = getEndingTimeInterval(end_beg);
+                Timestamp end_fin = getEndingTimeInterval(end_beg, PolicyConstants.HOUR_EXTENSIONS);
                 ObjectCondition tp_end = new ObjectCondition(policyID, PolicyConstants.END_TIMESTAMP_ATTR, AttributeType.TIMESTAMP,
                         sdf.format(end_beg), Operation.GTE, sdf.format(end_fin), Operation.LTE);
                 objectConditions.add(tp_end);
@@ -219,8 +220,7 @@ public class PolicyGen {
     }
 
     public static void main(String [] args){
-        Histogram.getInstance();
-//        PolicyGen pg = new PolicyGen();
-//        pg.persistOverlappingPolicies(5, 0.3, PolicyConstants.REAL_ATTR_LIST);
+        PolicyGen pg = new PolicyGen();
+        pg.persistOverlappingPolicies(5, 0.3, PolicyConstants.REAL_ATTR_LIST);
     }
 }

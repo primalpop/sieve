@@ -29,7 +29,7 @@ public class PolicyConstants {
 
     //EXPERIMENTAL PARAMETERS
     //TODO: Initialize this from the database
-    public static final long NUMBER_OR_TUPLES = 14675437;
+    public static final long NUMBER_OR_TUPLES = 3896277;
 
     public static final long INFINTIY = 10000000000000L;
 

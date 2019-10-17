@@ -4,16 +4,11 @@ import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.db.MySQLConnectionManager;
 import edu.uci.ics.tippers.db.MySQLQueryManager;
 import edu.uci.ics.tippers.db.MySQLResult;
+import edu.uci.ics.tippers.generation.policy.PolicyGen;
 import edu.uci.ics.tippers.model.query.QueryStatement;
-import edu.uci.ics.tippers.model.tippers.Infrastructure;
-import edu.uci.ics.tippers.model.tippers.User;
-import edu.uci.ics.tippers.generation.data.DataGeneration;
 
 import java.sql.*;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -22,44 +17,36 @@ import java.util.stream.Collectors;
 
 public class QueryGeneration {
 
-    private List<Infrastructure> infras;
-    private List<User> users;
-    private MySQLQueryManager mySQLQueryManager = new MySQLQueryManager();
+    private List<Integer> user_ids;
+    private List<String> locations;
+    Timestamp start_beg, start_fin;
+    Timestamp end_beg, end_fin;
+    private MySQLQueryManager mySQLQueryManager;
     private Connection connection = MySQLConnectionManager.getInstance().getConnection();
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    private List<Double> hours = new ArrayList<Double>(Arrays.asList(500.0, 1000.0, 2000.0, 5000.0, 10000.0));
-    private List<Integer> userPreds = new ArrayList<Integer>(Arrays.asList(500, 1000, 2000));
-    private List<Integer> locPreds = new ArrayList<Integer>(Arrays.asList(5, 10, 15, 20, 30, 50));
+    SimpleDateFormat sdf;
+    private List<Double> hours;
+    private List<Integer> userPreds;
+    private List<Integer> locPreds;
 
+    private PolicyGen pg; //helper methods defined in this class
 
     public QueryGeneration() {
-        infras = DataGeneration.getAllInfra();
-        users = DataGeneration.getAllUser();
+        pg = new PolicyGen();
+        this.user_ids = pg.getAllUsers();
+        this.locations = pg.getAllLocations();
+        this.start_beg = pg.getTimestamp(PolicyConstants.START_TIMESTAMP_ATTR, "MIN");
+        this.start_fin = pg.getTimestamp(PolicyConstants.START_TIMESTAMP_ATTR, "MAX");
+        this.end_beg = pg.getTimestamp(PolicyConstants.END_TIMESTAMP_ATTR, "MIN");
+        this.end_fin = pg.getTimestamp(PolicyConstants.END_TIMESTAMP_ATTR, "MAX");
+
+        hours = new ArrayList<Double>(Arrays.asList(500.0, 1000.0, 2000.0, 5000.0, 10000.0));
+        userPreds = new ArrayList<Integer>(Arrays.asList(500, 1000, 2000));
+        locPreds = new ArrayList<Integer>(Arrays.asList(5, 10, 15, 20, 30, 50));
+
+        this.mySQLQueryManager = new MySQLQueryManager();
+        this.sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Random r = new Random();
     }
-
-    private long getRandomTimeBetweenTwoDates() {
-        long diff = Timestamp.valueOf(PolicyConstants.END_TS).getTime() -
-                Timestamp.valueOf(PolicyConstants.START_TS).getTime() + 1;
-        return Timestamp.valueOf(PolicyConstants.START_TS).getTime() + (long) (Math.random() * diff);
-    }
-
-    private Timestamp getRandomTimeStamp() {
-        LocalDateTime randomDate = Instant.ofEpochMilli(getRandomTimeBetweenTwoDates()).atZone(ZoneId.systemDefault()).toLocalDateTime();
-        return Timestamp.valueOf(randomDate);
-    }
-
-    private Timestamp getEndingTimeInterval(Timestamp timestamp) {
-        if (timestamp == null)
-            return getRandomTimeStamp();
-        int hourIndex = new Random().nextInt(hours.size());
-        double rHour = hours.get(hourIndex);
-
-        rHour = rHour * Math.random();
-        long milliseconds = (long) (rHour * 60.0 * 60.0 * 1000.0);
-        return new Timestamp(timestamp.getTime() + milliseconds);
-    }
-
 
     private String checkSelectivityType(double selectivity) {
         String selType = "";
@@ -81,54 +68,49 @@ public class QueryGeneration {
         return (float) mySQLResult.getResultCount() / (float) PolicyConstants.NUMBER_OR_TUPLES;
     }
 
-    /**
-     * Get location(s) of a user within a period of time
-     * Query 1: Select * from SEMANTIC_OBSERVATION where user_id = x and timeStamp >= y and timeStamp <= z
-     * @return
-     */
-    private QueryStatement createQuery1() {
-        String query, selType = "";
-        float selQuery = 0;
-        do {
-            String user = String.valueOf(users.get(new Random().nextInt(users.size())).getUser_id());
-            Timestamp startTS = getRandomTimeStamp();
-            String start = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(startTS);
-            String end = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(getEndingTimeInterval(startTS));
-            query = String.format(" (user_id = %s) AND (timeStamp >= \"%s\") AND (timeStamp <= \"%s\")", user, start, end);
-            selQuery = checkSelectivity(query);
-            selType = checkSelectivityType(selQuery);
-        } while (selType.isEmpty());
-        return new QueryStatement(query, 1, selQuery, selType,
-                new Timestamp(System.currentTimeMillis()));
-    }
+//    /**
+//     * Get location(s) of a user within a period of time
+//     * Query 1: Select * from SEMANTIC_OBSERVATION where user_id = x and timeStamp >= y and timeStamp <= z
+//     * @return
+//     */
+//    private QueryStatement createQuery1() {
+//        String query, selType = "";
+//        float selQuery = 0;
+//        do {
+//            int user = user_ids.get(new Random().nextInt(user_ids.size()));
+//            Timestamp startTS = getRandomTimeStamp();
+//            String start = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(startTS);
+//            String end = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(getEndingTimeInterval(startTS));
+//            query = String.format(" (user_id = %s) AND (timeStamp >= \"%s\") AND (timeStamp <= \"%s\")", user, start, end);
+//            selQuery = checkSelectivity(query);
+//            selType = checkSelectivityType(selQuery);
+//        } while (selType.isEmpty());
+//        return new QueryStatement(query, 1, selQuery, selType,
+//                new Timestamp(System.currentTimeMillis()));
+//    }
 
     /**
-     * Get the list of users and their locations within a specific time period
-     * Query 2: Select * from SEMANTIC_OBSERVATION where user_id in [.....]
-     * and location_id in [......] and timeStamp >= x and timeStamp <= y
-     * @param elemCount - number of predicates (user/location)
-     * @param user - boolean deciding whether user predicate should be included
+     * Query 1: Select * from PRESENCE where location_id in [......]
+     * and start <= t2 and end >= t1
+     * @param elemCount - number of predicates for location
      * @return
      */
-    private QueryStatement createQuery2(int elemCount, boolean user) {
+    private QueryStatement createQuery1(int elemCount) {
         int c = 0;
         String query, selType = "";
         float selQuery = 0;
         do {
-            Timestamp startTS = getRandomTimeStamp();
+            Timestamp startTS = pg.getRandomTimeStamp(PolicyConstants.START_TIMESTAMP_ATTR);
+            Timestamp finishTS = pg.getEndingTimeInterval(startTS, hours);
             String start = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(startTS);
-            String end = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(getEndingTimeInterval(startTS));
-            query = String.format("timeStamp >= \"%s\" AND timeStamp <= \"%s\" ", start, end);
+            String finish = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(finishTS);
+            query = String.format("start <= \"%s\" AND finish >= \"%s\" ", start, finish);
             List<String> preds = new ArrayList<>();
             while (c < elemCount) {
-                if (user)
-                    preds.add(String.valueOf(users.get(new Random().nextInt(users.size())).getUser_id()));
-                else
-                    preds.add(String.valueOf(infras.get(new Random().nextInt(infras.size())).getName()));
+                preds.add(String.valueOf(locations.get(new Random().nextInt(locations.size()))));
                 c += 1;
             }
-            if (user) query += "AND user_id in ( ";
-            else query += "AND location_id in ( ";
+            query += "AND location_id in ( ";
             query += preds.stream().map(item -> item + ", ").collect(Collectors.joining(" "));
             query = query.substring(0, query.length() - 2); //removing the extra comma
             query += ")";
@@ -140,19 +122,23 @@ public class QueryGeneration {
     }
 
 
-    private List<QueryStatement> getQueries(int templateNum, int numOfQueries) {
+    private List<QueryStatement> getQueries(int templateNum, String selType, int numOfQueries) {
         List<QueryStatement> queries = new ArrayList<>();
         int count = 0;
         while (count < numOfQueries) {
             count += 1;
-            if (templateNum == 0) queries.add(createQuery1());
-            else if (templateNum == 1) {
-                int userCount = userPreds.get(new Random().nextInt(userPreds.size()));
-                queries.add(createQuery2(userCount, true));
-                System.out.println("Generated query " + count);
-            } else if (templateNum == 2) {
+            if (templateNum == 0) {
                 int locCount = locPreds.get(new Random().nextInt(locPreds.size()));
-                queries.add(createQuery2(locCount, false));
+                queries.add(createQuery1(locCount));
+            }
+            else if (templateNum == 1) {
+                System.out.println("Generated query " + count);
+            }
+            else if (templateNum == 2) {
+                System.out.println("Generated query " + count);
+            }
+            else if (templateNum == 3) {
+                System.out.println("Generated query " + count);
             }
         }
 
@@ -209,8 +195,6 @@ public class QueryGeneration {
 
 
     public void constructWorkload(boolean[] templates, int numOfQueries) {
-//        DataGeneration dataGeneration = new DataGeneration();
-//        dataGeneration.runScript("mysql/menagerie.sql");
 
         List<QueryStatement> queries = new ArrayList<>();
         for (int i = 0; i < templates.length; i++) {
