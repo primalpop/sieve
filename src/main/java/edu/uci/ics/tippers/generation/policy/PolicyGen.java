@@ -2,7 +2,6 @@ package edu.uci.ics.tippers.generation.policy;
 
 import edu.uci.ics.tippers.common.AttributeType;
 import edu.uci.ics.tippers.common.PolicyConstants;
-import edu.uci.ics.tippers.db.Histogram;
 import edu.uci.ics.tippers.db.MySQLConnectionManager;
 import edu.uci.ics.tippers.manager.PolicyPersistor;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
@@ -10,7 +9,6 @@ import edu.uci.ics.tippers.model.policy.ObjectCondition;
 import edu.uci.ics.tippers.model.policy.Operation;
 import edu.uci.ics.tippers.model.policy.QuerierCondition;
 
-import java.security.Policy;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
@@ -35,8 +33,8 @@ public class PolicyGen {
     private Random r;
     private List<Integer> user_ids;
     private List<String> location_ids;
-    Timestamp start_beg, start_fin;
-    Timestamp end_beg, end_fin;
+    public Timestamp start_beg, start_fin;
+    public Timestamp end_beg, end_fin;
 
     public PolicyGen(){
        r = new Random();
@@ -48,6 +46,7 @@ public class PolicyGen {
        this.end_beg = getTimestamp(PolicyConstants.END_TIMESTAMP_ATTR, "MIN");
        this.end_fin = getTimestamp(PolicyConstants.END_TIMESTAMP_ATTR, "MAX");
     }
+
 
     private long getRandomTimeBetweenTwoDates (String colName) {
         if(colName.equalsIgnoreCase("start")){
@@ -66,10 +65,15 @@ public class PolicyGen {
     }
 
     public Timestamp getEndingTimeInterval(Timestamp start, List<Double> extensions){
-        int hourIndex = new Random().nextInt(PolicyConstants.HOUR_EXTENSIONS.size());
+        int hourIndex = new Random().nextInt(extensions.size());
         double rHour = extensions.get(hourIndex);
-        rHour = rHour * Math.random();
         long milliseconds = (long)(rHour * 60.0 * 60.0 * 1000.0);
+        return new Timestamp(start.getTime() + milliseconds);
+    }
+
+    public Timestamp getEndingTimeWithExtension(Timestamp start, double hours){
+        int hourIndex = new Random().nextInt(PolicyConstants.HOUR_EXTENSIONS.size());
+        long milliseconds = (long)(hours * 60.0 * 60.0 * 1000.0);
         return new Timestamp(start.getTime() + milliseconds);
     }
 
