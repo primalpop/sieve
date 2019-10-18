@@ -108,7 +108,7 @@ public class GroupGeneration {
         PreparedStatement queryStm = null;
         try {
             queryStm = connection.prepareStatement("SELECT USER_ID as uid, LOCATION_ID as lid,  start, finish " +
-                    "FROM PRESENCE");
+                    "FROM PRESENCE limit 10000");
             ResultSet rs = queryStm.executeQuery();
             while (rs.next()) {
                 Presence pt = new Presence();
@@ -224,10 +224,10 @@ public class GroupGeneration {
 
     public static void main(String [] args){
         GroupGeneration gg = new GroupGeneration();
-        gg.generateRoleGroups();
-        gg.generateRoomGroups();
-        gg.generateAffinities();
-        gg.generateGroupMemberships();
+//        gg.generateRoleGroups();
+//        gg.generateRoomGroups();
+//        gg.generateAffinities();
+//        gg.generateGroupMemberships();
     }
 
 }
