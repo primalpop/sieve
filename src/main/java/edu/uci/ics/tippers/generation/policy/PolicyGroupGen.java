@@ -19,10 +19,13 @@ public class PolicyGroupGen {
     PolicyPersistor polper;
     PolicyGen pg;
 
-    private final int MIN_GROUP_MEMBERSHIP = 3;
-    private final double NON_GROUP_CHANCE = 2/3.0;
+    public final int MIN_GROUP_MEMBERSHIP = 3;
+    private final double NON_GROUP_CHANCE = 3/4.0;
     private final int ALL_GROUPS = 0;
     private final int ROLE_POLICIES_COUNT= 10;
+
+    private final int LARGE_GROUP_SIZE_THRESHOLD = 50;
+    private final int DEFAULT_POLICY_NUM = 10;
 
     public PolicyGroupGen(){
         this.connection = MySQLConnectionManager.getInstance().getConnection();
@@ -128,8 +131,11 @@ public class PolicyGroupGen {
             for (String qg: querierGroups) {
                 List<Integer> members = retrieveMembers(qg);
                 int group_size = members.size();
-                int x = (int) (r.nextGaussian() * group_size/10 + group_size/5);
-                if (x <= 1 || x > group_size) x = group_size/10;
+                int x = DEFAULT_POLICY_NUM;
+                if(group_size < LARGE_GROUP_SIZE_THRESHOLD) {
+                    x = (int) (r.nextGaussian() * group_size/10 + group_size/5);
+                    if (x <= 1 || x > group_size) x = group_size/10;
+                }
                 createPolicy(querier, members, x);
             }
             System.out.println("Querier " + querier + " non-group policies");
@@ -140,8 +146,11 @@ public class PolicyGroupGen {
                 if (selected) {
                     List<Integer> members = retrieveMembers(ng);
                     int group_size = members.size();
-                    int x = (int) (r.nextGaussian() * group_size/10 + group_size/10);
-                    if (x <= 1 || x > group_size) x = group_size/10;
+                    int x = DEFAULT_POLICY_NUM;
+                    if ( group_size < LARGE_GROUP_SIZE_THRESHOLD) {
+                        x = (int) (r.nextGaussian() * group_size/10 + group_size/10);
+                        if (x <= 1 || x > group_size) x = group_size/10;
+                    }
                     createPolicy(querier, members, x);
                 }
             }
@@ -149,7 +158,8 @@ public class PolicyGroupGen {
             for (String role: PolicyConstants.USER_ROLES) {
                 List<Integer> members = retrieveMembers(role);
                 if(members.isEmpty()) continue;
-                createPolicy(querier, members, ROLE_POLICIES_COUNT);
+                int x = (int) (5 + (Math.random() * (ROLE_POLICIES_COUNT- 5)));
+                createPolicy(querier, members, x);
             }
         }
     }
