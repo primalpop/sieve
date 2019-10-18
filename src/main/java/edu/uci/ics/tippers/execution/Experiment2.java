@@ -57,13 +57,14 @@ public class Experiment2 {
         int numOfRepetitions = 3;
 
         String exptResultsFile = "results.csv";
+        String policyDir = PolicyConstants.BE_POLICY_DIR;
 
 
         int queryCount = 1;
         for (String key : queries.keySet()) {
             policyRunTimes.clear();
             policyRunTimes.put(key, "12345");
-//            writer.appendToCSVReport(policyRunTimes, policyDir, exptResultsFile);
+            writer.appendToCSVReport(policyRunTimes, policyDir, exptResultsFile);
             TreeMap<String, String> queryRunTimes = new TreeMap<>(Comparator.comparingInt(Integer::parseInt));
             TreeMap<String, String> queryPolicyRunTimes = new TreeMap<>(Comparator.comparingInt(Integer::parseInt));
             List<String> query_ids = queries.get(key).stream().map(qs -> String.valueOf(qs.getId())).collect(Collectors.toList());

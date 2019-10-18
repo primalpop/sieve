@@ -1,4 +1,4 @@
-package edu.uci.ics.tippers.model.tippers;
+package edu.uci.ics.tippers.model.tippers.dontuse;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
