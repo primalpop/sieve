@@ -19,6 +19,11 @@ public class PolicyGroupGen {
     PolicyPersistor polper;
     PolicyGen pg;
 
+    private final int MIN_GROUP_MEMBERSHIP = 3;
+    private final double NON_GROUP_CHANCE = 2/3.0;
+    private final int ALL_GROUPS = 0;
+    private final int ROLE_POLICIES_COUNT= 10;
+
     public PolicyGroupGen(){
         this.connection = MySQLConnectionManager.getInstance().getConnection();
         r = new Random();
@@ -90,14 +95,10 @@ public class PolicyGroupGen {
         return user_ids;
     }
 
-    private void createPolicyFor(int querier, String qg){
-        List<Integer> members = retrieveMembers(qg);
-        int group_size = members.size();
-        int x = (int) (r.nextGaussian() * group_size/10 + group_size/5);
-        if (x <= 1 || x > group_size) x = group_size/10;
+    private void createPolicy(int querier, List<Integer> members, int howMany){
         int i = 0;
         List<Integer> selected = new ArrayList<>();
-        while (i < x) {
+        while (i < howMany) {
             int owner = members.get(new Random().nextInt(members.size()));
             if (selected.contains(owner)) continue;
             selected.add(owner);
@@ -105,21 +106,6 @@ public class PolicyGroupGen {
             i++;
         }
     }
-
-    private void createPolicyFor(int querier, String group_id, int numMembers){
-        List<Integer> members = retrieveMembers(group_id);
-        if(members.isEmpty()) return;
-        int i = 0;
-        List<Integer> selected = new ArrayList<>();
-        while (i < numMembers) {
-            int owner = members.get(new Random().nextInt(members.size()));
-            if (selected.contains(owner)) continue;
-            selected.add(owner);
-            polper.insertPolicy(pg.createPolicy(querier, owner));
-            i++;
-        }
-    }
-
 
     /**
      * 1. Get all non-loners
@@ -134,25 +120,36 @@ public class PolicyGroupGen {
      * 9. For each role, select 10 members and create policy for them
      */
     public void generatePolicies(){
-        List<Integer> nls = getNotLoners(0);
-        List<String> all_groups = getGroups(0);
+        List<Integer> nls = getNotLoners(MIN_GROUP_MEMBERSHIP);
+        List<String> all_groups = getGroups(ALL_GROUPS);
         for (int querier: nls) {
             System.out.println("Querier " + querier + " group policies");
             List<String> querierGroups = getGroups(querier);
             for (String qg: querierGroups) {
-                createPolicyFor(querier, qg);
+                List<Integer> members = retrieveMembers(qg);
+                int group_size = members.size();
+                int x = (int) (r.nextGaussian() * group_size/10 + group_size/5);
+                if (x <= 1 || x > group_size) x = group_size/10;
+                createPolicy(querier, members, x);
             }
             System.out.println("Querier " + querier + " non-group policies");
             List<String> nonGroups = new ArrayList<>(all_groups);
             nonGroups.removeAll(querierGroups);
             for(String ng: nonGroups) {
-                boolean selected = Math.random() >= (2/3.0);
-                System.out.println("Non-group " + ng);
-                if (selected) createPolicyFor(querier, ng);
+                boolean selected = Math.random() >= (NON_GROUP_CHANCE);
+                if (selected) {
+                    List<Integer> members = retrieveMembers(ng);
+                    int group_size = members.size();
+                    int x = (int) (r.nextGaussian() * group_size/10 + group_size/10);
+                    if (x <= 1 || x > group_size) x = group_size/10;
+                    createPolicy(querier, members, x);
+                }
             }
             System.out.println("Querier " + querier + " role policies");
             for (String role: PolicyConstants.USER_ROLES) {
-                createPolicyFor(querier, role, 10);
+                List<Integer> members = retrieveMembers(role);
+                if(members.isEmpty()) continue;
+                createPolicy(querier, members, ROLE_POLICIES_COUNT);
             }
         }
     }
