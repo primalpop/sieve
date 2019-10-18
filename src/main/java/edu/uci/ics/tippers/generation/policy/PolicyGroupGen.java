@@ -137,16 +137,20 @@ public class PolicyGroupGen {
         List<Integer> nls = getNotLoners(0);
         List<String> all_groups = getGroups(0);
         for (int querier: nls) {
+            System.out.println("Querier " + querier + " group policies");
             List<String> querierGroups = getGroups(querier);
             for (String qg: querierGroups) {
                 createPolicyFor(querier, qg);
             }
+            System.out.println("Querier " + querier + " non-group policies");
             List<String> nonGroups = new ArrayList<>(all_groups);
             nonGroups.removeAll(querierGroups);
             for(String ng: nonGroups) {
                 boolean selected = Math.random() >= (2/3.0);
+                System.out.println("Non-group " + ng);
                 if (selected) createPolicyFor(querier, ng);
             }
+            System.out.println("Querier " + querier + " role policies");
             for (String role: PolicyConstants.USER_ROLES) {
                 createPolicyFor(querier, role, 10);
             }
