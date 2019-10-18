@@ -11,10 +11,9 @@ import edu.uci.ics.tippers.model.policy.BEPolicy;
 import edu.uci.ics.tippers.model.policy.ObjectCondition;
 import edu.uci.ics.tippers.model.policy.Operation;
 import edu.uci.ics.tippers.model.policy.QuerierCondition;
-import edu.uci.ics.tippers.model.tippers.Infrastructure;
+import edu.uci.ics.tippers.model.tippers.dontuse.Infrastructure;
 
 import java.sql.*;
-import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;

@@ -7,9 +7,9 @@ import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.common.PolicyEngineException;
 import edu.uci.ics.tippers.db.MySQLConnectionManager;
 import edu.uci.ics.tippers.fileop.BigJsonReader;
-import edu.uci.ics.tippers.model.tippers.Infrastructure;
-import edu.uci.ics.tippers.model.tippers.SemanticObservation;
-import edu.uci.ics.tippers.model.tippers.User;
+import edu.uci.ics.tippers.model.tippers.dontuse.Infrastructure;
+import edu.uci.ics.tippers.model.tippers.dontuse.SemanticObservation;
+import edu.uci.ics.tippers.model.tippers.dontuse.User;
 import org.json.simple.parser.JSONParser;
 
 import java.io.*;
