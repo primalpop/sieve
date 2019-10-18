@@ -119,18 +119,17 @@ public class PolicyGen {
         return ts;
     }
 
-
     /**
-     * Generates policies with owner predicate and other randomly chosen attributes
+     * Generates policies with all predicates of given list of attributes
+     * TODO: move selectivity check here
      * @param policyID
      * @return
      */
     private List<ObjectCondition> generatePredicates(String policyID, List<String> attributes) {
         List<ObjectCondition> objectConditions = new ArrayList<>();
-        int attrCount = (int) (r.nextGaussian() * 2 + 4); //mean - 3, SD - 1
+        int attrCount = (int) (r.nextGaussian() * 1 + 2); //mean - 3, SD - 1
         if (attrCount <= 1 || attrCount > attributes.size()) attrCount = 3;
         ArrayList<String> attrList = new ArrayList<>();
-
         while(attrCount - attrList.size() > 0) {
             String attribute = attributes.get(r.nextInt(attributes.size()));
             if (attrList.contains(attribute)) continue;
@@ -176,14 +175,14 @@ public class PolicyGen {
      * inserted_at: current_timestamp
      * @param numberOfPolicies
      * @param threshold
-     * @param attributes
      * @return
      */
-    public void persistOverlappingPolicies(int numberOfPolicies, double threshold, List<String> attributes){
+    public void persistOverlappingPolicies(int numberOfPolicies, double threshold, boolean owner){
         List<BEPolicy> bePolicies = new ArrayList<>();
         boolean overlap = false;
         for (int i = 0; i < numberOfPolicies; i++) {
             String policyID =  UUID.randomUUID().toString();
+            List<String> attributes = new ArrayList<>(PolicyConstants.REAL_ATTR_LIST);
             List<QuerierCondition> querierConditions = new ArrayList<>(Arrays.asList(
                     new QuerierCondition(policyID, "policy_type", AttributeType.STRING, Operation.EQ,"user"),
                     new QuerierCondition(policyID, "querier", AttributeType.STRING, Operation.EQ, "10")));
@@ -202,7 +201,13 @@ public class PolicyGen {
             }
             else {
                 double selOfPolicy = 0.0;
-                List<ObjectCondition> objectConditions;
+                List<ObjectCondition> objectConditions = new ArrayList<>();
+                if(owner){
+                    ObjectCondition ownerPred = new ObjectCondition(policyID, PolicyConstants.USERID_ATTR, AttributeType.STRING,
+                            String.valueOf(user_ids.get(new Random().nextInt(user_ids.size()))), Operation.EQ);
+                    objectConditions.add(ownerPred);
+                    attributes.remove(PolicyConstants.USERID_ATTR);
+                }
                 do {
                     objectConditions = generatePredicates(policyID, attributes);
                     selOfPolicy = BEPolicy.computeL(objectConditions);
@@ -223,8 +228,36 @@ public class PolicyGen {
         }
     }
 
+    /**
+     * //TODO: add a progressive selectivity check
+     * @param querier
+     * @param owner_id
+     * @return
+     */
+    public BEPolicy createPolicy(int querier, int owner_id) {
+        String policyID = UUID.randomUUID().toString();
+        List<String> attributes = new ArrayList<>(PolicyConstants.REAL_ATTR_LIST);
+        List<QuerierCondition> querierConditions = new ArrayList<>(Arrays.asList(
+                new QuerierCondition(policyID, "policy_type", AttributeType.STRING, Operation.EQ, "user"),
+                new QuerierCondition(policyID, "querier", AttributeType.STRING, Operation.EQ, String.valueOf(querier))));
+
+        double selOfPolicy = 0.0;
+        List<ObjectCondition> objectConditions = new ArrayList<>();
+        ObjectCondition ownerPred = new ObjectCondition(policyID, PolicyConstants.USERID_ATTR, AttributeType.STRING,
+                String.valueOf(owner_id), Operation.EQ);
+        objectConditions.add(ownerPred);
+        attributes.remove(PolicyConstants.USERID_ATTR);
+        objectConditions.addAll(generatePredicates(policyID, attributes));
+        return new BEPolicy(policyID,
+                objectConditions, querierConditions, "analysis",
+                "allow", new Timestamp(System.currentTimeMillis()));
+
+    }
+
+
+
     public static void main(String [] args){
         PolicyGen pg = new PolicyGen();
-        pg.persistOverlappingPolicies(5, 0.3, PolicyConstants.REAL_ATTR_LIST);
+        pg.persistOverlappingPolicies(5, 0.3, true);
     }
 }

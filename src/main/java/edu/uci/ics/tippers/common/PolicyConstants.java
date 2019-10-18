@@ -83,9 +83,10 @@ public class PolicyConstants {
     public static final ImmutableList<String> ACTIVITIES = ImmutableList.of("class", "meeting", "seminar",
             "private", "walking", "unknown", "work");
 
+    public static final ImmutableList<String> USER_ROLES = ImmutableList.of("graduate", "faculty", "undergrad",
+            "staff", "janitor", "visitor");
+
     public static final ImmutableList<Double> HOUR_EXTENSIONS = ImmutableList.of(144.0, 168.0, 180.0, 200.0, 300.0, 700.0, 1000.0);
-
-
 
     //TEMPORARY FIX: Querier Conditions
     public static final ImmutableList<QuerierCondition> DEFAULT_QC = ImmutableList.
