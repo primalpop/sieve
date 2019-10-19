@@ -27,6 +27,7 @@ public class PolicyGroupGen {
     private final double NON_GROUP_CHANCE = 3/4.0;
     private final int ALL_GROUPS = 0;
     private final int ROLE_POLICIES_COUNT= 10;
+    private final int ROLE_POLICIES_MINIMUM= 5;
 
     private final int LARGE_GROUP_SIZE_THRESHOLD = 50;
     private final int DEFAULT_POLICY_NUM = 5;
@@ -104,14 +105,14 @@ public class PolicyGroupGen {
         return user_ids;
     }
 
-    private void createPolicy(int querier, List<Integer> members, int howMany){
+    private void createPolicy(int querier, List<Integer> members, int howMany, String action){
         int i = 0;
         List<Integer> selected = new ArrayList<>();
         while (i < howMany) {
             int owner = members.get(new Random().nextInt(members.size()));
             if (selected.contains(owner)) continue;
             selected.add(owner);
-            polper.insertPolicy(pg.createPolicy(querier, owner, getUserRole(owner)));
+            polper.insertPolicy(pg.createPolicy(querier, owner, getUserRole(owner), action));
             i++;
         }
     }
@@ -159,7 +160,7 @@ public class PolicyGroupGen {
         for (String role: PolicyConstants.USER_ROLES) {
             if(groups.contains(role)) return role;
         }
-        return null;
+        return "visitor"; //TODO: default set to visitor
     }
 
     /**
@@ -178,36 +179,53 @@ public class PolicyGroupGen {
         List<Integer> nls = retrieveNotLoners(MIN_GROUP_MEMBERSHIP);
         List<String> all_groups = retrieveGroups(ALL_GROUPS);
         for (int querier: nls) {
-            System.out.println("Querier " + querier + " group policies");
+            System.out.println("** Querier: " + querier +" **");
+            int groupP = 0, nonGroupP = 0, roleP = 0;
             List<String> querierGroups = retrieveGroups(querier);
             for (String qg: querierGroups) {
                 List<Integer> members = getMembers(qg);
-                int x = howMany(members.size(), true);
-                createPolicy(querier, members, x);
+                int x_total = howMany(members.size(), true);
+                int x_accept = (int) (x_total * 9/10.0), x_deny = (int) (x_total /10.0); //90% accept, 10% deny
+                createPolicy(querier, members, x_accept, PolicyConstants.ACTION_ALLOW);
+                createPolicy(querier, members, x_deny, PolicyConstants.ACTION_DENY);
+                groupP += x_total;
             }
-            System.out.println("Querier " + querier + " non-group policies");
+            System.out.println("Group policies: " + groupP);
             List<String> nonGroups = new ArrayList<>(all_groups);
             nonGroups.removeAll(querierGroups);
             for(String ng: nonGroups) {
                 boolean selected = Math.random() >= (NON_GROUP_CHANCE);
                 if (selected) {
                     List<Integer> members = getMembers(ng);
-                    int x = howMany(members.size(), false);
-                    createPolicy(querier, members, x);
+                    int x_total = howMany(members.size(), false);
+                    int x_accept = (int) (x_total /2.0), x_deny = (int) (x_total /2.0); //50% accept, 50% deny
+                    createPolicy(querier, members, x_accept, PolicyConstants.ACTION_ALLOW);
+                    createPolicy(querier, members, x_deny, PolicyConstants.ACTION_DENY);
+                    nonGroupP += x_total;
                 }
             }
-            System.out.println("Querier " + querier + " role policies");
+            System.out.println("Non-Group policies: " + nonGroupP);
             for (String role: PolicyConstants.USER_ROLES) {
                 List<Integer> members = retrieveMembers(role);
                 if(members.isEmpty()) continue;
-                int x = (int) (5 + (Math.random() * (ROLE_POLICIES_COUNT- 5)));
-                createPolicy(querier, members, x);
+                int x_total = (int) (ROLE_POLICIES_MINIMUM + (Math.random() * (ROLE_POLICIES_COUNT- ROLE_POLICIES_MINIMUM)));
+                if(role.equalsIgnoreCase(getUserRole(querier))) {
+                    int x_accept = (int) (x_total * 7/10.0), x_deny = (int) (x_total * 3/10.0);  //70% accept, 30% deny
+                    createPolicy(querier, members, x_accept, PolicyConstants.ACTION_ALLOW);
+                    createPolicy(querier, members, x_deny, PolicyConstants.ACTION_DENY);
+                    roleP += x_accept;
+                }
+                else {
+                    x_total = (int) (x_total/2.0); // half of same role policies
+                    int x_accept = (int) (x_total * 3/10.0), x_deny = (int) (x_total * 7/10.0);  //30% accept, 70% deny
+                    createPolicy(querier, members, x_accept, PolicyConstants.ACTION_ALLOW);
+                    createPolicy(querier, members, x_deny, PolicyConstants.ACTION_DENY);
+                    roleP += x_accept;
+                }
             }
+            System.out.println("Role policies: " + roleP);
         }
     }
-
-    //TODO: add accept and deny policies
-    //TODO: for each querier, add higher percentage of policies to their own role
 
     public static void main(String [] args) {
         PolicyGroupGen pgrg = new PolicyGroupGen();

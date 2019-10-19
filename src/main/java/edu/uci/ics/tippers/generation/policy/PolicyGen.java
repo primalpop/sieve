@@ -248,13 +248,12 @@ public class PolicyGen {
      * @param owner_id
      * @return
      */
-    public BEPolicy createPolicy(int querier, int owner_id, String role) {
+    public BEPolicy createPolicy(int querier, int owner_id, String role, String action) {
         String policyID = UUID.randomUUID().toString();
         List<String> attributes = new ArrayList<>(PolicyConstants.REAL_ATTR_LIST);
         List<QuerierCondition> querierConditions = new ArrayList<>(Arrays.asList(
                 new QuerierCondition(policyID, "policy_type", AttributeType.STRING, Operation.EQ, "user"),
                 new QuerierCondition(policyID, "querier", AttributeType.STRING, Operation.EQ, String.valueOf(querier))));
-
         double selOfPolicy = 0.0;
         List<ObjectCondition> objectConditions = new ArrayList<>();
         ObjectCondition ownerPred = new ObjectCondition(policyID, PolicyConstants.USERID_ATTR, AttributeType.STRING,
@@ -264,7 +263,7 @@ public class PolicyGen {
         objectConditions.addAll(generateSemiRealistic(policyID, role));
         return new BEPolicy(policyID,
                 objectConditions, querierConditions, "analysis",
-                "allow", new Timestamp(System.currentTimeMillis()));
+                action, new Timestamp(System.currentTimeMillis()));
 
     }
 
@@ -332,8 +331,10 @@ public class PolicyGen {
         int roleStartOffset = startRoleOffset(role);
         cal.add(Calendar.HOUR, roleStartOffset);
         int weekOffset = r.nextInt((11) + 1); //weeks from 0 to 11
-        int dayOfWeek = r.nextInt((7 - 1) + 1) + 1; //days from 1 to 7
+        int dayOfWeek = r.nextInt((7 - 1) + 1) ; //days from 1 to 7
         cal.add(Calendar.DAY_OF_MONTH, weekOffset*dayOfWeek);
+        if (cal.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) cal.add(Calendar.DAY_OF_MONTH, 2);
+        if (cal.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) cal.add(Calendar.DAY_OF_MONTH, 1);
         sb.setTime(cal.getTime().getTime());
         tsPreds.add(sb);
         cal.add(Calendar.MINUTE, (int) (hourOffsets.get(r.nextInt(hourOffsets.size()))*60));
@@ -360,15 +361,15 @@ public class PolicyGen {
         List<ObjectCondition> objectConditions = new ArrayList<>();
         SimpleDateFormat sdf = new SimpleDateFormat(PolicyConstants.TIMESTAMP_FORMAT);
         double rand = Math.random();
-        double TIMESTAMP_INCLUDE = 1/3.0;
-        double LOCATION_INCLUDE = 1/2.0;
+        double TIMESTAMP_INCLUDE = 1/4.0;
+        double LOCATION_INCLUDE = 1/3.0;
         if (rand > TIMESTAMP_INCLUDE) {
             List<Timestamp> tsPreds = generateTsPredicates(role);
             ObjectCondition tp_beg = new ObjectCondition(policyID, PolicyConstants.START_TIMESTAMP_ATTR, AttributeType.TIMESTAMP,
                     sdf.format(tsPreds.get(0)), Operation.GTE, sdf.format(tsPreds.get(1)), Operation.LTE);
             objectConditions.add(tp_beg);
             ObjectCondition tp_end = new ObjectCondition(policyID, PolicyConstants.END_TIMESTAMP_ATTR, AttributeType.TIMESTAMP,
-                    sdf.format(tsPreds.get(0)), Operation.GTE, sdf.format(tsPreds.get(1)), Operation.LTE);
+                    sdf.format(tsPreds.get(2)), Operation.GTE, sdf.format(tsPreds.get(3)), Operation.LTE);
             objectConditions.add(tp_end);
         }
         if (rand > LOCATION_INCLUDE) {
