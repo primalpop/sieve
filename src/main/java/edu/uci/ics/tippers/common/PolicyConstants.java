@@ -162,4 +162,6 @@ public class PolicyConstants {
 
     public static final String SELECT_ALL_FORCE_INDEX = "Select * from SEMANTIC_OBSERVATION FORCE INDEX (so_u, so_ts, so_l, so_e, so_t, so_a) WHERE ";
 
+    public static final String ACTION_ALLOW = "allow";
+    public static final String ACTION_DENY = "deny";
 }
