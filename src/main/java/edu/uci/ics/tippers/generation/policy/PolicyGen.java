@@ -35,6 +35,7 @@ public class PolicyGen {
     private List<String> location_ids;
     public Timestamp start_beg, start_fin;
     public Timestamp end_beg, end_fin;
+    private HashMap<String, List<String>> roleLocations; //Forming random clusters of locations on roles
 
     public PolicyGen(){
        r = new Random();
@@ -45,6 +46,20 @@ public class PolicyGen {
        this.start_fin = getTimestamp(PolicyConstants.START_TIMESTAMP_ATTR, "MAX");
        this.end_beg = getTimestamp(PolicyConstants.END_TIMESTAMP_ATTR, "MIN");
        this.end_fin = getTimestamp(PolicyConstants.END_TIMESTAMP_ATTR, "MAX");
+       this.roleLocations = clusterLocations();
+    }
+
+    private HashMap<String, List<String>> clusterLocations(){
+        HashMap<String, List<String>> rls = new HashMap<>();
+        for (String role: PolicyConstants.USER_ROLES)
+            rls.put(role, new ArrayList<String>());
+        for (String loc: location_ids) {
+            if (!PolicyConstants.USER_ROLES.contains(loc)) {
+                String role = PolicyConstants.USER_ROLES.get(r.nextInt(PolicyConstants.USER_ROLES.size()));
+                rls.get(role).add(loc);
+            }
+        }
+        return rls;
     }
 
 
@@ -246,54 +261,124 @@ public class PolicyGen {
                 String.valueOf(owner_id), Operation.EQ);
         objectConditions.add(ownerPred);
         attributes.remove(PolicyConstants.USERID_ATTR);
-        objectConditions.addAll(generateSemiRealistic(policyID, attributes, role));
+        objectConditions.addAll(generateSemiRealistic(policyID, role));
         return new BEPolicy(policyID,
                 objectConditions, querierConditions, "analysis",
                 "allow", new Timestamp(System.currentTimeMillis()));
 
     }
 
+    /**
+     * Returns the hour offset for start timestamp from midnight based on the user role
+     * @param user_role
+     * @return
+     */
+    private int startRoleOffset(String user_role){
+        if(user_role.equalsIgnoreCase("graduate") || user_role.equalsIgnoreCase("undergrad")){
+            return 8;
+        }
+        else if (user_role.equalsIgnoreCase("faculty")){
+            return 10;
+        }
+        else if (user_role.equalsIgnoreCase("staff")) {
+            return 7;
+        }
+        else if (user_role.equalsIgnoreCase("janitor")) {
+            return 1;
+        }
+        else { //visitor
+            return 12;
+        }
+    }
+
+    /**
+     * Returns the hour offset for finish timestamp from midnight based on the user role
+     * @param user_role
+     * @return
+     */
+    private int finRoleOffset(String user_role){
+        if(user_role.equalsIgnoreCase("graduate") || user_role.equalsIgnoreCase("undergrad")){
+            return 10;
+        }
+        else if (user_role.equalsIgnoreCase("faculty")){
+            return 6;
+        }
+        else if (user_role.equalsIgnoreCase("staff")) {
+            return 7;
+        }
+        else if (user_role.equalsIgnoreCase("janitor")) {
+            return 3;
+        }
+        else { //visitor
+            return 1;
+        }
+    }
+
+
+    /**
+     * 1. start_beg - Add hour offset to begin timestamp based on user role
+     * 2. Choose a week among the 12 weeks, a day within a week and add it to begin
+     * 3. start_end - choose a random hour offset and add it to start_beg
+     * 4. fin_beg - Add hour offset to start_end based on user role
+     * 5. fin_end - Add a random hour offset to fin_beg
+     * @return
+     */
+    private List<Timestamp> generateTsPredicates(String role){
+        List<Timestamp> tsPreds = new ArrayList<>();
+        List<Double> hourOffsets = new ArrayList<Double>(Arrays.asList(0.5, 1.0, 2.0, 3.0));
+        Timestamp sb = new Timestamp(start_beg.getTime());
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(sb);
+        int roleStartOffset = startRoleOffset(role);
+        cal.add(Calendar.HOUR, roleStartOffset);
+        int weekOffset = r.nextInt((11) + 1); //weeks from 0 to 11
+        int dayOfWeek = r.nextInt((7 - 1) + 1) + 1; //days from 1 to 7
+        cal.add(Calendar.DAY_OF_MONTH, weekOffset*dayOfWeek);
+        sb.setTime(cal.getTime().getTime());
+        tsPreds.add(sb);
+        cal.add(Calendar.MINUTE, (int) (hourOffsets.get(r.nextInt(hourOffsets.size()))*60));
+        Timestamp se = new Timestamp(cal.getTimeInMillis());
+        tsPreds.add(se);
+        int roleFinOffset = finRoleOffset(role);
+        cal.add(Calendar.HOUR, roleFinOffset);
+        Timestamp fb = new Timestamp(cal.getTimeInMillis());
+        tsPreds.add(fb);
+        cal.add(Calendar.MINUTE, (int) (hourOffsets.get(r.nextInt(hourOffsets.size()))*60));
+        Timestamp fe = new Timestamp(cal.getTimeInMillis());
+        tsPreds.add(fe);
+        return tsPreds;
+    }
 
 
     /**
      * Generates semi-realistic policies with all predicates of given list of attributes
+     *
      * @param policyID
      * @return
      */
-    private List<ObjectCondition> generateSemiRealistic(String policyID, List<String> attributes, String role) {
+    private List<ObjectCondition> generateSemiRealistic(String policyID, String role) {
         List<ObjectCondition> objectConditions = new ArrayList<>();
-        int attrCount = (int) (r.nextGaussian() * 1 + 2); //mean - 3, SD - 1
-        if (attrCount <= 1 || attrCount > attributes.size()) attrCount = 3;
-        ArrayList<String> attrList = new ArrayList<>();
-        while(attrCount - attrList.size() > 0) {
-            String attribute = attributes.get(r.nextInt(attributes.size()));
-            if (attrList.contains(attribute)) continue;
-            attrList.add(attribute);
-            SimpleDateFormat sdf = new SimpleDateFormat(PolicyConstants.TIMESTAMP_FORMAT);
-            if (attribute.equalsIgnoreCase(PolicyConstants.START_TIMESTAMP_ATTR)) {
-                Timestamp start_beg = getRandomTimeStamp(PolicyConstants.START_TIMESTAMP_ATTR);
-                Timestamp start_fin = getEndingTimeInterval(start_beg, PolicyConstants.HOUR_EXTENSIONS);
-                ObjectCondition tp_beg = new ObjectCondition(policyID, PolicyConstants.START_TIMESTAMP_ATTR, AttributeType.TIMESTAMP,
-                        sdf.format(start_beg), Operation.GTE, sdf.format(start_fin), Operation.LTE);
-                objectConditions.add(tp_beg);
-            }
-            if (attribute.equalsIgnoreCase(PolicyConstants.LOCATIONID_ATTR)) {
-                ObjectCondition location = new ObjectCondition(policyID, PolicyConstants.LOCATIONID_ATTR, AttributeType.STRING,
-                        location_ids.get(new Random().nextInt(location_ids.size())), Operation.EQ);
-                objectConditions.add(location);
-            }
-            if (attribute.equalsIgnoreCase(PolicyConstants.END_TIMESTAMP_ATTR)) {
-                Timestamp end_beg = getRandomTimeStamp(PolicyConstants.END_TIMESTAMP_ATTR);
-                Timestamp end_fin = getEndingTimeInterval(end_beg, PolicyConstants.HOUR_EXTENSIONS);
-                ObjectCondition tp_end = new ObjectCondition(policyID, PolicyConstants.END_TIMESTAMP_ATTR, AttributeType.TIMESTAMP,
-                        sdf.format(end_beg), Operation.GTE, sdf.format(end_fin), Operation.LTE);
-                objectConditions.add(tp_end);
-            }
+        SimpleDateFormat sdf = new SimpleDateFormat(PolicyConstants.TIMESTAMP_FORMAT);
+        double rand = Math.random();
+        double TIMESTAMP_INCLUDE = 1/3.0;
+        double LOCATION_INCLUDE = 1/2.0;
+        if (rand > TIMESTAMP_INCLUDE) {
+            List<Timestamp> tsPreds = generateTsPredicates(role);
+            ObjectCondition tp_beg = new ObjectCondition(policyID, PolicyConstants.START_TIMESTAMP_ATTR, AttributeType.TIMESTAMP,
+                    sdf.format(tsPreds.get(0)), Operation.GTE, sdf.format(tsPreds.get(1)), Operation.LTE);
+            objectConditions.add(tp_beg);
+            ObjectCondition tp_end = new ObjectCondition(policyID, PolicyConstants.END_TIMESTAMP_ATTR, AttributeType.TIMESTAMP,
+                    sdf.format(tsPreds.get(0)), Operation.GTE, sdf.format(tsPreds.get(1)), Operation.LTE);
+            objectConditions.add(tp_end);
+        }
+        if (rand > LOCATION_INCLUDE) {
+            String location = roleLocations.get(role).get(new Random().nextInt(roleLocations.get(role).size()));
+            ObjectCondition locationPred = new ObjectCondition(policyID, PolicyConstants.LOCATIONID_ATTR, AttributeType.STRING,
+                    location, Operation.EQ);
+            objectConditions.add(locationPred);
         }
         return objectConditions;
     }
-
-
 
     public static void main(String [] args){
         PolicyGen pg = new PolicyGen();

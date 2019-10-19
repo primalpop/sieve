@@ -206,6 +206,9 @@ public class PolicyGroupGen {
         }
     }
 
+    //TODO: add accept and deny policies
+    //TODO: for each querier, add higher percentage of policies to their own role
+
     public static void main(String [] args) {
         PolicyGroupGen pgrg = new PolicyGroupGen();
         pgrg.generatePolicies();
