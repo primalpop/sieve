@@ -46,7 +46,7 @@ public class GuardPersistor {
             userGuardStmt.close();
 
             String guardExpInsert = "INSERT INTO " + guardPartTable +
-                    " (guard_exp_id, guard, remainder) VALUES (?, ?, ?)";
+                    " (guard_exp_id, guard, policies) VALUES (?, ?, ?)";
 
             PreparedStatement gpStmt = connection.prepareStatement(guardExpInsert);
             for (GuardPart gp : guardExp.getGuardParts()) {
