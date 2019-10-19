@@ -8,6 +8,8 @@ import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
 import edu.uci.ics.tippers.model.policy.ObjectCondition;
 
+import java.security.Guard;
+import java.sql.Timestamp;
 import java.time.Duration;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -145,6 +147,28 @@ public class GuardHit {
         }
     }
 
+
+    public GuardExp create(int querier, String querier_type){
+        List<GuardPart> gps = new ArrayList<>();
+        for (Term mt: finalForm) {
+            GuardPart gp = new GuardPart();
+            gp.setGuardFactor(mt.getFactor().print());
+            gp.setGuardPartition(mt.getQuotient().createQueryFromPolices());
+            gps.add(gp);
+        }
+        GuardExp guardExp = new GuardExp();
+        guardExp.setGuardParts(gps);
+        //TODO: Make it less hardcoded?
+        guardExp.setAction(finalForm.get(0).getQuotient().getPolicies().get(0).getAction());
+        guardExp.setPurpose(finalForm.get(0).getQuotient().getPolicies().get(0).getPurpose());
+        guardExp.setQuerier(String.valueOf(querier));
+        guardExp.setQuerier_type(querier_type);
+        guardExp.setDirty("false");
+        guardExp.setLast_updated(new Timestamp(new Date().getTime()));
+        return guardExp;
+    }
+
+
     public String createGuardedQuery(boolean noDuplicates){
         List<String> gList = createGuardQueries();
         StringBuilder queryExp = new StringBuilder();
@@ -160,7 +184,8 @@ public class GuardHit {
     public List<String> createGuardQueries(){
         List<String> guardQueries = new ArrayList<>();
         for (Term mt: finalForm)
-           guardQueries.add(mt.getFactor().print() + PolicyConstants.CONJUNCTION +  "(" + mt.getQuotient().createQueryFromPolices() + ")");
+           guardQueries.add(mt.getFactor().print() + PolicyConstants.CONJUNCTION +
+                   "(" + mt.getQuotient().createQueryFromPolices() + ")");
         return  guardQueries;
     }
 
