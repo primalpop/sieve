@@ -48,7 +48,7 @@ public class GuardGenExp {
     }
 
     public void generateGuards(){
-        List<Integer> queriers = pgg.getNotLoners(1);
+        List<Integer> queriers = pgg.retrieveNotLoners(1);
         for(int querier: queriers) {
             List<BEPolicy> policies = polper.retrievePolicies(String.valueOf(querier), "user");
             BEExpression beExpression = new BEExpression(policies);

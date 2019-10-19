@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -19,26 +20,31 @@ public class PolicyGroupGen {
     PolicyPersistor polper;
     PolicyGen pg;
 
+    private HashMap<Integer, List<String>> user_groups;
+    private HashMap<String, List<Integer>> group_members;
+
     public final int MIN_GROUP_MEMBERSHIP = 3;
     private final double NON_GROUP_CHANCE = 3/4.0;
     private final int ALL_GROUPS = 0;
     private final int ROLE_POLICIES_COUNT= 10;
 
     private final int LARGE_GROUP_SIZE_THRESHOLD = 50;
-    private final int DEFAULT_POLICY_NUM = 10;
+    private final int DEFAULT_POLICY_NUM = 5;
 
     public PolicyGroupGen(){
         this.connection = MySQLConnectionManager.getInstance().getConnection();
         r = new Random();
         polper = PolicyPersistor.getInstance();
         pg = new PolicyGen();
+        user_groups = new HashMap<>();
+        group_members = new HashMap<>();
     }
 
     /**
      * Retrieves users with group membership > requisite
      * @return list of users
      */
-    public List<Integer> getNotLoners(int requisite) {
+    public List<Integer> retrieveNotLoners(int requisite) {
         PreparedStatement queryStm = null;
         List<Integer> user_ids = new ArrayList<>();
         try {
@@ -57,7 +63,7 @@ public class PolicyGroupGen {
      * excluding USER ROLE groups
      * @return list of groups
      */
-    public List<String> getGroups(int user_id) {
+    public List<String> retrieveGroups(int user_id) {
         PreparedStatement queryStm = null;
         List<String> groups = new ArrayList<>();
         String query;
@@ -105,9 +111,55 @@ public class PolicyGroupGen {
             int owner = members.get(new Random().nextInt(members.size()));
             if (selected.contains(owner)) continue;
             selected.add(owner);
-            polper.insertPolicy(pg.createPolicy(querier, owner));
+            polper.insertPolicy(pg.createPolicy(querier, owner, getUserRole(owner)));
             i++;
         }
+    }
+
+    private List<Integer> getMembers(String group_id){
+        List<Integer> members = null;
+        if (group_members.containsKey(group_id))
+            members = group_members.get(group_id);
+        else {
+            members = retrieveMembers(group_id);
+            group_members.put(group_id, members);
+        }
+        return members;
+    }
+
+    private List<String> getGroupsForUser(int user_id){
+        List<String> groups = null;
+        if (user_groups.containsKey(user_id))
+            groups = user_groups.get(user_id);
+        else {
+            groups = retrieveGroups(user_id);
+            user_groups.put(user_id, groups);
+        }
+        return groups;
+    }
+
+    private int howMany(int group_size, boolean member){
+        int x = (int) (DEFAULT_POLICY_NUM + (Math.random() * (DEFAULT_POLICY_NUM - 5)));
+        int multiplier = member? 1: 2;
+        if(group_size < LARGE_GROUP_SIZE_THRESHOLD) {
+            x = (int) (r.nextGaussian() * group_size/(20*multiplier) + group_size/(10*multiplier));
+            if (x <= 1 || x > group_size) x = group_size/(10*multiplier);
+        }
+        return x;
+    }
+
+    private String getUserRole(int user_id){
+        List<String> groups = null;
+        if (user_groups.containsKey(user_id))
+            groups = user_groups.get(user_id);
+        else {
+            groups = retrieveGroups(user_id);
+            user_groups.put(user_id, groups);
+        }
+        for (String role: PolicyConstants.USER_ROLES) {
+            if(groups.contains(role)) return role;
+        }
+        return null;
     }
 
     /**
@@ -123,19 +175,14 @@ public class PolicyGroupGen {
      * 9. For each role, select 10 members and create policy for them
      */
     public void generatePolicies(){
-        List<Integer> nls = getNotLoners(MIN_GROUP_MEMBERSHIP);
-        List<String> all_groups = getGroups(ALL_GROUPS);
+        List<Integer> nls = retrieveNotLoners(MIN_GROUP_MEMBERSHIP);
+        List<String> all_groups = retrieveGroups(ALL_GROUPS);
         for (int querier: nls) {
             System.out.println("Querier " + querier + " group policies");
-            List<String> querierGroups = getGroups(querier);
+            List<String> querierGroups = retrieveGroups(querier);
             for (String qg: querierGroups) {
-                List<Integer> members = retrieveMembers(qg);
-                int group_size = members.size();
-                int x = DEFAULT_POLICY_NUM;
-                if(group_size < LARGE_GROUP_SIZE_THRESHOLD) {
-                    x = (int) (r.nextGaussian() * group_size/10 + group_size/5);
-                    if (x <= 1 || x > group_size) x = group_size/10;
-                }
+                List<Integer> members = getMembers(qg);
+                int x = howMany(members.size(), true);
                 createPolicy(querier, members, x);
             }
             System.out.println("Querier " + querier + " non-group policies");
@@ -144,13 +191,8 @@ public class PolicyGroupGen {
             for(String ng: nonGroups) {
                 boolean selected = Math.random() >= (NON_GROUP_CHANCE);
                 if (selected) {
-                    List<Integer> members = retrieveMembers(ng);
-                    int group_size = members.size();
-                    int x = DEFAULT_POLICY_NUM;
-                    if ( group_size < LARGE_GROUP_SIZE_THRESHOLD) {
-                        x = (int) (r.nextGaussian() * group_size/10 + group_size/10);
-                        if (x <= 1 || x > group_size) x = group_size/10;
-                    }
+                    List<Integer> members = getMembers(ng);
+                    int x = howMany(members.size(), false);
                     createPolicy(querier, members, x);
                 }
             }

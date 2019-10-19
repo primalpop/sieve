@@ -121,7 +121,6 @@ public class PolicyGen {
 
     /**
      * Generates policies with all predicates of given list of attributes
-     * TODO: move selectivity check here
      * @param policyID
      * @return
      */
@@ -234,7 +233,7 @@ public class PolicyGen {
      * @param owner_id
      * @return
      */
-    public BEPolicy createPolicy(int querier, int owner_id) {
+    public BEPolicy createPolicy(int querier, int owner_id, String role) {
         String policyID = UUID.randomUUID().toString();
         List<String> attributes = new ArrayList<>(PolicyConstants.REAL_ATTR_LIST);
         List<QuerierCondition> querierConditions = new ArrayList<>(Arrays.asList(
@@ -247,11 +246,51 @@ public class PolicyGen {
                 String.valueOf(owner_id), Operation.EQ);
         objectConditions.add(ownerPred);
         attributes.remove(PolicyConstants.USERID_ATTR);
-        objectConditions.addAll(generatePredicates(policyID, attributes));
+        objectConditions.addAll(generateSemiRealistic(policyID, attributes, role));
         return new BEPolicy(policyID,
                 objectConditions, querierConditions, "analysis",
                 "allow", new Timestamp(System.currentTimeMillis()));
 
+    }
+
+
+
+    /**
+     * Generates semi-realistic policies with all predicates of given list of attributes
+     * @param policyID
+     * @return
+     */
+    private List<ObjectCondition> generateSemiRealistic(String policyID, List<String> attributes, String role) {
+        List<ObjectCondition> objectConditions = new ArrayList<>();
+        int attrCount = (int) (r.nextGaussian() * 1 + 2); //mean - 3, SD - 1
+        if (attrCount <= 1 || attrCount > attributes.size()) attrCount = 3;
+        ArrayList<String> attrList = new ArrayList<>();
+        while(attrCount - attrList.size() > 0) {
+            String attribute = attributes.get(r.nextInt(attributes.size()));
+            if (attrList.contains(attribute)) continue;
+            attrList.add(attribute);
+            SimpleDateFormat sdf = new SimpleDateFormat(PolicyConstants.TIMESTAMP_FORMAT);
+            if (attribute.equalsIgnoreCase(PolicyConstants.START_TIMESTAMP_ATTR)) {
+                Timestamp start_beg = getRandomTimeStamp(PolicyConstants.START_TIMESTAMP_ATTR);
+                Timestamp start_fin = getEndingTimeInterval(start_beg, PolicyConstants.HOUR_EXTENSIONS);
+                ObjectCondition tp_beg = new ObjectCondition(policyID, PolicyConstants.START_TIMESTAMP_ATTR, AttributeType.TIMESTAMP,
+                        sdf.format(start_beg), Operation.GTE, sdf.format(start_fin), Operation.LTE);
+                objectConditions.add(tp_beg);
+            }
+            if (attribute.equalsIgnoreCase(PolicyConstants.LOCATIONID_ATTR)) {
+                ObjectCondition location = new ObjectCondition(policyID, PolicyConstants.LOCATIONID_ATTR, AttributeType.STRING,
+                        location_ids.get(new Random().nextInt(location_ids.size())), Operation.EQ);
+                objectConditions.add(location);
+            }
+            if (attribute.equalsIgnoreCase(PolicyConstants.END_TIMESTAMP_ATTR)) {
+                Timestamp end_beg = getRandomTimeStamp(PolicyConstants.END_TIMESTAMP_ATTR);
+                Timestamp end_fin = getEndingTimeInterval(end_beg, PolicyConstants.HOUR_EXTENSIONS);
+                ObjectCondition tp_end = new ObjectCondition(policyID, PolicyConstants.END_TIMESTAMP_ATTR, AttributeType.TIMESTAMP,
+                        sdf.format(end_beg), Operation.GTE, sdf.format(end_fin), Operation.LTE);
+                objectConditions.add(tp_end);
+            }
+        }
+        return objectConditions;
     }
 
 
