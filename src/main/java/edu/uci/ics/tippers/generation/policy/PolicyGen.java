@@ -331,7 +331,7 @@ public class PolicyGen {
         int roleStartOffset = startRoleOffset(role);
         cal.add(Calendar.HOUR, roleStartOffset);
         int weekOffset = r.nextInt((11) + 1); //weeks from 0 to 11
-        int dayOfWeek = r.nextInt((7 - 1) + 1) ; //days from 1 to 7
+        int dayOfWeek = r.nextInt((7 - 1) + 1) + 1 ; //days from 1 to 7
         cal.add(Calendar.DAY_OF_MONTH, weekOffset*dayOfWeek);
         if (cal.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) cal.add(Calendar.DAY_OF_MONTH, 2);
         if (cal.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) cal.add(Calendar.DAY_OF_MONTH, 1);
