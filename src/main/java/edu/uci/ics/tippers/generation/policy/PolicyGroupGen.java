@@ -141,9 +141,9 @@ public class PolicyGroupGen {
 
     private int howMany(int group_size, boolean member){
         int x = (int) (DEFAULT_POLICY_NUM + (Math.random() * (DEFAULT_POLICY_NUM - 5)));
-        int multiplier = member? 1: 2;
+        int multiplier = member? 1: r.nextInt((5 - 2) + 1) + 2;; //for non-group divide by a multiplier
         if(group_size < LARGE_GROUP_SIZE_THRESHOLD) {
-            x = (int) (r.nextGaussian() * group_size/(20*multiplier) + group_size/(10*multiplier));
+            x = (int) (r.nextGaussian() * group_size/(10*multiplier) + group_size/(5*multiplier)); //var - 1/10*m var - 1/5*m
             if (x <= 1 || x > group_size) x = group_size/(10*multiplier);
         }
         return x;
@@ -160,7 +160,7 @@ public class PolicyGroupGen {
         for (String role: PolicyConstants.USER_ROLES) {
             if(groups.contains(role)) return role;
         }
-        return "visitor"; //TODO: default set to visitor
+        return "visitor"; //TODO: don't set a default
     }
 
     /**
@@ -213,14 +213,14 @@ public class PolicyGroupGen {
                     int x_accept = (int) (x_total * 7/10.0), x_deny = (int) (x_total * 3/10.0);  //70% accept, 30% deny
                     createPolicy(querier, members, x_accept, PolicyConstants.ACTION_ALLOW);
                     createPolicy(querier, members, x_deny, PolicyConstants.ACTION_DENY);
-                    roleP += x_accept;
+                    roleP += x_total;
                 }
                 else {
                     x_total = (int) (x_total/2.0); // half of same role policies
                     int x_accept = (int) (x_total * 3/10.0), x_deny = (int) (x_total * 7/10.0);  //30% accept, 70% deny
                     createPolicy(querier, members, x_accept, PolicyConstants.ACTION_ALLOW);
                     createPolicy(querier, members, x_deny, PolicyConstants.ACTION_DENY);
-                    roleP += x_accept;
+                    roleP += x_total;
                 }
             }
             System.out.println("Role policies: " + roleP);
