@@ -23,7 +23,7 @@ public class PolicyGroupGen {
     private HashMap<Integer, List<String>> user_groups;
     private HashMap<String, List<Integer>> group_members;
 
-    public final int MIN_GROUP_MEMBERSHIP = 1;
+    public final int MIN_GROUP_MEMBERSHIP = 3;
     private final double NON_GROUP_CHANCE = 3/4.0;
     private final int ALL_GROUPS = 0;
     private final int ROLE_POLICIES_COUNT= 10;
