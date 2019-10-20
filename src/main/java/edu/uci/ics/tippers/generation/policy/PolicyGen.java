@@ -250,7 +250,6 @@ public class PolicyGen {
      */
     public BEPolicy createPolicy(int querier, int owner_id, String role, String action) {
         String policyID = UUID.randomUUID().toString();
-        List<String> attributes = new ArrayList<>(PolicyConstants.REAL_ATTR_LIST);
         List<QuerierCondition> querierConditions = new ArrayList<>(Arrays.asList(
                 new QuerierCondition(policyID, "policy_type", AttributeType.STRING, Operation.EQ, "user"),
                 new QuerierCondition(policyID, "querier", AttributeType.STRING, Operation.EQ, String.valueOf(querier))));
@@ -259,7 +258,6 @@ public class PolicyGen {
         ObjectCondition ownerPred = new ObjectCondition(policyID, PolicyConstants.USERID_ATTR, AttributeType.STRING,
                 String.valueOf(owner_id), Operation.EQ);
         objectConditions.add(ownerPred);
-        attributes.remove(PolicyConstants.USERID_ATTR);
         objectConditions.addAll(generateSemiRealistic(policyID, role));
         return new BEPolicy(policyID,
                 objectConditions, querierConditions, "analysis",

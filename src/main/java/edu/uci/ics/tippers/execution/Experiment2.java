@@ -33,7 +33,7 @@ public class Experiment2 {
 
     private void runBEPolicies() {
 
-        List<BEPolicy> policies = polper.retrievePolicies("10", "user");
+        List<BEPolicy> policies = polper.retrievePolicies("10", "user", PolicyConstants.ACTION_ALLOW);
         BEExpression beExpression = new BEExpression(policies);
         System.out.println("Original Policies: " + beExpression.createQueryFromPolices());
 
