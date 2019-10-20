@@ -54,9 +54,6 @@ public class GuardGenExp {
             List<BEPolicy> allowPolicies = polper.retrievePolicies(String.valueOf(querier),
                     PolicyConstants.USER_INDIVIDUAL, PolicyConstants.ACTION_ALLOW);
             System.out.println("Querier #: " + querier + " with " + allowPolicies.size() + " allow policies");
-            List<BEPolicy> denyPolicies = polper.retrievePolicies(String.valueOf(querier),
-                    PolicyConstants.USER_INDIVIDUAL, PolicyConstants.ACTION_DENY);
-            System.out.println("Querier #: " + querier + " with " + denyPolicies.size() + " deny policies");
             BEExpression allowBeExpression = new BEExpression(allowPolicies);
             Duration guardGen = Duration.ofMillis(0);
             Instant fsStart = Instant.now();
