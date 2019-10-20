@@ -49,8 +49,7 @@ public class GuardGenExp {
             }
     }
 
-    public void generateGuards(List<Integer> queriers, boolean first, int iteration){
-        List<Integer> unfinished = new ArrayList<>();
+    public void generateGuards(List<Integer> queriers, boolean first){
         for(int querier: queriers) {
             List<BEPolicy> allowPolicies = polper.retrievePolicies(String.valueOf(querier),
                     PolicyConstants.USER_INDIVIDUAL, PolicyConstants.ACTION_ALLOW);
@@ -58,10 +57,6 @@ public class GuardGenExp {
             List<BEPolicy> denyPolicies = polper.retrievePolicies(String.valueOf(querier),
                     PolicyConstants.USER_INDIVIDUAL, PolicyConstants.ACTION_DENY);
             System.out.println("Querier #: " + querier + " with " + denyPolicies.size() + " deny policies");
-            if(allowPolicies.size() == 0 ) {
-                unfinished.add(querier);
-                continue;
-            };
             BEExpression allowBeExpression = new BEExpression(allowPolicies);
             Duration guardGen = Duration.ofMillis(0);
             Instant fsStart = Instant.now();
@@ -73,13 +68,11 @@ public class GuardGenExp {
             if(!first) writeExecTimes(querier, allowPolicies.size(), (int) guardGen.toMillis());
             else first = false;
         }
-        if(iteration < 3)
-            generateGuards(unfinished, false, iteration+1);
     }
 
     public static void main(String [] args){
         GuardGenExp ge = new GuardGenExp();
         List<Integer> queriers = ge.pgg.retrieveNotLoners(ge.pgg.MIN_GROUP_MEMBERSHIP);
-        ge.generateGuards(queriers, true, 1);
+        ge.generateGuards(queriers, true);
     }
 }
