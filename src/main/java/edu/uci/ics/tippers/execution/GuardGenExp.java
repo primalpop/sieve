@@ -1,5 +1,6 @@
 package edu.uci.ics.tippers.execution;
 
+import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.db.MySQLConnectionManager;
 import edu.uci.ics.tippers.generation.policy.PolicyGroupGen;
 import edu.uci.ics.tippers.manager.GuardPersistor;
@@ -13,6 +14,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -47,25 +49,37 @@ public class GuardGenExp {
             }
     }
 
-    public void generateGuards(){
-        List<Integer> queriers = pgg.retrieveNotLoners(1);
+    public void generateGuards(List<Integer> queriers, boolean first, int iteration){
+        List<Integer> unfinished = new ArrayList<>();
         for(int querier: queriers) {
-            List<BEPolicy> policies = polper.retrievePolicies(String.valueOf(querier), "user");
-            BEExpression beExpression = new BEExpression(policies);
-            System.out.println("Querier #: " + querier + " with " + policies.size() + " policies");
+            List<BEPolicy> allowPolicies = polper.retrievePolicies(String.valueOf(querier),
+                    PolicyConstants.USER_INDIVIDUAL, PolicyConstants.ACTION_ALLOW);
+            System.out.println("Querier #: " + querier + " with " + allowPolicies.size() + " allow policies");
+            List<BEPolicy> denyPolicies = polper.retrievePolicies(String.valueOf(querier),
+                    PolicyConstants.USER_INDIVIDUAL, PolicyConstants.ACTION_DENY);
+            System.out.println("Querier #: " + querier + " with " + denyPolicies.size() + " deny policies");
+            if(allowPolicies.size() == 0 ) {
+                unfinished.add(querier);
+                continue;
+            };
+            BEExpression allowBeExpression = new BEExpression(allowPolicies);
             Duration guardGen = Duration.ofMillis(0);
             Instant fsStart = Instant.now();
-            GuardHit gh = new GuardHit(beExpression, true);
+            GuardHit gh = new GuardHit(allowBeExpression, true);
             Instant fsEnd = Instant.now();
             guardGen = guardGen.plus(Duration.between(fsStart, fsEnd));
             System.out.println("Guard Generation time: " + guardGen + " Number of Guards: " + gh.numberOfGuards());
             guardPersistor.insertGuard(gh.create(querier, "user"));
-            writeExecTimes(querier, beExpression.getPolicies().size(), (int) guardGen.toMillis());
+            if(!first) writeExecTimes(querier, allowPolicies.size(), (int) guardGen.toMillis());
+            else first = false;
         }
+        if(iteration < 3)
+            generateGuards(unfinished, false, iteration+1);
     }
 
     public static void main(String [] args){
         GuardGenExp ge = new GuardGenExp();
-        ge.generateGuards();
+        List<Integer> queriers = ge.pgg.retrieveNotLoners(ge.pgg.MIN_GROUP_MEMBERSHIP);
+        ge.generateGuards(queriers, true, 1);
     }
 }

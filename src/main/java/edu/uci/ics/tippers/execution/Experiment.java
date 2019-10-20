@@ -1,5 +1,6 @@
 package edu.uci.ics.tippers.execution;
 
+import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.db.MySQLQueryManager;
 import edu.uci.ics.tippers.db.MySQLResult;
 import edu.uci.ics.tippers.fileop.Writer;
@@ -71,7 +72,7 @@ public class Experiment {
 
     public void runBEPolicies() {
 
-        List<BEPolicy> policies = polper.retrievePolicies("10", "user");
+        List<BEPolicy> policies = polper.retrievePolicies("10", "user", PolicyConstants.ACTION_ALLOW);
         BEExpression beExpression = new BEExpression(policies);
         System.out.println("Original Policies: " + beExpression.createQueryFromPolices());
 

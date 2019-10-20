@@ -164,4 +164,6 @@ public class PolicyConstants {
 
     public static final String ACTION_ALLOW = "allow";
     public static final String ACTION_DENY = "deny";
+    public static final String USER_INDIVIDUAL = "user";
+    public static final String USER_GROUP = "group";
 }

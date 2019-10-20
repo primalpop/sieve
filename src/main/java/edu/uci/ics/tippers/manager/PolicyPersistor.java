@@ -103,7 +103,7 @@ public class PolicyPersistor {
         else return Operation.GT;
     }
 
-    public List<BEPolicy> retrievePolicies(String querier, String querier_type){
+    public List<BEPolicy> retrievePolicies(String querier, String querier_type, String enforcement_action){
         List<BEPolicy> bePolicies = new ArrayList<>();
         String id = null, purpose = null, action = null;
         Timestamp inserted_at = null;
@@ -147,8 +147,10 @@ public class PolicyPersistor {
                     policy_table + ".enforcement_action," + policy_table + ".inserted_at," + oc_table + ".id, " + oc_table + " .policy_id," + oc_table + ".attribute, " +
                     oc_table + ".attribute_type, " + oc_table + ".operator," + oc_table + ".comp_value " +
                     "FROM " + policy_table + ", " + oc_table +
-                    " WHERE " + policy_table + ".querier=? AND " + policy_table + ".id = " + oc_table + ".policy_id");
+                    " WHERE " + policy_table + ".querier=? AND " + policy_table + ".id = " + oc_table + ".policy_id " +
+                    "AND " + policy_table +  ".enforcement_action=?");
             queryStm.setInt(1, Integer.parseInt(querier));
+            queryStm.setString(2, enforcement_action);
             ResultSet rs = queryStm.executeQuery();
             if (!rs.next()) return null;
             String next = null;
