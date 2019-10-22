@@ -115,7 +115,7 @@ public class Bucket implements Comparable<Bucket> {
     public int compareTo(Bucket bucket) {
         if(this.getAttribute().equalsIgnoreCase(PolicyConstants.USERID_ATTR)
                 || this.getAttribute().equalsIgnoreCase(PolicyConstants.START_TIMESTAMP_ATTR)
-                || this.getAttribute().equalsIgnoreCase(PolicyConstants.END_TIMESTAMP_ATTR)){
+                || this.getAttribute().equalsIgnoreCase(PolicyConstants.FINISH_TIMESTAMP_ATTR)){
             return this.getLower().compareTo(bucket.getLower());
         }
         else if(this.getAttribute().equalsIgnoreCase(PolicyConstants.LOCATIONID_ATTR)){

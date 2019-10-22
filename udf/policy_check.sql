@@ -6,6 +6,7 @@ DELIMITER //
 -- https://stackoverflow.com/questions/24435138/returning-a-value-from-a-mysql-function-after-iterating-cursor
 -- https://dev.mysql.com/doc/refman/8.0/en/cursors.html
 -- https://dev.mysql.com/doc/refman/8.0/en/flow-control-statements.html
+-- https://stackoverflow.com/questions/27096220/mysql-function-pass-a-parameter-from-query
 
 CREATE FUNCTION pcheck(user_id VARCHAR(255), 
     location VARCHAR(255), ts timestamp, temperature VARCHAR(255), energy VARCHAR(255), 
