@@ -44,8 +44,8 @@ public class PolicyGen {
        this.location_ids = getAllLocations();
        this.start_beg = getTimestamp(PolicyConstants.START_TIMESTAMP_ATTR, "MIN");
        this.start_fin = getTimestamp(PolicyConstants.START_TIMESTAMP_ATTR, "MAX");
-       this.end_beg = getTimestamp(PolicyConstants.END_TIMESTAMP_ATTR, "MIN");
-       this.end_fin = getTimestamp(PolicyConstants.END_TIMESTAMP_ATTR, "MAX");
+       this.end_beg = getTimestamp(PolicyConstants.FINISH_TIMESTAMP_ATTR, "MIN");
+       this.end_fin = getTimestamp(PolicyConstants.FINISH_TIMESTAMP_ATTR, "MAX");
        this.roleLocations = clusterLocations();
     }
 
@@ -161,10 +161,10 @@ public class PolicyGen {
                         location_ids.get(new Random().nextInt(location_ids.size())), Operation.EQ);
                 objectConditions.add(location);
             }
-            if (attribute.equalsIgnoreCase(PolicyConstants.END_TIMESTAMP_ATTR)) {
-                Timestamp end_beg = getRandomTimeStamp(PolicyConstants.END_TIMESTAMP_ATTR);
+            if (attribute.equalsIgnoreCase(PolicyConstants.FINISH_TIMESTAMP_ATTR)) {
+                Timestamp end_beg = getRandomTimeStamp(PolicyConstants.FINISH_TIMESTAMP_ATTR);
                 Timestamp end_fin = getEndingTimeInterval(end_beg, PolicyConstants.HOUR_EXTENSIONS);
-                ObjectCondition tp_end = new ObjectCondition(policyID, PolicyConstants.END_TIMESTAMP_ATTR, AttributeType.TIMESTAMP,
+                ObjectCondition tp_end = new ObjectCondition(policyID, PolicyConstants.FINISH_TIMESTAMP_ATTR, AttributeType.TIMESTAMP,
                         sdf.format(end_beg), Operation.GTE, sdf.format(end_fin), Operation.LTE);
                 objectConditions.add(tp_end);
             }
@@ -366,7 +366,7 @@ public class PolicyGen {
             ObjectCondition tp_beg = new ObjectCondition(policyID, PolicyConstants.START_TIMESTAMP_ATTR, AttributeType.TIMESTAMP,
                     sdf.format(tsPreds.get(0)), Operation.GTE, sdf.format(tsPreds.get(1)), Operation.LTE);
             objectConditions.add(tp_beg);
-            ObjectCondition tp_end = new ObjectCondition(policyID, PolicyConstants.END_TIMESTAMP_ATTR, AttributeType.TIMESTAMP,
+            ObjectCondition tp_end = new ObjectCondition(policyID, PolicyConstants.FINISH_TIMESTAMP_ATTR, AttributeType.TIMESTAMP,
                     sdf.format(tsPreds.get(2)), Operation.GTE, sdf.format(tsPreds.get(3)), Operation.LTE);
             objectConditions.add(tp_end);
         }

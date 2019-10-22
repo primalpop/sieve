@@ -4,7 +4,7 @@ import edu.uci.ics.tippers.common.AttributeType;
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.db.MySQLQueryManager;
 import edu.uci.ics.tippers.fileop.Writer;
-import edu.uci.ics.tippers.manager.SimplePersistor;
+import edu.uci.ics.tippers.manager.FlatPolicyPersistor;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
 import edu.uci.ics.tippers.model.policy.ObjectCondition;
 import edu.uci.ics.tippers.model.policy.Operation;
@@ -280,7 +280,7 @@ public class SyntheticPolicy {
      * @return
      */
     public void persistOverlappingPolicies(int numberOfPolicies, double threshold, List<String> attributes){
-        SimplePersistor sp = SimplePersistor.getInstance();
+        FlatPolicyPersistor sp = FlatPolicyPersistor.getInstance();
         List<BEPolicy> bePolicies = new ArrayList<>();
         boolean overlap = false;
         for (int i = 0; i < numberOfPolicies; i++) {

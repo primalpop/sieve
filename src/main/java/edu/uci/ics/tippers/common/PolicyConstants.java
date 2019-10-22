@@ -110,7 +110,7 @@ public class PolicyConstants {
 
     public static final String START_TIMESTAMP_ATTR = "start";
 
-    public static final String END_TIMESTAMP_ATTR = "finish";
+    public static final String FINISH_TIMESTAMP_ATTR = "finish";
 
     public static final String TIMESTAMP_ATTR = "timeStamp";
 

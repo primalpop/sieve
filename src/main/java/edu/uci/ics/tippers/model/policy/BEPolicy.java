@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.davidmoten.guavamini.Lists;
 import com.google.common.collect.Sets;
-import com.ibatis.common.jdbc.SimpleDataSource;
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.db.MySQLQueryManager;
 
@@ -521,5 +520,47 @@ public class BEPolicy {
                 }
             }
         return null;
+    }
+
+    /**
+     * Collects the beginning and end values of 'start' timestamp object condition
+     * @return
+     */
+    public List<Timestamp> fetchStart() {
+        SimpleDateFormat sdf = new SimpleDateFormat(PolicyConstants.TIMESTAMP_FORMAT);
+        List<Timestamp> start = new ArrayList<>();
+        for (ObjectCondition objectCondition : this.object_conditions)
+            if (objectCondition.getAttribute().equalsIgnoreCase(PolicyConstants.START_TIMESTAMP_ATTR)) {
+                try {
+                    Date sb = sdf.parse(objectCondition.getBooleanPredicates().get(0).getValue());
+                    start.add(new java.sql.Timestamp(sb.getTime()));
+                    Date se = sdf.parse(objectCondition.getBooleanPredicates().get(1).getValue());
+                    start.add(new java.sql.Timestamp(se.getTime()));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+        return start;
+    }
+
+    /**
+     * Collects the beginning and end values of 'finish' timestamp object condition
+     * @return
+     */
+    public List<Timestamp> fetchFinish() {
+        SimpleDateFormat sdf = new SimpleDateFormat(PolicyConstants.TIMESTAMP_FORMAT);
+        List<Timestamp> finish = new ArrayList<>();
+        for (ObjectCondition objectCondition : this.object_conditions)
+            if (objectCondition.getAttribute().equalsIgnoreCase(PolicyConstants.FINISH_TIMESTAMP_ATTR)) {
+                try {
+                    Date sb = sdf.parse(objectCondition.getBooleanPredicates().get(0).getValue());
+                    finish.add(new java.sql.Timestamp(sb.getTime()));
+                    Date se = sdf.parse(objectCondition.getBooleanPredicates().get(1).getValue());
+                    finish.add(new java.sql.Timestamp(se.getTime()));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+        return finish;
     }
 }

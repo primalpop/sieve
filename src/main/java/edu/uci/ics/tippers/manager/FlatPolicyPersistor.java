@@ -1,21 +1,21 @@
 package edu.uci.ics.tippers.manager;
 
-import edu.uci.ics.tippers.db.MySQLConnectionManager;
 import edu.uci.ics.tippers.db.PGSQLConnectionManager;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.List;
 
-public class SimplePersistor {
+public class FlatPolicyPersistor {
 
-    private static SimplePersistor _instance = new SimplePersistor();
+    private static FlatPolicyPersistor _instance = new FlatPolicyPersistor();
 
     private static Connection connection = PGSQLConnectionManager.getInstance().getConnection();
 
-    public static SimplePersistor getInstance() {
+    public static FlatPolicyPersistor getInstance() {
         return _instance;
     }
 
@@ -26,11 +26,10 @@ public class SimplePersistor {
 
         try {
             connection.setAutoCommit(true);
-            //TODO: has to be updated to work with new Presence Schema
-            String policyInsert = "INSERT INTO SIMPLE_POLICY " +
-                    "(id, querier, owner, purpose, enforcement_action, inserted_at, uPol, " +
-                    "lPol, templPol, tempgPol, elPol, egPol, aPol, tslPol, tsgPol) VALUES (?, ?, ?, ?, ?, ?, ?," +
-                    "?, ?, ?, ?, ?, ?, ?, ?)";
+            String policyInsert = "INSERT INTO FLAT_POLICY " +
+                    "(id, querier, owner, purpose, enforcement_action, inserted_at, uEq, " +
+                    "lEq, sb, se, fb, fe) VALUES (?, ?, ?, ?, ?, ?, ?," +
+                    "?, ?, ?, ?, ?, ?)";
             PreparedStatement policyStmt = connection.prepareStatement(policyInsert);
 
             for (BEPolicy bePolicy : bePolicyList) {
@@ -42,13 +41,13 @@ public class SimplePersistor {
                 policyStmt.setTimestamp(6, bePolicy.getInserted_at());
                 policyStmt.setString(7, bePolicy.fetchOwner());
                 policyStmt.setString(8, bePolicy.fetchLocation());
-                policyStmt.setString(9, bePolicy.fetchTemperatureLowValue());
-                policyStmt.setString(10, bePolicy.fetchTemperatureHighValue());
-                policyStmt.setString( 11, bePolicy.fetchEnergyLowValue());
-                policyStmt.setString( 12, bePolicy.fetchEnergyHighValue());
-                policyStmt.setString( 13, bePolicy.fetchActivity());
-                policyStmt.setTimestamp( 14, bePolicy.fetchTimestampLowValue());
-                policyStmt.setTimestamp( 15, bePolicy.fetchTimestampHighValue());
+                List<Timestamp> start = bePolicy.fetchStart();
+                policyStmt.setTimestamp(9, start.get(0));
+                policyStmt.setTimestamp(10, start.get(1));
+                List<Timestamp> finish = bePolicy.fetchFinish();
+                policyStmt.setTimestamp(11, finish.get(0));
+                policyStmt.setTimestamp(12, finish.get(1));
+
                 policyStmt.addBatch();
             }
             policyStmt.executeBatch();

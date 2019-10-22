@@ -18,7 +18,6 @@ public class PresenceDataGeneration {
 
     private static final String dataDir = "/data/";
     private Connection connection;
-    private HashMap<String, String[]> coverageMap;
     private HashMap<String, Integer> users;
 
     public PresenceDataGeneration(){
@@ -28,7 +27,6 @@ public class PresenceDataGeneration {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        this.coverageMap = new HashMap<>();
         this.users = new HashMap<>();
     }
 
@@ -61,7 +59,6 @@ public class PresenceDataGeneration {
                     }
                     String[] rs = new String[rooms.size()];
                     rs = rooms.toArray(rs);
-                    coverageMap.put(arr[0].substring(0, arr[0].length()-1), rs);
                 }
             }
         }
@@ -102,21 +99,14 @@ public class PresenceDataGeneration {
                     presence.setUser_id(user_id);
                     presence.setStart(parseTimeStamp(nextRecord[3]));
                     presence.setFinish(parseTimeStamp(nextRecord[4]));
-                    if (coverageMap.get(nextRecord[5]) != null) {
-                        String room = coverageMap.get(nextRecord[5])[new Random().nextInt
-                                (coverageMap.get(nextRecord[5]).length)].replaceAll("\\s+","");
-                        presence.setLocation_id(room);
-                    }
+                    presence.setLocation_id(nextRecord[5]);
                 }
                 else{
                     int user_id = users.get(new JSONObject(nextRecord[0]).getString("client_id"));
                     presence.setUser_id(user_id);
                     presence.setStart(parseTimeStamp(nextRecord[1]));
                     presence.setFinish(parseTimeStamp(nextRecord[2]));
-                    if (coverageMap.get(nextRecord[3]) != null) {
-                        presence.setLocation_id(coverageMap.get(nextRecord[3])[new Random().nextInt
-                                (coverageMap.get(nextRecord[3]).length)]);
-                    }
+                    presence.setLocation_id(nextRecord[3]);
                 }
                 presenceStmt.setInt(1, presence.getUser_id());
                 presenceStmt.setString(2, presence.getLocation_id());
@@ -139,7 +129,6 @@ public class PresenceDataGeneration {
 
     public static void main(String[] args) {
         PresenceDataGeneration pdg = new PresenceDataGeneration();
-        pdg.readCoverage();
         pdg.getAllUsers();
         pdg.parseAndWrite(dataDir + DataFiles.PRESENCE_REAL.getPath());
     }
