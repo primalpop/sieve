@@ -69,7 +69,6 @@ public class GuardGenExp {
 
     public static void main(String [] args){
         GuardGenExp ge = new GuardGenExp();
-        List<Integer> queriers = ge.pgg.retrieveNotLoners(ge.pgg.MIN_GROUP_MEMBERSHIP);
-        ge.generateGuards(queriers, true);
+        ge.generateGuards(null, true);
     }
 }
