@@ -3,8 +3,6 @@ package edu.uci.ics.tippers.generation.data;
 import com.opencsv.CSVReader;
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.db.MySQLConnectionManager;
-import edu.uci.ics.tippers.model.data.Presence;
-import edu.uci.ics.tippers.model.data.User;
 import org.json.JSONObject;
 
 import java.io.*;
@@ -94,25 +92,25 @@ public class PresenceDataGeneration {
             PreparedStatement presenceStmt = connection.prepareStatement(pInsert);
             while ((nextRecord = csvReader.readNext()) != null) {
                 Random rand = new Random();
-                Presence presence = new Presence();
+                int user_id;
+                Timestamp start, finish;
+                String location;
                 if(nextRecord.length == 6){
-                    User user_id = user_id_map.get(new JSONObject(nextRecord[2]).getString("client_id"));
-                    presence.setUser_id(user_id);
-                    presence.setStart(parseTimeStamp(nextRecord[3]));
-                    presence.setFinish(parseTimeStamp(nextRecord[4]));
-                    presence.setLocation_id(nextRecord[5]);
+                    user_id = user_id_map.get(new JSONObject(nextRecord[2]).getString("client_id"));
+                    start = parseTimeStamp(nextRecord[3]);
+                    finish = parseTimeStamp(nextRecord[4]);
+                    location = nextRecord[5];
                 }
                 else{
-                    User user_id = user_id_map.get(new JSONObject(nextRecord[0]).getString("client_id"));
-                    presence.setUser_id(user_id);
-                    presence.setStart(parseTimeStamp(nextRecord[1]));
-                    presence.setFinish(parseTimeStamp(nextRecord[2]));
-                    presence.setLocation_id(nextRecord[3]);
+                    user_id = user_id_map.get(new JSONObject(nextRecord[0]).getString("client_id"));
+                    start = parseTimeStamp(nextRecord[1]);
+                    finish = parseTimeStamp(nextRecord[2]);
+                    location = nextRecord[3];
                 }
-                presenceStmt.setInt(1, presence.getUser_id());
-                presenceStmt.setString(2, presence.getLocation_id());
-                presenceStmt.setTimestamp(3, presence.getStart());
-                presenceStmt.setTimestamp(4, presence.getFinish());
+                presenceStmt.setInt(1, user_id);
+                presenceStmt.setString(2, location);
+                presenceStmt.setTimestamp(3, start);
+                presenceStmt.setTimestamp(4, finish);
                 presenceStmt.addBatch();
                 presenceCount++;
                 if (presenceCount % PolicyConstants.BATCH_SIZE_INSERTION == 0) {

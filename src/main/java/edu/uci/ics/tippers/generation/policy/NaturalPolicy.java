@@ -39,14 +39,12 @@ public class NaturalPolicy {
     public void getQuerier() {
         PreparedStatement queryStm = null;
         try {
-            queryStm = connection.prepareStatement("SELECT u.user_type, u.totalTime, u.ID, max(c) " +
-                    "FROM (SELECT u.user_type, u.totalTime, u.ID, count(*) as c FROM USER as u, USER_GROUP_MEMBERSHIP as ugm " +
+            queryStm = connection.prepareStatement("SELECT u.user_type, max(c) " +
+                    "FROM (SELECT u.user_type, count(*) as c FROM USER as u, USER_GROUP_MEMBERSHIP as ugm " +
                     "where u.ID = ugm.USER_ID group by u.ID)");
             ResultSet rs = queryStm.executeQuery();
             while (rs.next()) {
                 this.querier.setUserId(Integer.parseInt(rs.getString("u.ID")));
-                this.querier.setTotalTime(rs.getInt("u.totalTime"));
-                this.querier.setProfile(rs.getString("u.user_type"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
