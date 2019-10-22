@@ -6,7 +6,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,10 +13,9 @@ import java.util.List;
  */
 public class User {
 
-    int userId;
-    String userType;
-    int totalTime;
-    List<UserGroup> groups;
+    private int userId;
+    private UserProfile profile;
+    private List<UserGroup> groups;
 
     private static Connection connection = MySQLConnectionManager.getInstance().getConnection();
 
@@ -46,20 +44,12 @@ public class User {
         return groups;
     }
 
-    public String getUserType() {
-        return userType;
+    public UserProfile getProfile() {
+        return profile;
     }
 
-    public void setUserType(String userType) {
-        this.userType = userType;
-    }
-
-    public int getTotalTime() {
-        return totalTime;
-    }
-
-    public void setTotalTime(int totalTime) {
-        this.totalTime = totalTime;
+    public void setProfile(UserProfile profile) {
+        this.profile = profile;
     }
 
     @Override
@@ -71,7 +61,7 @@ public class User {
     public boolean equals(Object obj) {
         if (!(obj instanceof User))
             return false;
-        return (this.userId == ((User) obj).userId && this.userType.equalsIgnoreCase(((User) obj).userType));
+        return (this.userId == ((User) obj).userId);
     }
 
     public void retrieveUserGroups() {
@@ -83,24 +73,8 @@ public class User {
             ResultSet rs = queryStm.executeQuery();
             while (rs.next()) {
                 UserGroup ug = new UserGroup();
-                ug.setGroup_id(Integer.parseInt(rs.getString("ug_id")));
+                ug.setName(rs.getString("ug_id"));
                 this.getGroups().add(ug);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void retrieveUserDetails() {
-        PreparedStatement queryStm = null;
-        try {
-            queryStm = connection.prepareStatement("SELECT u.user_type, u.totalTime " +
-                    "FROM USER as u where u.ID = ?");
-            queryStm.setString(1, String.valueOf(this.userId));
-            ResultSet rs = queryStm.executeQuery();
-            while (rs.next()) {
-                this.setTotalTime(rs.getInt("u.totalTime"));
-                this.setUserType(rs.getString("u.user_type"));
             }
         } catch (SQLException e) {
             e.printStackTrace();

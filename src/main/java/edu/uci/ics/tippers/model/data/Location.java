@@ -1,10 +1,11 @@
 package edu.uci.ics.tippers.model.data;
 
+import java.util.Objects;
+
 /**
  * Created by cygnus on 7/7/17.
  */
-public class Infrastructure {
-    //Name as per DBH, e.g. 2065. This is used in SemanticObservation table
+public class Location {
     String name;
     //Available types: lab, faculty_office, corridor, restroom, utility, kitchen, Test?, Mail room, Conference room, Floor
     String type;
@@ -15,10 +16,10 @@ public class Infrastructure {
 
 
 
-    public Infrastructure() {
+    public Location() {
     }
 
-    public Infrastructure(String name, String type, int floor, String region_name) {
+    public Location(String name, String type, int floor, String region_name) {
         this.name = name;
         this.type = type;
         this.floor = floor;
@@ -55,5 +56,18 @@ public class Infrastructure {
 
     public void setRegion_name(String region_name) {
         this.region_name = region_name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Location location = (Location) o;
+        return name.equals(location.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
     }
 }

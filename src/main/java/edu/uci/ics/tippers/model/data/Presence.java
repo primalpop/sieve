@@ -1,26 +1,26 @@
 package edu.uci.ics.tippers.model.data;
 
 import java.sql.Timestamp;
+import java.util.Objects;
 
 public class Presence {
 
     int id;
 
-    int user_id;
+    User user;
 
-    String location_id;
+    Location location;
 
     Timestamp start;
 
     Timestamp finish;
 
     public Presence(){
-
     }
 
-    public Presence(int user_id, String location_id, Timestamp start, Timestamp finish) {
-        this.user_id = user_id;
-        this.location_id = location_id;
+    public Presence(User user, Location location, Timestamp start, Timestamp finish) {
+        this.user = user;
+        this.location = location;
         this.start = start;
         this.finish = finish;
     }
@@ -33,20 +33,20 @@ public class Presence {
         this.id = id;
     }
 
-    public int getUser_id() {
-        return user_id;
+    public User getUser() {
+        return user;
     }
 
-    public void setUser_id(int user_id) {
-        this.user_id = user_id;
+    public void setUser_id(User user) {
+        this.user = user;
     }
 
-    public String getLocation_id() {
-        return location_id;
+    public Location getLocation() {
+        return location;
     }
 
-    public void setLocation_id(String location_id) {
-        this.location_id = location_id;
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
     public Timestamp getStart() {
@@ -63,5 +63,23 @@ public class Presence {
 
     public void setFinish(Timestamp finish) {
         this.finish = finish;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Presence presence = (Presence) o;
+        return id == presence.id &&
+                user.equals(presence.user) &&
+                location.equals(presence.location) &&
+                start.equals(presence.start) &&
+                finish.equals(presence.finish);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, user, location, start, finish);
     }
 }

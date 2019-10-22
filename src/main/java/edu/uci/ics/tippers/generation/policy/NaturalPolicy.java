@@ -46,7 +46,7 @@ public class NaturalPolicy {
             while (rs.next()) {
                 this.querier.setUserId(Integer.parseInt(rs.getString("u.ID")));
                 this.querier.setTotalTime(rs.getInt("u.totalTime"));
-                this.querier.setUserType(rs.getString("u.user_type"));
+                this.querier.setProfile(rs.getString("u.user_type"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
