@@ -4,15 +4,17 @@ import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.db.MySQLConnectionManager;
 import edu.uci.ics.tippers.manager.PolicyPersistor;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
+/**
+ * Generation of semi-realistic policies based on group memberships of a user
+ */
 public class PolicyGroupGen {
 
     private Connection connection;
@@ -23,14 +25,12 @@ public class PolicyGroupGen {
     private HashMap<Integer, List<String>> user_groups;
     private HashMap<String, List<Integer>> group_members;
 
-    public final int MIN_GROUP_MEMBERSHIP = 3;
-    private final double NON_GROUP_CHANCE = 3/4.0;
     private final int ALL_GROUPS = 0;
-    private final int ROLE_POLICIES_COUNT= 10;
-    private final int ROLE_POLICIES_MINIMUM= 5;
 
-    private final int LARGE_GROUP_SIZE_THRESHOLD = 50;
-    private final int DEFAULT_POLICY_NUM = 5;
+    private int LARGE_GROUP_SIZE_THRESHOLD;
+    private double PERCENTAGE_ACTIVE;
+    private double PERCENTAGE_ALLOW;
+    private int ACTIVE_CHOICES;
 
     public PolicyGroupGen(){
         this.connection = MySQLConnectionManager.getInstance().getConnection();
@@ -39,6 +39,21 @@ public class PolicyGroupGen {
         pg = new PolicyGen();
         user_groups = new HashMap<>();
         group_members = new HashMap<>();
+
+        try {
+            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("config/policygen.properties");
+            Properties props = new Properties();
+            if (inputStream != null) {
+                props.load(inputStream);
+                LARGE_GROUP_SIZE_THRESHOLD = Integer.parseInt(props.getProperty("group_size_limit"));
+                PERCENTAGE_ACTIVE = Double.parseDouble(props.getProperty("default"));
+                PERCENTAGE_ALLOW = Double.parseDouble(props.getProperty("allow"));
+                ACTIVE_CHOICES = Integer.parseInt(props.getProperty("active_choices"));
+            }
+
+        } catch (IOException ie) {
+            ie.printStackTrace();
+        }
     }
 
     /**
