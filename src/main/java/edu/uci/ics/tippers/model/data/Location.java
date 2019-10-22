@@ -19,6 +19,10 @@ public class Location {
     public Location() {
     }
 
+    public Location(String name) {
+        this.name = name;
+    }
+
     public Location(String name, String type, int floor, String region_name) {
         this.name = name;
         this.type = type;
