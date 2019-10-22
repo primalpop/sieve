@@ -4,10 +4,7 @@ import edu.uci.ics.tippers.db.MySQLConnectionManager;
 import edu.uci.ics.tippers.generation.policy.PolicyGen;
 import edu.uci.ics.tippers.model.data.*;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.Duration;
 import java.util.*;
 
@@ -25,7 +22,7 @@ import java.util.*;
  */
 
 public class GroupGeneration {
-    private static final double MULTIPLE_GROUP_FACTOR = 0.75;
+    private static final double MULTIPLE_GROUP_FACTOR = 0.5;
     private static final int MAX_GROUP_MEMBERSHIP = 3;
     private HashMap<User, List<Affinity>> colocations;
     private Connection connection;
@@ -101,24 +98,23 @@ public class GroupGeneration {
         PreparedStatement queryStm = null;
         try {
             queryStm = connection.prepareStatement("SELECT USER_ID as uid, LOCATION_ID as lid,  start, finish " +
-                    "FROM PRESENCE limit 10000"); //TODO: limit only for testing
+                    "FROM PRESENCE"); //TODO: limit only for testing
             ResultSet rs = queryStm.executeQuery();
             while (rs.next()) {
-                Presence pt = new Presence();
-                pt.getUser().setUserId(rs.getInt("uid"));
-                pt.getLocation().setName(rs.getString("lid"));
-                pt.setStart(rs.getTimestamp("start"));
-                pt.setFinish(rs.getTimestamp("finish"));
-                if(colocations.containsKey(pt.getUser())){
-                    addLocTime(colocations.get(pt.getUser()), pt.getLocation(),
-                            pt.getFinish().getTime() - pt.getStart().getTime());
+                User user = new User(rs.getInt("uid"));
+                Location loc = new Location(rs.getString("lid"));
+                Timestamp start = rs.getTimestamp("start");
+                Timestamp finish = rs.getTimestamp("finish");
+                if(colocations.containsKey(user)){
+                    addLocTime(colocations.get(user), loc,
+                            finish.getTime() - start.getTime());
                 }
                 else{
-                    Affinity uAff = new Affinity(pt.getLocation(),
-                            pt.getFinish().getTime() - pt.getStart().getTime());
+                    Affinity uAff = new Affinity(loc,
+                            finish.getTime() - start.getTime());
                     List<Affinity> uAffList = new ArrayList<>();
                     uAffList.add(uAff);
-                    colocations.put(pt.getUser(), uAffList);
+                    colocations.put(user, uAffList);
                 }
             }
         } catch (SQLException e) {
@@ -138,7 +134,7 @@ public class GroupGeneration {
             }
             user.setProfile(roleCheck(inBuilding));
             int numOfGroups = 0;
-            Collections.sort(value);
+            value.sort(Collections.reverseOrder());
             if(user.getProfile() != UserProfile.VISITOR){
                 List<UserGroup> ugs = new ArrayList<>();
                 UserGroup ug = new UserGroup(value.get(0).getLocation().getName());
@@ -179,10 +175,12 @@ public class GroupGeneration {
             PreparedStatement ugmStmt = connection.prepareStatement(ugmInsert);
             List<User> userInGroups = addToGroups();
             for (User user: userInGroups) {
-                for (UserGroup ug: user.getGroups()) {
+                if(user.getProfile() != UserProfile.VISITOR) {
+                    for (UserGroup ug: user.getGroups()) {
                         ugmStmt.setInt(1, user.getUserId());
                         ugmStmt.setString(2, ug.getName());
                         ugmStmt.addBatch();
+                    }
                 }
                 ugmStmt.setInt(1, user.getUserId());
                 ugmStmt.setString(2, user.getProfile().getValue());
@@ -242,10 +240,10 @@ public class GroupGeneration {
 
     public static void main(String [] args){
         GroupGeneration gg = new GroupGeneration();
-//        gg.generateRoleGroups();
-//        gg.generateRoomGroups();
-//        gg.generateAffinities();
-//        gg.generateGroupMemberships();
+        gg.generateRoleGroups();
+        gg.generateRoomGroups();
+        gg.generateAffinities();
+        gg.generateGroupMemberships();
     }
 
 }
