@@ -4,6 +4,7 @@ import com.opencsv.CSVReader;
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.db.MySQLConnectionManager;
 import edu.uci.ics.tippers.model.data.Presence;
+import edu.uci.ics.tippers.model.data.User;
 import org.json.JSONObject;
 
 import java.io.*;
@@ -18,7 +19,7 @@ public class PresenceDataGeneration {
 
     private static final String dataDir = "/data/";
     private Connection connection;
-    private HashMap<String, Integer> users;
+    private HashMap<String, Integer> user_id_map;
 
     public PresenceDataGeneration(){
         this.connection = MySQLConnectionManager.getInstance().getConnection();
@@ -27,7 +28,7 @@ public class PresenceDataGeneration {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        this.users = new HashMap<>();
+        this.user_id_map = new HashMap<>();
     }
 
     private void getAllUsers() {
@@ -36,7 +37,7 @@ public class PresenceDataGeneration {
             queryStm = connection.prepareStatement("SELECT ID, USER_ID as id, user_id " +
                     "FROM USER");
             ResultSet rs = queryStm.executeQuery();
-            while (rs.next()) users.put(rs.getString("user_id"), rs.getInt("id"));
+            while (rs.next()) user_id_map.put(rs.getString("user_id"), rs.getInt("id"));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -95,14 +96,14 @@ public class PresenceDataGeneration {
                 Random rand = new Random();
                 Presence presence = new Presence();
                 if(nextRecord.length == 6){
-                    int user_id = users.get(new JSONObject(nextRecord[2]).getString("client_id"));
+                    User user_id = user_id_map.get(new JSONObject(nextRecord[2]).getString("client_id"));
                     presence.setUser_id(user_id);
                     presence.setStart(parseTimeStamp(nextRecord[3]));
                     presence.setFinish(parseTimeStamp(nextRecord[4]));
                     presence.setLocation_id(nextRecord[5]);
                 }
                 else{
-                    int user_id = users.get(new JSONObject(nextRecord[0]).getString("client_id"));
+                    User user_id = user_id_map.get(new JSONObject(nextRecord[0]).getString("client_id"));
                     presence.setUser_id(user_id);
                     presence.setStart(parseTimeStamp(nextRecord[1]));
                     presence.setFinish(parseTimeStamp(nextRecord[2]));

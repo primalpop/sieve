@@ -2,17 +2,14 @@ package edu.uci.ics.tippers.generation.data;
 
 import edu.uci.ics.tippers.db.MySQLConnectionManager;
 import edu.uci.ics.tippers.generation.policy.PolicyGen;
-import edu.uci.ics.tippers.model.data.Presence;
+import edu.uci.ics.tippers.model.data.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Generates groups of users based on their affinity to locations based on the data in Presence table
@@ -28,21 +25,19 @@ import java.util.Map;
  */
 
 public class GroupGeneration {
-    private HashMap<Integer, List<Affinity>> colocations;
+    private static final double MULTIPLE_GROUP_FACTOR = 0.75;
+    private static final int MAX_GROUP_MEMBERSHIP = 3;
+    private HashMap<User, List<Affinity>> colocations;
     private Connection connection;
     private PolicyGen pg;
 
-    private final long GM_TIME_THRESHOLD = 1 * 24 * 60 * 1000; //1 day
-    private final int GM_VISITS_THRESHOLD = (int) (30 * 3 * 0.05); //5% of the total days in 3 months
-
-    private final double GRAD_ROLE = 90 * 0.7 * 8 * 60 * 60 * 1000; //1814400
-    private final double FAC_ROLE = 90 * 0.6 * 8 * 60 * 60 * 1000; //1555200
-    private final double STAFF_ROLE = 90 * 0.6 * 6 * 60 * 60 * 1000; //1166400
-    private final double UGRAD_ROLE = 90 * 0.5 * 4 * 60 * 60 * 1000; //648000
-    private final double JAN_ROLE = 90 * 0.8 * 1 * 60 * 60 * 1000; //259200 - 3 days in total
+    private final double GRADUATE_TIME = 90 * 0.7 * 8 * 60 * 60 * 1000; //1814400
+    private final double FACULTY_TIME = 90 * 0.6 * 8 * 60 * 60 * 1000; //1555200
+    private final double STAFF_TIME = 90 * 0.6 * 6 * 60 * 60 * 1000; //1166400
+    private final double UNDERGRAD_TIME = 90 * 0.5 * 4 * 60 * 60 * 1000; //648000
 
     public GroupGeneration(){
-        this.colocations = new HashMap<>();
+        this.colocations = new HashMap<User, List<Affinity>>();
         this.connection = MySQLConnectionManager.getInstance().getConnection();
         this.pg = new PolicyGen();
     }
@@ -73,17 +68,15 @@ public class GroupGeneration {
         String ugInsert = "INSERT INTO USER_GROUP (ID) VALUES (?)";
         try {
             PreparedStatement ugStmt = connection.prepareStatement(ugInsert);
-            ugStmt.setString(1, "graduate");
+            ugStmt.setString(1, UserProfile.GRADUATE.getValue());
             ugStmt.addBatch();
-            ugStmt.setString(1, "undergrad");
+            ugStmt.setString(1, UserProfile.UNDERGRAD.getValue());
             ugStmt.addBatch();
-            ugStmt.setString(1, "faculty");
+            ugStmt.setString(1, UserProfile.FACULTY.getValue());
             ugStmt.addBatch();
-            ugStmt.setString(1, "staff");
+            ugStmt.setString(1, UserProfile.STAFF.getValue());
             ugStmt.addBatch();
-            ugStmt.setString(1, "janitor");
-            ugStmt.addBatch();
-            ugStmt.setString(1, "visitor");
+            ugStmt.setString(1, UserProfile.VISITOR.getValue());
             ugStmt.addBatch();
             ugStmt.executeBatch();
         } catch (SQLException e) {
@@ -92,15 +85,15 @@ public class GroupGeneration {
     }
 
 
-    private void addLocTime(List<Affinity> affs, String location_id, long timeSpent) {
+    private void addLocTime(List<Affinity> affs, Location location, long timeSpent) {
         for(Affinity af: affs){
-            if (af!= null && af.getLocationId().equalsIgnoreCase(location_id)) {
+            if (af!= null && af.getLocation().equals(location)) {
                 af.setTotalTime(af.getTotalTime().plusMillis(timeSpent));
                 af.setNumOfTimes(af.getNumOfTimes()+1);
                 return;
             }
         }
-        Affinity uAff = new Affinity(location_id, timeSpent);
+        Affinity uAff = new Affinity(location, timeSpent);
         affs.add(uAff);
     }
 
@@ -108,24 +101,24 @@ public class GroupGeneration {
         PreparedStatement queryStm = null;
         try {
             queryStm = connection.prepareStatement("SELECT USER_ID as uid, LOCATION_ID as lid,  start, finish " +
-                    "FROM PRESENCE limit 10000");
+                    "FROM PRESENCE");
             ResultSet rs = queryStm.executeQuery();
             while (rs.next()) {
                 Presence pt = new Presence();
-                pt.setUser_id(rs.getInt("uid"));
-                pt.setLocation_id(rs.getString("lid"));
+                pt.getUser().setUserId(rs.getInt("uid"));
+                pt.getLocation().setName(rs.getString("lid"));
                 pt.setStart(rs.getTimestamp("start"));
                 pt.setFinish(rs.getTimestamp("finish"));
-                if(colocations.containsKey(pt.getUser_id())){
-                    addLocTime(colocations.get(pt.getUser_id()), pt.getLocation_id(),
+                if(colocations.containsKey(pt.getUser())){
+                    addLocTime(colocations.get(pt.getUser()), pt.getLocation(),
                             pt.getFinish().getTime() - pt.getStart().getTime());
                 }
                 else{
-                    Affinity uAff = new Affinity(pt.getLocation_id(),
+                    Affinity uAff = new Affinity(pt.getLocation(),
                             pt.getFinish().getTime() - pt.getStart().getTime());
                     List<Affinity> uAffList = new ArrayList<>();
                     uAffList.add(uAff);
-                    colocations.put(pt.getUser_id(), uAffList);
+                    colocations.put(pt.getUser(), uAffList);
                 }
             }
         } catch (SQLException e) {
@@ -134,25 +127,48 @@ public class GroupGeneration {
     }
 
 
-    //TODO: different thresholds for different locations
-    private boolean groupCheck(String lid, Duration totalTime, int numOfTimes){
-        return (totalTime.toMillis() > GM_TIME_THRESHOLD && numOfTimes > GM_VISITS_THRESHOLD);
+    private List<User> addToGroups(){
+        List<User> users = new ArrayList<>();
+        for (Map.Entry<User, List<Affinity>> entry : colocations.entrySet()) {
+            User user = entry.getKey();
+            Duration inBuilding = Duration.ofMillis(0);
+            List<Affinity> value = entry.getValue();
+            Collections.sort(value);
+            for (Affinity aff: value) {
+                inBuilding = inBuilding.plus(aff.getTotalTime());
+            }
+            user.setProfile(roleCheck(inBuilding));
+            int numOfGroups = 0;
+            if(user.getProfile() != UserProfile.VISITOR){
+                List<UserGroup> ugs = new ArrayList<>();
+                UserGroup ug = new UserGroup(value.get(0).getLocation().getName());
+                ugs.add(ug);
+                for (int i = 1; i <value.size(); i++) {
+                    if (value.get(i).getTotalTime().toMillis() >
+                            MULTIPLE_GROUP_FACTOR * value.get(0).getTotalTime().toMillis()){
+                        if (numOfGroups < MAX_GROUP_MEMBERSHIP) {
+                            ugs.add(new UserGroup(value.get(i).getLocation().getName()));
+                            numOfGroups += 1;
+                        }
+                    }
+                }
+            }
+            users.add(user);
+        }
+        return users;
     }
 
-
-    private String roleCheck(Duration inBuilding) {
-        if(inBuilding.toMillis() > GRAD_ROLE) {
-            return "graduate";
-        } else if (inBuilding.toMillis() > FAC_ROLE) {
-            return  "faculty";
-        } else if (inBuilding.toMillis() > STAFF_ROLE) {
-            return "staff";
-        } else if (inBuilding.toMillis() > UGRAD_ROLE) {
-            return "undergrad";
-        } else if (inBuilding.toMillis() > JAN_ROLE){
-            return "janitor";
+    private UserProfile roleCheck(Duration inBuilding) {
+        if(inBuilding.toMillis() > GRADUATE_TIME) {
+            return UserProfile.GRADUATE;
+        } else if (inBuilding.toMillis() > FACULTY_TIME) {
+            return  UserProfile.FACULTY;
+        } else if (inBuilding.toMillis() > STAFF_TIME) {
+            return UserProfile.STAFF;
+        } else if (inBuilding.toMillis() > UNDERGRAD_TIME) {
+            return UserProfile.UNDERGRAD;
         }
-        return "visitor";
+        return UserProfile.VISITOR;
     }
 
 
@@ -160,22 +176,14 @@ public class GroupGeneration {
         String ugmInsert = "INSERT INTO USER_GROUP_MEMBERSHIP (USER_ID, USER_GROUP_ID) VALUES (?, ?)";
         try {
             PreparedStatement ugmStmt = connection.prepareStatement(ugmInsert);
-            for (Map.Entry<Integer, List<Affinity>> entry : colocations.entrySet()) {
-                int uid = entry.getKey();
-                Duration inBuilding = Duration.ofMillis(0);
-                List<Affinity> value = entry.getValue();
-                for (Affinity aff: value) {
-                    String lid = aff.getLocationId();
-                    inBuilding = inBuilding.plus(aff.getTotalTime());
-                    if(groupCheck(lid, aff.getTotalTime(), aff.getNumOfTimes())){
-                        ugmStmt.setInt(1, uid);
-                        ugmStmt.setString(2, lid);
+            for (User user: addToGroups()) {
+                for (UserGroup ug: user.getGroups()) {
+                        ugmStmt.setInt(1, user.getUserId());
+                        ugmStmt.setString(2, ug.getName());
                         ugmStmt.addBatch();
-                    }
                 }
-                String urole = roleCheck(inBuilding);
-                ugmStmt.setInt(1, uid);
-                ugmStmt.setString(2, urole);
+                ugmStmt.setInt(1, user.getUserId());
+                ugmStmt.setString(2, user.getProfile().getValue());
                 ugmStmt.addBatch();
                 ugmStmt.executeBatch();
             }
@@ -185,24 +193,24 @@ public class GroupGeneration {
     }
 
 
-    class Affinity {
+    class Affinity implements Comparable<Affinity> {
 
-        String locationId;
-        Duration totalTime;
+        Location location;
+        private Duration totalTime;
         int numOfTimes;
 
-        public Affinity(String locationId, long totalTime) {
-            this.locationId = locationId;
-            this.totalTime = Duration.ofMillis(totalTime);
+        public Affinity(Location location, long totalTime) {
+            this.location = location;
+            this.setTotalTime(Duration.ofMillis(totalTime));
             this.numOfTimes = 1;
         }
 
-        public String getLocationId() {
-            return locationId;
+        public Location getLocation() {
+            return location;
         }
 
-        public void setLocationId(String locationId) {
-            this.locationId = locationId;
+        public void setLocation(Location location) {
+            this.location = location;
         }
 
         public Duration getTotalTime() {
@@ -219,6 +227,14 @@ public class GroupGeneration {
 
         public void setNumOfTimes(int numOfTimes) {
             this.numOfTimes = numOfTimes;
+        }
+
+
+        @Override
+        public int compareTo(Affinity o) {
+            if(this.getTotalTime() == o.getTotalTime())
+                return 0;
+            else return this.getTotalTime().compareTo(o.getTotalTime());
         }
     }
 
