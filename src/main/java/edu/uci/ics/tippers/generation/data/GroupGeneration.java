@@ -101,7 +101,7 @@ public class GroupGeneration {
         PreparedStatement queryStm = null;
         try {
             queryStm = connection.prepareStatement("SELECT USER_ID as uid, LOCATION_ID as lid,  start, finish " +
-                    "FROM PRESENCE");
+                    "FROM PRESENCE limit 10000"); //TODO: limit only for testing
             ResultSet rs = queryStm.executeQuery();
             while (rs.next()) {
                 Presence pt = new Presence();
@@ -133,25 +133,26 @@ public class GroupGeneration {
             User user = entry.getKey();
             Duration inBuilding = Duration.ofMillis(0);
             List<Affinity> value = entry.getValue();
-            Collections.sort(value);
             for (Affinity aff: value) {
                 inBuilding = inBuilding.plus(aff.getTotalTime());
             }
             user.setProfile(roleCheck(inBuilding));
             int numOfGroups = 0;
+            Collections.sort(value);
             if(user.getProfile() != UserProfile.VISITOR){
                 List<UserGroup> ugs = new ArrayList<>();
                 UserGroup ug = new UserGroup(value.get(0).getLocation().getName());
                 ugs.add(ug);
                 for (int i = 1; i <value.size(); i++) {
-                    if (value.get(i).getTotalTime().toMillis() >
-                            MULTIPLE_GROUP_FACTOR * value.get(0).getTotalTime().toMillis()){
+                    if (value.get(i).getTotalTime().toMillis() > MULTIPLE_GROUP_FACTOR *
+                            value.get(0).getTotalTime().toMillis()){
                         if (numOfGroups < MAX_GROUP_MEMBERSHIP) {
                             ugs.add(new UserGroup(value.get(i).getLocation().getName()));
                             numOfGroups += 1;
                         }
                     }
                 }
+                user.setGroups(ugs);
             }
             users.add(user);
         }
@@ -176,7 +177,8 @@ public class GroupGeneration {
         String ugmInsert = "INSERT INTO USER_GROUP_MEMBERSHIP (USER_ID, USER_GROUP_ID) VALUES (?, ?)";
         try {
             PreparedStatement ugmStmt = connection.prepareStatement(ugmInsert);
-            for (User user: addToGroups()) {
+            List<User> userInGroups = addToGroups();
+            for (User user: userInGroups) {
                 for (UserGroup ug: user.getGroups()) {
                         ugmStmt.setInt(1, user.getUserId());
                         ugmStmt.setString(2, ug.getName());
@@ -196,7 +198,7 @@ public class GroupGeneration {
     class Affinity implements Comparable<Affinity> {
 
         Location location;
-        private Duration totalTime;
+        Duration totalTime;
         int numOfTimes;
 
         public Affinity(Location location, long totalTime) {

@@ -44,6 +44,10 @@ public class User {
         return groups;
     }
 
+    public void setGroups(List<UserGroup> groups) {
+        this.groups = groups;
+    }
+
     public UserProfile getProfile() {
         return profile;
     }
