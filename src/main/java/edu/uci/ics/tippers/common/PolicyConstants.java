@@ -2,6 +2,7 @@ package edu.uci.ics.tippers.common;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import edu.uci.ics.tippers.model.data.UserProfile;
 import edu.uci.ics.tippers.model.policy.Operation;
 import edu.uci.ics.tippers.model.policy.QuerierCondition;
 
@@ -13,6 +14,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Author primpap
@@ -83,8 +86,7 @@ public class PolicyConstants {
     public static final ImmutableList<String> ACTIVITIES = ImmutableList.of("class", "meeting", "seminar",
             "private", "walking", "unknown", "work");
 
-    public static final ImmutableList<String> USER_ROLES = ImmutableList.of("graduate", "faculty", "undergrad",
-            "staff", "janitor", "visitor");
+    public static final List<String> USER_PROFILES = Stream.of(UserProfile.values()).map(UserProfile::getValue).collect(Collectors.toList());
 
     public static final ImmutableList<Double> HOUR_EXTENSIONS = ImmutableList.of(144.0, 168.0, 180.0, 200.0, 300.0, 700.0, 1000.0);
 
