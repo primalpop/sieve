@@ -89,6 +89,13 @@ public class QueryGeneration {
 //                new Timestamp(System.currentTimeMillis()));
 //    }
 
+
+    public Timestamp getEndingTimeWithExtension(Timestamp start, double hours){
+        int hourIndex = new Random().nextInt(PolicyConstants.HOUR_EXTENSIONS.size());
+        long milliseconds = (long)(hours * 60.0 * 60.0 * 1000.0);
+        return new Timestamp(start.getTime() + milliseconds);
+    }
+
     /**
      * Query 1: Select * from PRESENCE where location_id in [......]
      * and start <= t2 and end >= t1
@@ -111,7 +118,7 @@ public class QueryGeneration {
             int locs = numLocs.get(i);
             double extension = hours.get(j);
             do {
-                Timestamp finishTS = pg.getEndingTimeWithExtension(startTS, extension);
+                Timestamp finishTS = getEndingTimeWithExtension(startTS, extension);
                 String finish = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(finishTS);
                 String query = String.format("start >= \"%s\" AND finish <= \"%s\" ", start, finish);
                 List<String> locPreds = new ArrayList<>();
