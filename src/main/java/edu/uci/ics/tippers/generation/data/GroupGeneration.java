@@ -48,7 +48,8 @@ public class GroupGeneration {
         String ugInsert = "INSERT INTO USER_GROUP (ID) VALUES (?)";
         try {
             PreparedStatement ugStmt = connection.prepareStatement(ugInsert);
-            for (String lid: location_ids) {
+            for (int i = 0; i < location_ids.size(); i++) {
+                String lid = location_ids.get(i);
                 ugStmt.setString(1, lid);
                 ugStmt.addBatch();
             }
