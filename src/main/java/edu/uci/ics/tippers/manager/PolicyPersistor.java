@@ -21,75 +21,78 @@ public class PolicyPersistor {
     }
 
     /**
-     * Inserts a policy into a relational table based on whether it's a user policy or a group policy
-     * @param bePolicy
+     * Inserts a list of policies into a relational table based on whether it's a user policy or a group policy
+     * @param bePolicies
      */
-    public void insertPolicy(BEPolicy bePolicy) {
+    public void insertPolicy(List<BEPolicy> bePolicies) {
+        String userPolicyInsert = "INSERT INTO USER_POLICY " +
+                "(id, querier, purpose, enforcement_action, inserted_at) VALUES (?, ?, ?, ?, ?)";
+        String userobjectConditionInsert = "INSERT INTO USER_POLICY_OBJECT_CONDITION " +
+                "(policy_id, attribute, attribute_type, operator, comp_value) VALUES (?, ?, ?, ?, ?)";
+        String groupPolicyInsert = "INSERT INTO GROUP_POLICY " +
+                "(id, querier, purpose, enforcement_action, inserted_at) VALUES (?, ?, ?, ?, ?)";
+        String groupObjectConditionInsert = "INSERT INTO GROUP_POLICY_OBJECT_CONDITION " +
+                "(policy_id, attribute, attribute_type, operator, comp_value) VALUES (?, ?, ?, ?, ?)";
+
+        boolean USER_POLICY = true;
 
         try{
+            PreparedStatement userPolicyStmt = connection.prepareStatement(userPolicyInsert);
+            PreparedStatement userOcStmt = connection.prepareStatement(userobjectConditionInsert);
 
-            if(bePolicy.typeOfPolicy()){ //User Policy
+            PreparedStatement groupPolicyStmt = connection.prepareStatement(groupPolicyInsert);
+            PreparedStatement groupOcStmt = connection.prepareStatement(groupObjectConditionInsert);
 
-                String userPolicyInsert = "INSERT INTO USER_POLICY " +
-                        "(id, querier, purpose, enforcement_action, inserted_at) VALUES (?, ?, ?, ?, ?)";
+            for (BEPolicy bePolicy: bePolicies) {
+                if (bePolicy.typeOfPolicy()) { //User Policy
+                    userPolicyStmt.setString(1, bePolicy.getId());
+                    userPolicyStmt.setInt(2, Integer.parseInt(bePolicy.fetchQuerier()));
+                    userPolicyStmt.setString(3, bePolicy.getPurpose());
+                    userPolicyStmt.setString(4, bePolicy.getAction());
+                    userPolicyStmt.setTimestamp(5, bePolicy.getInserted_at());
+                    userPolicyStmt.addBatch();
 
-                PreparedStatement userPolicyStmt = connection.prepareStatement(userPolicyInsert);
-                userPolicyStmt.setString(1, bePolicy.getId());
-                userPolicyStmt.setInt(2, Integer.parseInt(bePolicy.fetchQuerier()));
-                userPolicyStmt.setString(3, bePolicy.getPurpose());
-                userPolicyStmt.setString(4, bePolicy.getAction());
-                userPolicyStmt.setTimestamp(5, bePolicy.getInserted_at());
-                userPolicyStmt.executeUpdate();
-                userPolicyStmt.close();
+                    for (ObjectCondition oc : bePolicy.getObject_conditions()) {
+                        for (BooleanPredicate bp : oc.getBooleanPredicates()) {
+                            userOcStmt.setString(1, bePolicy.getId());
+                            userOcStmt.setString(2, oc.getAttribute());
+                            userOcStmt.setString(3, oc.getType().toString());
+                            userOcStmt.setString(4, bp.getOperator().toString());
+                            userOcStmt.setString(5, bp.getValue());
+                            userOcStmt.addBatch();
+                        }
+                    }
+                } else { //Group Policy
+                    USER_POLICY = false;
 
-                String objectConditionInsert = "INSERT INTO USER_POLICY_OBJECT_CONDITION " +
-                        "(policy_id, attribute, attribute_type, operator, comp_value) VALUES (?, ?, ?, ?, ?)";
+                    groupPolicyStmt.setString(1, bePolicy.getId());
+                    groupPolicyStmt.setInt(2, Integer.parseInt(bePolicy.fetchQuerier()));
+                    groupPolicyStmt.setString(3, bePolicy.getPurpose());
+                    groupPolicyStmt.setString(4, bePolicy.getAction());
+                    groupPolicyStmt.setTimestamp(5, bePolicy.getInserted_at());
+                    groupPolicyStmt.addBatch();
+                    groupPolicyStmt.close();
 
-                PreparedStatement ocStmt = connection.prepareStatement(objectConditionInsert);
-                for (ObjectCondition oc: bePolicy.getObject_conditions()) {
-                    for (BooleanPredicate bp: oc.getBooleanPredicates()) {
-                        ocStmt.setString(1, bePolicy.getId());
-                        ocStmt.setString(2, oc.getAttribute());
-                        ocStmt.setString(3, oc.getType().toString());
-                        ocStmt.setString(4, bp.getOperator().toString());
-                        ocStmt.setString(5, bp.getValue());
-                        ocStmt.addBatch();
+                    for (ObjectCondition oc : bePolicy.getObject_conditions()) {
+                        for (BooleanPredicate bp : oc.getBooleanPredicates()) {
+                            groupOcStmt.setString(1, bePolicy.getId());
+                            groupOcStmt.setString(2, oc.getAttribute());
+                            groupOcStmt.setString(3, oc.getType().toString());
+                            groupOcStmt.setString(4, bp.getOperator().toString());
+                            groupOcStmt.setString(5, bp.getValue());
+                            groupOcStmt.addBatch();
+                        }
                     }
                 }
-                ocStmt.executeBatch();
-            }
-            else { //Group Policy
-
-                String groupPolicyInsert = "INSERT INTO GROUP_POLICY " +
-                        "(id, querier, purpose, enforcement_action, inserted_at) VALUES (?, ?, ?, ?, ?)";
-
-                PreparedStatement groupPolicyStmt = connection.prepareStatement(groupPolicyInsert);
-
-                groupPolicyStmt.setString(1, bePolicy.getId());
-                groupPolicyStmt.setInt(2, Integer.parseInt(bePolicy.fetchQuerier()));
-                groupPolicyStmt.setString(3, bePolicy.getPurpose());
-                groupPolicyStmt.setString(4, bePolicy.getAction());
-                groupPolicyStmt.setTimestamp(5, bePolicy.getInserted_at());
-                groupPolicyStmt.executeUpdate();
-                groupPolicyStmt.close();
-
-                String objectConditionInsert = "INSERT INTO GROUP_POLICY_OBJECT_CONDITION " +
-                        "(policy_id, attribute, attribute_type, operator, comp_value) VALUES (?, ?, ?, ?, ?)";
-
-                PreparedStatement ocStmt = connection.prepareStatement(objectConditionInsert);
-                for (ObjectCondition oc: bePolicy.getObject_conditions()) {
-                    for (BooleanPredicate bp: oc.getBooleanPredicates()) {
-                        ocStmt.setString(1, bePolicy.getId());
-                        ocStmt.setString(2, oc.getAttribute());
-                        ocStmt.setString(3, oc.getType().toString());
-                        ocStmt.setString(4, bp.getOperator().toString());
-                        ocStmt.setString(5, bp.getValue());
-                        ocStmt.addBatch();
-                    }
+                if(USER_POLICY) {
+                    userPolicyStmt.executeBatch();
+                    userOcStmt.executeBatch();
                 }
-                ocStmt.executeBatch();
+                else {
+                    groupPolicyStmt.executeBatch();
+                    groupOcStmt.executeBatch();
+                }
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }

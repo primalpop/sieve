@@ -22,8 +22,9 @@ public class PolicyGroupGen {
     PolicyGen pg;
 
     private HashMap<Integer, List<String>> user_groups;
+    private HashMap<Integer, String> user_profiles;
     private HashMap<String, List<Integer>> group_members;
-    private HashMap<Integer, List<String>> locClusters; //Forming random clusters of locations
+    private HashMap<Integer, List<String>> location_clusters; //Forming random clusters of locations
 
     private final int ALL_GROUPS = 0;
 
@@ -46,15 +47,16 @@ public class PolicyGroupGen {
         pg = new PolicyGen();
         user_groups = new HashMap<>();
         group_members = new HashMap<>();
+        user_profiles = new HashMap<>();
 
-        locClusters = new HashMap<>();
+        location_clusters = new HashMap<>();
         for (int i = 0; i < 10 ; i++) {
             List<String> locations = new ArrayList<>();
-            locClusters.put(i, locations);
+            location_clusters.put(i, locations);
         }
         for (String loc: pg.getAllLocations()) {
             int cluster = r.nextInt(10);
-            locClusters.get(cluster).add(loc);
+            location_clusters.get(cluster).add(loc);
         }
 
 
@@ -99,6 +101,11 @@ public class PolicyGroupGen {
             while (rs.next()) groups.add(rs.getString("ugid"));
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+        if(user_id != ALL_GROUPS) {
+            List<String> userProfiles = new ArrayList<>(groups);
+            userProfiles.retainAll(PolicyConstants.USER_PROFILES);
+            user_profiles.put(user_id, userProfiles.get(0));
         }
         groups.removeAll(PolicyConstants.USER_PROFILES);
         return groups;
@@ -149,18 +156,10 @@ public class PolicyGroupGen {
     }
 
     private String getUserRole(int user_id){
-        List<String> groups = null;
-        if (user_groups.containsKey(user_id))
-            groups = user_groups.get(user_id);
-        else {
-            groups = retrieveGroups(user_id);
-            user_groups.put(user_id, groups);
+        if (!user_groups.containsKey(user_id)) {
+            user_groups.put(user_id, retrieveGroups(user_id));
         }
-        String userProfile = null;
-        for (String role: PolicyConstants.USER_PROFILES) {
-            if(groups.contains(role)) userProfile = role;
-        }
-        return userProfile;
+        return user_profiles.get(user_id);
     }
 
     private void createPolicy(int owner, String profile, String group, int start, int duration, String action){
@@ -168,9 +167,7 @@ public class PolicyGroupGen {
         for (int querier: members) {
             if(getUserRole(querier).equalsIgnoreCase(profile)) {
                 List<BEPolicy> bePolicies = pg.generatePolicies(owner, querier, start, duration, null, action);
-                for (BEPolicy bePolicy: bePolicies) { //TODO: Batch insert multiple policies
-                    polper.insertPolicy(bePolicy);
-                }
+                polper.insertPolicy(bePolicies);
             }
         }
     }
@@ -180,9 +177,7 @@ public class PolicyGroupGen {
         List<Integer> members = getMembers(group);
         for (int querier: members) {
             List<BEPolicy> bePolicies = pg.generatePolicies(owner, querier, start, duration, null, action);
-            for (BEPolicy bePolicy: bePolicies) { //TODO: Batch insert multiple policies
-                polper.insertPolicy(bePolicy);
-            }
+            polper.insertPolicy(bePolicies);
         }
     }
 
@@ -191,9 +186,7 @@ public class PolicyGroupGen {
         for (int querier : members) {
             for (String location : locations) {
                 List<BEPolicy> bePolicies = pg.generatePolicies(owner, querier, start, duration, location, action);
-                for (BEPolicy bePolicy : bePolicies) { //TODO: Batch insert multiple policies
-                    polper.insertPolicy(bePolicy);
-                }
+                polper.insertPolicy(bePolicies);
             }
         }
     }
@@ -204,18 +197,16 @@ public class PolicyGroupGen {
             if(getUserRole(querier).equalsIgnoreCase(profile)) {
                 for (String location : locations) {
                     List<BEPolicy> bePolicies = pg.generatePolicies(owner, querier, start, duration, location, action);
-                    for (BEPolicy bePolicy : bePolicies) { //TODO: Batch insert multiple policies
-                        polper.insertPolicy(bePolicy);
-                    }
+                    polper.insertPolicy(bePolicies);
                 }
             }
         }
     }
 
     private List<String> includeLocation(){
-        int numLocations = locClusters.values().stream().mapToInt(List::size).sum();
+        int numLocations = location_clusters.values().stream().mapToInt(List::size).sum();
         if (Math.random() > (float) 1/numLocations){
-            return locClusters.get(r.nextInt(10));
+            return location_clusters.get(r.nextInt(10));
         }
         else return null;
     }
@@ -251,7 +242,7 @@ public class PolicyGroupGen {
                 createPolicy(user_id, UserProfile.UNDERGRAD.getValue(), START_NIGHT_HOURS, DURATION_NIGHT_HOURS, PolicyConstants.ACTION_ALLOW);
                 createPolicy(user_id, UserProfile.STAFF.getValue(), START_NIGHT_HOURS, DURATION_NIGHT_HOURS, PolicyConstants.ACTION_ALLOW);
                 //Create default policy for visitor to staff to a list of locations during daytime
-                createPolicy(user_id, UserProfile.STAFF.getValue(), START_WORKING_HOURS, DURATION_WORKING_HOURS, locClusters.get(0), PolicyConstants.ACTION_ALLOW);
+                createPolicy(user_id, UserProfile.STAFF.getValue(), START_WORKING_HOURS, DURATION_WORKING_HOURS, location_clusters.get(0), PolicyConstants.ACTION_ALLOW);
             }
             //Active user policies
             if (userProfile.equalsIgnoreCase(UserProfile.VISITOR.getValue())){
@@ -288,8 +279,6 @@ public class PolicyGroupGen {
     public static void main(String [] args) {
         PolicyGroupGen pgrg = new PolicyGroupGen();
         pgrg.generatePolicies();
-
-
     }
 }
 
