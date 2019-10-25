@@ -158,10 +158,10 @@ public class Histogram {
 
     //TODO: change it from a static method to run automatically if the json files are not present
     public static void writeBuckets(){
-        writer.writeJSONToFile(getHistogram(PolicyConstants.START_TIMESTAMP_ATTR, "DateTime", "equiheight"),
-                PolicyConstants.HISTOGRAM_DIR, PolicyConstants.START_TIMESTAMP_ATTR);
-        writer.writeJSONToFile(getHistogram(PolicyConstants.START_TIMESTAMP_ATTR, "DateTime", "equiheight"),
-                PolicyConstants.HISTOGRAM_DIR, PolicyConstants.FINISH_TIMESTAMP_ATTR);
+        writer.writeJSONToFile(getHistogram(PolicyConstants.START_DATE, "DateTime", "equiheight"),
+                PolicyConstants.HISTOGRAM_DIR, PolicyConstants.START_DATE);
+        writer.writeJSONToFile(getHistogram(PolicyConstants.START_TIME, "DateTime", "equiheight"),
+                PolicyConstants.HISTOGRAM_DIR, PolicyConstants.START_TIME);
         writer.writeJSONToFile(getHistogram(PolicyConstants.USERID_ATTR, "Integer", "equiheight"),
                 PolicyConstants.HISTOGRAM_DIR, PolicyConstants.USERID_ATTR);
         writer.writeJSONToFile(getHistogram(PolicyConstants.LOCATIONID_ATTR, "String", "singleton"),

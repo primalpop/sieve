@@ -530,7 +530,7 @@ public class BEPolicy {
         SimpleDateFormat sdf = new SimpleDateFormat(PolicyConstants.TIMESTAMP_FORMAT);
         List<Timestamp> start = new ArrayList<>();
         for (ObjectCondition objectCondition : this.object_conditions)
-            if (objectCondition.getAttribute().equalsIgnoreCase(PolicyConstants.START_TIMESTAMP_ATTR)) {
+            if (objectCondition.getAttribute().equalsIgnoreCase(PolicyConstants.START_DATE)) {
                 try {
                     Date sb = sdf.parse(objectCondition.getBooleanPredicates().get(0).getValue());
                     start.add(new java.sql.Timestamp(sb.getTime()));

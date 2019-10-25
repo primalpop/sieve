@@ -110,9 +110,11 @@ public class PolicyConstants {
     //RANGED ATTRIBUTE NAMES
     public static final ImmutableList<String> RANGE_ATTR_LIST = ImmutableList.of("timeStamp", "energy", "temperature");
 
-    public static final String START_TIMESTAMP_ATTR = "start";
+    public static final String START_DATE = "start_date";
 
-    public static final String FINISH_TIMESTAMP_ATTR = "finish";
+    public static final String START_TIME = "start_time";
+
+    public static final String FINISH_TIMESTAMP_ATTR = "finish"; //TODO: to remove
 
     public static final String TIMESTAMP_ATTR = "timeStamp";
 
