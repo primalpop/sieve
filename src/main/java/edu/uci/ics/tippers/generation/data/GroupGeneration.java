@@ -23,7 +23,7 @@ import java.util.*;
 
 public class GroupGeneration {
     private static final double MULTIPLE_GROUP_FACTOR = 0.5;
-    private static final int MAX_GROUP_MEMBERSHIP = 3;
+    private static final int MAX_GROUP_MEMBERSHIP = 1;
     private HashMap<User, List<Affinity>> colocations;
     private Connection connection;
     private PolicyGen pg;
@@ -134,12 +134,12 @@ public class GroupGeneration {
                 inBuilding = inBuilding.plus(aff.getTotalTime());
             }
             user.setProfile(roleCheck(inBuilding));
-            int numOfGroups = 0;
             value.sort(Collections.reverseOrder());
             if(user.getProfile() != UserProfile.VISITOR){
                 List<UserGroup> ugs = new ArrayList<>();
                 UserGroup ug = new UserGroup(value.get(0).getLocation().getName());
                 ugs.add(ug);
+                int numOfGroups = 1;
                 for (int i = 1; i <value.size(); i++) {
                     if (value.get(i).getTotalTime().toMillis() > MULTIPLE_GROUP_FACTOR *
                             value.get(0).getTotalTime().toMillis()){
@@ -241,8 +241,8 @@ public class GroupGeneration {
 
     public static void main(String [] args){
         GroupGeneration gg = new GroupGeneration();
-        gg.generateRoleGroups();
-        gg.generateRoomGroups();
+//        gg.generateRoleGroups();
+//        gg.generateRoomGroups();
         gg.generateAffinities();
         gg.generateGroupMemberships();
     }

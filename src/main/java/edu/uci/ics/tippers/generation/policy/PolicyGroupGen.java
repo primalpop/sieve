@@ -270,7 +270,8 @@ public class PolicyGroupGen {
             createPolicy(user_id, UserProfile.UNDERGRAD.getValue(), nightHours, PolicyConstants.ACTION_ALLOW, 0);
             createPolicy(user_id, UserProfile.STAFF.getValue(), nightHours, PolicyConstants.ACTION_ALLOW, 0);
             //Create default policy for visitor to staff to a list of locations during daytime
-            createPolicy(user_id, UserProfile.STAFF.getValue(), nightHours, location_clusters.get(0), PolicyConstants.ACTION_ALLOW, 0);
+            createPolicy(user_id, UserProfile.STAFF.getValue(), nightHours, location_clusters.get(0),
+                    PolicyConstants.ACTION_ALLOW, 0);
         }
     }
 
@@ -311,7 +312,6 @@ public class PolicyGroupGen {
      */
     public void generatePolicies(){
         List<Integer> allUsers = pg.getAllUsers();
-        System.out.println("Total users: " + allUsers);
         int default_count = 0, active_count = 0;
         for (int user_id: allUsers) {
             String userProfile = getUserRole(user_id);
