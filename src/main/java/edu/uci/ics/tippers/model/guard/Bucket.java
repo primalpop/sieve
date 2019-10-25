@@ -114,7 +114,7 @@ public class Bucket implements Comparable<Bucket> {
     @Override
     public int compareTo(Bucket bucket) {
         if(this.getAttribute().equalsIgnoreCase(PolicyConstants.USERID_ATTR)
-                || this.getAttribute().equalsIgnoreCase(PolicyConstants.START_TIMESTAMP_ATTR)
+                || this.getAttribute().equalsIgnoreCase(PolicyConstants.START_DATE)
                 || this.getAttribute().equalsIgnoreCase(PolicyConstants.FINISH_TIMESTAMP_ATTR)){
             return this.getLower().compareTo(bucket.getLower());
         }

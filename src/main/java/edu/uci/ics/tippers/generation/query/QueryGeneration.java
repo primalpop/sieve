@@ -34,8 +34,8 @@ public class QueryGeneration {
         pg = new PolicyGen();
         this.user_ids = pg.getAllUsers();
         this.locations = pg.getAllLocations();
-        this.start_beg = pg.getTimestamp(PolicyConstants.START_TIMESTAMP_ATTR, "MIN");
-        this.start_fin = pg.getTimestamp(PolicyConstants.START_TIMESTAMP_ATTR, "MAX");
+        this.start_beg = pg.getTimestamp(PolicyConstants.START_DATE, "MIN");
+        this.start_fin = pg.getTimestamp(PolicyConstants.START_DATE, "MAX");
         this.end_beg = pg.getTimestamp(PolicyConstants.FINISH_TIMESTAMP_ATTR, "MIN");
         this.end_fin = pg.getTimestamp(PolicyConstants.FINISH_TIMESTAMP_ATTR, "MAX");
 

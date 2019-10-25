@@ -5,6 +5,7 @@ import edu.uci.ics.tippers.db.MySQLConnectionManager;
 import edu.uci.ics.tippers.manager.PolicyPersistor;
 import edu.uci.ics.tippers.model.data.UserProfile;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
+import edu.uci.ics.tippers.model.policy.TimeStampPredicate;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,6 +17,7 @@ import java.util.*;
  */
 public class PolicyGroupGen {
 
+    private static final int NUMBER_OF_CLUSTERS = 10;
     private Connection connection;
     Random r;
     PolicyPersistor polper;
@@ -26,19 +28,26 @@ public class PolicyGroupGen {
     private HashMap<String, List<Integer>> group_members;
     private HashMap<Integer, List<String>> location_clusters; //Forming random clusters of locations
 
+    private final int GROUP_MEMBER_ACTIVE_LIMIT = 7;
+
     private final int ALL_GROUPS = 0;
 
     private int LARGE_GROUP_SIZE_THRESHOLD;
     private double PERCENTAGE_DEFAULT;
     private double PERCENTAGE_ALLOW;
     private int ACTIVE_CHOICES;
-    private int START_WORKING_HOURS;
-    private int DURATION_WORKING_HOURS;
-    private int START_NIGHT_HOURS;
-    private int DURATION_NIGHT_HOURS;
-    private int START_ALL_HOURS;
-    private int DURATION_ALL_HOURS;
     private double TIMESTAMP_CHANCE;
+    private TimeStampPredicate workingHours;
+    private TimeStampPredicate nightHours;
+    private TimeStampPredicate allHours;
+
+    private String START_WORKING_HOURS;
+    private int DURATION_WORKING_HOURS;
+    private String START_NIGHT_HOURS;
+    private int DURATION_NIGHT_HOURS;
+    private String START_ALL_HOURS;
+    private int DURATION_ALL_HOURS;
+
 
     public PolicyGroupGen(){
         this.connection = MySQLConnectionManager.getInstance().getConnection();
@@ -50,15 +59,15 @@ public class PolicyGroupGen {
         user_profiles = new HashMap<>();
 
         location_clusters = new HashMap<>();
-        for (int i = 0; i < 10 ; i++) {
+        List<String> all_locations = pg.getAllLocations();
+        for (int i = 0; i <  10; i++) {
             List<String> locations = new ArrayList<>();
             location_clusters.put(i, locations);
         }
-        for (String loc: pg.getAllLocations()) {
+        for (String loc: all_locations) {
             int cluster = r.nextInt(10);
             location_clusters.get(cluster).add(loc);
         }
-
 
         try {
             InputStream inputStream = getClass().getClassLoader().getResourceAsStream("config/policygen.properties");
@@ -69,13 +78,16 @@ public class PolicyGroupGen {
                 PERCENTAGE_DEFAULT = Double.parseDouble(props.getProperty("default"));
                 PERCENTAGE_ALLOW = Double.parseDouble(props.getProperty("allow"));
                 ACTIVE_CHOICES = Integer.parseInt(props.getProperty("active_choices"));
-                START_WORKING_HOURS = Integer.parseInt(props.getProperty("w_start"));
-                DURATION_WORKING_HOURS = Integer.parseInt(props.getProperty("w_plus"));
-                START_NIGHT_HOURS = Integer.parseInt(props.getProperty("n_start"));
-                DURATION_NIGHT_HOURS = Integer.parseInt(props.getProperty("n_plus"));
-                START_ALL_HOURS = Integer.parseInt(props.getProperty("a_start"));
-                DURATION_ALL_HOURS = Integer.parseInt(props.getProperty("a_plus"));
                 TIMESTAMP_CHANCE = Double.parseDouble(props.getProperty("timestamp_chance"));
+                START_WORKING_HOURS = props.getProperty("w_start");
+                DURATION_WORKING_HOURS = Integer.parseInt(props.getProperty("w_plus"));
+                workingHours = new TimeStampPredicate(pg.start_beg, pg.end_fin, START_WORKING_HOURS, DURATION_WORKING_HOURS);
+                START_NIGHT_HOURS = props.getProperty("n_start");
+                DURATION_NIGHT_HOURS = Integer.parseInt(props.getProperty("n_plus"));
+                nightHours = new TimeStampPredicate(pg.start_beg, pg.end_fin, START_NIGHT_HOURS, DURATION_NIGHT_HOURS);
+                START_ALL_HOURS = props.getProperty("a_start");
+                DURATION_ALL_HOURS = Integer.parseInt(props.getProperty("a_plus"));
+                allHours = new TimeStampPredicate(pg.start_beg, pg.end_fin, START_ALL_HOURS, DURATION_ALL_HOURS);
             }
         } catch (IOException ie) {
             ie.printStackTrace();
@@ -121,7 +133,7 @@ public class PolicyGroupGen {
         PreparedStatement queryStm = null;
         try {
             queryStm = connection.prepareStatement("SELECT USER_ID as uid " +
-                    "FROM USER_GROUP_MEMBERSHIP WHERE USER_GROUP_ID = ?" );
+                    "FROM USER_GROUP_MEMBERSHIP WHERE USER_GROUP_ID = ? " );
             queryStm.setString(1, String.valueOf(group_id));
             ResultSet rs = queryStm.executeQuery();
             while (rs.next()) {
@@ -133,7 +145,25 @@ public class PolicyGroupGen {
         return user_ids;
     }
 
-    private List<Integer> getMembers(String group_id){
+
+    // Function select an element base on index and return
+    // an element
+    public List<Integer> getRandomElement(List<Integer> list,
+                                          int totalItems)
+    {
+        Random rand = new Random();
+        List<Integer> newList = new ArrayList<>();
+        int i = 0;
+        if(list.size() < totalItems) return list;
+        int randomIndex = rand.nextInt(list.size());
+        while ( i < totalItems) {
+            newList.add(list.get((randomIndex + i)  % list.size()));
+            i++;
+        }
+        return newList;
+    }
+
+    private List<Integer> getMembers(String group_id, int limit){
         List<Integer> members = null;
         if (group_members.containsKey(group_id))
             members = group_members.get(group_id);
@@ -141,6 +171,7 @@ public class PolicyGroupGen {
             members = retrieveMembers(group_id);
             group_members.put(group_id, members);
         }
+        if(limit != 0 ) return getRandomElement(members, limit);
         return members;
     }
 
@@ -162,119 +193,144 @@ public class PolicyGroupGen {
         return user_profiles.get(user_id);
     }
 
-    private void createPolicy(int owner, String profile, String group, int start, int duration, String action){
-        List<Integer> members = getMembers(group);
+    private void createPolicy(int owner, String profile, String group, TimeStampPredicate tsPred, String action, int limit){
+        List<Integer> members = getMembers(group, limit);
+        List<BEPolicy> bePolicies = new ArrayList<>();
         for (int querier: members) {
             if(getUserRole(querier).equalsIgnoreCase(profile)) {
-                List<BEPolicy> bePolicies = pg.generatePolicies(owner, querier, start, duration, null, action);
-                polper.insertPolicy(bePolicies);
+                bePolicies.addAll(pg.generatePolicies(owner, querier, tsPred,null, action));
             }
         }
+        polper.insertPolicy(bePolicies);
     }
 
 
-    private void createPolicy(int owner, String group, int start, int duration, String action){
-        List<Integer> members = getMembers(group);
+    private void createPolicy(int owner, String group, TimeStampPredicate tsPred, String action, int limit){
+        List<Integer> members = getMembers(group, limit);
+        List<BEPolicy> bePolicies = new ArrayList<>();
         for (int querier: members) {
-            List<BEPolicy> bePolicies = pg.generatePolicies(owner, querier, start, duration, null, action);
-            polper.insertPolicy(bePolicies);
+            bePolicies.addAll(pg.generatePolicies(owner, querier, tsPred, null, action));
         }
+        polper.insertPolicy(bePolicies);
     }
 
-    private void createPolicy(int owner, String group, int start, int duration, List<String> locations, String action) {
-        List<Integer> members = getMembers(group);
+    private void createPolicy(int owner, String group, TimeStampPredicate tsPred, List<String> locations, String action, int limit) {
+        List<Integer> members = getMembers(group, limit);
+        List<BEPolicy> bePolicies = new ArrayList<>();
         for (int querier : members) {
             for (String location : locations) {
-                List<BEPolicy> bePolicies = pg.generatePolicies(owner, querier, start, duration, location, action);
-                polper.insertPolicy(bePolicies);
+                bePolicies.addAll(pg.generatePolicies(owner, querier, tsPred, location, action));
             }
         }
+        polper.insertPolicy(bePolicies);
     }
 
-    private void createPolicy(int owner, String profile, String group, int start, int duration, List<String> locations, String action){
-        List<Integer> members = getMembers(group);
+    private void createPolicy(int owner, String profile, String group, TimeStampPredicate tsPred, List<String> locations,
+                              String action, int limit){
+        List<Integer> members = getMembers(group, limit);
+        List<BEPolicy> bePolicies = new ArrayList<>();
         for (int querier: members) {
             if(getUserRole(querier).equalsIgnoreCase(profile)) {
                 for (String location : locations) {
-                    List<BEPolicy> bePolicies = pg.generatePolicies(owner, querier, start, duration, location, action);
-                    polper.insertPolicy(bePolicies);
+                    bePolicies.addAll(pg.generatePolicies(owner, querier, tsPred, location, action));
                 }
             }
         }
+        polper.insertPolicy(bePolicies);
     }
 
     private List<String> includeLocation(){
-        int numLocations = location_clusters.values().stream().mapToInt(List::size).sum();
-        if (Math.random() > (float) 1/numLocations){
+        if (Math.random() > (float) 1/location_clusters.size()){
             return location_clusters.get(r.nextInt(10));
         }
         else return null;
     }
+
+
+    private void generateDefaultPolicies(int user_id, String userProfile, List<String> groups){
+        for (String userGroup: groups) {
+            //Create default policy for user group
+            createPolicy(user_id, userGroup, workingHours, PolicyConstants.ACTION_ALLOW, 0);
+            //Create default policy for user profiles within user groups
+            createPolicy(user_id, userProfile, userGroup, allHours, PolicyConstants.ACTION_ALLOW, 0);
+        }
+        //Create default policy for faculty to staff
+        if(userProfile.equalsIgnoreCase(UserProfile.FACULTY.getValue())){
+            createPolicy(user_id, UserProfile.STAFF.getValue(), workingHours, PolicyConstants.ACTION_ALLOW, 0);
+        }
+        //Create default policy for students to faculty
+        if(userProfile.equalsIgnoreCase(UserProfile.GRADUATE.getValue())
+                || userProfile.equalsIgnoreCase(UserProfile.UNDERGRAD.getValue())){
+            createPolicy(user_id, UserProfile.FACULTY.getValue(), workingHours, PolicyConstants.ACTION_ALLOW, 0);
+        }
+        if(userProfile.equalsIgnoreCase(UserProfile.VISITOR.getValue())) {
+            //Create default policy for visitor during night time to all
+            createPolicy(user_id, UserProfile.FACULTY.getValue(), nightHours, PolicyConstants.ACTION_ALLOW, 0);
+            createPolicy(user_id, UserProfile.GRADUATE.getValue(), nightHours, PolicyConstants.ACTION_ALLOW, 0);
+            createPolicy(user_id, UserProfile.UNDERGRAD.getValue(), nightHours, PolicyConstants.ACTION_ALLOW, 0);
+            createPolicy(user_id, UserProfile.STAFF.getValue(), nightHours, PolicyConstants.ACTION_ALLOW, 0);
+            //Create default policy for visitor to staff to a list of locations during daytime
+            createPolicy(user_id, UserProfile.STAFF.getValue(), nightHours, location_clusters.get(0), PolicyConstants.ACTION_ALLOW, 0);
+        }
+    }
+
+
+    private void generateActivePolicies(int user_id, String userProfile, List<String> groupsForUser) {
+        for (int i = 0; i < ACTIVE_CHOICES; i++) {
+            String querierProfile = null;
+            if (Math.random() > (float) 1 / PolicyConstants.USER_PROFILES.size())
+                querierProfile = PolicyConstants.USER_PROFILES.get(new Random().nextInt(PolicyConstants.USER_PROFILES.size()));
+            int offset = 0, duration = 0, week = 0;
+            if (Math.random() < TIMESTAMP_CHANCE) {
+                offset = r.nextInt(8) + 1;
+                offset = offset * 60; //converting to minutes
+                duration = r.nextInt(3) + 1;
+                duration = duration * 60;
+                week = r.nextInt(12);
+            }
+            TimeStampPredicate tsPred = new TimeStampPredicate(pg.start_beg, week, START_WORKING_HOURS, offset, duration);
+            String group = groupsForUser.get(new Random().nextInt(groupsForUser.size()));
+            List<String> locations = includeLocation();
+            if (locations != null) {
+                if (querierProfile != null)
+                    createPolicy(user_id, querierProfile, group, tsPred, locations, PolicyConstants.ACTION_ALLOW, GROUP_MEMBER_ACTIVE_LIMIT);
+                else
+                    createPolicy(user_id, group, tsPred, locations, PolicyConstants.ACTION_ALLOW, GROUP_MEMBER_ACTIVE_LIMIT);
+            } else {
+                if (querierProfile != null)
+                    createPolicy(user_id, querierProfile, group, tsPred, PolicyConstants.ACTION_ALLOW, GROUP_MEMBER_ACTIVE_LIMIT);
+                else
+                    createPolicy(user_id, group, tsPred, PolicyConstants.ACTION_ALLOW, GROUP_MEMBER_ACTIVE_LIMIT);
+            }
+        }
+    }
+
 
     /**
      * Creating default and active policies for a user
      */
     public void generatePolicies(){
         List<Integer> allUsers = pg.getAllUsers();
+        System.out.println("Total users: " + allUsers);
+        int default_count = 0, active_count = 0;
         for (int user_id: allUsers) {
             String userProfile = getUserRole(user_id);
             List<String> groupsForUser = getGroupsForUser(user_id);
-            for (String userGroup: groupsForUser) {
-                //Create default policy for user groups
-                createPolicy(user_id, userGroup, START_WORKING_HOURS, DURATION_WORKING_HOURS, PolicyConstants.ACTION_ALLOW);
-                //Create default policy for user profiles within user groups
-                createPolicy(user_id, userProfile, userGroup, START_ALL_HOURS, DURATION_ALL_HOURS, PolicyConstants.ACTION_ALLOW);
-
+            if(Math.random() < PERCENTAGE_DEFAULT) {//Default users
+                generateDefaultPolicies(user_id, userProfile, groupsForUser);
+                System.out.println("Default user: " + user_id);
+                default_count += 1;
             }
-            //Create default policy for faculty to staff
-            if(userProfile.equalsIgnoreCase(UserProfile.FACULTY.getValue())){
-                createPolicy(user_id, UserProfile.STAFF.getValue(), START_WORKING_HOURS, DURATION_WORKING_HOURS, PolicyConstants.ACTION_ALLOW);
-            }
-            //Create default policy for students to faculty
-            if(userProfile.equalsIgnoreCase(UserProfile.GRADUATE.getValue())
-                    || userProfile.equalsIgnoreCase(UserProfile.UNDERGRAD.getValue())){
-                createPolicy(user_id, UserProfile.FACULTY.getValue(), START_WORKING_HOURS, DURATION_WORKING_HOURS, PolicyConstants.ACTION_ALLOW);
-            }
-            if(userProfile.equalsIgnoreCase(UserProfile.VISITOR.getValue())) {
-                //Create default policy for visitor during night time to all
-                createPolicy(user_id, UserProfile.FACULTY.getValue(), START_NIGHT_HOURS, DURATION_NIGHT_HOURS, PolicyConstants.ACTION_ALLOW);
-                createPolicy(user_id, UserProfile.GRADUATE.getValue(), START_NIGHT_HOURS, DURATION_NIGHT_HOURS, PolicyConstants.ACTION_ALLOW);
-                createPolicy(user_id, UserProfile.UNDERGRAD.getValue(), START_NIGHT_HOURS, DURATION_NIGHT_HOURS, PolicyConstants.ACTION_ALLOW);
-                createPolicy(user_id, UserProfile.STAFF.getValue(), START_NIGHT_HOURS, DURATION_NIGHT_HOURS, PolicyConstants.ACTION_ALLOW);
-                //Create default policy for visitor to staff to a list of locations during daytime
-                createPolicy(user_id, UserProfile.STAFF.getValue(), START_WORKING_HOURS, DURATION_WORKING_HOURS, location_clusters.get(0), PolicyConstants.ACTION_ALLOW);
-            }
-            //Active user policies
-            if (userProfile.equalsIgnoreCase(UserProfile.VISITOR.getValue())){
-                if(Math.random() < PERCENTAGE_DEFAULT) continue;
-                for(int i = 0; i < ACTIVE_CHOICES; i++){
-                    String querierProfile = null;
-                    if(Math.random() >  (float)1/PolicyConstants.USER_PROFILES.size())
-                        querierProfile = PolicyConstants.USER_PROFILES.get(new Random().nextInt(PolicyConstants.USER_PROFILES.size()));
-                    int start = 0, duration = 0;
-                    if(Math.random() < TIMESTAMP_CHANCE) {
-                        start = r.nextInt(8) + 8;
-                        duration = r.nextInt(3) + 1;
-                    }
-                    String group = groupsForUser.get(new Random().nextInt(groupsForUser.size()));
-                    List<String> locations = includeLocation();
-                    if(locations != null) {
-                        if(querierProfile != null)
-                            createPolicy(user_id, querierProfile, group, start, duration, locations, PolicyConstants.ACTION_ALLOW);
-                        else
-                            createPolicy(user_id, group, start, duration, locations, PolicyConstants.ACTION_ALLOW);
-                    }
-                    else {
-                        if(querierProfile != null)
-                            createPolicy(user_id, querierProfile, group, start, duration, PolicyConstants.ACTION_ALLOW);
-                        else
-                            createPolicy(user_id, group, start, duration, PolicyConstants.ACTION_ALLOW);
-                    }
+            else { //Active users
+                if (!userProfile.equalsIgnoreCase(UserProfile.VISITOR.getValue())) {
+                    System.out.println("Active user: " + user_id);
+                    generateActivePolicies(user_id, userProfile, groupsForUser);
+                    active_count += 1;
                 }
             }
         }
+        System.out.println("Default count: " + default_count + " Active count: " + active_count);
     }
-
 
     public static void main(String [] args) {
         PolicyGroupGen pgrg = new PolicyGroupGen();

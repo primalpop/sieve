@@ -168,7 +168,7 @@ public class ObjectCondition extends BooleanCondition {
         else if (this.getAttribute().equalsIgnoreCase(PolicyConstants.USERID_ATTR)){
            return equiheightEquality();
         }
-        else if (this.getAttribute().equalsIgnoreCase(PolicyConstants.START_TIMESTAMP_ATTR)
+        else if (this.getAttribute().equalsIgnoreCase(PolicyConstants.START_DATE)
                 || this.getAttribute().equalsIgnoreCase(PolicyConstants.FINISH_TIMESTAMP_ATTR)){
            return equiheightRange();
         }
