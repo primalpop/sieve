@@ -74,23 +74,35 @@ public class PolicyGen {
 
 
     /**
-     * @param querier - id of the querier to whom policy applies
      * @param owner_id - id of the owner of the tuple
+     * @param  querier - id of the querier to whom policy applies
      * @param tsPred - time period captured using date and time
      * @param location - location value
      * @param action   - allow or deny
      * @return
      */
-    public List<BEPolicy> generatePolicies(int owner_id, int querier, TimeStampPredicate tsPred, String location, String action) {
-        List<BEPolicy> bePolicies = new ArrayList<>();
+    public BEPolicy generatePolicies(int querier, int owner_id,  String owner_group, String owner_profile,
+                                           TimeStampPredicate tsPred, String location, String action) {
         String policyID = UUID.randomUUID().toString();
         List<QuerierCondition> querierConditions = new ArrayList<>(Arrays.asList(
                 new QuerierCondition(policyID, "policy_type", AttributeType.STRING, Operation.EQ, "user"),
                 new QuerierCondition(policyID, "querier", AttributeType.STRING, Operation.EQ, String.valueOf(querier))));
         List<ObjectCondition> objectConditions = new ArrayList<>();
-        ObjectCondition ownerPred = new ObjectCondition(policyID, PolicyConstants.USERID_ATTR, AttributeType.STRING,
-                String.valueOf(owner_id), Operation.EQ);
-        objectConditions.add(ownerPred);
+        if (owner_id != 0) {
+            ObjectCondition owner = new ObjectCondition(policyID, PolicyConstants.USERID_ATTR, AttributeType.STRING,
+                    String.valueOf(owner_id), Operation.EQ);
+            objectConditions.add(owner);
+        }
+        if (owner_group != null){
+            ObjectCondition ownerGroup = new ObjectCondition(policyID, PolicyConstants.GROUP_ATTR, AttributeType.STRING,
+                    owner_group, Operation.EQ);
+            objectConditions.add(ownerGroup);
+        }
+        if (owner_profile != null) {
+            ObjectCondition ownerProfile = new ObjectCondition(policyID, PolicyConstants.PROFILE_ATTR, AttributeType.STRING,
+                    owner_profile, Operation.EQ);
+            objectConditions.add(ownerProfile);
+        }
         if (tsPred != null) {
             ObjectCondition datePred = new ObjectCondition(policyID, PolicyConstants.START_DATE, AttributeType.DATE,
                     tsPred.getStartDate().toString(), Operation.GTE, tsPred.getEndDate().toString(), Operation.LTE);
@@ -104,9 +116,8 @@ public class PolicyGen {
                     location, Operation.EQ);
             objectConditions.add(locationPred);
         }
-        bePolicies.add(new BEPolicy(policyID, objectConditions, querierConditions, "analysis",
-                action, new Timestamp(System.currentTimeMillis())));
-        return bePolicies;
+        return new BEPolicy(policyID, objectConditions, querierConditions, "analysis",
+                action, new Timestamp(System.currentTimeMillis()));
     }
 
 }
