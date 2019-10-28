@@ -52,7 +52,7 @@ public class MySQLConnectionManager {
             return connection;
         try {
             connection = DriverManager.getConnection(
-                    String.format("jdbc:mysql://%s:%s/%s?useLegacyDatetimeCode=false&serverTimezone=America/Los_Angeles",
+                    String.format("jdbc:mysql://%s:%s/%s?useLegacyDatetimeCode=false&serverTimezone=America/Los_Angeles&rewriteBatchedStatements=true",
                             SERVER, PORT, DATABASE), USER, PASSWORD);
             System.out.println("--- Connected to " + DATABASE + " on server " + SERVER + "---");
             return connection;

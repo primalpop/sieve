@@ -128,6 +128,11 @@ public class PolicyConstants {
 
     public static final String ACTIVITY_ATTR = "activity";
 
+    public static final String GROUP_ATTR = "USER_GROUP";
+
+    public static final String PROFILE_ATTR = "USER_PROFILE";
+
+
     //DIRECTORY PATHS
     public static final String BASIC_POLICY_1_DIR = "results/basic_policies_1/";
 
