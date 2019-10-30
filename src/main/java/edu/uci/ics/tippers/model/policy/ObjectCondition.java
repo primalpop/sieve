@@ -7,9 +7,11 @@ import edu.uci.ics.tippers.model.guard.Bucket;
 import edu.uci.ics.tippers.db.Histogram;
 
 import java.sql.Timestamp;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Stream;
 
 /**
  * Created by cygnus on 9/25/17.
@@ -65,6 +67,11 @@ public class ObjectCondition extends BooleanCondition {
         this.booleanPredicates = booleanPredicates;
     }
 
+    /**
+     * For attribute type of INTEGER and histogram type of singleton
+     * e.g., temperature or energy
+     * @return
+     */
     private double singletonRange(){
         double frequency = 0.0001;
         for (int i = 0; i < Histogram.getInstance().getBucketMap().get(this.getAttribute()).size(); i++) {
@@ -77,34 +84,45 @@ public class ObjectCondition extends BooleanCondition {
         return frequency/100;
     }
 
+    /**
+     * For attribute type of String/Date and histogram type of singleton
+     * e.g., location_id, start_date, user_profile, user_group
+     * @return
+     */
     private double singletonEquality(){
         double frequency = 0.0001;
-        Bucket bucket = Histogram.getInstance().getBucketMap().get(this.getAttribute()).stream()
-                .filter(b -> b.getValue().equalsIgnoreCase(this.getBooleanPredicates().get(0).getValue()))
-                .findFirst()
-                .orElse(null);
+        Bucket bucket = null;
+        if(this.getType() == AttributeType.STRING) {
+            bucket = Histogram.getInstance().getBucketMap().get(this.getAttribute()).stream()
+                    .filter(b -> b.getValue().equalsIgnoreCase(this.getBooleanPredicates().get(0).getValue()))
+                    .findFirst()
+                    .orElse(null);
+        }
+        else if(this.getType() == AttributeType.DATE) {
+            DateFormat formatter = new SimpleDateFormat(PolicyConstants.DATE_FORMAT);
+            try {
+                List<Bucket> buckets = Histogram.getInstance().getBucketMap().get(this.getAttribute());
+                for (Bucket b:buckets) {
+                    if(formatter.parse(b.getValue()).compareTo
+                            (formatter.parse(this.getBooleanPredicates().get(0).getValue())) == 0){
+                        bucket = b;
+                        break;
+                    }
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
         if (bucket != null) frequency += bucket.getFreq();
         return frequency/100;
     }
 
-//    /**
-//     * user_id is stored as varchar and therefore string comparison required to identify the right bucket
-//     * @return
-//     */
-//    private double equiheightEquality() {
-//        double frequency = 0.0001;
-//        List<Bucket> buckets = Histogram.getInstance().getBucketMap().get(this.getAttribute());
-//        for (Bucket b : buckets) {
-//            if (b.getLower().compareTo(this.getBooleanPredicates().get(0).getValue()) < 0
-//                    && b.getUpper().compareTo(this.getBooleanPredicates().get(1).getValue()) > 0) {
-//                frequency += b.getFreq() / b.getNumberOfItems();
-//                break;
-//            }
-//        }
-//        return frequency / 100;
-//    }
-
-        private double equiheightEquality() {
+    /**
+     * For attribute type of INTEGER and histogram type of equi-height
+     * e.g., user_id
+     * @return estimated selectivity
+     */
+    private double equiheightEquality() {
         double frequency = 0.0001;
         List<Bucket> buckets = Histogram.getInstance().getBucketMap().get(this.getAttribute());
         for (Bucket b : buckets) {
@@ -117,16 +135,20 @@ public class ObjectCondition extends BooleanCondition {
         return frequency / 100;
     }
 
-
+    /**
+     * For attribute type of TIME and histogram type of equi-height
+     * e.g. start_time
+     * @return
+     */
     //TODO: Overestimates the selectivity as the partially contained buckets are completely counted
     private double equiheightRange(){
         double frequency = 0.0001;
         List<Bucket> buckets = Histogram.getInstance().getBucketMap().get(this.attribute);
         Bucket lKey = new Bucket();
-        lKey.setAttribute(PolicyConstants.TIMESTAMP_ATTR);
+        lKey.setAttribute(PolicyConstants.START_TIME);
         lKey.setLower(this.getBooleanPredicates().get(0).getValue());
         Bucket uKey = new Bucket();
-        uKey.setAttribute(PolicyConstants.TIMESTAMP_ATTR);
+        uKey.setAttribute(PolicyConstants.START_TIME);
         uKey.setLower(this.getBooleanPredicates().get(1).getValue());
         int lIndex = Collections.binarySearch(buckets, lKey);
         if (lIndex < 0) { // no exact match
@@ -157,19 +179,14 @@ public class ObjectCondition extends BooleanCondition {
 
     public double computeL(){
         List mBuckets = null;
-        if(this.getAttribute().equalsIgnoreCase(PolicyConstants.TEMPERATURE_ATTR) ||
-                this.getAttribute().equalsIgnoreCase(PolicyConstants.ENERGY_ATTR)){
-            return singletonRange();
-        }
-        else if (this.getAttribute().equalsIgnoreCase(PolicyConstants.LOCATIONID_ATTR) ||
-                this.getAttribute().equalsIgnoreCase(PolicyConstants.ACTIVITY_ATTR)){
+        if (Stream.of(PolicyConstants.LOCATIONID_ATTR, PolicyConstants.GROUP_ATTR, PolicyConstants.PROFILE_ATTR,
+                PolicyConstants.START_DATE).anyMatch(this.getAttribute()::equalsIgnoreCase)){
             return singletonEquality();
         }
         else if (this.getAttribute().equalsIgnoreCase(PolicyConstants.USERID_ATTR)){
            return equiheightEquality();
         }
-        else if (this.getAttribute().equalsIgnoreCase(PolicyConstants.START_DATE)
-                || this.getAttribute().equalsIgnoreCase(PolicyConstants.FINISH_TIMESTAMP_ATTR)){
+        else if (this.getAttribute().equalsIgnoreCase(PolicyConstants.START_TIME)){
            return equiheightRange();
         }
         else {

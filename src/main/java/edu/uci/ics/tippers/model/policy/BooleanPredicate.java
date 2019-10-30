@@ -4,7 +4,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.common.PolicyEngineException;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.stream.Stream;
 
 /**
  * Created by cygnus on 10/26/17.
@@ -64,22 +67,27 @@ public class BooleanPredicate {
 
     @Override
     public String toString() {
-        return
-                value + operator;
+        return value + operator;
     }
 
     public int compareOnType(BooleanPredicate o, String attribute) {
-        if(attribute.equalsIgnoreCase(PolicyConstants.ENERGY_ATTR) || attribute.equalsIgnoreCase(PolicyConstants.TEMPERATURE_ATTR)){
+        if(Stream.of(PolicyConstants.USERID_ATTR).anyMatch(attribute::equalsIgnoreCase)) {
             int o1 = Integer.parseInt(this.getValue());
             int o2 = Integer.parseInt(o.getValue());
             return o1-o2;
         }
-        else if(attribute.equalsIgnoreCase(PolicyConstants.TIMESTAMP_ATTR)) {
-            LocalDateTime o1 = timeStampToLDT(this.getValue());
-            LocalDateTime o2 = timeStampToLDT(o.getValue());
+        else if(attribute.equalsIgnoreCase(PolicyConstants.START_TIME)) {
+            LocalTime o1 = LocalTime.parse(this.getValue());
+            LocalTime o2 = LocalTime.parse(o.getValue());
             return o1.compareTo(o2);
         }
-        else if(attribute.equalsIgnoreCase(PolicyConstants.LOCATIONID_ATTR) || attribute.equalsIgnoreCase(PolicyConstants.USERID_ATTR)) {
+        else if (attribute.equalsIgnoreCase(PolicyConstants.START_DATE)) {
+            LocalDate o1 = LocalDate.parse(this.getValue());
+            LocalDate o2 = LocalDate.parse(o.getValue());
+            return o1.compareTo(o2);
+        }
+        else if (Stream.of(PolicyConstants.LOCATIONID_ATTR, PolicyConstants.GROUP_ATTR, PolicyConstants.PROFILE_ATTR)
+                .anyMatch(attribute::equalsIgnoreCase))  {
             String o1 = this.getValue();
             String o2 = o.getValue();
             return o1.compareTo(o2);
@@ -87,11 +95,6 @@ public class BooleanPredicate {
         else{
             throw new PolicyEngineException("Incompatible Attribute Type");
         }
-    }
-
-
-    public static LocalDateTime timeStampToLDT(String timestamp) {
-        return LocalDateTime.parse(timestamp, PolicyConstants.TIME_FORMATTER);
     }
 
 }

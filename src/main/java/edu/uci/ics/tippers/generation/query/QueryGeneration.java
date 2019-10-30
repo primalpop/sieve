@@ -20,7 +20,6 @@ public class QueryGeneration {
     private List<Integer> user_ids;
     private List<String> locations;
     Timestamp start_beg, start_fin;
-    Timestamp end_beg, end_fin;
     private MySQLQueryManager mySQLQueryManager;
     private Connection connection = MySQLConnectionManager.getInstance().getConnection();
     SimpleDateFormat sdf;
@@ -36,8 +35,6 @@ public class QueryGeneration {
         this.locations = pg.getAllLocations();
         this.start_beg = pg.getTimestamp(PolicyConstants.START_DATE, "MIN");
         this.start_fin = pg.getTimestamp(PolicyConstants.START_DATE, "MAX");
-        this.end_beg = pg.getTimestamp(PolicyConstants.FINISH_TIMESTAMP_ATTR, "MIN");
-        this.end_fin = pg.getTimestamp(PolicyConstants.FINISH_TIMESTAMP_ATTR, "MAX");
 
         hours = new ArrayList<Double>(Arrays.asList(10.0, 20.0, 30.0, 40.0, 50.0, 100.0, 200.0, 300.0, 500.0, 1000.0, 2000.0, 3000.0, 5000.0, 7000.0));
         numUsers = new ArrayList<Integer>(Arrays.asList(500, 1000, 2000));

@@ -492,41 +492,11 @@ public class BEPolicy {
         return null;
     }
 
-    public Timestamp fetchTimestampLowValue() {
-        SimpleDateFormat sdf = new SimpleDateFormat(PolicyConstants.TIMESTAMP_FORMAT);
-        for (ObjectCondition objectCondition : this.object_conditions)
-            if (objectCondition.getAttribute().equalsIgnoreCase(PolicyConstants.TIMESTAMP_ATTR)) {
-                Date parsedDate = null;
-                try {
-                    parsedDate = sdf.parse(objectCondition.getBooleanPredicates().get(0).getValue());
-                    return new java.sql.Timestamp(parsedDate.getTime());
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-            }
-       return null;
-    }
-
-    public Timestamp fetchTimestampHighValue() {
-        SimpleDateFormat sdf = new SimpleDateFormat(PolicyConstants.TIMESTAMP_FORMAT);
-        for (ObjectCondition objectCondition : this.object_conditions)
-            if (objectCondition.getAttribute().equalsIgnoreCase(PolicyConstants.TIMESTAMP_ATTR)) {
-                Date parsedDate = null;
-                try {
-                    parsedDate = sdf.parse(objectCondition.getBooleanPredicates().get(1).getValue());
-                    return new java.sql.Timestamp(parsedDate.getTime());
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-            }
-        return null;
-    }
-
     /**
      * Collects the beginning and end values of 'start' timestamp object condition
      * @return
      */
-    public List<Timestamp> fetchStart() {
+    public List<Timestamp> fetchStartDate() {
         SimpleDateFormat sdf = new SimpleDateFormat(PolicyConstants.TIMESTAMP_FORMAT);
         List<Timestamp> start = new ArrayList<>();
         for (ObjectCondition objectCondition : this.object_conditions)
@@ -541,26 +511,5 @@ public class BEPolicy {
                 }
             }
         return start;
-    }
-
-    /**
-     * Collects the beginning and end values of 'finish' timestamp object condition
-     * @return
-     */
-    public List<Timestamp> fetchFinish() {
-        SimpleDateFormat sdf = new SimpleDateFormat(PolicyConstants.TIMESTAMP_FORMAT);
-        List<Timestamp> finish = new ArrayList<>();
-        for (ObjectCondition objectCondition : this.object_conditions)
-            if (objectCondition.getAttribute().equalsIgnoreCase(PolicyConstants.FINISH_TIMESTAMP_ATTR)) {
-                try {
-                    Date sb = sdf.parse(objectCondition.getBooleanPredicates().get(0).getValue());
-                    finish.add(new java.sql.Timestamp(sb.getTime()));
-                    Date se = sdf.parse(objectCondition.getBooleanPredicates().get(1).getValue());
-                    finish.add(new java.sql.Timestamp(se.getTime()));
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-            }
-        return finish;
     }
 }

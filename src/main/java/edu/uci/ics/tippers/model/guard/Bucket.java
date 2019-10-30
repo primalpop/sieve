@@ -2,6 +2,10 @@ package edu.uci.ics.tippers.model.guard;
 
 import edu.uci.ics.tippers.common.PolicyConstants;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
 public class Bucket implements Comparable<Bucket> {
 
     private String attribute;
@@ -113,24 +117,31 @@ public class Bucket implements Comparable<Bucket> {
 
     @Override
     public int compareTo(Bucket bucket) {
-        if(this.getAttribute().equalsIgnoreCase(PolicyConstants.USERID_ATTR)
-                || this.getAttribute().equalsIgnoreCase(PolicyConstants.START_DATE)
-                || this.getAttribute().equalsIgnoreCase(PolicyConstants.FINISH_TIMESTAMP_ATTR)){
-            return this.getLower().compareTo(bucket.getLower());
+        if(this.getAttribute().equalsIgnoreCase(PolicyConstants.USERID_ATTR)){
+            return Integer.parseInt(this.getLower()) - Integer.parseInt((bucket.getLower()));
         }
-        else if(this.getAttribute().equalsIgnoreCase(PolicyConstants.LOCATIONID_ATTR)){
-            if(Integer.parseInt(this.getValue().substring(0,4)) > Integer.parseInt(bucket.getValue().substring(0,4))) return 1;
-            if(Integer.parseInt(this.getValue().substring(0,4)) < Integer.parseInt(bucket.getValue().substring(0,4))) return -1;
-            return 0;
+        else if(this.getAttribute().equalsIgnoreCase(PolicyConstants.START_DATE)) {
+            DateFormat formatter = new SimpleDateFormat(PolicyConstants.DATE_FORMAT);
+            try {
+                return formatter.parse(this.getValue()).compareTo((formatter.parse(bucket.getValue())));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
-        else if (this.getAttribute().equalsIgnoreCase(PolicyConstants.ACTIVITY_ATTR)) {
+        else if(this.getAttribute().equalsIgnoreCase(PolicyConstants.START_TIME)){
+            DateFormat formatter = new SimpleDateFormat(PolicyConstants.TIME_FORMAT);
+            try {
+                return formatter.parse(this.getLower()).compareTo((formatter.parse(bucket.getLower())));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        else if (this.getAttribute().equalsIgnoreCase(PolicyConstants.LOCATIONID_ATTR)
+                || this.getAttribute().equalsIgnoreCase(PolicyConstants.PROFILE_ATTR)
+                || this.getAttribute().equalsIgnoreCase(PolicyConstants.GROUP_ATTR)) {
             return this.getValue().compareTo(bucket.getValue());
         }
-        else {
-            if(Integer.parseInt(this.getValue()) > Integer.parseInt(bucket.getValue())) return 1;
-            if(Integer.parseInt(this.getValue()) < Integer.parseInt(bucket.getValue())) return -1;
-            return 0;
-        }
+        return 0;
     }
 
 

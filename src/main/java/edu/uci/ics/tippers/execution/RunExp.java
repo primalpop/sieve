@@ -4,7 +4,7 @@ import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.fileop.Reader;
 import edu.uci.ics.tippers.fileop.Writer;
 import edu.uci.ics.tippers.model.guard.deprecated.FactorExtension;
-import edu.uci.ics.tippers.model.guard.FactorSelection;
+import edu.uci.ics.tippers.model.guard.deprecated.FactorSelection;
 import edu.uci.ics.tippers.model.guard.PolicyFilter;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.policy.BEPolicy;

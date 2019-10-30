@@ -77,11 +77,9 @@ public class PresenceDataGeneration {
         return new Timestamp(parsedDate.getTime());
     }
 
-
     private void parseAndWrite(String fileName) {
-
         String pInsert = "INSERT INTO PRESENCE " +
-                "(USER_ID, LOCATION_ID, START, FINISH) " +
+                "(USER_ID, LOCATION_ID, START_DATE, START_TIME) " +
                 "VALUES (?, ?, ?, ?)";
         int presenceCount = 0;
         try {
@@ -92,25 +90,28 @@ public class PresenceDataGeneration {
             PreparedStatement presenceStmt = connection.prepareStatement(pInsert);
             while ((nextRecord = csvReader.readNext()) != null) {
                 Random rand = new Random();
-                int user_id;
-                Timestamp start, finish;
+                int userId;
+                java.sql.Date startDate;
+                java.sql.Time startTime;
                 String location;
                 if(nextRecord.length == 6){
-                    user_id = user_id_map.get(new JSONObject(nextRecord[2]).getString("client_id"));
-                    start = parseTimeStamp(nextRecord[3]);
-                    finish = parseTimeStamp(nextRecord[4]);
+                    userId = user_id_map.get(new JSONObject(nextRecord[2]).getString("client_id"));
+                    Timestamp ts = parseTimeStamp(nextRecord[3]);
+                    startDate = new java.sql.Date(ts.getTime());
+                    startTime = new java.sql.Time(ts.getTime());
                     location = nextRecord[5];
                 }
                 else{
-                    user_id = user_id_map.get(new JSONObject(nextRecord[0]).getString("client_id"));
-                    start = parseTimeStamp(nextRecord[1]);
-                    finish = parseTimeStamp(nextRecord[2]);
+                    userId = user_id_map.get(new JSONObject(nextRecord[0]).getString("client_id"));
+                    Timestamp ts = parseTimeStamp(nextRecord[1]);
+                    startDate = new java.sql.Date(ts.getTime());
+                    startTime = new java.sql.Time(ts.getTime());
                     location = nextRecord[3];
                 }
-                presenceStmt.setInt(1, user_id);
+                presenceStmt.setInt(1, userId);
                 presenceStmt.setString(2, location);
-                presenceStmt.setTimestamp(3, start);
-                presenceStmt.setTimestamp(4, finish);
+                presenceStmt.setDate(3, startDate);
+                presenceStmt.setTime(4, startTime);
                 presenceStmt.addBatch();
                 presenceCount++;
                 if (presenceCount % PolicyConstants.BATCH_SIZE_INSERTION == 0) {

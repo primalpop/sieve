@@ -3,7 +3,6 @@ package edu.uci.ics.tippers.model.guard.deprecated;
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.db.MySQLQueryManager;
 import edu.uci.ics.tippers.db.MySQLResult;
-import edu.uci.ics.tippers.model.guard.FactorSelection;
 import edu.uci.ics.tippers.model.guard.GuardExp;
 import edu.uci.ics.tippers.model.guard.GuardPart;
 import edu.uci.ics.tippers.model.guard.Term;

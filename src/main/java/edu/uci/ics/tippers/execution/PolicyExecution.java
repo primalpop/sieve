@@ -6,7 +6,7 @@ import edu.uci.ics.tippers.db.MySQLQueryManager;
 import edu.uci.ics.tippers.db.MySQLResult;
 import edu.uci.ics.tippers.fileop.Reader;
 import edu.uci.ics.tippers.fileop.Writer;
-import edu.uci.ics.tippers.model.guard.GuardHit;
+import edu.uci.ics.tippers.model.guard.SelectGuard;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
 import edu.uci.ics.tippers.generation.policy.SyntheticPolicy;
@@ -116,7 +116,7 @@ public class PolicyExecution {
 
                     Duration guardGen = Duration.ofMillis(0);
                     Instant fsStart = Instant.now();
-                    GuardHit gh = new GuardHit(beExpression, EXTEND_PREDICATES);
+                    SelectGuard gh = new SelectGuard(beExpression, EXTEND_PREDICATES);
                     Instant fsEnd = Instant.now();
                     guardGen = guardGen.plus(Duration.between(fsStart, fsEnd));
                     policyRunTimes.put(file.getName() + "-guardGeneration", String.valueOf(guardGen.toMillis()));
@@ -154,37 +154,6 @@ public class PolicyExecution {
                 }
             }
         }
-    }
-
-    private void generatePolicies(String policyDir) {
-        int[] policyNumbers = {100};
-        int[] policyEpochs = {0};
-        System.out.println("Generating Policies ..........");
-        List<BEPolicy> bePolicies = new ArrayList<>();
-        for (int i = 0; i < policyNumbers.length; i++) {
-            List<String> attributes = new ArrayList<>();
-            attributes.add(PolicyConstants.TIMESTAMP_ATTR);
-            attributes.add(PolicyConstants.ENERGY_ATTR);
-            attributes.add(PolicyConstants.TEMPERATURE_ATTR);
-            attributes.add(PolicyConstants.LOCATIONID_ATTR);
-            attributes.add(PolicyConstants.USERID_ATTR);
-            attributes.add(PolicyConstants.ACTIVITY_ATTR);
-            List<BEPolicy> genPolicy = policyGen.generateOverlappingPolicies(policyNumbers[i], 0.3, attributes, bePolicies);
-            bePolicies.clear();
-            bePolicies.addAll(genPolicy);
-        }
-    }
-
-    private void persistPolicies(int numOfPolicies) {
-        System.out.println("Generating Policies ..........");
-        List<String> attributes = new ArrayList<>();
-        attributes.add(PolicyConstants.TIMESTAMP_ATTR);
-        attributes.add(PolicyConstants.ENERGY_ATTR);
-        attributes.add(PolicyConstants.TEMPERATURE_ATTR);
-        attributes.add(PolicyConstants.LOCATIONID_ATTR);
-        attributes.add(PolicyConstants.USERID_ATTR);
-        attributes.add(PolicyConstants.ACTIVITY_ATTR);
-        policyGen.persistOverlappingPolicies(numOfPolicies, 0.3, attributes);
     }
 
 

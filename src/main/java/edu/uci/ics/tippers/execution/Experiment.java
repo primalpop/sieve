@@ -5,7 +5,7 @@ import edu.uci.ics.tippers.db.MySQLQueryManager;
 import edu.uci.ics.tippers.db.MySQLResult;
 import edu.uci.ics.tippers.fileop.Writer;
 import edu.uci.ics.tippers.manager.PolicyPersistor;
-import edu.uci.ics.tippers.model.guard.GuardHit;
+import edu.uci.ics.tippers.model.guard.SelectGuard;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
 
@@ -90,7 +90,7 @@ public class Experiment {
 
             Duration guardGen = Duration.ofMillis(0);
             Instant fsStart = Instant.now();
-            GuardHit gh = new GuardHit(beExpression, EXTEND_PREDICATES);
+            SelectGuard gh = new SelectGuard(beExpression, EXTEND_PREDICATES);
             Instant fsEnd = Instant.now();
             guardGen = guardGen.plus(Duration.between(fsStart, fsEnd));
             System.out.println("Guard Generation time: " + guardGen + " Number of Guards: " + gh.numberOfGuards());

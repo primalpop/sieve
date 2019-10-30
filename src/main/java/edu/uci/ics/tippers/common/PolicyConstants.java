@@ -51,15 +51,12 @@ public class PolicyConstants {
 
     public static final double NUMBER_OF_PREDICATES_EVALUATED = 0.66;
 
+    public static final String DATE_FORMAT = "yyyy-MM-dd";
+
+    public static final String TIME_FORMAT = "HH:mm:ss";
+
     //TIMESTAMP FORMAT
     public static final String TIMESTAMP_FORMAT = "yyyy-MM-dd HH:mm:ss";
-
-    public static final DateTimeFormatter TIME_FORMATTER = new DateTimeFormatterBuilder()
-                .appendPattern(TIMESTAMP_FORMAT)
-                .appendFraction(ChronoField.MICRO_OF_SECOND, 0, 6, true)
-                .toFormatter();
-
-
 
     //QUERIES FOR EXPERIMENTATION
     public static final String SELECT_ALL_SEMANTIC_OBSERVATIONS = "Select SQL_NO_CACHE * from PRESENCE  ";
@@ -96,31 +93,29 @@ public class PolicyConstants {
                     new QuerierCondition("test", "querier", AttributeType.STRING, Operation.EQ, "10"));
 
     //ATTRIBUTE NAMES
-    public static final ImmutableList<String> REAL_ATTR_LIST = ImmutableList.of("user_id", "location_id", "start", "finish");
-
-
-    //ATTRIBUTE NAMES
-    public static final ImmutableList<String> ATTR_LIST = ImmutableList.of("timeStamp", "energy", "temperature",
-            "location_id", "activity", "user_id");
+    public static final ImmutableList<String> ATTR_LIST = ImmutableList.of("user_id", "location_id", "user_profile",
+            "user_group", "start_date", "start_time");
 
     //INDEXED ATTRIBUTES
-    public static final ImmutableList<String> INDEX_ATTRS = ImmutableList.of("timeStamp", "energy", "temperature",
-            "location_id", "user_id", "activity");
+    public static final ImmutableList<String> INDEX_ATTRS = ImmutableList.of("user_id", "location_id", "user_profile",
+            "user_group", "start_date", "start_time");
 
     //RANGED ATTRIBUTE NAMES
-    public static final ImmutableList<String> RANGE_ATTR_LIST = ImmutableList.of("timeStamp", "energy", "temperature");
+    public static final ImmutableList<String> RANGE_ATTR_LIST = ImmutableList.of("start_date", "start_time");
 
     public static final String START_DATE = "start_date";
 
     public static final String START_TIME = "start_time";
 
-    public static final String FINISH_TIMESTAMP_ATTR = "finish"; //TODO: to remove
-
-    public static final String TIMESTAMP_ATTR = "timeStamp";
-
     public static final String LOCATIONID_ATTR = "location_id";
 
     public static final String USERID_ATTR = "user_id";
+
+    public static final String GROUP_ATTR = "user_group";
+
+    public static final String PROFILE_ATTR = "user_profile";
+
+    //Auxiliary attributes
 
     public static final String ENERGY_ATTR = "energy";
 
@@ -128,20 +123,8 @@ public class PolicyConstants {
 
     public static final String ACTIVITY_ATTR = "activity";
 
-    public static final String GROUP_ATTR = "USER_GROUP";
-
-    public static final String PROFILE_ATTR = "USER_PROFILE";
-
 
     //DIRECTORY PATHS
-    public static final String BASIC_POLICY_1_DIR = "results/basic_policies_1/";
-
-    public static final String BASIC_POLICY_2_DIR = "results/basic_policies_2/";
-
-    public static final String RANGE_POLICY_1_DIR = "results/range_policies_1/";
-
-    public static final String RANGE_POLICY_2_DIR = "results/range_policies_2/";
-
     public static final String BE_POLICY_DIR = "results/be_policies/";
 
     public static final String HISTOGRAM_DIR = "histogram/";
@@ -155,21 +138,17 @@ public class PolicyConstants {
     public static final String QR_EXTENDED = "query_results/extended/"; //results from approximation/extension
 
 
-    //INDICES
+    //Indices available in the database
     public static final ImmutableMap<String, String> ATTRIBUTE_IND =
             new ImmutableMap.Builder<String, String>()
-                    .put(PolicyConstants.USERID_ATTR, "so_user_hash")
-                    .put(PolicyConstants.TIMESTAMP_ATTR, "so_ts")
-                    .put(PolicyConstants.LOCATIONID_ATTR, "so_l_hash")
-                    .put(PolicyConstants.ENERGY_ATTR, "so_e")
-                    .put(PolicyConstants.TEMPERATURE_ATTR, "so_t")
-                    .put(PolicyConstants.ACTIVITY_ATTR, "so_activity_hash")
+                    .put(PolicyConstants.USERID_ATTR, "user_hash")
+                    .put(PolicyConstants.GROUP_ATTR, "group_hash")
+                    .put(PolicyConstants.PROFILE_ATTR, "profile_hash")
+                    .put(PolicyConstants.START_TIME, "time_tree")
+                    .put(PolicyConstants.START_DATE, "date_tree")
+                    .put(PolicyConstants.LOCATIONID_ATTR, "loc_hash")
                     .build();
 
-
-    public static final String SELECT_ALL_USE_INDEX = "Select * from SEMANTIC_OBSERVATION USE INDEX (so_ts, so_l, so_e, so_t, so_a) WHERE ";
-
-    public static final String SELECT_ALL_FORCE_INDEX = "Select * from SEMANTIC_OBSERVATION FORCE INDEX (so_u, so_ts, so_l, so_e, so_t, so_a) WHERE ";
 
     public static final String ACTION_ALLOW = "allow";
     public static final String ACTION_DENY = "deny";

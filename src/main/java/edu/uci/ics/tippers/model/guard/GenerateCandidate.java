@@ -1,4 +1,4 @@
-package edu.uci.ics.tippers.model.guard.deprecated;
+package edu.uci.ics.tippers.model.guard;
 
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.model.policy.BEExpression;
@@ -7,13 +7,13 @@ import edu.uci.ics.tippers.model.policy.ObjectCondition;
 
 import java.util.*;
 
-public class PredicateMerge {
+public class GenerateCandidate {
 
     private Map<String, List<ObjectCondition>> aMap;
     private Map<ObjectCondition, BEPolicy> oMap;
 
 
-    public PredicateMerge(BEExpression inputExp) {
+    public GenerateCandidate(BEExpression inputExp) {
         oMap = new HashMap<>();
         aMap = new HashMap<>();
         for (int i = 0; i < PolicyConstants.RANGE_ATTR_LIST.size(); i++) {
@@ -43,24 +43,23 @@ public class PredicateMerge {
      * TODO: Check if this matches with the paper definition
      * @param oc1
      * @param oc2
-     * @param beMerged
+     * @param pBar
      * @return
      */
-    private boolean shouldIMerge(ObjectCondition oc1, ObjectCondition oc2, BEExpression beMerged) {
+    private boolean shouldIMerge(ObjectCondition oc1, ObjectCondition oc2, BEPolicy pBar) {
         ObjectCondition intersect = oc1.intersect(oc2);
         ObjectCondition union = oc1.union(oc2);
         double lhs = intersect.computeL() / union.computeL();
-        long numOfPreds = beMerged.getPolicies().stream().mapToInt(BEPolicy::countNumberOfPredicates).sum();
+        long numOfPreds = pBar.countNumberOfPredicates();
         double rhs = (PolicyConstants.ROW_EVALUATE_COST * numOfPreds) / (PolicyConstants.IO_BLOCK_READ_COST
-                + PolicyConstants.ROW_EVALUATE_COST + (PolicyConstants.ROW_EVALUATE_COST * numOfPreds));
+                + (PolicyConstants.ROW_EVALUATE_COST * numOfPreds));
         return lhs > rhs;
     }
 
     private ObjectCondition mergeEm(ObjectCondition oc1, ObjectCondition oc2){
         ObjectCondition subMerged = null;
-        BEExpression beM = new BEExpression();
-        beM.getPolicies().add(oMap.get(oc1));
-        beM.getPolicies().add(oMap.get(oc2));
+        BEPolicy beM =  oMap.get(oc1).getObject_conditions().size() > oMap.get(oc2).getObject_conditions().size()?
+                new BEPolicy(oMap.get(oc1)): new BEPolicy(oMap.get(oc2));
         if(shouldIMerge(oc1, oc2, beM)) subMerged = oc1.union(oc2);
         return subMerged;
     }
@@ -86,8 +85,6 @@ public class PredicateMerge {
     private void extendOnAttribute(String attribute) {
         List<ObjectCondition> preds = aMap.get(attribute);
         Collections.sort(preds);
-        int mergeCount = 0;
-        int identicalCount = 0;
         int i = 0;
         while(i< preds.size()){
             ObjectCondition oc1 = preds.get(i);
@@ -100,12 +97,10 @@ public class PredicateMerge {
                     break;
                 }
                 if(oc1.equalsWithoutId(oc2)) {
-                    identicalCount += 1;
                     eqObjs.add(oc2);
                 }
                 ObjectCondition cMerged = mergeEm(oc1, oc2);
                 if (cMerged != null) {
-                    mergeCount += 1;
                     BEPolicy mPolicy = new BEPolicy();
                     mPolicy.getObject_conditions().addAll(oMap.get(oc1).getObject_conditions());
                     mPolicy.getObject_conditions().addAll(oMap.get(oc2).getObject_conditions());
@@ -133,8 +128,7 @@ public class PredicateMerge {
     }
 
     /**
-     * for each indexed attribute
-     *  call extendOnAttribute
+     * for each indexed attribute which has range predicates call extendOnAttribute
      */
     public void extend(){
         for (String attrKey: aMap.keySet()) {
