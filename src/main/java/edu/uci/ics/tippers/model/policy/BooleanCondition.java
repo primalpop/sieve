@@ -4,10 +4,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import edu.uci.ics.tippers.common.AttributeType;
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.common.PolicyEngineException;
+import org.w3c.dom.Attr;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.temporal.ChronoField;
@@ -142,12 +146,6 @@ public class BooleanCondition  implements Comparable<BooleanCondition>  {
         return r.toString();
     }
 
-
-    //TODO: Compare it using String instead?
-    public static LocalDateTime timeStampToLDT(String timestamp) {
-        return LocalDateTime.parse(timestamp, PolicyConstants.TIME_FORMATTER);
-    }
-
     @Override
     public String toString() {
         return policy_id + attribute + booleanPredicates;
@@ -170,22 +168,30 @@ public class BooleanCondition  implements Comparable<BooleanCondition>  {
      */
     @Override
     public int compareTo(BooleanCondition booleanCondition) {
-        if(booleanCondition.getType().getID() == 4){ //Integer
+        if(booleanCondition.getType() == AttributeType.INTEGER){
             int start1 = Integer.parseInt(this.getBooleanPredicates().get(0).getValue());
             int end1 = Integer.parseInt(this.getBooleanPredicates().get(1).getValue());
             int start2 = Integer.parseInt(booleanCondition.getBooleanPredicates().get(0).getValue());
             int end2 = Integer.parseInt(booleanCondition.getBooleanPredicates().get(1).getValue());
             return start1 != start2? start1 - start2: end1- end2;
         }
-        else if(booleanCondition.getType().getID() == 2) { //Timestamp
-            LocalDateTime start1 = timeStampToLDT(this.getBooleanPredicates().get(0).getValue());
-            LocalDateTime end1 = timeStampToLDT(this.getBooleanPredicates().get(1).getValue());
-            LocalDateTime start2 = timeStampToLDT(booleanCondition.getBooleanPredicates().get(0).getValue());
-            LocalDateTime end2 = timeStampToLDT(booleanCondition.getBooleanPredicates().get(1).getValue());
+        else if(booleanCondition.getType() == AttributeType.DATE) {
+            LocalDate start1 = LocalDate.parse(this.getBooleanPredicates().get(0).getValue());
+            LocalDate end1 = LocalDate.parse(this.getBooleanPredicates().get(1).getValue());
+            LocalDate start2 = LocalDate.parse(booleanCondition.getBooleanPredicates().get(0).getValue());
+            LocalDate end2 = LocalDate.parse(booleanCondition.getBooleanPredicates().get(1).getValue());
             if (!start1.equals(start2)) return start1.compareTo(start2);
             return end1.compareTo(end2);
         }
-        else if(booleanCondition.getType().getID() == 1) {
+        else if (booleanCondition.getType() == AttributeType.TIME) {
+            LocalTime start1 = LocalTime.parse(this.getBooleanPredicates().get(0).getValue());
+            LocalTime start2 = LocalTime.parse(this.getBooleanPredicates().get(1).getValue());
+            LocalTime end1 = LocalTime.parse(booleanCondition.getBooleanPredicates().get(0).getValue());
+            LocalTime end2 = LocalTime.parse(booleanCondition.getBooleanPredicates().get(1).getValue());
+            if (!start1.equals(start2)) return start1.compareTo(start2);
+            return end1.compareTo(end2);
+        }
+        else if(booleanCondition.getType() == AttributeType.STRING) {
             String start1 = this.getBooleanPredicates().get(0).getValue();
             String end1 = this.getBooleanPredicates().get(1).getValue();
             String start2 = booleanCondition.getBooleanPredicates().get(0).getValue();

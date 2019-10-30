@@ -41,13 +41,6 @@ public class FlatPolicyPersistor {
                 policyStmt.setTimestamp(6, bePolicy.getInserted_at());
                 policyStmt.setString(7, bePolicy.fetchOwner());
                 policyStmt.setString(8, bePolicy.fetchLocation());
-                List<Timestamp> start = bePolicy.fetchStart();
-                policyStmt.setTimestamp(9, start.get(0));
-                policyStmt.setTimestamp(10, start.get(1));
-                List<Timestamp> finish = bePolicy.fetchFinish();
-                policyStmt.setTimestamp(11, finish.get(0));
-                policyStmt.setTimestamp(12, finish.get(1));
-
                 policyStmt.addBatch();
             }
             policyStmt.executeBatch();

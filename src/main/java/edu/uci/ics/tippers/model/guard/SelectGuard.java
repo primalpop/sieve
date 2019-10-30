@@ -3,18 +3,16 @@ package edu.uci.ics.tippers.model.guard;
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.db.MySQLQueryManager;
 import edu.uci.ics.tippers.db.MySQLResult;
-import edu.uci.ics.tippers.model.guard.deprecated.PredicateMerge;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
 import edu.uci.ics.tippers.model.policy.ObjectCondition;
 
-import java.security.Guard;
 import java.sql.Timestamp;
 import java.time.Duration;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class GuardHit {
+public class SelectGuard {
 
     //Original expression
     Term input;
@@ -27,8 +25,7 @@ public class GuardHit {
 
     MySQLQueryManager mySQLQueryManager = new MySQLQueryManager();
 
-
-    public GuardHit(BEExpression originalExp, boolean extend){
+    public SelectGuard(BEExpression originalExp, boolean extend){
         this.input = new Term();
         this.input.setRemainder(originalExp);
         this.input.setQuotient(originalExp);
@@ -39,7 +36,7 @@ public class GuardHit {
         this.ptMap = new HashMap<>();
         houseKeep();
         if(extend){
-            PredicateMerge pm = new PredicateMerge(this.input.getRemainder());
+            GenerateCandidate pm = new GenerateCandidate(this.input.getRemainder());
             pm.extend();
         }
         this.canFactors = collectAllFactors(this.input.getRemainder());

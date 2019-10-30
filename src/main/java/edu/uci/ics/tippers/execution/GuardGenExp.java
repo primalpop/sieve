@@ -5,7 +5,7 @@ import edu.uci.ics.tippers.db.MySQLConnectionManager;
 import edu.uci.ics.tippers.generation.policy.PolicyGroupGen;
 import edu.uci.ics.tippers.manager.GuardPersistor;
 import edu.uci.ics.tippers.manager.PolicyPersistor;
-import edu.uci.ics.tippers.model.guard.GuardHit;
+import edu.uci.ics.tippers.model.guard.SelectGuard;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
 
@@ -14,7 +14,6 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -57,7 +56,7 @@ public class GuardGenExp {
             BEExpression allowBeExpression = new BEExpression(allowPolicies);
             Duration guardGen = Duration.ofMillis(0);
             Instant fsStart = Instant.now();
-            GuardHit gh = new GuardHit(allowBeExpression, true);
+            SelectGuard gh = new SelectGuard(allowBeExpression, true);
             Instant fsEnd = Instant.now();
             guardGen = guardGen.plus(Duration.between(fsStart, fsEnd));
             System.out.println("Guard Generation time: " + guardGen + " Number of Guards: " + gh.numberOfGuards());

@@ -111,7 +111,7 @@ public class SyntheticPolicy {
         if(attrCount >=3) {
             rq.setStart_timestamp(getRandomTimeStamp());
             rq.setEnd_timestamp(getEndingTimeInterval(rq.getStart_timestamp()));
-            attrList.add(PolicyConstants.TIMESTAMP_ATTR);
+            attrList.add(PolicyConstants.START_DATE);
         }
         while(attrCount - attrList.size() > 0) {
             String attribute = attributes.get(r.nextInt(attributes.size()));
@@ -130,7 +130,7 @@ public class SyntheticPolicy {
                 rq.setStart_temp(String.valueOf(getTemperature(null)));
                 rq.setEnd_temp(String.valueOf(getTemperature(rq.getStart_temp())));
             }
-            else if (attribute.equalsIgnoreCase(PolicyConstants.TIMESTAMP_ATTR)) {
+            else if (attribute.equalsIgnoreCase(PolicyConstants.START_DATE)) {
                 rq.setStart_timestamp(getRandomTimeStamp());
                 rq.setEnd_timestamp(getEndingTimeInterval(rq.getStart_timestamp()));
             }
@@ -243,7 +243,7 @@ public class SyntheticPolicy {
         if (rand > TIMESTAMP_INCLUDE) {
             rq.setStart_timestamp(getRandomTimeStamp());
             rq.setEnd_timestamp(getEndingTimeInterval(rq.getStart_timestamp()));
-            attrList.add(PolicyConstants.TIMESTAMP_ATTR);
+            attrList.add(PolicyConstants.START_DATE);
         }
         while(attrCount - attrList.size() > 0) {
             String attribute = attributes.get(r.nextInt(attributes.size()));
@@ -416,7 +416,7 @@ public class SyntheticPolicy {
                     int locProf = Min + (int)(Math.random() * ((Max - Min) + 1));
                     rq.setLocation_id(infs.get(locProf).get(new Random().nextInt(infs.get(locProf).size())));
                 }
-                if (attribute.equalsIgnoreCase(PolicyConstants.TIMESTAMP_ATTR)) {
+                if (attribute.equalsIgnoreCase(PolicyConstants.START_DATE)) {
                     rq.setStart_timestamp(getRandomTimeStamp());
                     rq.setEnd_timestamp(getEndingTimeInterval(rq.getStart_timestamp()));
                     Calendar start = Calendar.getInstance();

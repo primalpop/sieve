@@ -26,29 +26,17 @@ public class Histogram {
 
     private static Histogram _instance;
 
-    private Histogram(){
+    private Histogram() {
         File histDir = new File(PolicyConstants.HISTOGRAM_DIR);
-        if(histDir.isDirectory() && Objects.requireNonNull(histDir.list()).length == 0)
+        if (histDir.isDirectory() && Objects.requireNonNull(histDir.list()).length == 0)
             writeBuckets();
         else retrieveBuckets();
     }
 
-    public static Histogram getInstance(){
+    public static Histogram getInstance() {
         if (_instance == null)
             _instance = new Histogram();
         return _instance;
-    }
-
-    public Map<String, List<Bucket>> getBucketMap(){
-        return bucketMap;
-    }
-
-    private void retrieveBuckets(){
-        bucketMap = new HashMap<>();
-        for (String attribute: PolicyConstants.REAL_ATTR_LIST) {
-            bucketMap.put(attribute, sortBuckets(parseJSONList
-                    (Reader.readTxt(PolicyConstants.HISTOGRAM_DIR + attribute + ".json"))));
-        }
     }
 
     private static List<Bucket> getHistogram(String attribute, String attribute_type, String histogram_type) {
@@ -132,7 +120,7 @@ public class Histogram {
                         "CONCAT(round((c - LAG(c, 1, 0) over()) * 100,1), '%') freq, numItems " +
                         "FROM information_schema.column_statistics, JSON_TABLE(histogram->'$.buckets',       " +
                         "'$[*]' COLUMNS(lvalue int PATH '$[0]', uvalue int PATH '$[1]', c double PATH '$[2]', " +
-                        "numItems integer PATH '$[3]')) hist  where column_name = ? and lvalue is NOT NULL;");
+                        "numItems integer PATH '$[3]')) hist  where column_name = ?;");
                 ps.setString(1, attribute);
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()) {
@@ -150,25 +138,88 @@ public class Histogram {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-        } else {
+        } else if(attribute_type.equalsIgnoreCase("Date") && histogram_type.equalsIgnoreCase("singleton")){
+            try {
+                ps = conn.prepareStatement("SELECT value, concat(round(c*100,1),'%') cumulfreq, " +
+                        "CONCAT(round((c - LAG(c, 1, 0) over()) * 100,1), '%') freq, numItems " +
+                        "FROM information_schema.column_statistics, JSON_TABLE(histogram->'$.buckets',       " +
+                        "'$[*]' COLUMNS(value date PATH '$[0]', c double PATH '$[1]', " +
+                        "numItems integer PATH '$[2]')) hist  where column_name = ?");
+                ps.setString(1, attribute);
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    Bucket bucket = new Bucket();
+                    bucket.setAttribute(attribute);
+                    bucket.setLower(rs.getString("value"));
+                    bucket.setCumulfreq(Double.parseDouble(rs.getString("cumulfreq").replaceAll("[^\\d.]", "")));
+                    bucket.setFreq(Double.parseDouble(rs.getString("freq").replaceAll("[^\\d.]", "")));
+                    bucket.setNumberOfItems(rs.getInt("numItems"));
+                    hBuckets.add(bucket);
+                }
+                rs.close();
+                ps.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } else if(attribute_type.equalsIgnoreCase("Time") && histogram_type.equalsIgnoreCase("equiheight")){
+            try {
+                ps = conn.prepareStatement("SELECT lvalue, uvalue, concat(round(c*100,1),'%') cumulfreq, " +
+                        "CONCAT(round((c - LAG(c, 1, 0) over()) * 100,1), '%') freq, numItems " +
+                        "FROM information_schema.column_statistics, JSON_TABLE(histogram->'$.buckets',       " +
+                        "'$[*]' COLUMNS(lvalue time PATH '$[0]', uvalue time PATH '$[1]', c double PATH '$[2]', " +
+                        "numItems integer PATH '$[3]')) hist  where column_name = ?;");
+                ps.setString(1, attribute);
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    Bucket bucket = new Bucket();
+                    bucket.setAttribute(attribute);
+                    bucket.setLower(rs.getString("value"));
+                    bucket.setCumulfreq(Double.parseDouble(rs.getString("cumulfreq").replaceAll("[^\\d.]", "")));
+                    bucket.setFreq(Double.parseDouble(rs.getString("freq").replaceAll("[^\\d.]", "")));
+                    bucket.setNumberOfItems(rs.getInt("numItems"));
+                    hBuckets.add(bucket);
+                }
+                rs.close();
+                ps.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        else {
             throw new PolicyEngineException("Unknown Histogram type");
         }
         return hBuckets;
     }
 
     //TODO: change it from a static method to run automatically if the json files are not present
-    public static void writeBuckets(){
-        writer.writeJSONToFile(getHistogram(PolicyConstants.START_DATE, "DateTime", "equiheight"),
+    public static void writeBuckets() {
+        writer.writeJSONToFile(getHistogram(PolicyConstants.START_DATE, "Date", "singleton"),
                 PolicyConstants.HISTOGRAM_DIR, PolicyConstants.START_DATE);
-        writer.writeJSONToFile(getHistogram(PolicyConstants.START_TIME, "DateTime", "equiheight"),
+        writer.writeJSONToFile(getHistogram(PolicyConstants.START_TIME, "Time", "equiheight"),
                 PolicyConstants.HISTOGRAM_DIR, PolicyConstants.START_TIME);
         writer.writeJSONToFile(getHistogram(PolicyConstants.USERID_ATTR, "Integer", "equiheight"),
                 PolicyConstants.HISTOGRAM_DIR, PolicyConstants.USERID_ATTR);
         writer.writeJSONToFile(getHistogram(PolicyConstants.LOCATIONID_ATTR, "String", "singleton"),
                 PolicyConstants.HISTOGRAM_DIR, PolicyConstants.LOCATIONID_ATTR);
+        writer.writeJSONToFile(getHistogram(PolicyConstants.GROUP_ATTR, "String", "singleton"),
+                PolicyConstants.HISTOGRAM_DIR, PolicyConstants.GROUP_ATTR);
+        writer.writeJSONToFile(getHistogram(PolicyConstants.PROFILE_ATTR, "String", "singleton"),
+                PolicyConstants.HISTOGRAM_DIR, PolicyConstants.PROFILE_ATTR);
     }
 
-    public List<Bucket> sortBuckets(List<Bucket> buckets){
+    public Map<String, List<Bucket>> getBucketMap() {
+        return bucketMap;
+    }
+
+    private void retrieveBuckets() {
+        bucketMap = new HashMap<>();
+        for (String attribute : PolicyConstants.ATTR_LIST) {
+            bucketMap.put(attribute, sortBuckets(parseJSONList
+                    (Reader.readTxt(PolicyConstants.HISTOGRAM_DIR + attribute + ".json"))));
+        }
+    }
+
+    public List<Bucket> sortBuckets(List<Bucket> buckets) {
         Collections.sort(buckets);
         return buckets;
     }
@@ -178,7 +229,8 @@ public class Histogram {
         ObjectMapper objectMapper = new ObjectMapper();
         List<Bucket> buckets = null;
         try {
-            buckets = objectMapper.readValue(jsonData, new TypeReference<List<Bucket>>(){});
+            buckets = objectMapper.readValue(jsonData, new TypeReference<List<Bucket>>() {
+            });
         } catch (IOException e) {
             e.printStackTrace();
         }

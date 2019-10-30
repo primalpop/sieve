@@ -2,7 +2,7 @@ package edu.uci.ics.tippers.execution;
 
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.fileop.Reader;
-import edu.uci.ics.tippers.model.guard.GuardHit;
+import edu.uci.ics.tippers.model.guard.SelectGuard;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
 
@@ -33,7 +33,7 @@ public class RunMe {
 //                pm.extend();
                 System.out.println(beExpression.getPolicies().stream().mapToInt(BEPolicy::countNumberOfPredicates).sum());
 //                System.out.println(beExpression.createQueryFromPolices());
-                GuardHit gh = new GuardHit(beExpression, true);
+                SelectGuard gh = new SelectGuard(beExpression, true);
             }
         }
 
