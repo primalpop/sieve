@@ -2,7 +2,7 @@ package edu.uci.ics.tippers.execution;
 
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.db.MySQLConnectionManager;
-import edu.uci.ics.tippers.generation.policy.PolicyGroupGen;
+import edu.uci.ics.tippers.generation.policy.PolicyGen;
 import edu.uci.ics.tippers.manager.GuardPersistor;
 import edu.uci.ics.tippers.manager.PolicyPersistor;
 import edu.uci.ics.tippers.model.guard.SelectGuard;
@@ -24,13 +24,11 @@ import java.util.List;
 public class GuardGenExp {
 
     PolicyPersistor polper;
-    PolicyGroupGen pgg;
     GuardPersistor guardPersistor;
     Connection connection;
 
     public GuardGenExp(){
         this.polper = new PolicyPersistor();
-        this.pgg = new PolicyGroupGen();
         this.guardPersistor = new GuardPersistor();
         this.connection = MySQLConnectionManager.getInstance().getConnection();
     }
@@ -68,6 +66,7 @@ public class GuardGenExp {
 
     public static void main(String [] args){
         GuardGenExp ge = new GuardGenExp();
-        ge.generateGuards(null, true);
+        PolicyGen pg = new PolicyGen();
+        ge.generateGuards(pg.getAllUsers(), true);
     }
 }

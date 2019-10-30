@@ -20,14 +20,10 @@ public class PolicyGen {
     private Random r;
     private List<Integer> user_ids;
     private List<String> location_ids;
-    public Timestamp start_beg;
-    public Timestamp end_fin;
 
     public PolicyGen(){
        r = new Random();
        connection = MySQLConnectionManager.getInstance().getConnection();
-       start_beg = getTimestamp("start", "MIN"); //TODO: to remove
-       end_fin = getTimestamp("finish", "MAX"); //TODO: to remove
     }
 
 
@@ -36,7 +32,7 @@ public class PolicyGen {
         user_ids = new ArrayList<>();
         try {
             queryStm = connection.prepareStatement("SELECT ID as id " +
-                    "FROM USER");
+                    "FROM dummy_user");
             ResultSet rs = queryStm.executeQuery();
             while (rs.next()) user_ids.add(rs.getInt("id"));
         } catch (SQLException e) {
