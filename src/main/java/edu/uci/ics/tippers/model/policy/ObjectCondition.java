@@ -10,6 +10,8 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.*;
 import java.util.stream.Stream;
 
@@ -203,40 +205,28 @@ public class ObjectCondition extends BooleanCondition {
     }
 
     public boolean overlaps(ObjectCondition o2) {
-        if (this.getType().getID() == 4) { //Integer
+        if (this.getType() == AttributeType.INTEGER) {
             int start1 = Integer.parseInt(this.getBooleanPredicates().get(0).getValue());
             int end1 = Integer.parseInt(this.getBooleanPredicates().get(1).getValue());
             int start2 = Integer.parseInt(o2.getBooleanPredicates().get(0).getValue());
             int end2 = Integer.parseInt(o2.getBooleanPredicates().get(1).getValue());
             if (start1 <= end2 && end1 >= start2)
                 return true;
-        } else if (this.getType().getID() == 2) { //Timestamp
-            Calendar start1 = timestampStrToCal(this.getBooleanPredicates().get(0).getValue());
-            Calendar end1 = timestampStrToCal(this.getBooleanPredicates().get(1).getValue());
-            Calendar start2 = timestampStrToCal(o2.getBooleanPredicates().get(0).getValue());
-            Calendar end2 = timestampStrToCal(o2.getBooleanPredicates().get(1).getValue());
-            if (start1.compareTo(end2) < 0 && end1.compareTo(start2) > 0) {
-                return true;
+        } else if (this.getType() == AttributeType.DATE) {
+                LocalDate start1 = LocalDate.parse(this.getBooleanPredicates().get(0).getValue());
+                LocalDate end1 = LocalDate.parse(this.getBooleanPredicates().get(1).getValue());
+                LocalDate start2 = LocalDate.parse(o2.getBooleanPredicates().get(0).getValue());
+                LocalDate end2 = LocalDate.parse(o2.getBooleanPredicates().get(1).getValue());
+                if (!start1.equals(start2)) return start1.compareTo(start2);
+                return end1.compareTo(end2);
             }
-        } else if (this.getType().getID() == 1) { //String
-            if (this.getAttribute().equalsIgnoreCase(PolicyConstants.USERID_ATTR)) {
-                int start1 = Integer.parseInt(this.getBooleanPredicates().get(0).getValue());
-                int end1 = Integer.parseInt(this.getBooleanPredicates().get(1).getValue());
-                int start2 = Integer.parseInt(o2.getBooleanPredicates().get(0).getValue());
-                int end2 = Integer.parseInt(o2.getBooleanPredicates().get(1).getValue());
-                if (start1 <= end2  && end1  >= start2 )
-                    return true;
-            } else if (this.getAttribute().equalsIgnoreCase(PolicyConstants.LOCATIONID_ATTR)) {
-                int start1 = Integer.parseInt(this.getBooleanPredicates().get(0).getValue().substring(0, 4));
-                int end1 = Integer.parseInt(this.getBooleanPredicates().get(1).getValue().substring(0, 4));
-                int start2 = Integer.parseInt(o2.getBooleanPredicates().get(0).getValue().substring(0, 4));
-                int end2 = Integer.parseInt(o2.getBooleanPredicates().get(1).getValue().substring(0, 4));
-                if (start1  <= end2&& end1  >= start2 )
-                    return true;
-            } else {
-                //attribute activity
-                return false;
-            }
+        } else if (this.getType() == AttributeType.TIME) {
+        LocalTime start1 = LocalTime.parse(this.getBooleanPredicates().get(0).getValue());
+        LocalTime start2 = LocalTime.parse(this.getBooleanPredicates().get(1).getValue());
+        LocalTime end1 = LocalTime.parse(o2.getBooleanPredicates().get(0).getValue());
+        LocalTime end2 = LocalTime.parse(o2.getBooleanPredicates().get(1).getValue());
+        if (!start1.equals(start2)) return start1.compareTo(start2);
+        return end1.compareTo(end2);
         } else {
             throw new PolicyEngineException("Incompatible Attribute Type");
         }
@@ -340,18 +330,4 @@ public class ObjectCondition extends BooleanCondition {
         this.getBooleanPredicates().get(0).setValue(start);
         this.getBooleanPredicates().get(1).setValue(end);
     }
-
-    //TODO: Remove this
-    public static Calendar timestampStrToCal(String timestamp) {
-        Calendar cal = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat(PolicyConstants.TIMESTAMP_FORMAT);
-        try {
-            cal.setTime(sdf.parse(timestamp));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return cal;
-    }
-
-
 }
