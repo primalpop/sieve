@@ -210,27 +210,22 @@ public class ObjectCondition extends BooleanCondition {
             int end1 = Integer.parseInt(this.getBooleanPredicates().get(1).getValue());
             int start2 = Integer.parseInt(o2.getBooleanPredicates().get(0).getValue());
             int end2 = Integer.parseInt(o2.getBooleanPredicates().get(1).getValue());
-            if (start1 <= end2 && end1 >= start2)
-                return true;
+            return start1 <= end2 && end1 >= start2;
         } else if (this.getType() == AttributeType.DATE) {
-                LocalDate start1 = LocalDate.parse(this.getBooleanPredicates().get(0).getValue());
-                LocalDate end1 = LocalDate.parse(this.getBooleanPredicates().get(1).getValue());
-                LocalDate start2 = LocalDate.parse(o2.getBooleanPredicates().get(0).getValue());
-                LocalDate end2 = LocalDate.parse(o2.getBooleanPredicates().get(1).getValue());
-                if (!start1.equals(start2)) return start1.compareTo(start2);
-                return end1.compareTo(end2);
-            }
+            LocalDate start1 = LocalDate.parse(this.getBooleanPredicates().get(0).getValue());
+            LocalDate end1 = LocalDate.parse(this.getBooleanPredicates().get(1).getValue());
+            LocalDate start2 = LocalDate.parse(o2.getBooleanPredicates().get(0).getValue());
+            LocalDate end2 = LocalDate.parse(o2.getBooleanPredicates().get(1).getValue());
+            return (start1.isBefore(end2) && end1.isAfter(start2));
         } else if (this.getType() == AttributeType.TIME) {
-        LocalTime start1 = LocalTime.parse(this.getBooleanPredicates().get(0).getValue());
-        LocalTime start2 = LocalTime.parse(this.getBooleanPredicates().get(1).getValue());
-        LocalTime end1 = LocalTime.parse(o2.getBooleanPredicates().get(0).getValue());
-        LocalTime end2 = LocalTime.parse(o2.getBooleanPredicates().get(1).getValue());
-        if (!start1.equals(start2)) return start1.compareTo(start2);
-        return end1.compareTo(end2);
+            LocalTime start1 = LocalTime.parse(this.getBooleanPredicates().get(0).getValue());
+            LocalTime start2 = LocalTime.parse(this.getBooleanPredicates().get(1).getValue());
+            LocalTime end1 = LocalTime.parse(o2.getBooleanPredicates().get(0).getValue());
+            LocalTime end2 = LocalTime.parse(o2.getBooleanPredicates().get(1).getValue());
+            return (start1.isBefore(end2) && end1.isAfter(start2));
         } else {
             throw new PolicyEngineException("Incompatible Attribute Type");
         }
-        return false;
     }
 
     /**

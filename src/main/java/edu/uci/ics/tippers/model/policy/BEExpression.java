@@ -187,7 +187,7 @@ public class BEExpression{
         String delim = "";
         for (BEPolicy beP: this.getPolicies()) {
             query.append(delim);
-            query.append(  beP.createQueryFromObjectConditions() );
+            query.append( "(" + beP.createQueryFromObjectConditions() + ")" );
             delim = PolicyConstants.DISJUNCTION;
         }
         return query.toString();

@@ -4,6 +4,7 @@ import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.db.MySQLQueryManager;
 import edu.uci.ics.tippers.db.MySQLResult;
 import edu.uci.ics.tippers.fileop.Writer;
+import edu.uci.ics.tippers.generation.policy.PolicyGen;
 import edu.uci.ics.tippers.manager.PolicyPersistor;
 import edu.uci.ics.tippers.model.guard.SelectGuard;
 import edu.uci.ics.tippers.model.policy.BEExpression;
@@ -70,17 +71,16 @@ public class Experiment {
     }
 
 
-    public void runBEPolicies() {
+    public void runBEPolicies(List<BEPolicy> bePolicies) {
 
-        List<BEPolicy> policies = polper.retrievePolicies("10", "user", PolicyConstants.ACTION_ALLOW);
-        BEExpression beExpression = new BEExpression(policies);
-        System.out.println("Original Policies: " + beExpression.createQueryFromPolices());
+        BEExpression beExpression = new BEExpression(bePolicies);
 
         try {
 
             MySQLResult tradResult = new MySQLResult();
 
             if (BASE_LINE) {
+                System.out.println(beExpression.createQueryFromPolices());
                 tradResult = mySQLQueryManager.runTimedQueryWithRepetitions(beExpression.createQueryFromPolices(),
                         RESULT_CHECK, NUM_OF_REPS);
                 Duration runTime = Duration.ofMillis(0);
@@ -117,8 +117,17 @@ public class Experiment {
         }
     }
 
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         Experiment e = new Experiment();
-        e.runBEPolicies();
+        PolicyGen pg = new PolicyGen();
+        List<Integer> users = pg.getAllUsers();
+        PolicyPersistor polper = new PolicyPersistor();
+        for (Integer user: users) {
+            List<BEPolicy> allowPolicies = polper.retrievePolicies(String.valueOf(user),
+                    PolicyConstants.USER_INDIVIDUAL, PolicyConstants.ACTION_ALLOW);
+            if(allowPolicies == null) continue;
+            System.out.println("Querier " + user);
+            e.runBEPolicies(allowPolicies);
+        }
     }
 }

@@ -90,24 +90,6 @@ public class BooleanCondition  implements Comparable<BooleanCondition>  {
         }
     }
 
-
-    //TODO: Is this required? If not in quotes, it raises this warning
-    //TODO: Cannot use range access on index 'so_t' due to type or collation conversion on field 'temperature'
-    public String check_type(String value) {
-        switch(type.getID()){
-            case 1: //String
-                return " \"" + value + "\" ";
-            case 2: //Timestamp
-                return " \"" + value + "\" ";
-            case 3: //Double
-                return " \"" + value + "\" ";
-            case 4:
-                return " \"" + value + "\" ";
-            default:
-                throw new PolicyEngineException("Unknown Type error");
-        }
-    }
-
     /**
      * Removes duplicate predicates
      * @return
@@ -121,7 +103,7 @@ public class BooleanCondition  implements Comparable<BooleanCondition>  {
         dupElim.getBooleanPredicates().addAll(og);
         for (BooleanPredicate bp: dupElim.getBooleanPredicates()) {
             r.append(delim);
-            r.append("(" + this.getAttribute() + bp.getOperator() + check_type(bp.getValue()) + ")");
+            r.append("(" + this.getAttribute() + bp.getOperator() + " \"" + bp.getValue() + "\"" + ")");
             delim = PolicyConstants.CONJUNCTION;
         }
         return r.toString();
