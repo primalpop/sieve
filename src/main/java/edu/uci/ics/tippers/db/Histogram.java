@@ -120,7 +120,7 @@ public class Histogram {
                         "CONCAT(round((c - LAG(c, 1, 0) over()) * 100,1), '%') freq, numItems " +
                         "FROM information_schema.column_statistics, JSON_TABLE(histogram->'$.buckets',       " +
                         "'$[*]' COLUMNS(lvalue int PATH '$[0]', uvalue int PATH '$[1]', c double PATH '$[2]', " +
-                        "numItems integer PATH '$[3]')) hist  where column_name = ?;");
+                        "numItems integer PATH '$[3]')) hist  where column_name = ? and lvalue is NOT NULL;");
                 ps.setString(1, attribute);
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()) {
@@ -150,7 +150,7 @@ public class Histogram {
                 while (rs.next()) {
                     Bucket bucket = new Bucket();
                     bucket.setAttribute(attribute);
-                    bucket.setLower(rs.getString("value"));
+                    bucket.setValue(rs.getString("value"));
                     bucket.setCumulfreq(Double.parseDouble(rs.getString("cumulfreq").replaceAll("[^\\d.]", "")));
                     bucket.setFreq(Double.parseDouble(rs.getString("freq").replaceAll("[^\\d.]", "")));
                     bucket.setNumberOfItems(rs.getInt("numItems"));
@@ -173,7 +173,8 @@ public class Histogram {
                 while (rs.next()) {
                     Bucket bucket = new Bucket();
                     bucket.setAttribute(attribute);
-                    bucket.setLower(rs.getString("value"));
+                    bucket.setLower(rs.getString("lvalue"));
+                    bucket.setUpper(rs.getString("uvalue"));
                     bucket.setCumulfreq(Double.parseDouble(rs.getString("cumulfreq").replaceAll("[^\\d.]", "")));
                     bucket.setFreq(Double.parseDouble(rs.getString("freq").replaceAll("[^\\d.]", "")));
                     bucket.setNumberOfItems(rs.getInt("numItems"));

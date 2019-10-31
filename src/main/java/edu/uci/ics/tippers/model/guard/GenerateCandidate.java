@@ -85,6 +85,8 @@ public class GenerateCandidate {
     private void extendOnAttribute(String attribute) {
         List<ObjectCondition> preds = aMap.get(attribute);
         Collections.sort(preds);
+        int mergeCount = 0;
+        int identicalCount = 0;
         int i = 0;
         while(i< preds.size()){
             ObjectCondition oc1 = preds.get(i);
@@ -97,10 +99,12 @@ public class GenerateCandidate {
                     break;
                 }
                 if(oc1.equalsWithoutId(oc2)) {
+                    identicalCount += 1;
                     eqObjs.add(oc2);
                 }
                 ObjectCondition cMerged = mergeEm(oc1, oc2);
                 if (cMerged != null) {
+                    mergeCount += 1;
                     BEPolicy mPolicy = new BEPolicy();
                     mPolicy.getObject_conditions().addAll(oMap.get(oc1).getObject_conditions());
                     mPolicy.getObject_conditions().addAll(oMap.get(oc2).getObject_conditions());
@@ -125,6 +129,8 @@ public class GenerateCandidate {
             }
             i += eqObjs.size();
         }
+//        System.out.println("Attribute: " + attribute
+//                + " Merge Count " + mergeCount + " Identical Count " + identicalCount);
     }
 
     /**

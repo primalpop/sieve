@@ -1,10 +1,12 @@
 package edu.uci.ics.tippers.execution;
 
 import edu.uci.ics.tippers.common.PolicyConstants;
+import edu.uci.ics.tippers.db.Histogram;
 import edu.uci.ics.tippers.db.MySQLConnectionManager;
 import edu.uci.ics.tippers.generation.policy.PolicyGen;
 import edu.uci.ics.tippers.manager.GuardPersistor;
 import edu.uci.ics.tippers.manager.PolicyPersistor;
+import edu.uci.ics.tippers.model.data.User;
 import edu.uci.ics.tippers.model.guard.SelectGuard;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
@@ -14,6 +16,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -46,10 +49,12 @@ public class GuardGenExp {
             }
     }
 
-    public void generateGuards(List<Integer> queriers, boolean first){
+    public void generateGuards(List<Integer> queriers){
+        boolean first = true;
         for(int querier: queriers) {
             List<BEPolicy> allowPolicies = polper.retrievePolicies(String.valueOf(querier),
                     PolicyConstants.USER_INDIVIDUAL, PolicyConstants.ACTION_ALLOW);
+            if(allowPolicies == null) continue;
             System.out.println("Querier #: " + querier + " with " + allowPolicies.size() + " allow policies");
             BEExpression allowBeExpression = new BEExpression(allowPolicies);
             Duration guardGen = Duration.ofMillis(0);
@@ -67,6 +72,7 @@ public class GuardGenExp {
     public static void main(String [] args){
         GuardGenExp ge = new GuardGenExp();
         PolicyGen pg = new PolicyGen();
-        ge.generateGuards(pg.getAllUsers(), true);
+        List<Integer> users = pg.getAllUsers();
+        ge.generateGuards(users);
     }
 }
