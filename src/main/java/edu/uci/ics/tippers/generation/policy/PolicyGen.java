@@ -20,6 +20,7 @@ public class PolicyGen {
     private Random r;
     private List<Integer> user_ids;
     private List<String> location_ids;
+    private Timestamp startDate = null, endDate = null;
 
     public PolicyGen(){
        r = new Random();
@@ -55,17 +56,27 @@ public class PolicyGen {
         return location_ids;
     }
 
-    public Timestamp getTimestamp(String colName, String valType){
+    public Timestamp retrieveDate(String valType){
         PreparedStatement queryStm = null;
         Timestamp ts = null;
         try{
-            queryStm = connection.prepareStatement("SELECT " + valType + "(" + colName + ") AS value from PRESENCE");
+            queryStm = connection.prepareStatement("SELECT " + valType + "(" + PolicyConstants.START_DATE + ") AS value from PRESENCE");
             ResultSet rs = queryStm.executeQuery();
             while (rs.next()) ts = rs.getTimestamp("value");
         } catch(SQLException e) {
             e.printStackTrace();
         }
         return ts;
+    }
+
+    public Timestamp getDate(String valType){
+        if (valType.equalsIgnoreCase("MIN")) {
+            if(startDate == null) startDate = retrieveDate(valType);
+            return startDate;
+        } else {
+            if(endDate == null) endDate = retrieveDate(valType);
+            return endDate;
+        }
     }
 
 
