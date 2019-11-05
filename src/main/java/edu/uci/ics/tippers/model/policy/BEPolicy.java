@@ -378,12 +378,11 @@ public class BEPolicy {
      * e.g., A = u and B = v
      * sel = set (A) * sel (B)
      * with independence assumption
-     * @param objectConditions
      * @return
      */
-    public static double computeL(Collection<ObjectCondition> objectConditions){
-        double selectivity = 1;
-        for (ObjectCondition obj: objectConditions) {
+    public float computeL(){
+        float selectivity = 1;
+        for (ObjectCondition obj: this.getObject_conditions()) {
             selectivity *= obj.computeL();
         }
         return selectivity;
@@ -442,16 +441,32 @@ public class BEPolicy {
      * declared on user_id attribute
      * @return
      */
-    public String fetchOwner(){
+    public int fetchOwner(){
         for (ObjectCondition objectCondition : this.object_conditions)
             if (objectCondition.getAttribute().equalsIgnoreCase(PolicyConstants.USERID_ATTR))
-                return objectCondition.getBooleanPredicates().get(0).getValue();
-        return null;
+                return Integer.parseInt(objectCondition.getBooleanPredicates().get(0).getValue());
+        return 0;
     }
 
     public String fetchLocation() {
         for (ObjectCondition objectCondition : this.object_conditions)
             if (objectCondition.getAttribute().equalsIgnoreCase(PolicyConstants.LOCATIONID_ATTR))
+                return objectCondition.getBooleanPredicates().get(0).getValue();
+        return null;
+
+    }
+
+    public String fetchGroup() {
+        for (ObjectCondition objectCondition : this.object_conditions)
+            if (objectCondition.getAttribute().equalsIgnoreCase(PolicyConstants.GROUP_ATTR))
+                return objectCondition.getBooleanPredicates().get(0).getValue();
+        return null;
+
+    }
+
+    public String fetchProfile() {
+        for (ObjectCondition objectCondition : this.object_conditions)
+            if (objectCondition.getAttribute().equalsIgnoreCase(PolicyConstants.PROFILE_ATTR))
                 return objectCondition.getBooleanPredicates().get(0).getValue();
         return null;
 
@@ -493,23 +508,47 @@ public class BEPolicy {
     }
 
     /**
-     * Collects the beginning and end values of 'start' timestamp object condition
+     * Collects the beginning and end values of 'start' date object condition
      * @return
      */
-    public List<Timestamp> fetchStartDate() {
-        SimpleDateFormat sdf = new SimpleDateFormat(PolicyConstants.TIMESTAMP_FORMAT);
-        List<Timestamp> start = new ArrayList<>();
+    public List<java.sql.Date> fetchDate() {
+        SimpleDateFormat sdf = new SimpleDateFormat(PolicyConstants.DATE_FORMAT);
+        List<java.sql.Date> start = new ArrayList<>();
         for (ObjectCondition objectCondition : this.object_conditions)
             if (objectCondition.getAttribute().equalsIgnoreCase(PolicyConstants.START_DATE)) {
                 try {
                     Date sb = sdf.parse(objectCondition.getBooleanPredicates().get(0).getValue());
-                    start.add(new java.sql.Timestamp(sb.getTime()));
+                    start.add(new java.sql.Date(sb.getTime()));
                     Date se = sdf.parse(objectCondition.getBooleanPredicates().get(1).getValue());
-                    start.add(new java.sql.Timestamp(se.getTime()));
+                    start.add(new java.sql.Date(se.getTime()));
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
             }
         return start;
     }
+
+
+    /**
+     * Collects the beginning and end values of 'start' time object condition
+     * @return
+     */
+    public List<java.sql.Time> fetchTime() {
+        SimpleDateFormat sdf = new SimpleDateFormat(PolicyConstants.TIME_FORMAT);
+        List<java.sql.Time> start = new ArrayList<>();
+        for (ObjectCondition objectCondition : this.object_conditions)
+            if (objectCondition.getAttribute().equalsIgnoreCase(PolicyConstants.START_TIME)) {
+                try {
+                    Date sb = sdf.parse(objectCondition.getBooleanPredicates().get(0).getValue());
+                    start.add(new java.sql.Time(sb.getTime()));
+                    Date se = sdf.parse(objectCondition.getBooleanPredicates().get(1).getValue());
+                    start.add(new java.sql.Time(se.getTime()));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+        return start;
+    }
+
+
 }

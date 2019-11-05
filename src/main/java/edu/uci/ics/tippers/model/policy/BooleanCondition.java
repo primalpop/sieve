@@ -155,7 +155,7 @@ public class BooleanCondition  implements Comparable<BooleanCondition>  {
             int end1 = Integer.parseInt(this.getBooleanPredicates().get(1).getValue());
             int start2 = Integer.parseInt(booleanCondition.getBooleanPredicates().get(0).getValue());
             int end2 = Integer.parseInt(booleanCondition.getBooleanPredicates().get(1).getValue());
-            return start1 != start2? start1 - start2: end1- end2;
+            return start1 != start2? start1 - start2: end1 - end2;
         }
         else if(booleanCondition.getType() == AttributeType.DATE) {
             LocalDate start1 = LocalDate.parse(this.getBooleanPredicates().get(0).getValue());
@@ -167,8 +167,8 @@ public class BooleanCondition  implements Comparable<BooleanCondition>  {
         }
         else if (booleanCondition.getType() == AttributeType.TIME) {
             LocalTime start1 = LocalTime.parse(this.getBooleanPredicates().get(0).getValue());
-            LocalTime start2 = LocalTime.parse(this.getBooleanPredicates().get(1).getValue());
-            LocalTime end1 = LocalTime.parse(booleanCondition.getBooleanPredicates().get(0).getValue());
+            LocalTime end1 = LocalTime.parse(this.getBooleanPredicates().get(1).getValue());
+            LocalTime start2 = LocalTime.parse(booleanCondition.getBooleanPredicates().get(0).getValue());
             LocalTime end2 = LocalTime.parse(booleanCondition.getBooleanPredicates().get(1).getValue());
             if (!start1.equals(start2)) return start1.compareTo(start2);
             return end1.compareTo(end2);

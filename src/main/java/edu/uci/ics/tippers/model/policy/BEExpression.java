@@ -213,7 +213,7 @@ public class BEExpression{
     public double computeL(){
         double selectivity = 1;
         for (BEPolicy bePolicy: this.getPolicies()) {
-            selectivity *= (1 - bePolicy.computeL(bePolicy.getObject_conditions()));
+            selectivity *= (1 - bePolicy.computeL());
         }
         return 1 - selectivity;
     }
