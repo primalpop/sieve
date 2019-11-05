@@ -156,32 +156,6 @@ public class SyntheticPolicy {
     }
 
     /**
-     * Previously generated policies (if any) are appended to the current list of generated policies
-     * Returns the generated policies
-     * Includes a random subset of attributes which are mentioned in 'attributes'
-     * Only closed ranges are allowed e.g., if start_timestamp is chosen, then end_timestamp is included too.
-     * @param numberOfPolicies
-     */
-    public List<BEPolicy> generateBEPolicy(int numberOfPolicies, List<String> attributes, List<BEPolicy> previous){
-        List<BEPolicy> bePolicies = new ArrayList<>();
-        bePolicies.addAll(previous);
-        for (int i = previous.size(); i < numberOfPolicies; i++) {
-            double selOfPolicy = 0.0;
-            List<ObjectCondition> objectConditions;
-            do {
-                objectConditions = generatePredicates(String.valueOf(i), attributes);
-                selOfPolicy = BEPolicy.computeL(objectConditions);
-            } while (selOfPolicy < 0.00001 || selOfPolicy > 0.00005);
-            BEPolicy bePolicy = new BEPolicy(String.valueOf(i), "Generated Policy " + i + "with selectivity " + selOfPolicy, objectConditions, PolicyConstants.DEFAULT_QC.asList(), "", "");
-            bePolicies.add(bePolicy);
-        }
-        writer.writeJSONToFile(bePolicies, PolicyConstants.BE_POLICY_DIR, null);
-        return bePolicies;
-    }
-
-
-
-    /**
      * Generates overlapping policies without checking selectivity
      * @param numberOfPolicies
      * @param threshold
@@ -304,13 +278,14 @@ public class SyntheticPolicy {
             else {
                 double selOfPolicy = 0.0;
                 List<ObjectCondition> objectConditions;
+                BEPolicy bePolicy = null;
                 do {
                     objectConditions = generateOwnerPolicies(policyID, attributes);
-                    selOfPolicy = BEPolicy.computeL(objectConditions);
+                    bePolicy = new BEPolicy(policyID,
+                            objectConditions, querierConditions, "analysis",
+                            "allow", new Timestamp(System.currentTimeMillis()));
+                    selOfPolicy = bePolicy.computeL();
                 } while (!(selOfPolicy > 0.00000001 && selOfPolicy < 0.1));
-                BEPolicy bePolicy = new BEPolicy(policyID,
-                        objectConditions, querierConditions, "analysis",
-                        "allow", new Timestamp(System.currentTimeMillis()));
                 bePolicies.add(bePolicy);
             }
             double rand = Math.random();
@@ -319,40 +294,6 @@ public class SyntheticPolicy {
 
         }
         sp.insertPolicies(bePolicies);
-    }
-
-    /**
-     * Generates duplicate policies
-     * original = numberOfPolicies - (numberOfPolicies * percentage)
-     * @return
-     */
-    public List<BEPolicy> generateDuplicatePolicies(int numberOfPolicies, double percentage, List<String> attributes, List<BEPolicy> previous){
-        //TODO: percentage doesn't work when policies are being appended to existing policies list
-        List<BEPolicy> bePolicies = new ArrayList<>();
-        bePolicies.addAll(previous);
-        int duplicate = (int) (numberOfPolicies * percentage);
-        for (int i = previous.size(); i < numberOfPolicies; i++) {
-            if (i > (numberOfPolicies - duplicate)) {
-                BEPolicy oPolicy = new BEPolicy(bePolicies.get(new Random().nextInt(i)));
-                oPolicy.setId("Generated duplicate Policy " + i);
-                for(ObjectCondition oc: oPolicy.getObject_conditions()){
-                    oc.setPolicy_id(String.valueOf(i));
-                }
-                bePolicies.add(oPolicy);
-            }
-            else {
-                double selOfPolicy = 0.0;
-                List<ObjectCondition> objectConditions;
-                do {
-                    objectConditions = generatePredicates(String.valueOf(i), attributes);
-                    selOfPolicy = BEPolicy.computeL(objectConditions);
-                } while (selOfPolicy < 0.00001 || selOfPolicy > 0.00005);
-                BEPolicy bePolicy = new BEPolicy(String.valueOf(i), "Generated Policy " + i + "with selectivity " + selOfPolicy, objectConditions, PolicyConstants.DEFAULT_QC.asList(), "", "");
-                bePolicies.add(bePolicy);
-            }
-        }
-        writer.writeJSONToFile(bePolicies, PolicyConstants.BE_POLICY_DIR, "duplicate");
-        return bePolicies;
     }
 
     /**

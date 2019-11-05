@@ -208,50 +208,62 @@ public class PolicyGroupGen {
         else return null;
     }
 
-    private void generateDefaultPolicies(int querier_id, String querier_profile, List<String> querier_groups){
+    /**
+     * Default policies generated per querier based on their profile and group memberships
+     * @param queriers
+     */
+    private void generateDefaultPolicies(List<Integer> queriers){
         List<BEPolicy> defaultPolicies = new ArrayList<>();
-        for (String qGroup: querier_groups) {
-            //Create default policy for user group
-            defaultPolicies.add(pg.generatePolicies(querier_id, 0, qGroup, null, workingHours,
-                    null, PolicyConstants.ACTION_ALLOW));
-            //Create default policy for user profiles within user groups
-            defaultPolicies.add(pg.generatePolicies(querier_id, 0, qGroup, querier_profile, allHours,
-                    null, PolicyConstants.ACTION_ALLOW));
-        }
-        //Create default policy for staff to monitor faculty and visitors
-        if(querier_profile.equalsIgnoreCase(UserProfile.STAFF.getValue())){
-            defaultPolicies.add(pg.generatePolicies(querier_id, 0, null, UserProfile.FACULTY.getValue(),
-                    workingHours, null, PolicyConstants.ACTION_ALLOW));
-            // in specific locations during working hours
-            for (String forbiddenLoc: location_clusters.get(0)) {
-                defaultPolicies.add(pg.generatePolicies(querier_id, 0, null, UserProfile.VISITOR.getValue(),
-                        workingHours, forbiddenLoc, PolicyConstants.ACTION_ALLOW));
+        for (int querier: queriers) {
+            List<String> querierGroups = getGroupsForUser(querier);
+            String querierProfile = getUserRole(querier);
+            if (!querierGroups.isEmpty()) {
+                //Create default policy for user group
+                defaultPolicies.add(pg.generatePolicies(querier, 0, querierGroups.get(0), null, workingHours,
+                        null, PolicyConstants.ACTION_ALLOW));
+                //Create default policy for user profiles within user groups
+                defaultPolicies.add(pg.generatePolicies(querier, 0, querierGroups.get(0), querierProfile, allHours,
+                        null, PolicyConstants.ACTION_ALLOW));
             }
-        }
-        //Create default policy for faculty to see students during working hours
-        if(querier_profile.equalsIgnoreCase(UserProfile.FACULTY.getValue())){
-            defaultPolicies.add(pg.generatePolicies(querier_id, 0, null, UserProfile.GRADUATE.getValue(),
-                    workingHours, null, PolicyConstants.ACTION_ALLOW));
-            defaultPolicies.add(pg.generatePolicies(querier_id, 0, null, UserProfile.UNDERGRAD.getValue(),
-                    workingHours, null, PolicyConstants.ACTION_ALLOW));
-        }
-        //Create default policy for non-visitors to monitor visitors during night time
-        if(!querier_profile.equalsIgnoreCase(UserProfile.VISITOR.getValue())) {
-            defaultPolicies.add(pg.generatePolicies(querier_id, 0, null, UserProfile.VISITOR.getValue(),
-                    nightHours, null,  PolicyConstants.ACTION_ALLOW));
+            //Create default policy for staff to monitor faculty and visitors
+            if(querierProfile.equalsIgnoreCase(UserProfile.STAFF.getValue())){
+                defaultPolicies.add(pg.generatePolicies(querier, 0, null, UserProfile.FACULTY.getValue(),
+                        workingHours, null, PolicyConstants.ACTION_ALLOW));
+                // in specific locations during working hours
+                for (String forbiddenLoc: location_clusters.get(0)) {
+                    defaultPolicies.add(pg.generatePolicies(querier, 0, null, UserProfile.VISITOR.getValue(),
+                            workingHours, forbiddenLoc, PolicyConstants.ACTION_ALLOW));
+                }
+            }
+            //Create default policy for faculty to see students during working hours
+            if(querierProfile.equalsIgnoreCase(UserProfile.FACULTY.getValue())){
+                defaultPolicies.add(pg.generatePolicies(querier, 0, null, UserProfile.GRADUATE.getValue(),
+                        workingHours, null, PolicyConstants.ACTION_ALLOW));
+                defaultPolicies.add(pg.generatePolicies(querier, 0, null, UserProfile.UNDERGRAD.getValue(),
+                        workingHours, null, PolicyConstants.ACTION_ALLOW));
+            }
+            //Create default policy for non-visitors to monitor visitors during night time
+            if(!querierProfile.equalsIgnoreCase(UserProfile.VISITOR.getValue())) {
+                defaultPolicies.add(pg.generatePolicies(querier, 0, null, UserProfile.VISITOR.getValue(),
+                        nightHours, null,  PolicyConstants.ACTION_ALLOW));
+            }
         }
         polper.insertPolicy(defaultPolicies);
     }
 
-
-    private void generateActivePolicies(int querier_id, List<String> querier_groups) {
+    /**
+     * Active policies generated per owner
+     * @param owner_id
+     * @param owner_groups
+     */
+    private void generateActivePolicies(int owner_id, List<String> owner_groups) {
         List<BEPolicy> activePolicies = new ArrayList<>();
         for (int i = 0; i < ACTIVE_CHOICES; i++) {
-            String ownerProfile = null;
+            String querierProfile = null;
             if (Math.random() > (float) 1 / PolicyConstants.USER_PROFILES.size())
-                ownerProfile = PolicyConstants.USER_PROFILES.get(new Random().nextInt(PolicyConstants.USER_PROFILES.size()));
-            String ownerGroup = querier_groups.get(new Random().nextInt(querier_groups.size()));
-            List<Integer> owners = getListOfUsers(ownerGroup, ownerProfile, GROUP_MEMBER_ACTIVE_LIMIT);
+                querierProfile = PolicyConstants.USER_PROFILES.get(new Random().nextInt(PolicyConstants.USER_PROFILES.size()));
+            String querierGroup = owner_groups.get(0); //number of groups per user is 1
+            List<Integer> queriers = getListOfUsers(querierGroup, querierProfile, GROUP_MEMBER_ACTIVE_LIMIT);
             int offset = 0, duration = 0, week = 0;
             if (Math.random() < TIMESTAMP_CHANCE) {
                 offset = r.nextInt(8) + 1;
@@ -262,14 +274,14 @@ public class PolicyGroupGen {
             }
             TimeStampPredicate tsPred = new TimeStampPredicate(pg.getDate("MIN"), week, START_WORKING_HOURS, offset, duration);
             List<String> locations = includeLocation();
-            for (int owner : owners) {
-                if(owner == querier_id) continue;
+            for (int querier : queriers) {
+                if(querier == owner_id) continue;
                 if (locations != null)
                     for (String loc : locations)
-                        activePolicies.add(pg.generatePolicies(querier_id, owner, null, null, tsPred,
+                        activePolicies.add(pg.generatePolicies(querier, owner_id, null, null, tsPred,
                                 loc, PolicyConstants.ACTION_ALLOW));
                 else
-                    activePolicies.add(pg.generatePolicies(querier_id, owner, null, null, tsPred,
+                    activePolicies.add(pg.generatePolicies(querier, owner_id, null, null, tsPred,
                             null, PolicyConstants.ACTION_ALLOW));
             }
         }
@@ -278,18 +290,17 @@ public class PolicyGroupGen {
 
 
     /**
-     * Creating default and active policies for a querier
+     * Creating default and active policies for a user
      */
     public void generatePolicies(){
         List<Integer> allUsers = pg.getAllUsers();
+        generateDefaultPolicies(allUsers);
         int default_count = 0, active_count = 0;
         for (int user_id: allUsers) {
             String userProfile = getUserRole(user_id);
             List<String> groupsForUser = getGroupsForUser(user_id);
-            if(Math.random() < PERCENTAGE_DEFAULT) {//Default users
-                generateDefaultPolicies(user_id, userProfile, groupsForUser);
+            if(Math.random() < PERCENTAGE_DEFAULT) //Default users
                 default_count += 1;
-            }
             else { //Active users
                 if (!userProfile.equalsIgnoreCase(UserProfile.VISITOR.getValue())) {
                     System.out.println("Active user: " + user_id);

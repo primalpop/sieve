@@ -80,12 +80,11 @@ public class Experiment {
             MySQLResult tradResult = new MySQLResult();
 
             if (BASE_LINE) {
-                System.out.println(beExpression.createQueryFromPolices());
                 tradResult = mySQLQueryManager.runTimedQueryWithRepetitions(beExpression.createQueryFromPolices(),
                         RESULT_CHECK, NUM_OF_REPS);
                 Duration runTime = Duration.ofMillis(0);
                 runTime = runTime.plus(tradResult.getTimeTaken());
-                System.out.println("Baseline approach for " + beExpression.getPolicies().size() + " policies took " + runTime.toMillis());
+                System.out.println("QW: No of Policies: " + beExpression.getPolicies().size() + " , Time: " + runTime.toMillis());
             }
 
             Duration guardGen = Duration.ofMillis(0);
@@ -93,7 +92,7 @@ public class Experiment {
             SelectGuard gh = new SelectGuard(beExpression, EXTEND_PREDICATES);
             Instant fsEnd = Instant.now();
             guardGen = guardGen.plus(Duration.between(fsStart, fsEnd));
-            System.out.println("Guard Generation time: " + guardGen + " Number of Guards: " + gh.numberOfGuards());
+            System.out.println("Guard Generation: " + guardGen + " Number of Guards: " + gh.numberOfGuards());
 
             /** Result checking **/
             if (RESULT_CHECK) {
@@ -111,7 +110,7 @@ public class Experiment {
             Duration execTime = Duration.ofMillis(0);
             MySQLResult execResult = mySQLQueryManager.runTimedQueryExp(gh.createGuardedQuery(GUARD_UNION));
             execTime = execTime.plus(execResult.getTimeTaken());
-            System.out.println("Guard execution with Union " + GUARD_UNION + " took " + execTime.toMillis() + " milliseconds");
+            System.out.println("Guard execution: "  + " Time: " + execTime.toMillis());
         } catch (Exception e) {
             e.printStackTrace();
         }

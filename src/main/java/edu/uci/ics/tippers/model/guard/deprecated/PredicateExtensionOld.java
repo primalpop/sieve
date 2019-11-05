@@ -43,8 +43,8 @@ public class PredicateExtensionOld {
      * @return
      */
     private double computeF(BEPolicy factorized, BEPolicy original) {
-        double lfact = BEPolicy.computeL(factorized.getObject_conditions());
-        double lorg = BEPolicy.computeL(original.getObject_conditions());
+        double lfact = factorized.computeL();
+        double lorg = original.computeL();
         return lorg - lfact;
     }
 
@@ -92,7 +92,7 @@ public class PredicateExtensionOld {
             if (candidate.getObject_conditions().size() == 0) {
                 System.out.println(bePolicies.get(i).createQueryFromObjectConditions());
             }
-            double fp = BEPolicy.computeL(candidate.getObject_conditions());
+            double fp = candidate.computeL();
             if (fp < minFalsePositives) {
                 minFalsePositives = fp;
                 chosen = i;
@@ -139,7 +139,7 @@ public class PredicateExtensionOld {
         BEPolicy intersection = new BEPolicy();
         intersection.getObject_conditions().add(a1);
         intersection.getObject_conditions().add(a2);
-        double l_intersection = BEPolicy.computeL(intersection.getObject_conditions());
+        double l_intersection = intersection.computeL();
         return (l_intersection + F_a1 + F_a2) > 0;
     }
 
