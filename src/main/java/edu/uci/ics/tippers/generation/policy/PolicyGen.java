@@ -33,7 +33,7 @@ public class PolicyGen {
         user_ids = new ArrayList<>();
         try {
             queryStm = connection.prepareStatement("SELECT ID as id " +
-                    "FROM dummy_user");
+                    "FROM USER");
             ResultSet rs = queryStm.executeQuery();
             while (rs.next()) user_ids.add(rs.getInt("id"));
         } catch (SQLException e) {
