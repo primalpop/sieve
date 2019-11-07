@@ -32,7 +32,7 @@ CREATE FUNCTION geff(querier INT, user_id INT, location_id VARCHAR(255),
         DECLARE res_tuple VARCHAR(255);
         DECLARE cursor1 CURSOR
         FOR SELECT ownerEq, profEq, groupEq, locEq, dateGe, dateLe, timeGe, timeLe
-        FROM realtest.FLAT_POLICY as fp
+        FROM microtest.FLAT_POLICY as fp
         WHERE fp.querier = querier ORDER BY selectivity ASC;
         DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
         SET res_tuple = CONCAT_WS(user_id, user_group, user_profile, location_id, start_date, start_time);
