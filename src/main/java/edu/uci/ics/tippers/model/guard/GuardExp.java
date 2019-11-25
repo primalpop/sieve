@@ -113,9 +113,9 @@ public class GuardExp {
         String delim = "";
         for (GuardPart gp: this.guardParts) {
             queryExp.append(delim);
-            queryExp.append(gp.getGuardFactor());
+            queryExp.append(gp.getGuard().print());
             queryExp.append(PolicyConstants.CONJUNCTION);
-            queryExp.append(gp.getGuardPartition());
+            queryExp.append(gp.getGuardPartition().createQueryFromPolices());
             delim = PolicyConstants.DISJUNCTION;
         }
         return queryExp.toString();

@@ -1,34 +1,29 @@
 package edu.uci.ics.tippers.model.guard;
 
+import edu.uci.ics.tippers.model.policy.BEExpression;
+import edu.uci.ics.tippers.model.policy.ObjectCondition;
+
 public class GuardPart {
 
-    String id;
+    int id;
 
-    String guardFactor;
+    ObjectCondition guard;
 
-    String guardPartition;
+    BEExpression guardPartition;
 
-    public String getId() {
-        return id;
+    public ObjectCondition getGuard() {
+        return guard;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setGuard(ObjectCondition guard) {
+        this.guard = guard;
     }
 
-    public String getGuardFactor() {
-        return guardFactor;
-    }
-
-    public void setGuardFactor(String guardFactor) {
-        this.guardFactor = guardFactor;
-    }
-
-    public String getGuardPartition() {
+    public BEExpression getGuardPartition() {
         return guardPartition;
     }
 
-    public void setGuardPartition(String guardPartition) {
+    public void setGuardPartition(BEExpression guardPartition) {
         this.guardPartition = guardPartition;
     }
 }
