@@ -224,10 +224,9 @@ public class FactorSearch {
                     }
                 }
                 bePolicy.cleanDuplicates();
-                String remainderQuery =  "(" + bePolicy.createQueryFromObjectConditions()  + ")";
                 GuardPart gp = new GuardPart();
-                gp.setGuardFactor(gOC.print());
-                gp.setGuardPartition(remainderQuery);
+                gp.setGuard(gOC);
+//                gp.setGuardPartition(new BEExpression()); TODO: to be fixed
                 gps.add(gp);
             }
         }
@@ -240,8 +239,8 @@ public class FactorSearch {
             String quotientQuery = finalTerm.getFactor().print() +
                     PolicyConstants.CONJUNCTION + "(" + gf.createQueryFromExactFactor() + ")";
             GuardPart gp = new GuardPart();
-            gp.setGuardFactor(finalTerm.getFactor().print());
-            gp.setGuardPartition(quotientQuery);
+            gp.setGuard(finalTerm.getFactor());
+            gp.setGuardPartition(gf.getExpression());
             gps.add(gp);
             Term parent = parentMap.get(finalTerm);
             if(parent.getFscore() == Double.POSITIVE_INFINITY) break;

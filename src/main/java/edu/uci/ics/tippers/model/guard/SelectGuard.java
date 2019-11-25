@@ -150,8 +150,8 @@ public class SelectGuard {
         List<GuardPart> gps = new ArrayList<>();
         for (Term mt: finalForm) {
             GuardPart gp = new GuardPart();
-            gp.setGuardFactor(mt.getFactor().print());
-            gp.setGuardPartition(mt.getQuotient().createQueryFromPolices());
+            gp.setGuard(mt.getFactor());
+            gp.setGuardPartition(mt.getQuotient());
             gps.add(gp);
         }
         GuardExp guardExp = new GuardExp();

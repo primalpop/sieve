@@ -6,7 +6,6 @@ import edu.uci.ics.tippers.db.MySQLConnectionManager;
 import edu.uci.ics.tippers.generation.policy.PolicyGen;
 import edu.uci.ics.tippers.manager.GuardPersistor;
 import edu.uci.ics.tippers.manager.PolicyPersistor;
-import edu.uci.ics.tippers.model.data.User;
 import edu.uci.ics.tippers.model.guard.SelectGuard;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
@@ -16,7 +15,6 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Collections;
 import java.util.List;
 
 
