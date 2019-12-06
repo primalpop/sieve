@@ -108,7 +108,7 @@ public class QueryGeneration {
     private List<QueryStatement> createQuery1(List<String> selTypes, int queryCount) {
         List<QueryStatement> queries = new ArrayList<>();
         int i = 0, j = 0;
-        Timestamp startTS = null; //TODO: to be filled in
+        Timestamp startTS = null; //TODO: to be fille
         String start = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(startTS);
         for (int k = 0; k < selTypes.size(); k++) {
             int numQ = 0;
