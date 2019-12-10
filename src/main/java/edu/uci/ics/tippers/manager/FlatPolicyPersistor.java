@@ -63,14 +63,12 @@ public class FlatPolicyPersistor {
         PolicyGen pg = new PolicyGen();
         List<Integer> users = pg.getAllUsers();
         PolicyPersistor polper = new PolicyPersistor();
-        List<BEPolicy> allowPolicies = new ArrayList<BEPolicy>();
+        FlatPolicyPersistor flapolper = new FlatPolicyPersistor();
         for(int user: users) {
             List<BEPolicy> policiesPerQuerier = polper.retrievePolicies(String.valueOf(user),
                     PolicyConstants.USER_INDIVIDUAL, PolicyConstants.ACTION_ALLOW);
             if(policiesPerQuerier != null)
-                allowPolicies.addAll(policiesPerQuerier);
+                flapolper.insertPolicies(policiesPerQuerier);
         }
-        FlatPolicyPersistor flapolper = new FlatPolicyPersistor();
-        flapolper.insertPolicies(allowPolicies);
     }
 }

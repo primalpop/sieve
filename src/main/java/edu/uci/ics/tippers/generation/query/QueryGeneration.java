@@ -95,7 +95,7 @@ public class QueryGeneration {
 
     /**
      * Query 1: Select * from PRESENCE where location_id in [......]
-     * and start <= t2 and end >= t1
+     * and start_date >= d1 and start_date <= d2 and start_time >= t1 and start_time <= t2
      * The algorithm iterates from low to high selectivity types and
      * progressively increases the number of location predicates and/or time range
      * to satisfy the required selectivity except when the query is jumping ahead
@@ -106,6 +106,65 @@ public class QueryGeneration {
      * @return
      */
     private List<QueryStatement> createQuery1(List<String> selTypes, int queryCount) {
+        List<QueryStatement> queries = new ArrayList<>();
+        int i = 0, j = 0;
+        Timestamp startTS = null; //TODO: to be filled
+        String start = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(startTS);
+        for (int k = 0; k < selTypes.size(); k++) {
+            int numQ = 0;
+            int locs = numLocs.get(i);
+            double extension = hours.get(j);
+            do {
+                Timestamp finishTS = getEndingTimeWithExtension(startTS, extension);
+                String finish = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(finishTS);
+                String query = String.format("start >= \"%s\" AND finish <= \"%s\" ", start, finish);
+                List<String> locPreds = new ArrayList<>();
+                int predCount = 0;
+                while (predCount < locs) {
+                    locPreds.add(String.valueOf(locations.get(new Random().nextInt(locations.size()))));
+                    predCount += 1;
+                }
+                query += "AND location_id in ( ";
+                query += locPreds.stream().map(item -> item + ", ").collect(Collectors.joining(" "));
+                query = query.substring(0, query.length() - 2); //removing the extra comma
+                query += ")";
+                float selQuery = checkSelectivity(query);
+                String selType = checkSelectivityType(selQuery);
+                if(!selType.equalsIgnoreCase(selTypes.get(k))){
+                    if((k == selTypes.size()-1) || ((k+1) < selTypes.size() && !selType.equalsIgnoreCase(selTypes.get(k+1)))) {
+                        if(i == j && i++ < locations.size()) locs = numLocs.get(i);
+                        else if(i >=j && j++ < hours.size()) extension = hours.get(j);
+                        else if (i > locations.size() || j > hours.size()) {
+                            System.out.println("Stopped at " + selTypes.get(k) + " with " + numQ + " queries");
+                            return queries;
+                        }
+                    }
+                }
+                else{
+                    queries.add(new QueryStatement(query, 2, selQuery, selType,
+                            new Timestamp(System.currentTimeMillis())));
+                    numQ++;
+                }
+            } while (numQ < queryCount);
+        }
+        return queries;
+    }
+
+
+    /**
+     * Query 1: Select user_id from PRESENCE P1, PRESENCE P2 where P1.location_id in [......]
+     * and P2.location_id in [.........] and start_date >= d1 and start_date <= d2 and
+     * start_time >= t1 and start_time <= t2
+     * The algorithm iterates from low to high selectivity types and
+     * progressively increases the number of location predicates and/or time range
+     * to satisfy the required selectivity except when the query is jumping ahead
+     * in selectivity (e.g., chosen selType = low, generated query = medium) in which
+     * case it waits instead.
+     * @param selTypes - types of query selectivity needed
+     * @param queryCount - number of each queries of each selectivity type
+     * @return
+     */
+    private List<QueryStatement> createQuery2(List<String> selTypes, int queryCount) {
         List<QueryStatement> queries = new ArrayList<>();
         int i = 0, j = 0;
         Timestamp startTS = null; //TODO: to be fille
