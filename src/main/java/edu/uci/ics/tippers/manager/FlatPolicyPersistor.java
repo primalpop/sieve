@@ -32,7 +32,8 @@ public class FlatPolicyPersistor {
                     "locEq, dateGe, dateLe, timeGe, timeLe, selectivity) VALUES (?, ?, ?, ?, ?, ?, ?," +
                     "?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement policyStmt = connection.prepareStatement(policyInsert);
-            for (BEPolicy bePolicy : bePolicyList) {
+            for (int i = 0; i < bePolicyList.size(); i++) {
+                BEPolicy bePolicy = bePolicyList.get(i);
                 policyStmt.setString(1, bePolicy.getId());
                 policyStmt.setString(2, bePolicy.fetchQuerier());
                 policyStmt.setString(3, bePolicy.getPurpose());
@@ -50,6 +51,8 @@ public class FlatPolicyPersistor {
                 policyStmt.setTime(13, start_time.get(1));
                 policyStmt.setFloat(14, bePolicy.computeL());
                 policyStmt.addBatch();
+                if(i % 50000 == 0)
+                    policyStmt.executeBatch();
             }
             policyStmt.executeBatch();
             policyStmt.close();
