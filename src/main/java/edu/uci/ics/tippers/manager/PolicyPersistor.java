@@ -112,29 +112,6 @@ public class PolicyPersistor {
         Timestamp inserted_at = null;
         List<ObjectCondition> objectConditions = new ArrayList<>();
 
-        List<QuerierCondition> querierConditions = new ArrayList<>();
-        QuerierCondition qc1 = new QuerierCondition();
-        qc1.setAttribute("policy_type");
-        qc1.setType(AttributeType.STRING);
-        List<BooleanPredicate> qbps1 = new ArrayList<>();
-        BooleanPredicate qbp1 = new BooleanPredicate();
-        qbp1.setOperator(Operation.EQ);
-        qbp1.setValue(querier_type);
-        qbps1.add(qbp1);
-        qc1.setBooleanPredicates(qbps1);
-        querierConditions.add(qc1);
-
-        QuerierCondition qc2 = new QuerierCondition();
-        qc2.setAttribute("querier");
-        qc2.setType(AttributeType.STRING);
-        List<BooleanPredicate> qbps2 = new ArrayList<>();
-        BooleanPredicate qbp2 = new BooleanPredicate();
-        qbp2.setOperator(Operation.EQ);
-        qbp2.setValue(querier);
-        qbps2.add(qbp2);
-        qc2.setBooleanPredicates(qbps2);
-        querierConditions.add(qc2);
-
         String policy_table = null, oc_table = null;
         if (querier_type.equalsIgnoreCase("user")) {
             policy_table = "USER_POLICY";
@@ -169,12 +146,37 @@ public class PolicyPersistor {
             if (!rs.next()) return null;
             String next = null;
             boolean skip = false;
+            List<QuerierCondition> querierConditions = new ArrayList<>();
             while (true) {
                 if(!skip) {
                     id = rs.getString(policy_table + ".id");
                     purpose = rs.getString(policy_table + ".purpose");
                     action = rs.getString(policy_table + ".enforcement_action");
                     inserted_at = rs.getTimestamp(policy_table + ".inserted_at");
+                    if(querier == null)
+                        querier = rs.getString(policy_table + ".querier");
+
+                    querierConditions  = new ArrayList<>();
+                    QuerierCondition qc1 = new QuerierCondition();
+                    qc1.setAttribute("policy_type");
+                    qc1.setType(AttributeType.STRING);
+                    List<BooleanPredicate> qbps1 = new ArrayList<>();
+                    BooleanPredicate qbp1 = new BooleanPredicate();
+                    qbp1.setOperator(Operation.EQ);
+                    qbp1.setValue(querier_type);
+                    qbps1.add(qbp1);
+                    qc1.setBooleanPredicates(qbps1);
+                    querierConditions.add(qc1);
+                    QuerierCondition qc2 = new QuerierCondition();
+                    qc2.setAttribute("querier");
+                    qc2.setType(AttributeType.STRING);
+                    List<BooleanPredicate> qbps2 = new ArrayList<>();
+                    BooleanPredicate qbp2 = new BooleanPredicate();
+                    qbp2.setOperator(Operation.EQ);
+                    qbp2.setValue(querier);
+                    qbps2.add(qbp2);
+                    qc2.setBooleanPredicates(qbps2);
+                    querierConditions.add(qc2);
                     objectConditions = new ArrayList<>();
                 }
                 ObjectCondition oc = new ObjectCondition();
