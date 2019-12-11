@@ -130,7 +130,10 @@ public class BooleanCondition  implements Comparable<BooleanCondition>  {
 
     @Override
     public String toString() {
-        return policy_id + attribute + booleanPredicates;
+        return  "policyID= " + policy_id +
+                " attribute='" + attribute +
+                ", booleanPredicates=" + booleanPredicates +
+                '}';
     }
 
     public String getPolicy_id() {

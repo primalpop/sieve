@@ -5,6 +5,7 @@ import edu.uci.ics.tippers.db.MySQLConnectionManager;
 import edu.uci.ics.tippers.db.MySQLQueryManager;
 import edu.uci.ics.tippers.db.MySQLResult;
 import edu.uci.ics.tippers.generation.policy.PolicyGen;
+import edu.uci.ics.tippers.model.policy.TimeStampPredicate;
 import edu.uci.ics.tippers.model.query.QueryStatement;
 
 import java.sql.*;
@@ -22,8 +23,7 @@ public class QueryGeneration {
     Timestamp start_beg, start_fin;
     private MySQLQueryManager mySQLQueryManager;
     private Connection connection = MySQLConnectionManager.getInstance().getConnection();
-    SimpleDateFormat sdf;
-    private List<Double> hours;
+    private List<Integer> hours;
     private List<Integer> numUsers;
     private List<Integer> numLocs;
 
@@ -36,12 +36,11 @@ public class QueryGeneration {
         this.start_beg = pg.getDate( "MIN");
         this.start_fin = pg.getDate("MAX");
 
-        hours = new ArrayList<Double>(Arrays.asList(10.0, 20.0, 30.0, 40.0, 50.0, 100.0, 200.0, 300.0, 500.0, 1000.0, 2000.0, 3000.0, 5000.0, 7000.0));
+        hours = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 7, 10, 12, 15, 17, 20, 23));
         numUsers = new ArrayList<Integer>(Arrays.asList(500, 1000, 2000));
         numLocs = new ArrayList<Integer>(Arrays.asList(1, 2, 3, 5, 10, 15, 20, 30, 50, 75, 100, 150, 200));
 
         this.mySQLQueryManager = new MySQLQueryManager();
-        this.sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Random r = new Random();
     }
 
@@ -65,91 +64,6 @@ public class QueryGeneration {
         return (float) mySQLResult.getResultCount() / (float) PolicyConstants.NUMBER_OR_TUPLES;
     }
 
-//    /**
-//     * Get location(s) of a user within a period of time
-//     * Query 1: Select * from SEMANTIC_OBSERVATION where user_id = x and timeStamp >= y and timeStamp <= z
-//     * @return
-//     */
-//    private QueryStatement createQuery1() {
-//        String query, selType = "";
-//        float selQuery = 0;
-//        do {
-//            int user = user_ids.get(new Random().nextInt(user_ids.size()));
-//            Timestamp startTS = getRandomTimeStamp();
-//            String start = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(startTS);
-//            String end = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(getEndingTimeInterval(startTS));
-//            query = String.format(" (user_id = %s) AND (timeStamp >= \"%s\") AND (timeStamp <= \"%s\")", user, start, end);
-//            selQuery = checkSelectivity(query);
-//            selType = checkSelectivityType(selQuery);
-//        } while (selType.isEmpty());
-//        return new QueryStatement(query, 1, selQuery, selType,
-//                new Timestamp(System.currentTimeMillis()));
-//    }
-
-
-    public Timestamp getEndingTimeWithExtension(Timestamp start, double hours){
-        int hourIndex = new Random().nextInt(PolicyConstants.HOUR_EXTENSIONS.size());
-        long milliseconds = (long)(hours * 60.0 * 60.0 * 1000.0);
-        return new Timestamp(start.getTime() + milliseconds);
-    }
-
-    /**
-     * Query 1: Select * from PRESENCE where location_id in [......]
-     * and start_date >= d1 and start_date <= d2 and start_time >= t1 and start_time <= t2
-     * The algorithm iterates from low to high selectivity types and
-     * progressively increases the number of location predicates and/or time range
-     * to satisfy the required selectivity except when the query is jumping ahead
-     * in selectivity (e.g., chosen selType = low, generated query = medium) in which
-     * case it waits instead.
-     * @param selTypes - types of query selectivity needed
-     * @param queryCount - number of each queries of each selectivity type
-     * @return
-     */
-    private List<QueryStatement> createQuery1(List<String> selTypes, int queryCount) {
-        List<QueryStatement> queries = new ArrayList<>();
-        int i = 0, j = 0;
-        Timestamp startTS = null; //TODO: to be filled
-        String start = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(startTS);
-        for (int k = 0; k < selTypes.size(); k++) {
-            int numQ = 0;
-            int locs = numLocs.get(i);
-            double extension = hours.get(j);
-            do {
-                Timestamp finishTS = getEndingTimeWithExtension(startTS, extension);
-                String finish = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(finishTS);
-                String query = String.format("start >= \"%s\" AND finish <= \"%s\" ", start, finish);
-                List<String> locPreds = new ArrayList<>();
-                int predCount = 0;
-                while (predCount < locs) {
-                    locPreds.add(String.valueOf(locations.get(new Random().nextInt(locations.size()))));
-                    predCount += 1;
-                }
-                query += "AND location_id in ( ";
-                query += locPreds.stream().map(item -> item + ", ").collect(Collectors.joining(" "));
-                query = query.substring(0, query.length() - 2); //removing the extra comma
-                query += ")";
-                float selQuery = checkSelectivity(query);
-                String selType = checkSelectivityType(selQuery);
-                if(!selType.equalsIgnoreCase(selTypes.get(k))){
-                    if((k == selTypes.size()-1) || ((k+1) < selTypes.size() && !selType.equalsIgnoreCase(selTypes.get(k+1)))) {
-                        if(i == j && i++ < locations.size()) locs = numLocs.get(i);
-                        else if(i >=j && j++ < hours.size()) extension = hours.get(j);
-                        else if (i > locations.size() || j > hours.size()) {
-                            System.out.println("Stopped at " + selTypes.get(k) + " with " + numQ + " queries");
-                            return queries;
-                        }
-                    }
-                }
-                else{
-                    queries.add(new QueryStatement(query, 2, selQuery, selType,
-                            new Timestamp(System.currentTimeMillis())));
-                    numQ++;
-                }
-            } while (numQ < queryCount);
-        }
-        return queries;
-    }
-
 
     /**
      * Query 1: Select user_id from PRESENCE P1, PRESENCE P2 where P1.location_id in [......]
@@ -164,19 +78,19 @@ public class QueryGeneration {
      * @param queryCount - number of each queries of each selectivity type
      * @return
      */
-    private List<QueryStatement> createQuery2(List<String> selTypes, int queryCount) {
+    private List<QueryStatement> createQuery1(List<String> selTypes, int queryCount) {
         List<QueryStatement> queries = new ArrayList<>();
         int i = 0, j = 0;
-        Timestamp startTS = null; //TODO: to be fille
-        String start = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(startTS);
         for (int k = 0; k < selTypes.size(); k++) {
             int numQ = 0;
             int locs = numLocs.get(i);
-            double extension = hours.get(j);
+            int duration = 23;
+            int days = 0;
+            boolean locFlag = true;
             do {
-                Timestamp finishTS = getEndingTimeWithExtension(startTS, extension);
-                String finish = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(finishTS);
-                String query = String.format("start >= \"%s\" AND finish <= \"%s\" ", start, finish);
+                TimeStampPredicate tsPred = new TimeStampPredicate(pg.getDate("MIN"), days, "00:00", duration);
+                String query = String.format("start_date >= \"%s\" AND start_date <= \"%s\" ", tsPred.getStartDate().toString(),
+                        tsPred.getEndDate().toString());
                 List<String> locPreds = new ArrayList<>();
                 int predCount = 0;
                 while (predCount < locs) {
@@ -190,15 +104,19 @@ public class QueryGeneration {
                 float selQuery = checkSelectivity(query);
                 String selType = checkSelectivityType(selQuery);
                 if(!selType.equalsIgnoreCase(selTypes.get(k))){
-                    if((k == selTypes.size()-1) || ((k+1) < selTypes.size() && !selType.equalsIgnoreCase(selTypes.get(k+1)))) {
-                        if(i == j && i++ < locations.size()) locs = numLocs.get(i);
-                        else if(i >=j && j++ < hours.size()) extension = hours.get(j);
-                        else if (i > locations.size() || j > hours.size()) {
-                            System.out.println("Stopped at " + selTypes.get(k) + " with " + numQ + " queries");
+                    if(locFlag && i++ < locations.size()) {
+                        locs = numLocs.get(i);
+                        locFlag = false;
+                    }
+                    else if (!locFlag && days < 90) {
+                        days += 1;
+                        locFlag = true;
+                    }
+                    else {
+                        System.out.println("Stopped at " + selTypes.get(k) + " with " + numQ + " queries");
                             return queries;
                         }
                     }
-                }
                 else{
                     queries.add(new QueryStatement(query, 2, selQuery, selType,
                             new Timestamp(System.currentTimeMillis())));
