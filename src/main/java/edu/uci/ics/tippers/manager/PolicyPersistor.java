@@ -153,11 +153,11 @@ public class PolicyPersistor {
                     purpose = rs.getString(policy_table + ".purpose");
                     action = rs.getString(policy_table + ".enforcement_action");
                     inserted_at = rs.getTimestamp(policy_table + ".inserted_at");
-                    if(querier == null)
-                        querier = rs.getString(policy_table + ".querier");
+                    querier = rs.getString(policy_table + ".querier");
 
                     querierConditions  = new ArrayList<>();
                     QuerierCondition qc1 = new QuerierCondition();
+                    qc1.setPolicy_id(id);
                     qc1.setAttribute("policy_type");
                     qc1.setType(AttributeType.STRING);
                     List<BooleanPredicate> qbps1 = new ArrayList<>();
@@ -168,6 +168,7 @@ public class PolicyPersistor {
                     qc1.setBooleanPredicates(qbps1);
                     querierConditions.add(qc1);
                     QuerierCondition qc2 = new QuerierCondition();
+                    qc2.setPolicy_id(id);
                     qc2.setAttribute("querier");
                     qc2.setType(AttributeType.STRING);
                     List<BooleanPredicate> qbps2 = new ArrayList<>();

@@ -31,6 +31,21 @@ public class TimeStampPredicate {
         this.endTime = this.startTime.plus(duration, ChronoUnit.MINUTES);
     }
 
+
+    /**
+     * Used only for Query Generation
+     * @param origin - start date
+     * @param days - number of days to add to the start date to arrive at the final date
+     * @param start - start time
+     * @param duration - number of hours to add to the start time to arrive at the final time
+     */
+    public TimeStampPredicate(Timestamp origin, int days, String start, int duration) {
+        this.startDate = origin.toLocalDateTime().toLocalDate();
+        this.endDate = this.startDate.plus(days, ChronoUnit.DAYS);
+        this.startTime = LocalTime.parse(start);
+        this.endTime = this.startTime.plus(duration, ChronoUnit.MINUTES);
+    }
+
     public LocalDate getStartDate() {
         return startDate;
     }
