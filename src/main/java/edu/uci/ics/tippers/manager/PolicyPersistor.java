@@ -146,14 +146,25 @@ public class PolicyPersistor {
 
         PreparedStatement queryStm = null;
         try {
-            queryStm = connection.prepareStatement("SELECT " + policy_table + ".id, " + policy_table + ".querier, " + policy_table + ".purpose, " +
-                    policy_table + ".enforcement_action," + policy_table + ".inserted_at," + oc_table + ".id, " + oc_table + " .policy_id," + oc_table + ".attribute, " +
-                    oc_table + ".attribute_type, " + oc_table + ".operator," + oc_table + ".comp_value " +
-                    "FROM " + policy_table + ", " + oc_table +
-                    " WHERE " + policy_table + ".querier=? AND " + policy_table + ".id = " + oc_table + ".policy_id " +
-                    "AND " + policy_table +  ".enforcement_action=?");
-            queryStm.setInt(1, Integer.parseInt(querier));
-            queryStm.setString(2, enforcement_action);
+            if(querier != null) {
+                queryStm = connection.prepareStatement("SELECT " + policy_table + ".id, " + policy_table + ".querier, " + policy_table + ".purpose, " +
+                        policy_table + ".enforcement_action," + policy_table + ".inserted_at," + oc_table + ".id, " + oc_table + " .policy_id," + oc_table + ".attribute, " +
+                        oc_table + ".attribute_type, " + oc_table + ".operator," + oc_table + ".comp_value " +
+                        "FROM " + policy_table + ", " + oc_table +
+                        " WHERE " + policy_table + ".querier=? AND " + policy_table + ".id = " + oc_table + ".policy_id " +
+                        "AND " + policy_table +  ".enforcement_action=?");
+                queryStm.setInt(1, Integer.parseInt(querier));
+                queryStm.setString(2, enforcement_action);
+            }
+            else {
+                queryStm = connection.prepareStatement("SELECT " + policy_table + ".id, " + policy_table + ".querier, " + policy_table + ".purpose, " +
+                        policy_table + ".enforcement_action," + policy_table + ".inserted_at," + oc_table + ".id, " + oc_table + " .policy_id," + oc_table + ".attribute, " +
+                        oc_table + ".attribute_type, " + oc_table + ".operator," + oc_table + ".comp_value " +
+                        "FROM " + policy_table + ", " + oc_table +
+                        " WHERE " + policy_table + ".id = " + oc_table + ".policy_id " +
+                        "AND " + policy_table +  ".enforcement_action=?");
+                queryStm.setString(1, enforcement_action);
+            }
             ResultSet rs = queryStm.executeQuery();
             if (!rs.next()) return null;
             String next = null;
