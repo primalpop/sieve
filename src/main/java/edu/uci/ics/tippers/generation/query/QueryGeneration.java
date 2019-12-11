@@ -33,12 +33,12 @@ public class QueryGeneration {
         pg = new PolicyGen();
         this.user_ids = pg.getAllUsers();
         this.locations = pg.getAllLocations();
-        this.start_beg = pg.getDate( "MIN");
+        this.start_beg = pg.getDate("MIN");
         this.start_fin = pg.getDate("MAX");
 
         hours = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 7, 10, 12, 15, 17, 20, 23));
         numUsers = new ArrayList<Integer>(Arrays.asList(500, 1000, 2000));
-        numLocs = new ArrayList<Integer>(Arrays.asList(1, 2, 3, 5, 10, 15, 20, 30, 50, 75, 100, 150, 200));
+        numLocs = new ArrayList<Integer>(Arrays.asList(1, 2, 3, 5, 10, 15, 20, 30, 50));
 
         this.mySQLQueryManager = new MySQLQueryManager();
         Random r = new Random();
@@ -46,7 +46,7 @@ public class QueryGeneration {
 
     private String checkSelectivityType(double selectivity) {
         String selType = "";
-        double lowSelDown = 0.00001, lowSelUp = 0.0001;
+        double lowSelDown = 0.0000001, lowSelUp = 0.0001;
         double medSelDown = 0.0001, medSelUp = 0.01;
         double highSelDown = 0.01, highSelUp = 0.3;
         if (lowSelDown < selectivity && selectivity < lowSelUp) selType = "low";
@@ -74,7 +74,8 @@ public class QueryGeneration {
      * to satisfy the required selectivity except when the query is jumping ahead
      * in selectivity (e.g., chosen selType = low, generated query = medium) in which
      * case it waits instead.
-     * @param selTypes - types of query selectivity needed
+     *
+     * @param selTypes   - types of query selectivity needed
      * @param queryCount - number of each queries of each selectivity type
      * @return
      */
@@ -84,44 +85,49 @@ public class QueryGeneration {
         for (int k = 0; k < selTypes.size(); k++) {
             int numQ = 0;
             int locs = numLocs.get(i);
-            int duration = 23;
+            int duration = 30;
             int days = 0;
             boolean locFlag = true;
             do {
+                duration = Math.min(duration, 1439);
                 TimeStampPredicate tsPred = new TimeStampPredicate(pg.getDate("MIN"), days, "00:00", duration);
                 String query = String.format("start_date >= \"%s\" AND start_date <= \"%s\" ", tsPred.getStartDate().toString(),
                         tsPred.getEndDate().toString());
+                query += String.format("and start_time >= \"%s\" AND start_time <= \"%s\" ", tsPred.getStartTime().toString(),
+                        tsPred.getEndTime().toString());
                 List<String> locPreds = new ArrayList<>();
                 int predCount = 0;
                 while (predCount < locs) {
                     locPreds.add(String.valueOf(locations.get(new Random().nextInt(locations.size()))));
                     predCount += 1;
                 }
-                query += "AND location_id in ( ";
-                query += locPreds.stream().map(item -> item + ", ").collect(Collectors.joining(" "));
+                query += "AND location_id in (";
+                query += locPreds.stream().map(item -> "\"" + item + "\", ").collect(Collectors.joining(" "));
                 query = query.substring(0, query.length() - 2); //removing the extra comma
                 query += ")";
                 float selQuery = checkSelectivity(query);
                 String selType = checkSelectivityType(selQuery);
-                if(!selType.equalsIgnoreCase(selTypes.get(k))){
-                    if(locFlag && i++ < locations.size()) {
+                if (!selType.equalsIgnoreCase(selTypes.get(k)) || ((k+1) < selTypes.size() &&
+                        !selType.equalsIgnoreCase(selTypes.get(k + 1))))  {
+                    if (duration < 1439) duration += 30;
+                    else if (locFlag && i++ < numLocs.size()) {
                         locs = numLocs.get(i);
                         locFlag = false;
-                    }
-                    else if (!locFlag && days < 90) {
+                    } else if (!locFlag && days < 90) {
                         days += 1;
                         locFlag = true;
-                    }
-                    else {
+                    } else {
                         System.out.println("Stopped at " + selTypes.get(k) + " with " + numQ + " queries");
-                            return queries;
-                        }
+                        return queries;
                     }
-                else{
-                    queries.add(new QueryStatement(query, 2, selQuery, selType,
-                            new Timestamp(System.currentTimeMillis())));
-                    numQ++;
+                    continue;
+                } else if (selType.equalsIgnoreCase(selTypes.get(k + 1))) {
+                    duration = duration - 15;
+                    continue;
                 }
+                queries.add(new QueryStatement(query, 2, selQuery, selType,
+                        new Timestamp(System.currentTimeMillis())));
+                numQ++;
             } while (numQ < queryCount);
         }
         return queries;
@@ -169,7 +175,7 @@ public class QueryGeneration {
     }
 
 
-    public List<QueryStatement> retrieveQueries(String selectivity_type, int query_count){
+    public List<QueryStatement> retrieveQueries(String selectivity_type, int query_count) {
         List<QueryStatement> queryStatements = new ArrayList<>();
         PreparedStatement queryStm = null;
         try {
@@ -202,9 +208,9 @@ public class QueryGeneration {
         insertQuery(queries);
     }
 
-    public static void main(String [] args){
+    public static void main(String[] args) {
         QueryGeneration qg = new QueryGeneration();
-        boolean [] templates = {true, false, false, false};
+        boolean[] templates = {true, false, false, false};
         int numOfQueries = 2;
         qg.constructWorkload(templates, numOfQueries);
     }

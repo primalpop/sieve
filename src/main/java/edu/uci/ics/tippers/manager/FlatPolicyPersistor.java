@@ -51,8 +51,10 @@ public class FlatPolicyPersistor {
                 policyStmt.setTime(13, start_time.get(1));
                 policyStmt.setFloat(14, bePolicy.computeL());
                 policyStmt.addBatch();
-                if(i % 50000 == 0)
+                if(i % 50000 == 0) {
+                    System.out.println("Inserting policies " + i);
                     policyStmt.executeBatch();
+                }
             }
             policyStmt.executeBatch();
             policyStmt.close();
@@ -68,6 +70,7 @@ public class FlatPolicyPersistor {
         FlatPolicyPersistor flapolper = new FlatPolicyPersistor();
         List<BEPolicy> allowPolicies = polper.retrievePolicies(null,
                 PolicyConstants.USER_INDIVIDUAL, PolicyConstants.ACTION_ALLOW);
+        System.out.println("Total number of policies: " + allowPolicies.size());
         flapolper.insertPolicies(allowPolicies);
     }
 }
