@@ -110,14 +110,13 @@ public class PolicyPersistor {
         List<BEPolicy> bePolicies = new ArrayList<>();
         String id = null, purpose = null, action = null;
         Timestamp inserted_at = null;
-        List<ObjectCondition> objectConditions = new ArrayList<>();
 
         String policy_table = null, oc_table = null;
         if (querier_type.equalsIgnoreCase("user")) {
-            policy_table = "temp_table";
+            policy_table = "USER_POLICY";
             oc_table = "USER_POLICY_OBJECT_CONDITION";
         } else if (querier_type.equalsIgnoreCase("group")) {
-            policy_table = "temp_table";
+            policy_table = "GROUP_POLICY";
             oc_table = "GROUP_POLICY_OBJECT_CONDITION";
         }
         PreparedStatement queryStm = null;
@@ -146,6 +145,7 @@ public class PolicyPersistor {
             String next = null;
             boolean skip = false;
             List<QuerierCondition> querierConditions = new ArrayList<>();
+            List<ObjectCondition> objectConditions = new ArrayList<>();
             while (true) {
                 if(!skip) {
                     id = rs.getString(policy_table + ".id");
