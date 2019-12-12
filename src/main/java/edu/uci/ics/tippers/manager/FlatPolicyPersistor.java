@@ -51,10 +51,6 @@ public class FlatPolicyPersistor {
                 policyStmt.setTime(13, start_time.get(1));
                 policyStmt.setFloat(14, bePolicy.computeL());
                 policyStmt.addBatch();
-                if(i == 50000) {
-                    policyStmt.executeBatch();
-                    break;
-                }
             }
             policyStmt.executeBatch();
             policyStmt.close();
