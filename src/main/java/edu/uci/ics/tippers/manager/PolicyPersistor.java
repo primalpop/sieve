@@ -114,13 +114,12 @@ public class PolicyPersistor {
 
         String policy_table = null, oc_table = null;
         if (querier_type.equalsIgnoreCase("user")) {
-            policy_table = "USER_POLICY";
+            policy_table = "temp_table";
             oc_table = "USER_POLICY_OBJECT_CONDITION";
         } else if (querier_type.equalsIgnoreCase("group")) {
-            policy_table = "GROUP_POLICY";
+            policy_table = "temp_table";
             oc_table = "GROUP_POLICY_OBJECT_CONDITION";
         }
-
         PreparedStatement queryStm = null;
         try {
             if(querier != null) {
