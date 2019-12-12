@@ -123,8 +123,10 @@ public class PolicyGen {
                     location, Operation.EQ);
             objectConditions.add(locationPred);
         }
+        if(objectConditions.isEmpty()){
+            System.out.println("Empty Object Conditions");
+        }
         return new BEPolicy(policyID, objectConditions, querierConditions, "analysis",
                 action, new Timestamp(System.currentTimeMillis()));
     }
-
 }
