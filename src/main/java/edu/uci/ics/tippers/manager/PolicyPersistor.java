@@ -129,7 +129,7 @@ public class PolicyPersistor {
                         oc_table + ".attribute_type, " + oc_table + ".operator," + oc_table + ".comp_value " +
                         "FROM " + policy_table + ", " + oc_table +
                         " WHERE " + policy_table + ".querier=? AND " + policy_table + ".id = " + oc_table + ".policy_id " +
-                        "AND " + policy_table +  ".enforcement_action=?");
+                        "AND " + policy_table +  ".enforcement_action=? order by " + policy_table + ".id");
                 queryStm.setInt(1, Integer.parseInt(querier));
                 queryStm.setString(2, enforcement_action);
             }
@@ -139,7 +139,7 @@ public class PolicyPersistor {
                         oc_table + ".attribute_type, " + oc_table + ".operator," + oc_table + ".comp_value " +
                         "FROM " + policy_table + ", " + oc_table +
                         " WHERE " + policy_table + ".id = " + oc_table + ".policy_id " +
-                        "AND " + policy_table +  ".enforcement_action=?");
+                        "AND " + policy_table +  ".enforcement_action=? order by " + policy_table + ".id");
                 queryStm.setString(1, enforcement_action);
             }
             ResultSet rs = queryStm.executeQuery();

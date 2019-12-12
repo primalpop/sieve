@@ -32,7 +32,8 @@ public class FlatPolicyPersistor {
                     "locEq, dateGe, dateLe, timeGe, timeLe, selectivity) VALUES (?, ?, ?, ?, ?, ?, ?," +
                     "?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement policyStmt = connection.prepareStatement(policyInsert);
-            for (BEPolicy bePolicy : bePolicyList) {
+            for (int i = 0; i < bePolicyList.size() ; i++) {
+                BEPolicy bePolicy = bePolicyList.get(i);
                 policyStmt.setString(1, bePolicy.getId());
                 policyStmt.setString(2, bePolicy.fetchQuerier());
                 policyStmt.setString(3, bePolicy.getPurpose());
@@ -50,6 +51,10 @@ public class FlatPolicyPersistor {
                 policyStmt.setTime(13, start_time.get(1));
                 policyStmt.setFloat(14, bePolicy.computeL());
                 policyStmt.addBatch();
+                if(i % 50000 == 0) {
+                    policyStmt.executeBatch();
+                    break;
+                }
             }
             policyStmt.executeBatch();
             policyStmt.close();
@@ -61,19 +66,10 @@ public class FlatPolicyPersistor {
 
     public static void main(String [] args){
         PolicyGen pg = new PolicyGen();
-        List<Integer> users = pg.getAllUsers();
         PolicyPersistor polper = new PolicyPersistor();
         FlatPolicyPersistor flapolper = new FlatPolicyPersistor();
-        List<BEPolicy> allowPolicies = new ArrayList<BEPolicy>();
-        for(int user: users) {
-            List<BEPolicy> policiesPerQuerier = polper.retrievePolicies(String.valueOf(user),
-                    PolicyConstants.USER_INDIVIDUAL, PolicyConstants.ACTION_ALLOW);
-            if(policiesPerQuerier != null)
-                allowPolicies.addAll(policiesPerQuerier);
-            if(allowPolicies.size() > 50000) {
-                flapolper.insertPolicies(allowPolicies);
-                allowPolicies.clear();
-            }
-        }
+        List<BEPolicy> allowPolicies = polper.retrievePolicies(null,
+                PolicyConstants.USER_INDIVIDUAL, PolicyConstants.ACTION_ALLOW);
+        flapolper.insertPolicies(allowPolicies);
     }
 }
