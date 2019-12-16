@@ -5,7 +5,7 @@ import edu.uci.ics.tippers.model.policy.ObjectCondition;
 
 public class GuardPart {
 
-    int id;
+    String id;
 
     ObjectCondition guard;
 
@@ -25,5 +25,13 @@ public class GuardPart {
 
     public void setGuardPartition(BEExpression guardPartition) {
         this.guardPartition = guardPartition;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

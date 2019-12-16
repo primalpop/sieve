@@ -132,8 +132,6 @@ public class MySQLQueryManager {
         try {
             MySQLResult mySQLResult = new MySQLResult();
             mySQLResult.setResultsCheck(false);
-            List<Long> gList = new ArrayList<>();
-            System.out.println(query);
             Duration gCost = runWithThread(query, mySQLResult).getTimeTaken();
             mySQLResult.setTimeTaken(gCost);
             return mySQLResult;
