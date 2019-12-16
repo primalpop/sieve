@@ -85,6 +85,8 @@ public class Experiment {
     public void runBEPolicies(String querier, List<BEPolicy> bePolicies) {
 
         BEExpression beExpression = new BEExpression(bePolicies);
+        String file_header = "Baseline, Guard, UDF, Hybrid \n";
+        StringBuilder resultString = new StringBuilder();
 
         try {
 
@@ -95,6 +97,7 @@ public class Experiment {
                         RESULT_CHECK, NUM_OF_REPS);
                 Duration runTime = Duration.ofMillis(0);
                 runTime = runTime.plus(tradResult.getTimeTaken());
+                resultString.append(runTime.toMillis()).append(",");
                 System.out.println("QW: No of Policies: " + beExpression.getPolicies().size() + " , Time: " + runTime.toMillis());
             }
 
@@ -131,6 +134,7 @@ public class Experiment {
                     Duration execTime = Duration.ofMillis(0);
                     MySQLResult execResult = mySQLQueryManager.runTimedQueryExp(guard_query);
                     execTime = execTime.plus(execResult.getTimeTaken());
+                    resultString.append(execTime.toMillis()).append(",");
                     System.out.println("Guard execution: " + " Time: " + execTime.toMillis());
                 }
             }
@@ -141,6 +145,7 @@ public class Experiment {
                         "p.start_date, p.start_time, p.user_profile, p.user_group) = 1";
                 MySQLResult execResult = mySQLQueryManager.runTimedQueryExp(udf_query);
                 execTime = execTime.plus(execResult.getTimeTaken());
+                resultString.append(execTime.toMillis()).append(",");
                 System.out.println("UDF execution: "  + " Time: " + execTime.toMillis());
             }
             if(HYBRID_EXEC){ //TODO: change the execution strategy
@@ -159,11 +164,13 @@ public class Experiment {
                 }
                 MySQLResult execResult = mySQLQueryManager.runTimedQueryExp(hybrid_query.toString());
                 execTime = execTime.plus(execResult.getTimeTaken());
+                resultString.append(execTime.toMillis()).append("\n");
                 System.out.println("Hybrid execution: "  + " Time: " + execTime.toMillis());
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+        writer.writeString(file_header, resultString.toString(), PolicyConstants.BE_POLICY_DIR, RESULTS_FILE);
     }
 
     public static void main(String[] args) {
