@@ -120,4 +120,23 @@ public class GuardExp {
         }
         return queryExp.toString();
     }
+
+    /**
+     * (Select * from Presence where G1
+     * UNION Select * from Presence where G2
+     * ....
+     * Select * from Presence where GN)
+     * @return
+     */
+    public String createGuardOnlyQuery(){
+        StringBuilder queryExp = new StringBuilder();
+        String delim = "";
+        for (GuardPart gp: this.guardParts) {
+            queryExp.append(delim);
+            queryExp.append(PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS_WHERE)
+                    .append(gp.getGuard().print());
+            delim = PolicyConstants.UNION;
+        }
+        return  queryExp.toString();
+    }
 }

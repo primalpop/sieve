@@ -38,6 +38,7 @@ public class Experiment {
     private Writer writer;
 
     private static boolean BASE_LINE;
+    private static boolean GENERATE_GUARD;
     private static boolean GUARD_EXEC;
     private static boolean UDF_EXEC;
     private static boolean HYBRID_EXEC;
@@ -63,6 +64,7 @@ public class Experiment {
             if (inputStream != null) {
                 props.load(inputStream);
                 BASE_LINE = Boolean.parseBoolean(props.getProperty("baseline"));
+                GENERATE_GUARD = Boolean.parseBoolean(props.getProperty("generate_guard"));
                 GUARD_EXEC = Boolean.parseBoolean(props.getProperty("guard_exec"));
                 UDF_EXEC = Boolean.parseBoolean(props.getProperty("udf_exec"));
                 HYBRID_EXEC = Boolean.parseBoolean(props.getProperty("hybrid_exec"));
@@ -95,39 +97,44 @@ public class Experiment {
                 runTime = runTime.plus(tradResult.getTimeTaken());
                 System.out.println("QW: No of Policies: " + beExpression.getPolicies().size() + " , Time: " + runTime.toMillis());
             }
-            /** Guard generation **/
-            Duration guardGen = Duration.ofMillis(0);
-            Instant fsStart = Instant.now();
-            SelectGuard gh = new SelectGuard(beExpression, EXTEND_PREDICATES);
-            Instant fsEnd = Instant.now();
-            guardGen = guardGen.plus(Duration.between(fsStart, fsEnd));
-            System.out.println("Guard Generation: " + guardGen + " Number of Guards: " + gh.numberOfGuards());
 
-            /** Result checking **/
-            if (RESULT_CHECK) {
-                System.out.println("Verifying results......");
-                System.out.println("Guard query: " + gh.createGuardedQuery(false));
-                MySQLResult guardResult = mySQLQueryManager.runTimedSubQuery(gh.createGuardedQuery(false),
-                        RESULT_CHECK);
-                Boolean resultSame = tradResult.checkResults(guardResult);
-                if (!resultSame) {
-                    System.out.println("*** Query results don't match with generated guard!!! Halting Execution ***");
-                    return;
-                }
-            }
             //TODO: to replace with queries generated from templates
             String QUERY_PREDICATES = " location_id in ('3141-clwa-1412', '3145-clwa-5099', '3143-clwa-3059') " +
                     "and start_date >= '2018-02-01' and start_date <= '2018-02-15' " +
                     "and start_time >= '08:04:51' and start_time <= '23:54:51'";
 
-            if(GUARD_EXEC){
-                String guard_query = "SELECT * FROM (" + gh.createGuardedQuery(GUARD_UNION) + ") as P where " + QUERY_PREDICATES;
-                Duration execTime = Duration.ofMillis(0);
-                MySQLResult execResult = mySQLQueryManager.runTimedQueryExp(guard_query);
-                execTime = execTime.plus(execResult.getTimeTaken());
-                System.out.println("Guard execution: "  + " Time: " + execTime.toMillis());
+
+            /** Guard generation **/
+            if (GENERATE_GUARD) {
+                Duration guardGen = Duration.ofMillis(0);
+                Instant fsStart = Instant.now();
+                SelectGuard gh = new SelectGuard(beExpression, EXTEND_PREDICATES);
+                Instant fsEnd = Instant.now();
+                guardGen = guardGen.plus(Duration.between(fsStart, fsEnd));
+                System.out.println("Guard Generation: " + guardGen + " Number of Guards: " + gh.numberOfGuards());
+
+                /** Result checking **/
+                if (RESULT_CHECK) {
+                    System.out.println("Verifying results......");
+                    System.out.println("Guard query: " + gh.createGuardedQuery(false));
+                    MySQLResult guardResult = mySQLQueryManager.runTimedSubQuery(gh.createGuardedQuery(false),
+                            RESULT_CHECK);
+                    Boolean resultSame = tradResult.checkResults(guardResult);
+                    if (!resultSame) {
+                        System.out.println("*** Query results don't match with generated guard!!! Halting Execution ***");
+                        return;
+                    }
+                }
+
+                if (GUARD_EXEC) {
+                    String guard_query = "SELECT * FROM (" + gh.createGuardedQuery(GUARD_UNION) + ") as P where " + QUERY_PREDICATES;
+                    Duration execTime = Duration.ofMillis(0);
+                    MySQLResult execResult = mySQLQueryManager.runTimedQueryExp(guard_query);
+                    execTime = execTime.plus(execResult.getTimeTaken());
+                    System.out.println("Guard execution: " + " Time: " + execTime.toMillis());
+                }
             }
-            if(UDF_EXEC){ //TODO: Add the query with UDF appended
+            if(UDF_EXEC){
                 Duration execTime = Duration.ofMillis(0);
                 String udf_query = "SELECT * FROM PRESENCE as p where " + QUERY_PREDICATES
                         + " and pcheck( " + querier + ", p.user_id, p.location_id, " +
@@ -136,22 +143,24 @@ public class Experiment {
                 execTime = execTime.plus(execResult.getTimeTaken());
                 System.out.println("UDF execution: "  + " Time: " + execTime.toMillis());
             }
-            if(HYBRID_EXEC){ //TODO: Add the guards with UDF to the query
+            if(HYBRID_EXEC){ //TODO: change the execution strategy
                 Duration execTime = Duration.ofMillis(0);
                 GuardPersistor guardPersistor = new GuardPersistor();
                 GuardExp guardExp = guardPersistor.retrieveGuard(querier, "user");
-                StringBuilder hybrid_query = new StringBuilder("SELECT * from PRESENCE as p where " + QUERY_PREDICATES);
+                StringBuilder hybrid_query = new StringBuilder("SELECT * from (");
+                hybrid_query.append(guardExp.createGuardOnlyQuery());
+                hybrid_query.append(") as p where").append(QUERY_PREDICATES).append(PolicyConstants.CONJUNCTION);
+                String delim = "";
                 for(GuardPart guardPart: guardExp.getGuardParts()){
-                    hybrid_query.append(" and ").append(guardPart.getGuard().print());
-                    hybrid_query.append(" and hybcheck(").append(querier).append(", ")
-                            .append(guardPart.getId()).append(", ")
+                    hybrid_query.append(delim).append(" hybcheck(").append(querier).append(", \'")
+                            .append(guardPart.getId()).append("\', ")
                             .append("p.user_id, p.location_id, p.start_date, p.start_time, p.user_profile, p.user_group ) = 1");
+                    delim = PolicyConstants.CONJUNCTION;
                 }
                 MySQLResult execResult = mySQLQueryManager.runTimedQueryExp(hybrid_query.toString());
                 execTime = execTime.plus(execResult.getTimeTaken());
+                System.out.println("Hybrid execution: "  + " Time: " + execTime.toMillis());
             }
-
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -160,16 +169,16 @@ public class Experiment {
     public static void main(String[] args) {
         Experiment e = new Experiment();
         PolicyGen pg = new PolicyGen();
-        List<Integer> users = pg.getAllUsers();
+        List<Integer> users = pg.getAllUsers(true);
         PolicyPersistor polper = new PolicyPersistor();
         //TODO: Retrieve policies only for non-visitors
-//        for (Integer user: users) {
-            String querier = String.valueOf(20);
+        for (int i = 0; i < 100; i++) {
+            String querier = String.valueOf(users.get(i));
             List<BEPolicy> allowPolicies = polper.retrievePolicies(querier,
                     PolicyConstants.USER_INDIVIDUAL, PolicyConstants.ACTION_ALLOW);
-//            if(allowPolicies == null) continue;
-//            System.out.println("Querier " + user);
+            if(allowPolicies == null) continue;
+            System.out.println("Querier " + querier);
             e.runBEPolicies(querier, allowPolicies);
-//        }
+        }
     }
 }

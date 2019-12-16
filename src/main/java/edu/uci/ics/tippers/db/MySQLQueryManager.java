@@ -26,7 +26,7 @@ public class MySQLQueryManager {
     }
 
     public MySQLQueryManager(){
-        this.timeout = 1000000;
+        this.timeout = 30000;
     }
 
     public MySQLResult runWithThread(String query, MySQLResult mySQLResult) {

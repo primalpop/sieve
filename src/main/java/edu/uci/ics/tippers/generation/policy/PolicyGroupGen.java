@@ -293,7 +293,7 @@ public class PolicyGroupGen {
      * Creating default and active policies for a user
      */
     public void generatePolicies(){
-        List<Integer> allUsers = pg.getAllUsers();
+        List<Integer> allUsers = pg.getAllUsers(false);
         generateDefaultPolicies(allUsers);
         int default_count = 0, active_count = 0;
         for (int user_id: allUsers) {

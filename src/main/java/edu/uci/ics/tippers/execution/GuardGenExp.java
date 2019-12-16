@@ -71,7 +71,7 @@ public class GuardGenExp {
     public static void main(String [] args){
         GuardGenExp ge = new GuardGenExp();
         PolicyGen pg = new PolicyGen();
-        List<Integer> users = pg.getAllUsers();
+        List<Integer> users = pg.getAllUsers(true);
         ge.generateGuards(users);
     }
 }

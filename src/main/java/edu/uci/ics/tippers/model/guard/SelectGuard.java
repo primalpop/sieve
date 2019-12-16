@@ -168,7 +168,14 @@ public class SelectGuard {
         return guardExp;
     }
 
-
+    /**
+     * (Select * from Presence where G1 and Partition1
+     *  UNION Select * from Presence where G2 and Partition2
+     *  ....
+     *  Select * from Presence where GN and PartitionN)
+     * @param noDuplicates
+     * @return
+     */
     public String createGuardedQuery(boolean noDuplicates){
         List<String> gList = createGuardQueries();
         StringBuilder queryExp = new StringBuilder();
