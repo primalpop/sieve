@@ -122,6 +122,17 @@ public class Writer {
         }
     }
 
+    public void writeString(String file_header, String results, String fileDir, String fileName) {
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(fileDir + fileName, true));
+            writer.write(file_header);
+            writer.write(results);
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void writeToFile(List<String> entries, String fileName, String fileDir){
         FileWriter writer = null;
         try {
