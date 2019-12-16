@@ -149,7 +149,9 @@ public class SelectGuard {
     public GuardExp create(int querier, String querier_type){
         List<GuardPart> gps = new ArrayList<>();
         for (Term mt: finalForm) {
+            String gpID =  UUID.randomUUID().toString();
             GuardPart gp = new GuardPart();
+            gp.setId(gpID);
             gp.setGuard(mt.getFactor());
             gp.setGuardPartition(mt.getQuotient());
             gps.add(gp);

@@ -1,10 +1,13 @@
 package edu.uci.ics.tippers.manager;
 
+import edu.uci.ics.tippers.common.AttributeType;
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.db.MySQLConnectionManager;
 import edu.uci.ics.tippers.model.guard.GuardExp;
 import edu.uci.ics.tippers.model.guard.GuardPart;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
+import edu.uci.ics.tippers.model.policy.ObjectCondition;
+import edu.uci.ics.tippers.model.policy.Operation;
 
 import java.sql.*;
 import java.text.ParseException;
@@ -97,11 +100,10 @@ public class GuardPersistor {
                 gpStmt.setDate(7, dateLe);
                 gpStmt.setTime(8, timeGe);
                 gpStmt.setTime(9, timeLe);
-                String gpID =  UUID.randomUUID().toString();
-                gpStmt.setString(10, gpID);
+                gpStmt.setString(10, gp.getId());
                 gpStmt.addBatch();
                 for (BEPolicy bp: gp.getGuardPartition().getPolicies()) {
-                    gpolStmt.setString(1, gpID);
+                    gpolStmt.setString(1, gp.getId());
                     gpolStmt.setString(2, bp.getId());
                     gpolStmt.addBatch();
                 }
@@ -113,46 +115,96 @@ public class GuardPersistor {
         }
     }
 
+    /**
+     * Retrives the guard based on Querier and Querier type
+     * TODO: retrieve the policies in the guard partition
+     * @param querier
+     * @param querier_type
+     * @return
+     */
     public GuardExp retrieveGuard(String querier, String querier_type){
-        GuardExp guardExp = new GuardExp();
-
-        String guardExpTable, guardPartTable;
+        String guardExpTable, guardPartTable, guardToPolicyTable;
         if (querier_type.equalsIgnoreCase("user")) { //User Guard
-            guardExpTable = "USER_GUARD";
-            guardPartTable = "USER_GUARD_EXPRESSION";
+            guardExpTable = "USER_GUARD_EXPRESSION";
+            guardPartTable = "USER_GUARD_PARTS";
+            guardToPolicyTable = "USER_GUARD_TO_POLICY";
         } else {
-            guardExpTable = "GROUP_GUARD";
-            guardPartTable = "GROUP_GUARD_EXPRESSION";
+            guardExpTable = "GROUP_GUARD_EXPRESSION";
+            guardPartTable = "GROUP_GUARD_PARTS";
+            guardToPolicyTable = "GROUP_GUARD_TO_POLICY";
         }
         String id = null, purpose = null, action = null;
         Timestamp last_updated = null;
         List<GuardPart> guardParts = new ArrayList<>();
         PreparedStatement queryStm = null;
-
         try {
             queryStm = connection.prepareStatement("SELECT " + guardExpTable  + ".id, " + guardExpTable +".querier, "
                     + guardExpTable +".purpose, " + guardExpTable + ".enforcement_action," + guardExpTable +".last_updated,"
                     + guardPartTable +".id, " + guardPartTable +" .guard_exp_id,"
-                    + guardPartTable + ".guard, " + guardPartTable + ".remainder "+
-                    "FROM "  + guardExpTable +", " + guardPartTable +
-                    " WHERE " + guardExpTable + ".querier=? AND "+ guardExpTable + ".id = " + guardPartTable + ".guard_exp_id");
+                    + guardPartTable + ".ownerEq, " + guardPartTable + ".profEq, "
+                    + guardPartTable + ".groupEq, " + guardPartTable + ".locEq, "
+                    + guardPartTable + ".dateGe, " + guardPartTable + ".dateLe, "
+                    + guardPartTable + ".timeGe, " + guardPartTable + ".timeLe "
+                    + "FROM "  + guardExpTable +", " + guardPartTable +
+                    " WHERE " + guardExpTable + ".querier=? AND "+ guardExpTable + ".id = " + guardPartTable + ".guard_exp_id"
+                    + " order by " + guardExpTable  + ".id");
             queryStm.setInt(1, Integer.parseInt(querier));
             ResultSet rs = queryStm.executeQuery();
+            List<GuardPart> gps = new ArrayList<>();
+            String next = null;
+            boolean skip = false;
             while (rs.next()) {
-                if (id == null) {
+                if (!skip) {
                     id = rs.getString(guardExpTable +".id");
                     purpose = rs.getString(guardExpTable + ".purpose");
                     action = rs.getString(guardExpTable + ".enforcement_action");
                     last_updated = rs.getTimestamp(guardExpTable +".last_updated");
+                    skip = true;
                 }
                 GuardPart gp = new GuardPart();
-                //TODO: To be completed
+                gp.setId(rs.getString(guardPartTable + ".id"));
+                if(rs.getString(guardPartTable+ ".ownerEq") != null){
+                    ObjectCondition objectCondition = new ObjectCondition(null, PolicyConstants.USERID_ATTR,
+                            AttributeType.STRING, rs.getString(guardPartTable+ ".ownerEq"), Operation.EQ,
+                            rs.getString(guardPartTable+ ".ownerEq"), Operation.EQ);
+                    gp.setGuard(objectCondition);
+                }
+                else if(rs.getString(guardPartTable+ ".profEq") != null){
+                    ObjectCondition objectCondition = new ObjectCondition(null, PolicyConstants.PROFILE_ATTR,
+                            AttributeType.STRING, rs.getString(guardPartTable+ ".profEq"), Operation.EQ,
+                            rs.getString(guardPartTable+ ".profEq"), Operation.EQ);
+                    gp.setGuard(objectCondition);
+                }
+                else if(rs.getString(guardPartTable+ ".groupEq") != null){
+                    ObjectCondition objectCondition = new ObjectCondition(null, PolicyConstants.GROUP_ATTR,
+                            AttributeType.STRING, rs.getString(guardPartTable+ ".groupEq"), Operation.EQ,
+                            rs.getString(guardPartTable+ ".groupEq"), Operation.EQ);
+                    gp.setGuard(objectCondition);
+                }
+                else if(rs.getString(guardPartTable+ ".locEq") != null){
+                    ObjectCondition objectCondition = new ObjectCondition(null, PolicyConstants.LOCATIONID_ATTR,
+                            AttributeType.STRING, rs.getString(guardPartTable+ ".locEq"), Operation.EQ,
+                            rs.getString(guardPartTable+ ".locEq"), Operation.EQ);
+                    gp.setGuard(objectCondition);
+                }
+                else if((rs.getString(guardPartTable+ ".dateGe") != null) &&
+                        (rs.getString(guardPartTable+ ".dateLe") != null)){
+                    ObjectCondition objectCondition = new ObjectCondition(null, PolicyConstants.START_DATE,
+                            AttributeType.DATE, rs.getString(guardPartTable+ ".dateGe"), Operation.GTE,
+                            rs.getString(guardPartTable+ ".dateLe"), Operation.LTE);
+                    gp.setGuard(objectCondition);
+                }
+                else {
+                    ObjectCondition objectCondition = new ObjectCondition(null, PolicyConstants.START_DATE,
+                            AttributeType.TIME, rs.getString(guardPartTable+ ".timeGe"), Operation.GTE,
+                            rs.getString(guardPartTable+ ".timeLe"), Operation.LTE);
+                    gp.setGuard(objectCondition);
+                }
                 guardParts.add(gp);
             }
-            guardExp = new GuardExp(id, purpose, action, last_updated, guardParts);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return guardExp;
+        return new GuardExp(id, purpose, action, last_updated, guardParts);
     }
 }

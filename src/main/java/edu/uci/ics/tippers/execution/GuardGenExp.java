@@ -59,6 +59,7 @@ public class GuardGenExp {
             Instant fsStart = Instant.now();
             SelectGuard gh = new SelectGuard(allowBeExpression, true);
             Instant fsEnd = Instant.now();
+            System.out.println(gh.createGuardedQuery(true));
             guardGen = guardGen.plus(Duration.between(fsStart, fsEnd));
             System.out.println("Guard Generation time: " + guardGen + " Number of Guards: " + gh.numberOfGuards());
             guardPersistor.insertGuard(gh.create(querier, "user"));
