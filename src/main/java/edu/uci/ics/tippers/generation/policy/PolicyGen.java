@@ -3,6 +3,7 @@ package edu.uci.ics.tippers.generation.policy;
 import edu.uci.ics.tippers.common.AttributeType;
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.db.MySQLConnectionManager;
+import edu.uci.ics.tippers.model.data.UserProfile;
 import edu.uci.ics.tippers.model.policy.*;
 
 import java.sql.*;
@@ -28,12 +29,18 @@ public class PolicyGen {
     }
 
 
-    public List<Integer> getAllUsers() {
+    public List<Integer> getAllUsers(boolean non_visitor) {
         PreparedStatement queryStm = null;
         user_ids = new ArrayList<>();
         try {
-            queryStm = connection.prepareStatement("SELECT ID as id " +
-                    "FROM USER");
+            if(!non_visitor)
+                queryStm = connection.prepareStatement("SELECT ID as id " +
+                        "FROM USER");
+            else
+                queryStm = connection.prepareStatement("SELECT ID as id FROM USER where USER_PROFILE in ( \'"
+                        + UserProfile.FACULTY.getValue()  + "\', \'" + UserProfile.GRADUATE.getValue()
+                        + "\', \'" + UserProfile.UNDERGRAD.getValue() + "\', \'" + UserProfile.STAFF.getValue()
+                        + "\')");
             ResultSet rs = queryStm.executeQuery();
             while (rs.next()) user_ids.add(rs.getInt("id"));
         } catch (SQLException e) {

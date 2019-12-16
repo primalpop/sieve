@@ -59,9 +59,9 @@ public class PolicyConstants {
     public static final String TIMESTAMP_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
     //QUERIES FOR EXPERIMENTATION
-    public static final String SELECT_ALL_SEMANTIC_OBSERVATIONS = "Select SQL_NO_CACHE * from PRESENCE  ";
+    public static final String SELECT_ALL_SEMANTIC_OBSERVATIONS = "Select * from PRESENCE  ";
 
-    public static final String SELECT_ALL_SEMANTIC_OBSERVATIONS_WHERE = "Select SQL_NO_CACHE * from PRESENCE WHERE ";
+    public static final String SELECT_ALL_SEMANTIC_OBSERVATIONS_WHERE = "Select * from PRESENCE WHERE ";
 
     public static final String ORDER_BY_ID = " order by id ";
 

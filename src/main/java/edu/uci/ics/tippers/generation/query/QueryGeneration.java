@@ -31,7 +31,7 @@ public class QueryGeneration {
 
     public QueryGeneration() {
         pg = new PolicyGen();
-        this.user_ids = pg.getAllUsers();
+        this.user_ids = pg.getAllUsers(false);
         this.locations = pg.getAllLocations();
         this.start_beg = pg.getDate("MIN");
         this.start_fin = pg.getDate("MAX");
