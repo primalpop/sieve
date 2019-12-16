@@ -57,7 +57,7 @@ public class MySQLQueryManager {
     }
 
     private void cancelStatement(Statement statement, Exception ex) {
-        System.out.println("Cancelling the current query statement. Timeout occurred" + ex);
+        System.out.println("Cancelling the current query statement. Timeout occurred");
         try {
             statement.cancel();
         } catch (SQLException exception) {

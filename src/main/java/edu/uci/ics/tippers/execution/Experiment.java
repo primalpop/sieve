@@ -171,7 +171,6 @@ public class Experiment {
         PolicyGen pg = new PolicyGen();
         List<Integer> users = pg.getAllUsers(true);
         PolicyPersistor polper = new PolicyPersistor();
-        //TODO: Retrieve policies only for non-visitors
         for (int i = 0; i < 100; i++) {
             String querier = String.valueOf(users.get(i));
             List<BEPolicy> allowPolicies = polper.retrievePolicies(querier,
