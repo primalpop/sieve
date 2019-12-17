@@ -103,7 +103,7 @@ public class Experiment {
             }
 
             /** Guard generation **/
-            if (GENERATE_GUARD) {
+            if (GENERATE_GUARD) { //TODO: don't generate guard, retrieve it instead
                 Duration guardGen = Duration.ofMillis(0);
                 Instant fsStart = Instant.now();
                 SelectGuard gh = new SelectGuard(beExpression, EXTEND_PREDICATES);
@@ -151,7 +151,7 @@ public class Experiment {
                 String delim = "";
                 for(GuardPart guardPart: guardExp.getGuardParts()){
                     hybrid_query.append(delim)
-                            .append("SELECT * from PRESENCE where ")
+                            .append("SELECT * from PRESENCE as p where ")
                             .append(guardPart.getGuard().print())
                             .append(PolicyConstants.CONJUNCTION)
                             .append(" hybcheck(").append(querier).append(", \'")
