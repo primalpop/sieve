@@ -123,10 +123,8 @@ public class Writer {
     }
 
     public void writeString(String results, String fileDir, String fileName) {
-        String file_header = "Querier,Number_Of_Policies,Baseline,Number_Of_Guards,Guard,UDF,Hybrid \n";
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(fileDir + fileName, true));
-            writer.write(file_header);
             writer.write(results);
             writer.close();
         } catch (IOException e) {

@@ -34,9 +34,6 @@ public class Experiment {
     PolicyPersistor polper;
     MySQLQueryManager mySQLQueryManager;
 
-
-    private Writer writer;
-
     private static boolean BASE_LINE;
     private static boolean GENERATE_GUARD;
     private static boolean GUARD_EXEC;
@@ -55,7 +52,6 @@ public class Experiment {
     public Experiment() {
         polper = new PolicyPersistor();
         mySQLQueryManager = new MySQLQueryManager();
-        writer = new Writer();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
         try {
@@ -82,7 +78,13 @@ public class Experiment {
     }
 
 
-    public void runBEPolicies(String querier, List<BEPolicy> bePolicies) {
+    public String runBEPolicies(String querier, List<BEPolicy> bePolicies) {
+
+
+        //TODO: to replace with queries generated from templates
+        String QUERY_PREDICATES = " location_id in ('3141-clwa-1412', '3145-clwa-5099', '3143-clwa-3059') " +
+                "and start_date >= '2018-02-01' and start_date <= '2018-02-15' and start_time >= '08:04:51' " +
+                "and start_time <= '23:54:51' and user_id = 1628";
 
         BEExpression beExpression = new BEExpression(bePolicies);
         StringBuilder resultString = new StringBuilder();
@@ -90,7 +92,7 @@ public class Experiment {
         try {
 
             MySQLResult tradResult = new MySQLResult();
-
+            //TODO: fix baseline query
             if (BASE_LINE) {
                 tradResult = mySQLQueryManager.runTimedQueryWithRepetitions(beExpression.createQueryFromPolices(),
                         RESULT_CHECK, NUM_OF_REPS);
@@ -99,12 +101,6 @@ public class Experiment {
                 resultString.append(runTime.toMillis()).append(",");
                 System.out.println("QW: No of Policies: " + beExpression.getPolicies().size() + " , Time: " + runTime.toMillis());
             }
-
-            //TODO: to replace with queries generated from templates
-            String QUERY_PREDICATES = " location_id in ('3141-clwa-1412', '3145-clwa-5099', '3143-clwa-3059') " +
-                    "and start_date >= '2018-02-01' and start_date <= '2018-02-15' " +
-                    "and start_time >= '08:04:51' and start_time <= '23:54:51'";
-
 
             /** Guard generation **/
             if (GENERATE_GUARD) {
@@ -124,7 +120,7 @@ public class Experiment {
                     Boolean resultSame = tradResult.checkResults(guardResult);
                     if (!resultSame) {
                         System.out.println("*** Query results don't match with generated guard!!! Halting Execution ***");
-                        return;
+                        return null;
                     }
                 }
 
@@ -147,19 +143,23 @@ public class Experiment {
                 resultString.append(execTime.toMillis()).append(",");
                 System.out.println("UDF execution: "  + " Time: " + execTime.toMillis());
             }
-            if(HYBRID_EXEC){ //TODO: change the execution strategy
+            if(HYBRID_EXEC){
                 Duration execTime = Duration.ofMillis(0);
                 GuardPersistor guardPersistor = new GuardPersistor();
                 GuardExp guardExp = guardPersistor.retrieveGuard(querier, "user");
-                StringBuilder hybrid_query = new StringBuilder("SELECT * from (");
-                hybrid_query.append(guardExp.createGuardOnlyQuery());
-                hybrid_query.append(") as p where").append(QUERY_PREDICATES).append(PolicyConstants.CONJUNCTION);
+                StringBuilder hybrid_query = new StringBuilder();
                 String delim = "";
                 for(GuardPart guardPart: guardExp.getGuardParts()){
-                    hybrid_query.append(delim).append(" hybcheck(").append(querier).append(", \'")
+                    hybrid_query.append(delim)
+                            .append("SELECT * from PRESENCE where ")
+                            .append(guardPart.getGuard().print())
+                            .append(PolicyConstants.CONJUNCTION)
+                            .append(" hybcheck(").append(querier).append(", \'")
                             .append(guardPart.getId()).append("\', ")
-                            .append("p.user_id, p.location_id, p.start_date, p.start_time, p.user_profile, p.user_group ) = 1");
-                    delim = PolicyConstants.CONJUNCTION;
+                            .append("p.user_id, p.location_id, p.start_date, p.start_time, p.user_profile, p.user_group ) = 1 ")
+                            .append(PolicyConstants.CONJUNCTION)
+                            .append(QUERY_PREDICATES);
+                    delim = PolicyConstants.UNION;
                 }
                 MySQLResult execResult = mySQLQueryManager.runTimedQueryExp(hybrid_query.toString());
                 execTime = execTime.plus(execResult.getTimeTaken());
@@ -169,7 +169,7 @@ public class Experiment {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        writer.writeString(resultString.toString(), PolicyConstants.BE_POLICY_DIR, RESULTS_FILE);
+        return resultString.toString();
     }
 
     public static void main(String[] args) {
@@ -177,13 +177,16 @@ public class Experiment {
         PolicyGen pg = new PolicyGen();
         List<Integer> users = pg.getAllUsers(true);
         PolicyPersistor polper = new PolicyPersistor();
-        for (int i = 0; i < 100; i++) {
+        String file_header = "Querier,Number_Of_Policies,Baseline,Number_Of_Guards,Guard,UDF,Hybrid \n";
+        Writer writer = new Writer();
+        writer.writeString(file_header, PolicyConstants.BE_POLICY_DIR, RESULTS_FILE);
+        for (int i = 0; i < 10; i++) {
             String querier = String.valueOf(users.get(i));
             List<BEPolicy> allowPolicies = polper.retrievePolicies(querier,
                     PolicyConstants.USER_INDIVIDUAL, PolicyConstants.ACTION_ALLOW);
             if(allowPolicies == null) continue;
             System.out.println("Querier " + querier);
-            e.runBEPolicies(querier, allowPolicies);
+            writer.writeString(e.runBEPolicies(querier, allowPolicies), PolicyConstants.BE_POLICY_DIR, RESULTS_FILE);
         }
     }
 }
