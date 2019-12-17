@@ -85,9 +85,8 @@ public class Experiment {
     public void runBEPolicies(String querier, List<BEPolicy> bePolicies) {
 
         BEExpression beExpression = new BEExpression(bePolicies);
-        String file_header = "Baseline, Guard, UDF, Hybrid \n";
         StringBuilder resultString = new StringBuilder();
-
+        resultString.append(querier).append(",").append(bePolicies.size()).append(",");
         try {
 
             MySQLResult tradResult = new MySQLResult();
@@ -115,7 +114,7 @@ public class Experiment {
                 Instant fsEnd = Instant.now();
                 guardGen = guardGen.plus(Duration.between(fsStart, fsEnd));
                 System.out.println("Guard Generation: " + guardGen + " Number of Guards: " + gh.numberOfGuards());
-
+                resultString.append(gh.numberOfGuards()).append(",");
                 /** Result checking **/
                 if (RESULT_CHECK) {
                     System.out.println("Verifying results......");
@@ -170,7 +169,7 @@ public class Experiment {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        writer.writeString(file_header, resultString.toString(), PolicyConstants.BE_POLICY_DIR, RESULTS_FILE);
+        writer.writeString(resultString.toString(), PolicyConstants.BE_POLICY_DIR, RESULTS_FILE);
     }
 
     public static void main(String[] args) {
