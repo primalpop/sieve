@@ -14,6 +14,7 @@ import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
 import edu.uci.ics.tippers.model.query.QueryStatement;
 
+import javax.management.Query;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
@@ -77,11 +78,12 @@ public class Experiment {
     }
 
 
-    public String runBEPolicies(String querier, String queryPredicates, float selectivity, List<BEPolicy> bePolicies) {
+    public String runBEPolicies(String querier, String queryPredicates, int template, float selectivity, List<BEPolicy> bePolicies) {
 
         BEExpression beExpression = new BEExpression(bePolicies);
         StringBuilder resultString = new StringBuilder();
         resultString.append(querier).append(",").append(selectivity * PolicyConstants.NUMBER_OR_TUPLES).append(",")
+                .append(template).append(",")
                 .append(bePolicies.size()).append(",");
         try {
             if(QUERY_EXEC){
@@ -157,27 +159,36 @@ public class Experiment {
         return resultString.toString();
     }
 
+    public List<QueryStatement> getQueries(){
+        QueryGeneration qg = new QueryGeneration();
+        List<QueryStatement> queries = new ArrayList<>();
+        queries.addAll(qg.retrieveQueries(1,"all", 30));
+        queries.addAll(qg.retrieveQueries(2,"all", 30));
+        return queries;
+    }
+
+
     public static void main(String[] args) {
         Experiment e = new Experiment();
         PolicyGen pg = new PolicyGen();
-        QueryGeneration qg = new QueryGeneration();
-        List<QueryStatement> queries = qg.retrieveQueries("low", 1);
 //        List<Integer> users = pg.getAllUsers(true);
+        List<QueryStatement> queries = e.getQueries();
+        System.out.println("Number of Queries: " + queries);
         List <Integer> users = new ArrayList<>(Arrays.asList(3260, 479, 16436, 15439, 10085, 6502,
                 36371, 364, 28075, 24370, 14590, 22381, 26263, 7964, 34290, 32879, 23416, 32314, 7073, 32201));
         PolicyPersistor polper = new PolicyPersistor();
-        String file_header = "Querier,Query_Selectivity,Number_Of_Policies,Query_Alone,Baseline,UDF,Guard_Inline_Union_Force," +
+        String file_header = "Querier,Query_Type,Query_Cardinality,Number_Of_Policies,Query_Alone,Baseline,UDF,Guard_Inline_Union_Force," +
                 "Guard_Inline_OR,Guard_UDF_Union_Force,Guard_UDF_OR \n";
         Writer writer = new Writer();
         writer.writeString(file_header, PolicyConstants.BE_POLICY_DIR, RESULTS_FILE);
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < users.size(); i++) {
             String querier = String.valueOf(users.get(i));
             List<BEPolicy> allowPolicies = polper.retrievePolicies(querier,
                     PolicyConstants.USER_INDIVIDUAL, PolicyConstants.ACTION_ALLOW);
             if(allowPolicies == null) continue;
             System.out.println("Querier " + querier);
             for (int j = 0; j < queries.size(); j++) {
-                writer.writeString(e.runBEPolicies(querier, queries.get(j).getQuery(), queries.get(j).getSelectivity(),
+                writer.writeString(e.runBEPolicies(querier, queries.get(j).getQuery(), queries.get(j).getTemplate(), queries.get(j).getSelectivity(),
                         allowPolicies), PolicyConstants.BE_POLICY_DIR, RESULTS_FILE);
             }
         }
