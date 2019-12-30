@@ -21,12 +21,18 @@ public class MySQLQueryManager {
 
     private long timeout;
 
+    private final long QUERY_EXECUTION_TIMEOUT = 120000; //2 minutes
+
     public MySQLQueryManager(long timeout){
-        this.timeout = timeout;
+        this.timeout = timeout + QUERY_EXECUTION_TIMEOUT;
     }
 
     public MySQLQueryManager(){
-        this.timeout = 300000;
+        this.timeout = QUERY_EXECUTION_TIMEOUT;
+    }
+
+    public void increaseTimeout(long timeout) {
+        this.timeout +=  timeout;
     }
 
     public MySQLResult runWithThread(String query, MySQLResult mySQLResult) {
@@ -128,11 +134,23 @@ public class MySQLQueryManager {
      * @throws PolicyEngineException
      */
 
-    public MySQLResult runTimedQueryExp(String query) throws PolicyEngineException {
+    public MySQLResult runTimedQueryExp(String query, int repetitions) throws PolicyEngineException {
         try {
             MySQLResult mySQLResult = new MySQLResult();
             mySQLResult.setResultsCheck(false);
-            Duration gCost = runWithThread(query, mySQLResult).getTimeTaken();
+            List<Long> gList = new ArrayList<>();
+            for (int i = 0; i < repetitions; i++) {
+                gList.add(runWithThread(query, mySQLResult).getTimeTaken().toMillis());
+            }
+            Duration gCost;
+            if(repetitions >= 3) {
+                Collections.sort(gList);
+                List<Long> clippedGList = gList.subList(1, repetitions - 1);
+                gCost = Duration.ofMillis(clippedGList.stream().mapToLong(i -> i).sum() / clippedGList.size());
+            }
+            else{
+                gCost =  Duration.ofMillis(gList.stream().mapToLong(i -> i).sum() / gList.size());
+            }
             mySQLResult.setTimeTaken(gCost);
             return mySQLResult;
         } catch (Exception e) {

@@ -33,7 +33,7 @@ public class ExperimentInline {
                  + guard_id +  " , user_id, location_id, start_date, " +
                         "start_time, user_profile, user_group ) = 1";
         MySQLResult udfTime = mySQLQueryManager.runTimedQueryExp(guard + PolicyConstants.CONJUNCTION
-                + udf_query + query_predicates);
+                + udf_query + query_predicates, 1);
         System.out.println("UDF time " + udfTime.getTimeTaken().toMillis());
         String add_policy_1 = "((user_profile= \"facultys\") " +
                 "AND (start_date<= \"2018-04-30\") AND (start_date>= \"2018-02-01\") " +
@@ -57,7 +57,7 @@ public class ExperimentInline {
             long total = 0;
             boolean first = false;
             for (int k = 0; k < 3; k++) {
-                MySQLResult execTime = mySQLQueryManager.runTimedQueryExp(query);
+                MySQLResult execTime = mySQLQueryManager.runTimedQueryExp(query, 1);
                 if(!first) {
                     first = true;
                     continue;

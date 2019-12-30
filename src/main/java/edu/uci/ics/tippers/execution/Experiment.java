@@ -18,6 +18,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
@@ -35,6 +37,7 @@ public class Experiment {
     QueryExplainer queryExplainer;
     MySQLQueryManager mySQLQueryManager;
 
+    private static boolean QUERY_EXEC;
     private static boolean BASE_LINE;
     private static boolean GENERATE_GUARD;
     private static boolean GUARD_EXEC;
@@ -42,11 +45,7 @@ public class Experiment {
     private static boolean HYBRID_EXEC;
     private static boolean RESULT_CHECK;
 
-    private static boolean EXTEND_PREDICATES;
-
-    private static boolean GUARD_UNION;
     private static int NUM_OF_REPS;
-    private static long QUERY_TIMEOUT;
 
     private static String RESULTS_FILE;
 
@@ -61,16 +60,14 @@ public class Experiment {
             Properties props = new Properties();
             if (inputStream != null) {
                 props.load(inputStream);
+                QUERY_EXEC = Boolean.parseBoolean(props.getProperty("query_exec"));
                 BASE_LINE = Boolean.parseBoolean(props.getProperty("baseline"));
                 GENERATE_GUARD = Boolean.parseBoolean(props.getProperty("generate_guard"));
                 GUARD_EXEC = Boolean.parseBoolean(props.getProperty("guard_exec"));
                 UDF_EXEC = Boolean.parseBoolean(props.getProperty("udf_exec"));
                 HYBRID_EXEC = Boolean.parseBoolean(props.getProperty("hybrid_exec"));
                 RESULT_CHECK = Boolean.parseBoolean(props.getProperty("resultCheck"));
-                EXTEND_PREDICATES = Boolean.parseBoolean(props.getProperty("factor_extension"));
-                GUARD_UNION = Boolean.parseBoolean(props.getProperty("union"));
-                NUM_OF_REPS = Integer.parseInt(props.getProperty("numberOfRepetitions"));
-                QUERY_TIMEOUT = Long.parseLong(props.getProperty("timeout"));
+                NUM_OF_REPS = Integer.parseInt(props.getProperty("num_repetitions"));
                 RESULTS_FILE = props.getProperty("results_file");
             }
 
@@ -80,41 +77,79 @@ public class Experiment {
     }
 
 
-    public String runBEPolicies(String querier, String queryPredicates, List<BEPolicy> bePolicies) {
+    public String runBEPolicies(String querier, String queryPredicates, float selectivity, List<BEPolicy> bePolicies) {
 
         BEExpression beExpression = new BEExpression(bePolicies);
         StringBuilder resultString = new StringBuilder();
-        resultString.append(querier).append(",").append(bePolicies.size()).append(",");
+        resultString.append(querier).append(",").append(selectivity * PolicyConstants.NUMBER_OR_TUPLES).append(",")
+                .append(bePolicies.size()).append(",");
         try {
+            if(QUERY_EXEC){
+                MySQLResult queryResult = new MySQLResult();
+                String baselineQuery = " Select * from PRESENCE where " + queryPredicates;
+                queryResult = mySQLQueryManager.runTimedQueryExp(baselineQuery, NUM_OF_REPS);
+                Duration runTime = Duration.ofMillis(0);
+                runTime = runTime.plus(queryResult.getTimeTaken());
+                System.out.println("Time taken by query alone " + runTime.toMillis());
+                resultString.append(runTime.toMillis()).append(",");
+                mySQLQueryManager.increaseTimeout(runTime.toMillis()); //Updating timeout to query exec time + constant
+            }
 
-            MySQLResult tradResult = new MySQLResult();
             if (BASE_LINE) {
+                MySQLResult tradResult = new MySQLResult();
                 String baselineQuery = "With polEval as ( Select * from PRESENCE where "
                         + beExpression.createQueryFromPolices() + "  )"
                         + "Select * from polEval where " + queryPredicates;
-                tradResult = mySQLQueryManager.runTimedQueryExp(baselineQuery);
+                tradResult = mySQLQueryManager.runTimedQueryExp(baselineQuery, NUM_OF_REPS);
                 Duration runTime = Duration.ofMillis(0);
                 runTime = runTime.plus(tradResult.getTimeTaken());
                 resultString.append(runTime.toMillis()).append(",");
                 System.out.println("QW: No of Policies: " + beExpression.getPolicies().size() + " , Time: " + runTime.toMillis());
             }
 
+            if(UDF_EXEC){
+                Duration execTime = Duration.ofMillis(0);
+                String udf_query = "SELECT * FROM PRESENCE as p where " + queryPredicates
+                        + " and pcheck( " + querier + ", p.user_id, p.location_id, " +
+                        "p.start_date, p.start_time, p.user_profile, p.user_group) = 1";
+                MySQLResult execResult = mySQLQueryManager.runTimedQueryExp(udf_query, NUM_OF_REPS);
+                execTime = execTime.plus(execResult.getTimeTaken());
+                resultString.append(execTime.toMillis()).append(",");
+                System.out.println("UDF execution: "  + " Time: " + execTime.toMillis());
+            }
 
-            
             GuardPersistor guardPersistor = new GuardPersistor();
             GuardExp guardExp = guardPersistor.retrieveGuardExpression(querier, "user", bePolicies);
 
+            if(GUARD_EXEC) {
+                Duration execTime = Duration.ofMillis(0);
+                String guard_query_with_union = guardExp.inlineRewrite(true);
+                String guard_query_with_or = guardExp.inlineRewrite(false);
+                guard_query_with_union += "Select * from polEval where " + queryPredicates;
+                guard_query_with_or += "Select * from polEval where " + queryPredicates;
+                MySQLResult execResult = mySQLQueryManager.runTimedQueryExp(guard_query_with_union, NUM_OF_REPS);
+                execTime = execTime.plus(execResult.getTimeTaken());
+                resultString.append(execTime.toMillis()).append(",");
+                System.out.println("Guard inline execution with union: "  + " Time: " + execTime.toMillis());
+                execResult = mySQLQueryManager.runTimedQueryExp(guard_query_with_or, NUM_OF_REPS);
+                execTime = execTime.plus(execResult.getTimeTaken());
+                resultString.append(execTime.toMillis()).append(",");
+                System.out.println("Guard inline execution with OR: "  + " Time: " + execTime.toMillis());
+            }
             if(HYBRID_EXEC){
                 Duration execTime = Duration.ofMillis(0);
-                String hybrid_query = queryExplainer.estimateCost("Select * from PRESENCE where " + queryPredicates)
-                        < guardExp.estimateCostofGuardScan()? guardExp.inlineOrNot(false) : guardExp.inlineOrNot(true);
-                hybrid_query += "Select * from polEval where " + queryPredicates;
-                System.out.println("Hybrid query: ");
-                System.out.println(hybrid_query);
-                MySQLResult execResult = mySQLQueryManager.runTimedQueryExp(hybrid_query);
+                String guard_query_with_union = guardExp.hybridRewrite(true);
+                String guard_query_with_or = guardExp.hybridRewrite(false);
+                guard_query_with_union += "Select * from polEval where " + queryPredicates;
+                guard_query_with_or += "Select * from polEval where " + queryPredicates;
+                MySQLResult execResult = mySQLQueryManager.runTimedQueryExp(guard_query_with_union, NUM_OF_REPS);
+                execTime = execTime.plus(execResult.getTimeTaken());
+                resultString.append(execTime.toMillis()).append(",");
+                System.out.println("Guard udf execution with union: "  + " Time: " + execTime.toMillis());
+                execResult = mySQLQueryManager.runTimedQueryExp(guard_query_with_or, NUM_OF_REPS);
                 execTime = execTime.plus(execResult.getTimeTaken());
                 resultString.append(execTime.toMillis()).append("\n");
-                System.out.println("Hybrid execution: "  + " Time: " + execTime.toMillis());
+                System.out.println("Guard udf execution with OR: "  + " Time: " + execTime.toMillis());
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -127,9 +162,12 @@ public class Experiment {
         PolicyGen pg = new PolicyGen();
         QueryGeneration qg = new QueryGeneration();
         List<QueryStatement> queries = qg.retrieveQueries("low", 1);
-        List<Integer> users = pg.getAllUsers(true);
+//        List<Integer> users = pg.getAllUsers(true);
+        List <Integer> users = new ArrayList<>(Arrays.asList(3260, 479, 16436, 15439, 10085, 6502,
+                36371, 364, 28075, 24370, 14590, 22381, 26263, 7964, 34290, 32879, 23416, 32314, 7073, 32201));
         PolicyPersistor polper = new PolicyPersistor();
-        String file_header = "Querier,Number_Of_Policies,Baseline,Number_Of_Guards,Sieve \n";
+        String file_header = "Querier,Query_Selectivity,Number_Of_Policies,Query_Alone,Baseline,UDF,Guard_Inline_Union_Force," +
+                "Guard_Inline_OR,Guard_UDF_Union_Force,Guard_UDF_OR \n";
         Writer writer = new Writer();
         writer.writeString(file_header, PolicyConstants.BE_POLICY_DIR, RESULTS_FILE);
         for (int i = 0; i < 10; i++) {
@@ -139,8 +177,8 @@ public class Experiment {
             if(allowPolicies == null) continue;
             System.out.println("Querier " + querier);
             for (int j = 0; j < queries.size(); j++) {
-                writer.writeString(e.runBEPolicies(querier, queries.get(j).getQuery(), allowPolicies),
-                        PolicyConstants.BE_POLICY_DIR, RESULTS_FILE);
+                writer.writeString(e.runBEPolicies(querier, queries.get(j).getQuery(), queries.get(j).getSelectivity(),
+                        allowPolicies), PolicyConstants.BE_POLICY_DIR, RESULTS_FILE);
             }
         }
     }
