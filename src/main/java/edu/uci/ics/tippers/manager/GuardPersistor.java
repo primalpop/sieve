@@ -5,6 +5,7 @@ import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.db.MySQLConnectionManager;
 import edu.uci.ics.tippers.model.guard.GuardExp;
 import edu.uci.ics.tippers.model.guard.GuardPart;
+import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
 import edu.uci.ics.tippers.model.policy.ObjectCondition;
 import edu.uci.ics.tippers.model.policy.Operation;
@@ -14,7 +15,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class GuardPersistor {
 
@@ -115,6 +115,33 @@ public class GuardPersistor {
         }
     }
 
+
+    public BEExpression retrieveGuardPartition(String guard_id, String guard_to_policy_table, List<BEPolicy> allowPolicies){
+        List<BEPolicy> guardPolicies = new ArrayList<>();
+        PreparedStatement queryStm = null;
+        List<String> policy_ids = new ArrayList<>();
+        try{
+            queryStm = connection.prepareStatement("SELECT " + guard_to_policy_table  + ".policy_id "
+                    + "FROM "  + guard_to_policy_table +
+                    " WHERE " + guard_to_policy_table + ".guard_id=? ");
+            queryStm.setString(1, guard_id);
+            ResultSet rs = queryStm.executeQuery();
+            while(rs.next()){
+                policy_ids.add(rs.getString(guard_to_policy_table  + ".policy_id"));
+            }
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+        for (String pid: policy_ids) {
+            for(BEPolicy bePolicy: allowPolicies){
+                if (bePolicy.getId().equalsIgnoreCase(pid)){
+                    guardPolicies.add(bePolicy);
+                }
+            }
+        }
+        return new BEExpression(guardPolicies);
+    }
+
     /**
      * Retrives the guard based on Querier and Querier type
      * TODO: retrieve the policies in the guard partition
@@ -122,7 +149,7 @@ public class GuardPersistor {
      * @param querier_type
      * @return
      */
-    public GuardExp retrieveGuard(String querier, String querier_type){
+    public GuardExp retrieveGuardExpression(String querier, String querier_type, List<BEPolicy> allowPolicies){
         String guardExpTable, guardPartTable, guardToPolicyTable;
         if (querier_type.equalsIgnoreCase("user")) { //User Guard
             guardExpTable = "USER_GUARD_EXPRESSION";
@@ -151,7 +178,6 @@ public class GuardPersistor {
             queryStm.setInt(1, Integer.parseInt(querier));
             ResultSet rs = queryStm.executeQuery();
             List<GuardPart> gps = new ArrayList<>();
-            String next = null;
             boolean skip = false;
             while (rs.next()) {
                 if (!skip) {
@@ -195,11 +221,12 @@ public class GuardPersistor {
                     gp.setGuard(objectCondition);
                 }
                 else {
-                    ObjectCondition objectCondition = new ObjectCondition(null, PolicyConstants.START_DATE,
+                    ObjectCondition objectCondition = new ObjectCondition(null, PolicyConstants.START_TIME,
                             AttributeType.TIME, rs.getString(guardPartTable+ ".timeGe"), Operation.GTE,
                             rs.getString(guardPartTable+ ".timeLe"), Operation.LTE);
                     gp.setGuard(objectCondition);
                 }
+                gp.setGuardPartition(retrieveGuardPartition(gp.getId(), guardToPolicyTable, allowPolicies));
                 guardParts.add(gp);
             }
         } catch (SQLException e) {
