@@ -62,7 +62,7 @@ public class GuardGenExp {
             System.out.println(gh.createGuardedQuery(true));
             guardGen = guardGen.plus(Duration.between(fsStart, fsEnd));
             System.out.println("Guard Generation time: " + guardGen + " Number of Guards: " + gh.numberOfGuards());
-            guardPersistor.insertGuard(gh.create(querier, "user"));
+            guardPersistor.insertGuard(gh.create(String.valueOf(querier), "user"));
             if(!first) writeExecTimes(querier, allowPolicies.size(), (int) guardGen.toMillis());
             else first = false;
         }

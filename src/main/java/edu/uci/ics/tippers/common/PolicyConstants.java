@@ -49,6 +49,10 @@ public class PolicyConstants {
 
     public static final double KEY_COMPARE_COST = 0.1;
 
+    public static final double UDF_INVOCATION_COST = 0.00054; //includes cost of policy evaluation
+
+    public static final double POLICY_EVAL_COST = 0.0000044;
+
     public static final double NUMBER_OF_PREDICATES_EVALUATED = 0.66;
 
     public static final String DATE_FORMAT = "yyyy-MM-dd";
@@ -137,7 +141,7 @@ public class PolicyConstants {
 
     public static final String QR_EXTENDED = "query_results/extended/"; //results from approximation/extension
 
-
+    //TODO: Read this automatically
     //Indices available in the database
     public static final ImmutableMap<String, String> ATTRIBUTE_IND =
             new ImmutableMap.Builder<String, String>()
@@ -146,7 +150,7 @@ public class PolicyConstants {
                     .put(PolicyConstants.PROFILE_ATTR, "profile_hash")
                     .put(PolicyConstants.START_TIME, "time_tree")
                     .put(PolicyConstants.START_DATE, "date_tree")
-                    .put(PolicyConstants.LOCATIONID_ATTR, "loc_hash")
+                    .put(PolicyConstants.LOCATIONID_ATTR, "location_hash")
                     .build();
 
 

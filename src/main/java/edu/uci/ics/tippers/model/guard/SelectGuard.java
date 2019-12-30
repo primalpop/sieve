@@ -145,8 +145,7 @@ public class SelectGuard {
         }
     }
 
-
-    public GuardExp create(int querier, String querier_type){
+    public GuardExp create(String querier, String querier_type){
         List<GuardPart> gps = new ArrayList<>();
         for (Term mt: finalForm) {
             String gpID =  UUID.randomUUID().toString();
@@ -161,7 +160,7 @@ public class SelectGuard {
         //TODO: Make it less hardcoded?
         guardExp.setAction(finalForm.get(0).getQuotient().getPolicies().get(0).getAction());
         guardExp.setPurpose(finalForm.get(0).getQuotient().getPolicies().get(0).getPurpose());
-        guardExp.setQuerier(String.valueOf(querier));
+        guardExp.setQuerier(querier);
         guardExp.setQuerier_type(querier_type);
         guardExp.setDirty("false");
         guardExp.setLast_updated(new Timestamp(new Date().getTime()));
@@ -187,6 +186,8 @@ public class SelectGuard {
         }
         return queryExp.toString();
     }
+
+
 
     public List<String> createGuardQueries(){
         List<String> guardQueries = new ArrayList<>();
