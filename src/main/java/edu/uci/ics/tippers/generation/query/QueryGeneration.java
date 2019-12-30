@@ -209,7 +209,7 @@ public class QueryGeneration {
         List<QueryStatement> queryStatements = new ArrayList<>();
         PreparedStatement queryStm = null;
         try {
-            queryStm = connection.prepareStatement("SELECT id, query_statement FROM queries as q " +
+            queryStm = connection.prepareStatement("SELECT id, query_statement, selectivity FROM queries as q " +
                     "WHERE q.selectivity_type = ? limit " + query_count);
             queryStm.setString(1, selectivity_type);
             ResultSet rs = queryStm.executeQuery();
@@ -217,6 +217,7 @@ public class QueryGeneration {
                 QueryStatement qs = new QueryStatement();
                 qs.setQuery(rs.getString("query_statement"));
                 qs.setId(rs.getInt("id"));
+                qs.setSelectivity(rs.getFloat("selectivity"));
                 queryStatements.add(qs);
             }
         } catch (SQLException e) {

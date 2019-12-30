@@ -150,6 +150,71 @@ public class GuardExp {
         return gcost;
     }
 
+    public String inlineRewrite(boolean union) {
+        StringBuilder queryExp = new StringBuilder();
+        queryExp.append("WITH polEval as (");
+        String delim = "";
+        if (union) {
+            for (GuardPart gp : this.guardParts) {
+                queryExp.append(delim);
+                queryExp.append(PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS)
+                        .append(" force index (")
+                        .append(PolicyConstants.ATTRIBUTE_IND.get(gp.getGuard().getAttribute()))
+                        .append(" ) Where")
+                        .append(gp.getGuard().print())
+                        .append(PolicyConstants.CONJUNCTION);
+                queryExp.append(gp.getGuardPartition().createQueryFromPolices());
+                delim = PolicyConstants.UNION;
+            }
+        }
+        else {
+            queryExp.append(PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS_WHERE);
+            for (GuardPart gp: this.guardParts) {
+                queryExp.append(delim).append(gp.getGuard().print())
+                        .append(PolicyConstants.CONJUNCTION);
+                queryExp.append(gp.getGuardPartition().createQueryFromPolices());
+                delim = PolicyConstants.DISJUNCTION;
+            }
+        }
+        queryExp.append(")");
+        return queryExp.toString();
+    }
+
+    public String hybridRewrite(boolean union) {
+        StringBuilder queryExp = new StringBuilder();
+        queryExp.append("WITH polEval as (");
+        String delim = "";
+        if (union) {
+            for (GuardPart gp : this.guardParts) {
+                queryExp.append(delim);
+                queryExp.append(PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS)
+                        .append(" force index (")
+                        .append(PolicyConstants.ATTRIBUTE_IND.get(gp.getGuard().getAttribute()))
+                        .append(" ) Where")
+                        .append(gp.getGuard().print())
+                        .append(PolicyConstants.CONJUNCTION);
+                queryExp.append(" hybcheck(").append(querier).append(", \'")
+                        .append(gp.getId()).append("\', ")
+                        .append("user_id, location_id, start_date, " +
+                                "start_time, user_profile, user_group ) = 1 ");
+                delim = PolicyConstants.UNION;
+            }
+        } else {
+            queryExp.append(PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS_WHERE);
+            for (GuardPart gp : this.guardParts) {
+                queryExp.append(delim).append(gp.getGuard().print())
+                        .append(PolicyConstants.CONJUNCTION);
+                queryExp.append(" hybcheck(").append(querier).append(", \'")
+                        .append(gp.getId()).append("\', ")
+                        .append("user_id, location_id, start_date, " +
+                                "start_time, user_profile, user_group ) = 1 ");
+                delim = PolicyConstants.DISJUNCTION;
+            }
+        }
+        queryExp.append(")");
+        return queryExp.toString();
+    }
+
     /**
      * Whether to inline policies or not
      * @param union

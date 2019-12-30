@@ -138,7 +138,7 @@ public class PolicyExecution {
 
                     if(GUARD_UNION) {
                         Duration execTime = Duration.ofMillis(0);
-                        MySQLResult execResult = mySQLQueryManager.runTimedQueryExp(gh.createGuardedQuery(GUARD_UNION));
+                        MySQLResult execResult = mySQLQueryManager.runTimedQueryExp(gh.createGuardedQuery(GUARD_UNION), 1);
                         execTime = execTime.plus(execResult.getTimeTaken());
                         policyRunTimes.put(file.getName() + "-executionTime with UNION", String.valueOf(execTime.toMillis()));
                         writer.appendToCSVReport(policyRunTimes, policyDir, RESULTS_FILE);
