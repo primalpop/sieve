@@ -143,7 +143,7 @@ public class Experiment {
                 String guard_query_with_union = guardExp.hybridRewrite(true);
                 String guard_query_with_or = guardExp.hybridRewrite(false);
                 guard_query_with_union += "Select * from polEval where " + queryPredicates;
-                guard_query_with_or += "Select * from polEval where " + queryPredicates;
+                guard_query_with_or += "Select * from polEva l where " + queryPredicates;
                 MySQLResult execResult = mySQLQueryManager.runTimedQueryExp(guard_query_with_union, NUM_OF_REPS);
                 execTime = execTime.plus(execResult.getTimeTaken());
                 resultString.append(execTime.toMillis()).append(",");
