@@ -1,0 +1,53 @@
+package edu.uci.ics.tippers.execution;
+
+import edu.uci.ics.tippers.common.PolicyConstants;
+import edu.uci.ics.tippers.db.MySQLQueryManager;
+import edu.uci.ics.tippers.db.MySQLResult;
+import edu.uci.ics.tippers.manager.GuardPersistor;
+import edu.uci.ics.tippers.manager.PolicyPersistor;
+import edu.uci.ics.tippers.model.guard.GuardExp;
+import edu.uci.ics.tippers.model.guard.GuardPart;
+import edu.uci.ics.tippers.model.policy.BEPolicy;
+
+import java.util.List;
+
+public class GuardSelectivityExperiment {
+
+    MySQLQueryManager mySQLQueryManager = new MySQLQueryManager();
+
+    private float checkSelectivity(String query) {
+        MySQLResult mySQLResult = mySQLQueryManager.runTimedQueryWithOutSorting(query, true);
+        return (float) mySQLResult.getResultCount() / (float) PolicyConstants.NUMBER_OR_TUPLES;
+    }
+
+    public static void main(String[] args){
+        GuardSelectivityExperiment gse = new GuardSelectivityExperiment();
+        StringBuilder result = new StringBuilder();
+        result.append("Querier, Number of Guards, Avg Selectivity, Avg Num of Policies, Savings");
+        for (int i = 1; i <= 20; i++) {
+            String querier = String.valueOf(i);
+            PolicyPersistor polper = new PolicyPersistor();
+            List<BEPolicy> allowPolicies = polper.retrievePolicies(querier,
+                    PolicyConstants.USER_INDIVIDUAL, PolicyConstants.ACTION_ALLOW);
+            GuardPersistor guardPersistor = new GuardPersistor();
+            GuardExp guardExp = guardPersistor.retrieveGuardExpression(querier, "user", allowPolicies);
+            if(allowPolicies == null) continue;
+            System.out.println("Querier " + querier);
+            double totalSel = 0.0;
+            int numOfPolicies = 0;
+            int numOfGuards = 0;
+            for (int j = 0; j < guardExp.getGuardParts().size(); j++) {
+                GuardPart gp = guardExp.getGuardParts().get(j);
+                numOfGuards += 1;
+                totalSel += gse.checkSelectivity(gp.getGuard().print());
+                numOfPolicies += gp.getGuardPartition().getPolicies().size();
+            }
+            result.append(querier).append(",")
+                    .append(numOfGuards).append(",")
+                    .append(totalSel/numOfGuards).append(",")
+                    .append(numOfPolicies/numOfGuards).append(",")
+                    .append(" ").append("\n");
+        }
+        System.out.println(result.toString());
+    }
+}
