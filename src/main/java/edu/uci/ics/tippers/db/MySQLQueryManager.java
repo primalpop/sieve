@@ -21,7 +21,7 @@ public class MySQLQueryManager {
 
     private long timeout;
 
-    private final long QUERY_EXECUTION_TIMEOUT = 120000; //2 minutes
+    private final long QUERY_EXECUTION_TIMEOUT = 30000; //30 seconds
 
     public MySQLQueryManager(long timeout){
         this.timeout = timeout + QUERY_EXECUTION_TIMEOUT;

@@ -150,6 +150,23 @@ public class GuardExp {
         return gcost;
     }
 
+    public String rewriteWithoutHint() {
+        StringBuilder queryExp = new StringBuilder();
+        queryExp.append("WITH polEval as (");
+        String delim = "";
+        for (GuardPart gp : this.guardParts) {
+            queryExp.append(delim);
+            queryExp.append(PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS)
+                    .append(" where")
+                    .append(gp.getGuard().print())
+                    .append(PolicyConstants.CONJUNCTION);
+            queryExp.append(gp.getGuardPartition().createQueryFromPolices());
+            delim = PolicyConstants.UNION;
+        }
+        queryExp.append(")");
+        return queryExp.toString();
+    }
+
     public String inlineRewrite(boolean union) {
         StringBuilder queryExp = new StringBuilder();
         queryExp.append("WITH polEval as (");
@@ -180,7 +197,7 @@ public class GuardExp {
         return queryExp.toString();
     }
 
-    public String hybridRewrite(boolean union) {
+    public String udfRewrite(boolean union) {
         StringBuilder queryExp = new StringBuilder();
         queryExp.append("WITH polEval as (");
         String delim = "";

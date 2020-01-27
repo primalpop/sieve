@@ -14,7 +14,6 @@ import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
 import edu.uci.ics.tippers.model.query.QueryStatement;
 
-import javax.management.Query;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
@@ -140,8 +139,9 @@ public class Experiment {
             }
             if(HYBRID_EXEC){
                 Duration execTime = Duration.ofMillis(0);
-                String guard_query_with_union = guardExp.hybridRewrite(true);
-                String guard_query_with_or = guardExp.hybridRewrite(false);
+                String guard_query_with_union = guardExp.udfRewrite(true);
+                System.out.println("Guard query " + guard_query_with_union);
+                String guard_query_with_or = guardExp.udfRewrite(false);
                 guard_query_with_union += "Select * from polEval where " + queryPredicates;
                 guard_query_with_or += "Select * from polEva l where " + queryPredicates;
                 MySQLResult execResult = mySQLQueryManager.runTimedQueryExp(guard_query_with_union, NUM_OF_REPS);
