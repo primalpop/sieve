@@ -165,7 +165,7 @@ public class QueryGeneration {
     }
 
     /**
-     * Query 1: Select * from PRESENCE P1 where P1.user_id in [......]
+     * Query 2: Select * from PRESENCE P1 where P1.user_id in [......]
      * and start_date >= d1 and start_date <= d2 and
      * start_time >= t1 and start_time <= t2
      * The algorithm iterates from low to high selectivity types and
@@ -264,7 +264,33 @@ public class QueryGeneration {
         return queries;
     }
 
+    /**
+     * Query 3: Select location_id, count(*) as occupancy from PRESENCE where
+     * P1.start_date <= P2.start_date and P1.start_time <= P2.start_time
+     * @param selTypes   - types of query selectivity needed
+     * @param queryCount - number of each queries of each selectivity type
+     * @return
+     */
+    private List<QueryStatement> createQuery3(List<String> selTypes, int queryCount) {
+        List<QueryStatement> queries = new ArrayList<>();
+        return queries;
 
+    }
+
+
+    /**
+     * Query 4: Select user_id from PRESENCE P1, PRESENCE P2 where P1.location = l1
+     * and P2.location = l2 and P1.start_date <= P2.start_date and
+     * P1.start_time <= P2.start_time
+     * @param selTypes   - types of query selectivity needed
+     * @param queryCount - number of each queries of each selectivity type
+     * @return
+     */
+    private List<QueryStatement> createQuery4(List<String> selTypes, int queryCount) {
+        List<QueryStatement> queries = new ArrayList<>();
+        return queries;
+
+    }
 
     private List<QueryStatement> getQueries(int templateNum, List<String> selTypes, int numOfQueries) {
         if (templateNum == 0) {
