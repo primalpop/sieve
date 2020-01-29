@@ -3,6 +3,7 @@ package edu.uci.ics.tippers.manager;
 import edu.uci.ics.tippers.common.AttributeType;
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.db.MySQLConnectionManager;
+import edu.uci.ics.tippers.db.MySQLQueryManager;
 import edu.uci.ics.tippers.model.guard.GuardExp;
 import edu.uci.ics.tippers.model.guard.GuardPart;
 import edu.uci.ics.tippers.model.policy.BEExpression;
@@ -22,10 +23,11 @@ public class GuardPersistor {
 
     private static Connection connection = MySQLConnectionManager.getInstance().getConnection();
 
+    private static MySQLQueryManager mySQLQueryManager = new MySQLQueryManager();
+
     public static GuardPersistor getInstance() {
         return _instance;
     }
-
 
     public void insertGuard(GuardExp guardExp) {
 
@@ -46,6 +48,7 @@ public class GuardPersistor {
 
         PreparedStatement userGuardStmt = null;
         try {
+
             userGuardStmt = connection.prepareStatement(userGuardInsert);
             userGuardStmt.setString(1, guardExp.getId());
             userGuardStmt.setInt(2, Integer.parseInt(guardExp.getQuerier()));
@@ -56,13 +59,13 @@ public class GuardPersistor {
             userGuardStmt.executeUpdate();
             userGuardStmt.close();
 
+
             String guardExpInsert = "INSERT INTO " + guardPartTable +
-                    " (guard_exp_id, ownerEq, profEq, groupEq, locEq, dateGe, dateLe, timeGe, timeLe, id) " +
-                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    " (guard_exp_id, ownerEq, profEq, groupEq, locEq, dateGe, dateLe, timeGe, timeLe, id, cardinality) " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
             String guardToPolicyInsert = "INSERT INTO " + guardToPolicyTable +
                 "(guard_id, policy_id) VALUES (?, ?)";
-
 
             PreparedStatement gpStmt = connection.prepareStatement(guardExpInsert);
             PreparedStatement gpolStmt = connection.prepareStatement(guardToPolicyInsert);
@@ -89,6 +92,7 @@ public class GuardPersistor {
                     timeGe = new java.sql.Time(sdf.parse(gp.getGuard().getBooleanPredicates().get(0).getValue()).getTime());
                     timeLe = new java.sql.Time(sdf.parse(gp.getGuard().getBooleanPredicates().get(1).getValue()).getTime());
                 }
+                double gpSel = mySQLQueryManager.checkSelectivity(gp.getGuard().print());
                 if(ownerEq == 0)
                     gpStmt.setNull(2, Types.INTEGER);
                 else
@@ -101,6 +105,7 @@ public class GuardPersistor {
                 gpStmt.setTime(8, timeGe);
                 gpStmt.setTime(9, timeLe);
                 gpStmt.setString(10, gp.getId());
+                gpStmt.setFloat(11, (float) gpSel);
                 gpStmt.addBatch();
                 for (BEPolicy bp: gp.getGuardPartition().getPolicies()) {
                     gpolStmt.setString(1, gp.getId());
@@ -110,6 +115,7 @@ public class GuardPersistor {
             }
             gpStmt.executeBatch();
             gpolStmt.executeBatch();
+
         } catch (SQLException | ParseException e) {
             e.printStackTrace();
         }

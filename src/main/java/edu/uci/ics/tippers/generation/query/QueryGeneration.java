@@ -48,7 +48,7 @@ public class QueryGeneration {
         String selType = null;
         double lowSelDown = 0.0001, lowSelUp = 0.009;
         double medSelDown = 0.009, medSelUp = 0.09;
-        double highSelDown = 0.09, highSelUp = 0.5;
+        double highSelDown = 0.2, highSelUp = 0.5;
         if (lowSelDown < selectivity && selectivity < lowSelUp) selType = "low";
         if (medSelDown < selectivity && selectivity < medSelUp) selType = "medium";
         if (highSelDown < selectivity && selectivity < highSelUp) selType = "high";
@@ -119,6 +119,7 @@ public class QueryGeneration {
                     continue;
                 }
                 if(selType.equalsIgnoreCase(querySelType)) {
+                    System.out.println("Adding query with " + querySelType + " selectivity");
                     queries.add(new QueryStatement(query, 1, selQuery, querySelType,
                             new Timestamp(System.currentTimeMillis())));
                     numQ++;
@@ -217,6 +218,7 @@ public class QueryGeneration {
                     continue;
                 }
                 if(selType.equalsIgnoreCase(querySelType)) {
+                    System.out.println("Adding query with " + querySelType + " selectivity");
                     queries.add(new QueryStatement(query, 2, selQuery, querySelType,
                             new Timestamp(System.currentTimeMillis())));
                     numQ++;
@@ -338,8 +340,8 @@ public class QueryGeneration {
 
     public void constructWorkload(boolean[] templates, int numOfQueries) {
         List<String> selTypes = new ArrayList<>();
-        selTypes.add("low");
-        selTypes.add("medium");
+//        selTypes.add("low");
+//        selTypes.add("medium");
         selTypes.add("high");
         List<QueryStatement> queries = new ArrayList<>();
         for (int i = 0; i < templates.length; i++) {
@@ -350,8 +352,8 @@ public class QueryGeneration {
 
     public static void main(String[] args) {
         QueryGeneration qg = new QueryGeneration();
-        boolean[] templates = {true, true, false, false};
-        int numOfQueries = 10;
+        boolean[] templates = {true, false, false, false};
+        int numOfQueries = 5;
         qg.constructWorkload(templates, numOfQueries);
     }
 

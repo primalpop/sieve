@@ -58,6 +58,9 @@ public class QueryExplainer {
 
     public String keyUsed(String query){
         QExplain qe = access_method(query);
+        if(qe.getAccess_method()!= null && qe.getAccess_method().contains(",")){
+            return qe.getAccess_method().split(",")[0];
+        }
         return qe.getAccess_method();
     }
 

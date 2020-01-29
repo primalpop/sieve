@@ -15,16 +15,11 @@ import java.util.List;
 
 public class GuardSelectivityExperiment {
 
-    MySQLQueryManager mySQLQueryManager = new MySQLQueryManager();
 
-    private float checkSelectivity(String query) {
-        MySQLResult mySQLResult = mySQLQueryManager.runTimedQueryWithOutSorting(query, true);
-        return (float) mySQLResult.getResultCount() / (float) PolicyConstants.NUMBER_OR_TUPLES;
-    }
 
     public static void main(String[] args){
-        GuardSelectivityExperiment gse = new GuardSelectivityExperiment();
         PolicyGen pg = new PolicyGen();
+        MySQLQueryManager mySQLQueryManager = new MySQLQueryManager();
         List <Integer> users = pg.getAllUsers(true);;
         Writer writer = new Writer();
         writer.writeString("Querier, Number of Guards, Avg Selectivity, Avg Num of Policies \n", PolicyConstants.BE_POLICY_DIR, "expt2.csv");
@@ -43,7 +38,7 @@ public class GuardSelectivityExperiment {
             for (int j = 0; j < guardExp.getGuardParts().size(); j++) {
                 GuardPart gp = guardExp.getGuardParts().get(j);
                 numOfGuards += 1;
-                totalSel += gse.checkSelectivity(gp.getGuard().print());
+                totalSel += mySQLQueryManager.checkSelectivity(gp.getGuard().print());
                 numOfPolicies += gp.getGuardPartition().getPolicies().size();
             }
             result.append(querier).append(",")

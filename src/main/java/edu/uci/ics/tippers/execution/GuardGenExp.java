@@ -1,7 +1,6 @@
 package edu.uci.ics.tippers.execution;
 
 import edu.uci.ics.tippers.common.PolicyConstants;
-import edu.uci.ics.tippers.db.Histogram;
 import edu.uci.ics.tippers.db.MySQLConnectionManager;
 import edu.uci.ics.tippers.generation.policy.PolicyGen;
 import edu.uci.ics.tippers.manager.GuardPersistor;
@@ -15,6 +14,8 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -71,7 +72,8 @@ public class GuardGenExp {
     public static void main(String [] args){
         GuardGenExp ge = new GuardGenExp();
         PolicyGen pg = new PolicyGen();
-        List<Integer> users = pg.getAllUsers(true);
+//        List<Integer> users = pg.getAllUsers(true);
+        List<Integer> users = new ArrayList<>(Arrays.asList(177)); //TODO: Temporary to be removed
         ge.generateGuards(users);
     }
 }

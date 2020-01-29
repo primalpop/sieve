@@ -127,6 +127,10 @@ public class MySQLQueryManager {
         }
     }
 
+    public float checkSelectivity(String query) {
+        MySQLResult mySQLResult = runTimedQueryWithOutSorting(query, true);
+        return (float) mySQLResult.getResultCount() / (float) PolicyConstants.NUMBER_OR_TUPLES;
+    }
 
     /**
      * Compute the cost by execution time of the query and writes the results to file
