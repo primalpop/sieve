@@ -174,8 +174,9 @@ public class Experiment {
 //        List<Integer> users = pg.getAllUsers(true);
         List<QueryStatement> queries = e.getQueries();
         System.out.println("Number of Queries: " + queries);
-        List <Integer> users = new ArrayList<>(Arrays.asList(3260, 479, 16436, 15439, 10085, 6502,
-                36371, 364, 28075, 24370, 14590, 22381, 26263, 7964, 34290, 32879, 23416, 32314, 7073, 32201));
+//        List <Integer> users = new ArrayList<>(Arrays.asList(3260, 479, 16436, 15439, 10085, 6502,
+//                36371, 364, 28075, 24370, 14590, 22381, 26263, 7964, 34290, 32879, 23416, 32314, 7073, 32201));
+        List<Integer> users = new ArrayList<>(Arrays.asList(675));
         PolicyPersistor polper = new PolicyPersistor();
         String file_header = "Querier,Query_Type,Query_Cardinality,Number_Of_Policies,Query_Alone,Baseline,UDF,Guard_Inline_Union_Force," +
                 "Guard_Inline_OR,Guard_UDF_Union_Force,Guard_UDF_OR \n";

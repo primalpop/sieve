@@ -76,11 +76,27 @@ public class ObjectCondition extends BooleanCondition {
      */
     private double singletonRange(){
         double frequency = 0.0001;
-        for (int i = 0; i < Histogram.getInstance().getBucketMap().get(this.getAttribute()).size(); i++) {
-            Bucket b = Histogram.getInstance().getBucketMap().get(this.getAttribute()).get(i);
-            if (Integer.parseInt(b.getValue()) >= Integer.parseInt(this.getBooleanPredicates().get(0).getValue())
-                    && Integer.parseInt(b.getValue()) <= Integer.parseInt(this.getBooleanPredicates().get(1).getValue())){
-                frequency += b.getFreq();
+        if(this.getType() == AttributeType.INTEGER) {
+            for (int i = 0; i < Histogram.getInstance().getBucketMap().get(this.getAttribute()).size(); i++) {
+                Bucket b = Histogram.getInstance().getBucketMap().get(this.getAttribute()).get(i);
+                if (Integer.parseInt(b.getValue()) >= Integer.parseInt(this.getBooleanPredicates().get(0).getValue())
+                        && Integer.parseInt(b.getValue()) <= Integer.parseInt(this.getBooleanPredicates().get(1).getValue())) {
+                    frequency += b.getFreq();
+                }
+            }
+        }
+        else if(this.getType() == AttributeType.DATE) {
+            DateFormat formatter = new SimpleDateFormat(PolicyConstants.DATE_FORMAT);
+            try {
+                List<Bucket> buckets = Histogram.getInstance().getBucketMap().get(this.getAttribute());
+                for (Bucket b:buckets) {
+                    if (formatter.parse(b.getValue()).compareTo(formatter.parse(this.getBooleanPredicates().get(0).getValue())) >= 0
+                            && formatter.parse(b.getValue()).compareTo(formatter.parse(this.getBooleanPredicates().get(1).getValue())) < 0) {
+                        frequency += b.getFreq();
+                    }
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
             }
         }
         return frequency/100;
@@ -99,21 +115,6 @@ public class ObjectCondition extends BooleanCondition {
                     .filter(b -> b.getValue().equalsIgnoreCase(this.getBooleanPredicates().get(0).getValue()))
                     .findFirst()
                     .orElse(null);
-        }
-        else if(this.getType() == AttributeType.DATE) {
-            DateFormat formatter = new SimpleDateFormat(PolicyConstants.DATE_FORMAT);
-            try {
-                List<Bucket> buckets = Histogram.getInstance().getBucketMap().get(this.getAttribute());
-                for (Bucket b:buckets) {
-                    if(formatter.parse(b.getValue()).compareTo
-                            (formatter.parse(this.getBooleanPredicates().get(0).getValue())) == 0){
-                        bucket = b;
-                        break;
-                    }
-                }
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
         }
         if (bucket != null) frequency += bucket.getFreq();
         return frequency/100;
@@ -172,18 +173,23 @@ public class ObjectCondition extends BooleanCondition {
         }
         if(lIndex > buckets.size()-1 ) return frequency;
         if(uIndex > buckets.size()-1) uIndex = buckets.size() - 1;
-        for (int i = lIndex; i <= uIndex; i++) {
-            frequency += (buckets.get(i).getFreq()/buckets.get(i).getNumberOfItems());
-        }
-        return frequency/100;
+//        for (int i = lIndex; i <= uIndex; i++) {
+//            frequency += (buckets.get(i).getFreq()/buckets.get(i).getNumberOfItems());
+//        }
+//        return frequency/100;
+        int indDiff = (uIndex - lIndex) == 0 ? 1 : uIndex - lIndex;
+        return (indDiff)/(double) buckets.size();
     }
 
 
     public double computeL(){
         List mBuckets = null;
-        if (Stream.of(PolicyConstants.LOCATIONID_ATTR, PolicyConstants.GROUP_ATTR, PolicyConstants.PROFILE_ATTR,
-                PolicyConstants.START_DATE).anyMatch(this.getAttribute()::equalsIgnoreCase)){
+        if (Stream.of(PolicyConstants.LOCATIONID_ATTR, PolicyConstants.GROUP_ATTR, PolicyConstants.PROFILE_ATTR)
+                .anyMatch(this.getAttribute()::equalsIgnoreCase)){
             return singletonEquality();
+        }
+        else if (this.getAttribute().equalsIgnoreCase(PolicyConstants.START_DATE)) {
+            return singletonRange();
         }
         else if (this.getAttribute().equalsIgnoreCase(PolicyConstants.USERID_ATTR)){
            return equiheightEquality();

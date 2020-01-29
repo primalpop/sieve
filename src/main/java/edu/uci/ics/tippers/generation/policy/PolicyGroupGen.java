@@ -38,15 +38,15 @@ public class PolicyGroupGen {
     private int ACTIVE_CHOICES;
     private double TIMESTAMP_CHANCE;
     private TimeStampPredicate workingHours;
-    private TimeStampPredicate nightHours;
-    private TimeStampPredicate allHours;
+    private TimeStampPredicate nightDuskHours;
+    private TimeStampPredicate nightDawnHours;
 
     private String START_WORKING_HOURS;
     private int DURATION_WORKING_HOURS;
-    private String START_NIGHT_HOURS;
-    private int DURATION_NIGHT_HOURS;
-    private String START_ALL_HOURS;
-    private int DURATION_ALL_HOURS;
+    private String START_NIGHT_DUSK_HOURS;
+    private String START_NIGHT_DAWN_HOURS;
+    private int DURATION_NIGHT_DUSK_HOURS;
+    private int DURATION_NIGHT_DAWN_HOURS;
 
 
     public PolicyGroupGen(){
@@ -82,12 +82,12 @@ public class PolicyGroupGen {
                 START_WORKING_HOURS = props.getProperty("w_start");
                 DURATION_WORKING_HOURS = Integer.parseInt(props.getProperty("w_plus"));
                 workingHours = new TimeStampPredicate(pg.getDate("MIN"), pg.getDate("MAX"), START_WORKING_HOURS, DURATION_WORKING_HOURS);
-                START_NIGHT_HOURS = props.getProperty("n_start");
-                DURATION_NIGHT_HOURS = Integer.parseInt(props.getProperty("n_plus"));
-                nightHours = new TimeStampPredicate(pg.getDate("MIN"), pg.getDate("MAX"), START_NIGHT_HOURS, DURATION_NIGHT_HOURS);
-                START_ALL_HOURS = props.getProperty("a_start");
-                DURATION_ALL_HOURS = Integer.parseInt(props.getProperty("a_plus"));
-                allHours = new TimeStampPredicate(pg.getDate("MIN"), pg.getDate("MAX"), START_ALL_HOURS, DURATION_ALL_HOURS);
+                START_NIGHT_DUSK_HOURS = props.getProperty("n_dusk_start");
+                DURATION_NIGHT_DUSK_HOURS = Integer.parseInt(props.getProperty("n_dusk_plus"));
+                nightDuskHours = new TimeStampPredicate(pg.getDate("MIN"), pg.getDate("MAX"), START_NIGHT_DUSK_HOURS, DURATION_NIGHT_DUSK_HOURS);
+                START_NIGHT_DAWN_HOURS = props.getProperty("n_dawn_start");
+                DURATION_NIGHT_DAWN_HOURS = Integer.parseInt(props.getProperty("n_dawn_plus"));
+                nightDawnHours = new TimeStampPredicate(pg.getDate("MIN"), pg.getDate("MAX"), START_NIGHT_DAWN_HOURS, DURATION_NIGHT_DAWN_HOURS);
             }
         } catch (IOException ie) {
             ie.printStackTrace();
@@ -222,31 +222,33 @@ public class PolicyGroupGen {
                 defaultPolicies.add(pg.generatePolicies(querier, 0, querierGroups.get(0), null, workingHours,
                         null, PolicyConstants.ACTION_ALLOW));
                 //Create default policy for user profiles within user groups
-                defaultPolicies.add(pg.generatePolicies(querier, 0, querierGroups.get(0), querierProfile, allHours,
+                defaultPolicies.add(pg.generatePolicies(querier, 0, querierGroups.get(0), querierProfile, null,
                         null, PolicyConstants.ACTION_ALLOW));
             }
             //Create default policy for staff to monitor faculty and visitors
-            if(querierProfile.equalsIgnoreCase(UserProfile.STAFF.getValue())){
-                defaultPolicies.add(pg.generatePolicies(querier, 0, null, UserProfile.FACULTY.getValue(),
-                        workingHours, null, PolicyConstants.ACTION_ALLOW));
-                // in specific locations during working hours
-                for (String forbiddenLoc: location_clusters.get(0)) {
-                    defaultPolicies.add(pg.generatePolicies(querier, 0, null, UserProfile.VISITOR.getValue(),
-                            workingHours, forbiddenLoc, PolicyConstants.ACTION_ALLOW));
-                }
-            }
-            //Create default policy for faculty to see students during working hours
-            if(querierProfile.equalsIgnoreCase(UserProfile.FACULTY.getValue())){
-                defaultPolicies.add(pg.generatePolicies(querier, 0, null, UserProfile.GRADUATE.getValue(),
-                        workingHours, null, PolicyConstants.ACTION_ALLOW));
-                defaultPolicies.add(pg.generatePolicies(querier, 0, null, UserProfile.UNDERGRAD.getValue(),
-                        workingHours, null, PolicyConstants.ACTION_ALLOW));
-            }
-            //Create default policy for non-visitors to monitor visitors during night time
-            if(!querierProfile.equalsIgnoreCase(UserProfile.VISITOR.getValue())) {
-                defaultPolicies.add(pg.generatePolicies(querier, 0, null, UserProfile.VISITOR.getValue(),
-                        nightHours, null,  PolicyConstants.ACTION_ALLOW));
-            }
+//            if(querierProfile.equalsIgnoreCase(UserProfile.STAFF.getValue())){
+//                defaultPolicies.add(pg.generatePolicies(querier, 0, null, UserProfile.FACULTY.getValue(),
+//                        workingHours, null, PolicyConstants.ACTION_ALLOW));
+//                // in specific locations during working hours
+//                for (String forbiddenLoc: location_clusters.get(0)) {
+//                    defaultPolicies.add(pg.generatePolicies(querier, 0, null, UserProfile.VISITOR.getValue(),
+//                            workingHours, forbiddenLoc, PolicyConstants.ACTION_ALLOW));
+//                }
+//            }
+//            //Create default policy for faculty to see students during working hours
+//            if(querierProfile.equalsIgnoreCase(UserProfile.FACULTY.getValue())){
+//                defaultPolicies.add(pg.generatePolicies(querier, 0, null, UserProfile.GRADUATE.getValue(),
+//                        workingHours, null, PolicyConstants.ACTION_ALLOW));
+//                defaultPolicies.add(pg.generatePolicies(querier, 0, null, UserProfile.UNDERGRAD.getValue(),
+//                        workingHours, null, PolicyConstants.ACTION_ALLOW));
+//            }
+//            //Create default policy for non-visitors to monitor visitors during night time
+//            if(!querierProfile.equalsIgnoreCase(UserProfile.VISITOR.getValue())) {
+//                defaultPolicies.add(pg.generatePolicies(querier, 0, null, UserProfile.VISITOR.getValue(),
+//                        nightDawnHours, null,  PolicyConstants.ACTION_ALLOW));
+//                defaultPolicies.add(pg.generatePolicies(querier, 0, null, UserProfile.VISITOR.getValue(),
+//                        nightDuskHours, null,  PolicyConstants.ACTION_ALLOW));
+//            }
         }
         polper.insertPolicy(defaultPolicies);
     }
