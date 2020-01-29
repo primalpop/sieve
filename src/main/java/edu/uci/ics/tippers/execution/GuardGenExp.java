@@ -72,8 +72,7 @@ public class GuardGenExp {
     public static void main(String [] args){
         GuardGenExp ge = new GuardGenExp();
         PolicyGen pg = new PolicyGen();
-//        List<Integer> users = pg.getAllUsers(true);
-        List<Integer> users = new ArrayList<>(Arrays.asList(177)); //TODO: Temporary to be removed
+        List<Integer> users = pg.getAllUsers(true);
         ge.generateGuards(users);
     }
 }
