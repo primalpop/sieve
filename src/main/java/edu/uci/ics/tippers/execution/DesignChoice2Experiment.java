@@ -13,6 +13,7 @@ import edu.uci.ics.tippers.model.guard.GuardPart;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
 import edu.uci.ics.tippers.model.policy.TimeStampPredicate;
 
+import java.security.Policy;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -24,7 +25,7 @@ public class DesignChoice2Experiment {
     private String runExpt(String querier, List<String> queries){
         QueryExplainer qe = new QueryExplainer();
         PolicyPersistor polper = new PolicyPersistor();
-
+        boolean guardTO = false, queryTO = false, sieveTO = false;
         List<BEPolicy> allowPolicies = polper.retrievePolicies(querier,
                 PolicyConstants.USER_INDIVIDUAL, PolicyConstants.ACTION_ALLOW);
         GuardPersistor guardPersistor = new GuardPersistor();
@@ -45,8 +46,6 @@ public class DesignChoice2Experiment {
             boolean guard_hint = false;
             if (k > guardExp.getGuardParts().size()) guard_hint = true;
             String queryPredicates = queries.get(j);
-            String guard_query_without_hint = guardExp.rewriteWithoutHint();
-            guard_query_without_hint += "Select * from polEval where " + queryPredicates;
             String guard_query_with_hint_inline = guardExp.inlineRewrite(true);
             guard_query_with_hint_inline += "Select * from polEval where " + queryPredicates;
             String query_hint = "date_tree";
@@ -57,22 +56,33 @@ public class DesignChoice2Experiment {
                 guard_query_optimal = guard_query_with_hint_inline;
             else
                 guard_query_optimal = guard_query_with_hint_query;
+//            String guard_query_without_hint = guardExp.rewriteWithoutHint();
+//            guard_query_without_hint += "Select * from polEval where " + queryPredicates;
 //            String guard_query_with_choice = guardExp.inlineOrNot(true);
 //            guard_query_with_choice += "Select * from polEval where " + queryPredicates;
-            MySQLResult execResult = mySQLQueryManager.runTimedQueryExp(guard_query_without_hint, 1);
-            rString.append(execResult.getTimeTaken().toMillis()).append(",");
-            execResult = mySQLQueryManager.runTimedQueryExp(guard_query_with_hint_inline, 1);
-            rString.append(execResult.getTimeTaken().toMillis()).append(",");
-            execResult = mySQLQueryManager.runTimedQueryExp(guard_query_with_hint_query, 1);
-            rString.append(execResult.getTimeTaken().toMillis()).append(",");
-            execResult = mySQLQueryManager.runTimedQueryExp(guard_query_optimal, 1);
-            rString.append(execResult.getTimeTaken().toMillis()).append(",");
-            rString.append(guard_hint);
-            rString.append("\n");
-//            execResult =  mySQLQueryManager.runTimedQueryExp(guard_query_with_hint_udf, 1);
-//            rString.append(execResult.getTimeTaken().toMillis()).append(",");
-//            execResult = mySQLQueryManager.runTimedQueryExp(guard_query_with_choice, 1);
-//            rString.append(execResult.getTimeTaken().toMillis()).append(",");
+            MySQLResult execResult = null;
+            if(!guardTO) {
+                execResult = mySQLQueryManager.runTimedQueryExp(guard_query_with_hint_inline, 1);
+                rString.append(execResult.getTimeTaken().toMillis()).append(",");
+                if(execResult.getTimeTaken().equals(PolicyConstants.MAX_DURATION)) guardTO = true;
+            }
+            else
+                rString.append(PolicyConstants.MAX_DURATION.toMillis()).append(",");
+            if(!queryTO) {
+                execResult = mySQLQueryManager.runTimedQueryExp(guard_query_with_hint_query, 1);
+                rString.append(execResult.getTimeTaken().toMillis()).append(",");
+                if(execResult.getTimeTaken().equals(PolicyConstants.MAX_DURATION)) queryTO = true;
+            }
+            else
+                rString.append(PolicyConstants.MAX_DURATION.toMillis()).append(",");
+            if(!sieveTO){
+                execResult = mySQLQueryManager.runTimedQueryExp(guard_query_optimal, 1);
+                rString.append(execResult.getTimeTaken().toMillis()).append(",");
+                if(execResult.getTimeTaken().equals(PolicyConstants.MAX_DURATION)) sieveTO = true;
+                rString.append(guard_hint);
+            }
+            else
+                rString.append(PolicyConstants.MAX_DURATION.toMillis()).append(",");
             System.out.println(rString.toString());
 //            if(qe.printExplain(guard_query_without_hint).equalsIgnoreCase(qe.printExplain(guard_query_with_hint_inline))){
 //                System.out.println("Same plan");
@@ -83,7 +93,7 @@ public class DesignChoice2Experiment {
 //                System.out.println("-----------------------------------");
 //            }
         }
-        return rString.toString();
+        return rString.append("\n").toString();
     }
 
     public static void main(String[] args) {
@@ -92,15 +102,24 @@ public class DesignChoice2Experiment {
         Writer writer = new Writer();
         writer.writeString(file_header, PolicyConstants.BE_POLICY_DIR, "expts2.csv");
         List<String> queries = new ArrayList<>();
-        int duration =  1439; //maximum of a day
         PolicyGen pg = new PolicyGen();
-        for (int i = 0; i < 90; i++) {
+        for (int j =0; j < 24; j++) {
+            TimeStampPredicate tsPred = new TimeStampPredicate(pg.getDate("MIN"), 0, "00:00", 60*j);
+            String query = String.format("start_time >= \"%s\" AND start_time <= \"%s\" ", tsPred.getStartTime().toString(),
+                    tsPred.getEndTime().toString());
+            query += String.format("and start_date >= \"%s\" AND start_date <= \"%s\" ", tsPred.getStartDate().toString(),
+                    tsPred.getEndDate().toString());
+            queries.add(query);
+        }
+        int duration =  1439; //maximum of a day
+        for (int i = 0; i < 90; i=i+3) {
             TimeStampPredicate tsPred = new TimeStampPredicate(pg.getDate("MIN"), i, "00:00", duration);
-            queries.add(String.format("start_date >= \"%s\" AND start_date <= \"%s\" ", tsPred.getStartDate().toString(),
-                    tsPred.getEndDate().toString()));
+            String query = String.format("start_date >= \"%s\" AND start_date <= \"%s\" ", tsPred.getStartDate().toString(),
+                    tsPred.getEndDate().toString());
+            queries.add(query);
         }
 
-        List<Integer> queriers = new ArrayList<>(Arrays.asList(21587, 29360, 18770, 15039, 22636));
+        List<Integer> queriers = new ArrayList<>(Arrays.asList(29360, 18770, 15039, 22636));
 
         Experiment e = new Experiment();
         for (int i = 0; i < queriers.size(); i++) {

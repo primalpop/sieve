@@ -8,7 +8,6 @@ import edu.uci.ics.tippers.fileop.Reader;
 import edu.uci.ics.tippers.fileop.Writer;
 import edu.uci.ics.tippers.model.guard.SelectGuard;
 import edu.uci.ics.tippers.model.policy.BEExpression;
-import edu.uci.ics.tippers.model.policy.BEPolicy;
 import edu.uci.ics.tippers.generation.policy.SyntheticPolicy;
 
 import java.io.File;
@@ -50,7 +49,7 @@ public class PolicyExecution {
             Properties props = new Properties();
             if (inputStream != null) {
                 props.load(inputStream);
-                BASE_LINE = Boolean.parseBoolean(props.getProperty("baseline"));
+                BASE_LINE = Boolean.parseBoolean(props.getProperty("baseline_policies"));
                 RESULT_CHECK = Boolean.parseBoolean(props.getProperty("resultCheck"));
                 EXTEND_PREDICATES = Boolean.parseBoolean(props.getProperty("factor_extension"));
                 SEARCH_DEPTH = Integer.parseInt(props.getProperty("search_depth"));
