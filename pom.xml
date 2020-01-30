@@ -16,18 +16,13 @@
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
+                    <useIncrementalCompilation>false</useIncrementalCompilation>
                 </configuration>
             </plugin>
         </plugins>
     </build>
     <dependencies>
 
-        <!-- https://mvnrepository.com/artifact/net.java.maven-incremental-build/incremental-build-plugin -->
-        <dependency>
-            <groupId>net.java.maven-incremental-build</groupId>
-            <artifactId>incremental-build-plugin</artifactId>
-            <version>1.4</version>
-        </dependency>
 
         <!-- Unit testing libraries -->
         <dependency>

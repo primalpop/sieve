@@ -19,7 +19,7 @@ public class MySQLQueryManager {
 
     private static final Connection connection = MySQLConnectionManager.getInstance().getConnection();
 
-    private long timeout;
+    private long timeout = 0;
 
     private final long QUERY_EXECUTION_TIMEOUT = 30000; //30 seconds
 

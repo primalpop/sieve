@@ -62,7 +62,7 @@ public class GuardPart {
 
     /**
      * cost = size(D) * sel(g) * number of policies * alpha (2/3) * policy_eval_cost
-     * TODO: Replace PolicyConstants.NUMBER_OF_PREDICATES_EVALUATED with numbers from policy efficacy check
+     * TODO: Replace PolicyConstants.NUMBER_OF_PREDICATES_EVALUATED (alpha) with numbers from policy efficacy check
      */
     public double estimateCostOfInline(){
         return PolicyConstants.NUMBER_OR_TUPLES * guard.computeL()
