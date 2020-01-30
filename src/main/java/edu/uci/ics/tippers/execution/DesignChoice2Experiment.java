@@ -3,24 +3,25 @@ package edu.uci.ics.tippers.execution;
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.db.MySQLQueryManager;
 import edu.uci.ics.tippers.db.MySQLResult;
+import edu.uci.ics.tippers.fileop.Writer;
+import edu.uci.ics.tippers.generation.policy.PolicyGen;
 import edu.uci.ics.tippers.generation.query.QueryExplainer;
 import edu.uci.ics.tippers.manager.GuardPersistor;
 import edu.uci.ics.tippers.manager.PolicyPersistor;
 import edu.uci.ics.tippers.model.guard.GuardExp;
 import edu.uci.ics.tippers.model.guard.GuardPart;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
-import edu.uci.ics.tippers.model.query.QueryStatement;
+import edu.uci.ics.tippers.model.policy.TimeStampPredicate;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 
 public class DesignChoice2Experiment {
 
     MySQLQueryManager mySQLQueryManager = new MySQLQueryManager();
 
-    private void runExpt(String querier, List<QueryStatement> queries){
+    private String runExpt(String querier, List<String> queries){
         QueryExplainer qe = new QueryExplainer();
         PolicyPersistor polper = new PolicyPersistor();
 
@@ -35,21 +36,20 @@ public class DesignChoice2Experiment {
             GuardPart gp = guardExp.getGuardParts().get(j);
             totalCard += gp.getCardinality();
         }
-        System.out.println("Guard Cardinality,Query Cardinality,Without Hint,With Guard Hint Inline,With Query Hint,Our Approach");
-        for (int j = 0; j <  queries.size(); j++) {
-            StringBuilder rString = new StringBuilder();
+        StringBuilder rString = new StringBuilder();
+        for (int j = 0; j < queries.size(); j++) {
+            double querySel = mySQLQueryManager.checkSelectivity(queries.get(j));
             rString.append(totalCard).append(",");
-            rString.append(queries.get(j).getSelectivity()).append(",");
-            double k = queries.get(j).getSelectivity()/(totalCard/(guardExp.getGuardParts().size()));
+            rString.append(querySel).append(",");
+            double k = querySel/(totalCard/(guardExp.getGuardParts().size()));
             boolean guard_hint = false;
             if (k > guardExp.getGuardParts().size()) guard_hint = true;
-            String queryPredicates = queries.get(j).getQuery();
+            String queryPredicates = queries.get(j);
             String guard_query_without_hint = guardExp.rewriteWithoutHint();
             guard_query_without_hint += "Select * from polEval where " + queryPredicates;
             String guard_query_with_hint_inline = guardExp.inlineRewrite(true);
             guard_query_with_hint_inline += "Select * from polEval where " + queryPredicates;
-            String query_hint = qe.keyUsed("SELECT * from PRESENCE where " + queryPredicates);
-            if (query_hint == null) query_hint = "date_tree";
+            String query_hint = "date_tree";
             String guard_query_with_hint_query = guardExp.rewriteWithoutHint();
             guard_query_with_hint_query += "Select * from polEval force index ("
                     + query_hint + ") where " + queryPredicates;
@@ -69,6 +69,7 @@ public class DesignChoice2Experiment {
             execResult = mySQLQueryManager.runTimedQueryExp(guard_query_optimal, 1);
             rString.append(execResult.getTimeTaken().toMillis()).append(",");
             rString.append(guard_hint);
+            rString.append("\n");
 //            execResult =  mySQLQueryManager.runTimedQueryExp(guard_query_with_hint_udf, 1);
 //            rString.append(execResult.getTimeTaken().toMillis()).append(",");
 //            execResult = mySQLQueryManager.runTimedQueryExp(guard_query_with_choice, 1);
@@ -83,17 +84,30 @@ public class DesignChoice2Experiment {
 //                System.out.println("-----------------------------------");
 //            }
         }
+        return rString.toString();
     }
 
     public static void main(String[] args) {
         DesignChoice2Experiment dc2e = new DesignChoice2Experiment();
-        List<Integer> queriers = new ArrayList<>(Arrays.asList(21587, 29360, 18770, 15039, 22636));
+        String file_header = "Guard Cardinality,Query Cardinality,Without Hint,With Guard Hint Inline,With Query Hint,Our Approach";
+        Writer writer = new Writer();
+        writer.writeString(file_header, PolicyConstants.BE_POLICY_DIR, "expts2.csv");
+        List<String> queries = new ArrayList<>();
+        int duration =  1439; //maximum of a day
+        PolicyGen pg = new PolicyGen();
+        for (int i = 0; i < 90; i++) {
+            TimeStampPredicate tsPred = new TimeStampPredicate(pg.getDate("MIN"), i, "00:00", duration);
+            queries.add(String.format("start_date >= \"%s\" AND start_date <= \"%s\" ", tsPred.getStartDate().toString(),
+                    tsPred.getEndDate().toString()));
+        }
+
+//        List<Integer> queriers = new ArrayList<>(Arrays.asList(21587, 29360, 18770, 15039, 22636));
+        List<Integer> queriers = new ArrayList<>(Arrays.asList(177));
+
         Experiment e = new Experiment();
-        List<QueryStatement> queries = e.getQueries(1, 50);
-        Comparator<QueryStatement> comp = Comparator.comparingDouble(QueryStatement::getSelectivity);
-        queries.sort(comp);
         for (int i = 0; i < queriers.size(); i++) {
-            dc2e.runExpt(String.valueOf(queriers.get(i)), queries);
+            writer.writeString(dc2e.runExpt(String.valueOf(queriers.get(i)), queries), PolicyConstants.BE_POLICY_DIR,
+                    "expts2.csv");
         }
     }
 }
