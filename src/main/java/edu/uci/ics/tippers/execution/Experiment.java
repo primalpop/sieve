@@ -10,6 +10,7 @@ import edu.uci.ics.tippers.generation.query.QueryGeneration;
 import edu.uci.ics.tippers.manager.GuardPersistor;
 import edu.uci.ics.tippers.manager.PolicyPersistor;
 import edu.uci.ics.tippers.model.guard.GuardExp;
+import edu.uci.ics.tippers.model.guard.GuardPart;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
 import edu.uci.ics.tippers.model.query.QueryStatement;
@@ -43,6 +44,7 @@ public class Experiment {
     private static boolean GUARD_EXEC;
     private static boolean UDF_EXEC;
     private static boolean HYBRID_EXEC;
+    private static boolean SIEVE_EXEC;
     private static boolean RESULT_CHECK;
 
     private static int NUM_OF_REPS;
@@ -66,6 +68,7 @@ public class Experiment {
                 GUARD_EXEC = Boolean.parseBoolean(props.getProperty("guard_exec"));
                 UDF_EXEC = Boolean.parseBoolean(props.getProperty("udf_exec"));
                 HYBRID_EXEC = Boolean.parseBoolean(props.getProperty("hybrid_exec"));
+                SIEVE_EXEC = Boolean.parseBoolean(props.getProperty("sieve_exec"));
                 RESULT_CHECK = Boolean.parseBoolean(props.getProperty("resultCheck"));
                 NUM_OF_REPS = Integer.parseInt(props.getProperty("num_repetitions"));
                 RESULTS_FILE = props.getProperty("results_file");
@@ -76,6 +79,21 @@ public class Experiment {
         }
     }
 
+
+    public String hintOrNot(GuardExp guardExp, String guardQuery, String queryPredicates){
+        double querySel = mySQLQueryManager.checkSelectivity(queryPredicates);
+        double totalCard = guardExp.getGuardParts().stream().mapToDouble(GuardPart::getCardinality).sum();
+        String sieve_query = null;
+        if (querySel > totalCard) { //Use Guards
+            sieve_query+=  guardQuery + "Select * from polEval where " + queryPredicates;
+        }
+        else { //Use queries
+            String query_hint = "date_tree"; //TODO: What is the query hint to be given?
+            sieve_query = "SELECT * from ( SELECT * from PRESENCE force index(" + query_hint
+                    + ") where " + queryPredicates + " ) as P where " + guardExp.createQueryWithOR();
+        }
+        return sieve_query;
+    }
 
     public String runBEPolicies(String querier, String queryPredicates, int template, float selectivity, List<BEPolicy> bePolicies) {
 
@@ -105,7 +123,7 @@ public class Experiment {
                 Duration runTime = Duration.ofMillis(0);
                 runTime = runTime.plus(tradResult.getTimeTaken());
                 resultString.append(runTime.toMillis()).append(",");
-                System.out.println("QW: No of Policies: " + beExpression.getPolicies().size() + " , Time: " + runTime.toMillis());
+                System.out.println("Baseline inlining policies: No of Policies: " + beExpression.getPolicies().size() + " , Time: " + runTime.toMillis());
             }
 
             if(UDF_EXEC){
@@ -121,6 +139,8 @@ public class Experiment {
 
             GuardPersistor guardPersistor = new GuardPersistor();
             GuardExp guardExp = guardPersistor.retrieveGuardExpression(querier, "user", bePolicies);
+            if(guardExp.getGuardParts().isEmpty()) return "empty";
+            resultString.append(guardExp.getGuardParts().size()).append(",");
 
             if(GUARD_EXEC) {
                 Duration execTime = Duration.ofMillis(0);
@@ -153,6 +173,14 @@ public class Experiment {
                 resultString.append(execTime.toMillis()).append("\n");
                 System.out.println("Guard udf execution with OR: "  + " Time: " + execTime.toMillis());
             }
+            if(SIEVE_EXEC){
+                Duration execTime = Duration.ofMillis(0);
+                String sieve_query = hintOrNot(guardExp, guardExp.inlineOrNot(true), queryPredicates) ;
+                MySQLResult execResult = mySQLQueryManager.runTimedQueryExp(sieve_query, NUM_OF_REPS);
+                execTime = execTime.plus(execResult.getTimeTaken());
+                resultString.append(execTime.toMillis()).append(",");
+                System.out.println("Sieve Query: "  + " Time: " + execTime.toMillis());
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -171,14 +199,13 @@ public class Experiment {
         Experiment e = new Experiment();
         PolicyGen pg = new PolicyGen();
 //        List<Integer> users = pg.getAllUsers(true);
-        List<QueryStatement> queries = e.getQueries(1, 30);
-        System.out.println("Number of Queries: " + queries);
-//        List <Integer> users = new ArrayList<>(Arrays.asList(3260, 479, 16436, 15439, 10085, 6502,
-//                36371, 364, 28075, 24370, 14590, 22381, 26263, 7964, 34290, 32879, 23416, 32314, 7073, 32201));
-        List<Integer> users = new ArrayList<>(Arrays.asList(675));
+        List<QueryStatement> queries = e.getQueries(1, 50);
+        List <Integer> users = new ArrayList<>(Arrays.asList(26389, 15230, 30769, 12445, 36430, 21951,
+                13411, 7079, 364, 26000, 5949, 34372, 6371, 26083, 34290, 2917, 33425, 35503, 26927, 15007));
+//        List <Integer> users = new ArrayList<>(Arrays.asList(177));
         PolicyPersistor polper = new PolicyPersistor();
-        String file_header = "Querier,Query_Type,Query_Cardinality,Number_Of_Policies,Query_Alone,Baseline,UDF,Guard_Inline_Union_Force," +
-                "Guard_Inline_OR,Guard_UDF_Union_Force,Guard_UDF_OR \n";
+        String file_header = "Querier,Query_Cardinality,Query_Type,Number_Of_Policies, Query_Alone," +
+                "Baseline_Policies,Number_of_Guards,Sieve \n";
         Writer writer = new Writer();
         writer.writeString(file_header, PolicyConstants.BE_POLICY_DIR, RESULTS_FILE);
         for (int i = 0; i < users.size(); i++) {
