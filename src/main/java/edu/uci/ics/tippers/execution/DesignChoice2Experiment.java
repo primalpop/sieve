@@ -37,8 +37,9 @@ public class DesignChoice2Experiment {
             GuardPart gp = guardExp.getGuardParts().get(j);
             totalCard += gp.getCardinality();
         }
-        StringBuilder rString = new StringBuilder();
+        StringBuilder finalString = new StringBuilder();
         for (int j = 0; j < queries.size(); j++) {
+            StringBuilder rString = new StringBuilder();
             double querySel = mySQLQueryManager.checkSelectivity(queries.get(j));
             rString.append(totalCard).append(",");
             rString.append(querySel).append(",");
@@ -83,6 +84,8 @@ public class DesignChoice2Experiment {
             }
             else
                 rString.append(PolicyConstants.MAX_DURATION.toMillis()).append(",");
+            rString.append("\n");
+            finalString.append(rString);
             System.out.println(rString.toString());
 //            if(qe.printExplain(guard_query_without_hint).equalsIgnoreCase(qe.printExplain(guard_query_with_hint_inline))){
 //                System.out.println("Same plan");
@@ -93,7 +96,7 @@ public class DesignChoice2Experiment {
 //                System.out.println("-----------------------------------");
 //            }
         }
-        return rString.append("\n").toString();
+        return finalString.toString();
     }
 
     public static void main(String[] args) {
