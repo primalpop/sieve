@@ -12,6 +12,8 @@ public class GuardPart {
 
     BEExpression guardPartition;
 
+    double cardinality;
+
     /**
      * if inline is true, then policies in guardPartition are inlined for evaluation
      * else, udf is used for evaluating the policies
@@ -40,6 +42,14 @@ public class GuardPart {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public double getCardinality() {
+        return cardinality;
+    }
+
+    public void setCardinality(double cardinality) {
+        this.cardinality = cardinality;
     }
 
     public boolean isInline() {

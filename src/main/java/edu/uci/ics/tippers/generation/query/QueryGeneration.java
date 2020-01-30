@@ -26,6 +26,9 @@ public class QueryGeneration {
     private List<Integer> hours;
     private List<Integer> numUsers;
     private List<Integer> numLocs;
+    double lowSelDown, lowSelUp;
+    double medSelDown, medSelUp;
+    double highSelDown, highSelUp;
 
     private PolicyGen pg; //helper methods defined in this class
 
@@ -40,28 +43,34 @@ public class QueryGeneration {
         numUsers = new ArrayList<Integer>(Arrays.asList(10, 20, 30, 40, 50, 75, 100, 200, 300, 500, 750, 1000, 1250, 1500, 2000));
         numLocs = new ArrayList<Integer>(Arrays.asList(1, 2, 3, 5, 10, 15, 20, 30, 50));
 
+        lowSelDown = 0.0001;
+        lowSelUp = 0.009;
+        medSelDown = 0.01;
+        medSelUp = 0.09;
+        highSelDown = 0.6;
+        highSelUp = 0.9;
+
         this.mySQLQueryManager = new MySQLQueryManager();
         Random r = new Random();
     }
 
-    private String checkSelectivityType(double selectivity) {
-        String selType = null;
-        double lowSelDown = 0.0001, lowSelUp = 0.009;
-        double medSelDown = 0.009, medSelUp = 0.09;
-        double highSelDown = 0.2, highSelUp = 0.5;
-        if (lowSelDown < selectivity && selectivity < lowSelUp) selType = "low";
-        if (medSelDown < selectivity && selectivity < medSelUp) selType = "medium";
-        if (highSelDown < selectivity && selectivity < highSelUp) selType = "high";
-        return selType;
+    private double getSelectivity(String selType){
+        if(selType.equalsIgnoreCase("low")){
+            return lowSelDown + Math.random() * (lowSelUp - lowSelDown);
+        }
+        else if(selType.equalsIgnoreCase("medium")){
+            return medSelDown + Math.random() * (medSelUp - medSelDown);
+        }
+        else
+            return highSelDown + Math.random() * (highSelUp - highSelDown);
     }
 
-    /**
-     * @param query
-     * @return
-     */
-    private float checkSelectivity(String query) {
-        MySQLResult mySQLResult = mySQLQueryManager.runTimedQueryWithOutSorting(query, true);
-        return (float) mySQLResult.getResultCount() / (float) PolicyConstants.NUMBER_OR_TUPLES;
+    private String checkSelectivityType(double chosenSel, double selectivity) {
+        String selType = null;
+        if (chosenSel/5 < selectivity && selectivity < chosenSel) selType = "low";
+        if (chosenSel/2 < selectivity && selectivity < chosenSel * 2) selType = "medium";
+        if (chosenSel < selectivity) selType = "high";
+        return selType;
     }
 
 
@@ -88,6 +97,8 @@ public class QueryGeneration {
             int days = 0;
             boolean locFlag = true;
             String selType = selTypes.get(k);
+            double chosenSel = getSelectivity(selType);
+            System.out.println("Chosen Selectivity " + chosenSel);
             do {
                 duration = Math.min(duration, 1439); //maximum of a day
                 TimeStampPredicate tsPred = new TimeStampPredicate(pg.getDate("MIN"), days, "00:00", duration);
@@ -105,16 +116,28 @@ public class QueryGeneration {
                 query += locPreds.stream().map(item -> "\"" + item + "\", ").collect(Collectors.joining(" "));
                 query = query.substring(0, query.length() - 2); //removing the extra comma
                 query += ")";
-                float selQuery = checkSelectivity(query);
-                String querySelType = checkSelectivityType(selQuery);
+                float selQuery = mySQLQueryManager.checkSelectivity(query);
+                String querySelType = checkSelectivityType(chosenSel, selQuery);
                 if(querySelType == null){
-                    if (duration < 1439) duration += 30;
-                    else if (locFlag && i++ < numLocs.size()) {
-                        locs = numLocs.get(i);
-                        locFlag = false;
-                    } else if (!locFlag && days < 90) {
-                        days += 1;
-                        locFlag = true;
+                    if(selType.equalsIgnoreCase("low") || selType.equalsIgnoreCase("medium")) {
+                        if (duration < 1439) duration += 30;
+                        else if (locFlag && ++i < numLocs.size()) {
+                            locs = numLocs.get(i);
+                            locFlag = false;
+                        } else if (!locFlag && days < 90) {
+                            days += 1;
+                            locFlag = true;
+                        }
+                    }
+                    else{
+                        if (duration < 1439) duration += 200;
+                        else if (locFlag && ++i < numLocs.size()) {
+                            locs = numLocs.get(i);
+                            locFlag = false;
+                        } else if (!locFlag && days < 90) {
+                            days += 5;
+                            if(days % 10 == 0) locFlag = true;
+                        }
                     }
                     continue;
                 }
@@ -123,6 +146,8 @@ public class QueryGeneration {
                     queries.add(new QueryStatement(query, 1, selQuery, querySelType,
                             new Timestamp(System.currentTimeMillis())));
                     numQ++;
+                    chosenSel = getSelectivity(selType);
+                    System.out.println("Chosen Selectivity " + chosenSel);
                     continue;
                 }
                 if (selType.equalsIgnoreCase("low")){
@@ -134,7 +159,7 @@ public class QueryGeneration {
                 else if (selType.equalsIgnoreCase("medium")) {
                     if(querySelType.equalsIgnoreCase("low")) {
                         if (duration < 1439) duration += 200;
-                        else if (locFlag && i++ < numLocs.size()) {
+                        else if (locFlag && ++i < numLocs.size()) {
                             locs = numLocs.get(i);
                             locFlag = false;
                         } else if (!locFlag && days < 90) {
@@ -150,11 +175,11 @@ public class QueryGeneration {
                     if (querySelType.equalsIgnoreCase("low")
                             || querySelType.equalsIgnoreCase("medium")){
                         if (duration < 1439) duration += 200;
-                        else if (locFlag && i++ < numLocs.size()) {
+                        else if (locFlag && ++i < numLocs.size()) {
                             locs = numLocs.get(i);
                             locFlag = false;
                         } else if (!locFlag && days < 90) {
-                            days += 1;
+                            days += 2;
                             if(days % 5 == 0) locFlag = true;
                         }
                     }
@@ -187,6 +212,7 @@ public class QueryGeneration {
             int days = 0;
             boolean userFlag = false;
             String selType = selTypes.get(k);
+            double chosenSel = getSelectivity(selType);
             do {
                 duration = Math.min(duration, 1439); //maximum of a day
                 TimeStampPredicate tsPred = new TimeStampPredicate(pg.getDate("MIN"), days, "00:00", duration);
@@ -204,8 +230,8 @@ public class QueryGeneration {
                 query += userPreds.stream().map(item -> "\"" + item + "\", ").collect(Collectors.joining(" "));
                 query = query.substring(0, query.length() - 2); //removing the extra comma
                 query += ")";
-                float selQuery = checkSelectivity(query);
-                String querySelType = checkSelectivityType(selQuery);
+                float selQuery = mySQLQueryManager.checkSelectivity(query);
+                String querySelType = checkSelectivityType(chosenSel, selQuery);
                 if(querySelType == null){
                     if (duration < 1439) duration += 100;
                     else if (userFlag && i++ < numUsers.size()) {
@@ -379,7 +405,7 @@ public class QueryGeneration {
     public static void main(String[] args) {
         QueryGeneration qg = new QueryGeneration();
         boolean[] templates = {true, false, false, false};
-        int numOfQueries = 5;
+        int numOfQueries = 3;
         qg.constructWorkload(templates, numOfQueries);
     }
 

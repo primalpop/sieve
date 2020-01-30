@@ -159,11 +159,10 @@ public class Experiment {
         return resultString.toString();
     }
 
-    public List<QueryStatement> getQueries(){
+    public List<QueryStatement> getQueries(int template, int query_count){
         QueryGeneration qg = new QueryGeneration();
         List<QueryStatement> queries = new ArrayList<>();
-        queries.addAll(qg.retrieveQueries(1,"all", 30));
-        queries.addAll(qg.retrieveQueries(2,"all", 30));
+        queries.addAll(qg.retrieveQueries(template,"all", query_count));
         return queries;
     }
 
@@ -172,7 +171,7 @@ public class Experiment {
         Experiment e = new Experiment();
         PolicyGen pg = new PolicyGen();
 //        List<Integer> users = pg.getAllUsers(true);
-        List<QueryStatement> queries = e.getQueries();
+        List<QueryStatement> queries = e.getQueries(1, 30);
         System.out.println("Number of Queries: " + queries);
 //        List <Integer> users = new ArrayList<>(Arrays.asList(3260, 479, 16436, 15439, 10085, 6502,
 //                36371, 364, 28075, 24370, 14590, 22381, 26263, 7964, 34290, 32879, 23416, 32314, 7073, 32201));
