@@ -101,8 +101,7 @@ public class DesignChoice2Experiment {
                     tsPred.getEndDate().toString()));
         }
 
-//        List<Integer> queriers = new ArrayList<>(Arrays.asList(21587, 29360, 18770, 15039, 22636));
-        List<Integer> queriers = new ArrayList<>(Arrays.asList(177));
+        List<Integer> queriers = new ArrayList<>(Arrays.asList(21587, 29360, 18770, 15039, 22636));
 
         Experiment e = new Experiment();
         for (int i = 0; i < queriers.size(); i++) {
