@@ -50,9 +50,8 @@ public class DesignChoice2Experiment {
             String guard_query_with_hint_inline = guardExp.inlineRewrite(true);
             guard_query_with_hint_inline += "Select * from polEval where " + queryPredicates;
             String query_hint = "date_tree";
-            String guard_query_with_hint_query = guardExp.rewriteWithoutHint();
-            guard_query_with_hint_query += "Select * from polEval force index ("
-                    + query_hint + ") where " + queryPredicates;
+            String guard_query_with_hint_query = "SELECT * from ( SELECT * from PRESENCE force index(" + query_hint
+                    + ") where " + queryPredicates + " ) as P where " + guardExp.createQueryWithOR();
             String guard_query_optimal = null;
             if(guard_hint)
                 guard_query_optimal = guard_query_with_hint_inline;
@@ -89,7 +88,7 @@ public class DesignChoice2Experiment {
 
     public static void main(String[] args) {
         DesignChoice2Experiment dc2e = new DesignChoice2Experiment();
-        String file_header = "Guard Cardinality,Query Cardinality,Without Hint,With Guard Hint Inline,With Query Hint,Our Approach";
+        String file_header = "Guard Cardinality,Query Cardinality,Without Hint,With Guard Hint Inline,With Query Hint,Our Approach,flag";
         Writer writer = new Writer();
         writer.writeString(file_header, PolicyConstants.BE_POLICY_DIR, "expts2.csv");
         List<String> queries = new ArrayList<>();
