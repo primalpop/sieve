@@ -22,6 +22,13 @@
     </build>
     <dependencies>
 
+        <!-- https://mvnrepository.com/artifact/net.java.maven-incremental-build/incremental-build-plugin -->
+        <dependency>
+            <groupId>net.java.maven-incremental-build</groupId>
+            <artifactId>incremental-build-plugin</artifactId>
+            <version>1.4</version>
+        </dependency>
+
         <!-- Unit testing libraries -->
         <dependency>
             <groupId>org.hamcrest</groupId>

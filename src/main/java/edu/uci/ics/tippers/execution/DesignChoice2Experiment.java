@@ -11,42 +11,36 @@ import edu.uci.ics.tippers.model.guard.GuardPart;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
 import edu.uci.ics.tippers.model.query.QueryStatement;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 public class DesignChoice2Experiment {
 
     MySQLQueryManager mySQLQueryManager = new MySQLQueryManager();
 
-    private float checkSelectivity(String query) {
-        MySQLResult mySQLResult = mySQLQueryManager.runTimedQueryWithOutSorting(query, true);
-        return (float) mySQLResult.getResultCount() / (float) PolicyConstants.NUMBER_OR_TUPLES;
-    }
-
-
-    private void runExpt(){
-        Experiment e = new Experiment();
+    private void runExpt(String querier, List<QueryStatement> queries){
         QueryExplainer qe = new QueryExplainer();
-        List<QueryStatement> queries = e.getQueries();
         PolicyPersistor polper = new PolicyPersistor();
 
-        String querier = String.valueOf(29497);
         List<BEPolicy> allowPolicies = polper.retrievePolicies(querier,
                 PolicyConstants.USER_INDIVIDUAL, PolicyConstants.ACTION_ALLOW);
         GuardPersistor guardPersistor = new GuardPersistor();
         GuardExp guardExp = guardPersistor.retrieveGuardExpression(querier, "user", allowPolicies);
         System.out.println("Querier: " + querier + ", # Policies: " + allowPolicies.size() + ", # guards: " + guardExp.getGuardParts().size());
         GuardSelectivityExperiment gse = new GuardSelectivityExperiment();
-        double totalSel = 0.0;
+        double totalCard = 0.0;
         for (int j = 0; j < guardExp.getGuardParts().size(); j++) {
             GuardPart gp = guardExp.getGuardParts().get(j);
-            totalSel += checkSelectivity(gp.getGuard().print());
+            totalCard += gp.getCardinality();
         }
-        System.out.println("Guard Selectivity,Query Selectivity,Without Hint,With Guard Hint Inline,With Query Hint,Our Approach,Guard Hint");
-        for (int j = 0; j <  queries.size(); j=j+3) {
+        System.out.println("Guard Cardinality,Query Cardinality,Without Hint,With Guard Hint Inline,With Query Hint,Our Approach");
+        for (int j = 0; j <  queries.size(); j++) {
             StringBuilder rString = new StringBuilder();
-            rString.append(totalSel).append(",");
+            rString.append(totalCard).append(",");
             rString.append(queries.get(j).getSelectivity()).append(",");
-            double k = queries.get(j).getSelectivity()/(totalSel/(guardExp.getGuardParts().size()));
+            double k = queries.get(j).getSelectivity()/(totalCard/(guardExp.getGuardParts().size()));
             boolean guard_hint = false;
             if (k > guardExp.getGuardParts().size()) guard_hint = true;
             String queryPredicates = queries.get(j).getQuery();
@@ -93,6 +87,13 @@ public class DesignChoice2Experiment {
 
     public static void main(String[] args) {
         DesignChoice2Experiment dc2e = new DesignChoice2Experiment();
-        dc2e.runExpt();
+        List<Integer> queriers = new ArrayList<>(Arrays.asList(21587, 29360, 18770, 15039, 22636));
+        Experiment e = new Experiment();
+        List<QueryStatement> queries = e.getQueries(1, 50);
+        Comparator<QueryStatement> comp = Comparator.comparingDouble(QueryStatement::getSelectivity);
+        queries.sort(comp);
+        for (int i = 0; i < queriers.size(); i++) {
+            dc2e.runExpt(String.valueOf(queriers.get(i)), queries);
+        }
     }
 }

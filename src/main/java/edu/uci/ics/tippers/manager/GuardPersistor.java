@@ -177,7 +177,8 @@ public class GuardPersistor {
                     + guardPartTable + ".ownerEq, " + guardPartTable + ".profEq, "
                     + guardPartTable + ".groupEq, " + guardPartTable + ".locEq, "
                     + guardPartTable + ".dateGe, " + guardPartTable + ".dateLe, "
-                    + guardPartTable + ".timeGe, " + guardPartTable + ".timeLe "
+                    + guardPartTable + ".timeGe, " + guardPartTable + ".timeLe, "
+                    + guardPartTable + ".cardinality "
                     + "FROM "  + guardExpTable +", " + guardPartTable +
                     " WHERE " + guardExpTable + ".querier=? AND "+ guardExpTable + ".id = " + guardPartTable + ".guard_exp_id"
                     + " order by " + guardExpTable  + ".id");
@@ -232,6 +233,7 @@ public class GuardPersistor {
                             rs.getString(guardPartTable+ ".timeLe"), Operation.LTE);
                     gp.setGuard(objectCondition);
                 }
+                gp.setCardinality(rs.getFloat(guardPartTable + ".cardinality"));
                 gp.setGuardPartition(retrieveGuardPartition(gp.getId(), guardToPolicyTable, allowPolicies));
                 guardParts.add(gp);
             }
