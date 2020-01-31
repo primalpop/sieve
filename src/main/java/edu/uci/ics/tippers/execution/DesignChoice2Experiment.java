@@ -13,7 +13,6 @@ import edu.uci.ics.tippers.model.guard.GuardPart;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
 import edu.uci.ics.tippers.model.policy.TimeStampPredicate;
 
-import java.security.Policy;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -23,7 +22,6 @@ public class DesignChoice2Experiment {
     MySQLQueryManager mySQLQueryManager = new MySQLQueryManager();
 
     private String runExpt(String querier, List<String> queries){
-        QueryExplainer qe = new QueryExplainer();
         PolicyPersistor polper = new PolicyPersistor();
         boolean guardTO = false, queryTO = false, sieveTO = false;
         List<BEPolicy> allowPolicies = polper.retrievePolicies(querier,
@@ -101,7 +99,7 @@ public class DesignChoice2Experiment {
 
     public static void main(String[] args) {
         DesignChoice2Experiment dc2e = new DesignChoice2Experiment();
-        String file_header = "Guard Cardinality,Query Cardinality,Without Hint,With Guard Hint Inline,With Query Hint,Our Approach,flag";
+        String file_header = "Guard Cardinality,Query Cardinality,Without Hint,With Guard Hint Inline,With Query Hint,Our Approach,flag \n";
         Writer writer = new Writer();
         writer.writeString(file_header, PolicyConstants.BE_POLICY_DIR, "expts2.csv");
         List<String> queries = new ArrayList<>();
@@ -122,7 +120,7 @@ public class DesignChoice2Experiment {
             queries.add(query);
         }
 
-        List<Integer> queriers = new ArrayList<>(Arrays.asList(29360, 18770, 15039, 22636));
+        List<Integer> queriers = new ArrayList<>(Arrays.asList(945, 8962, 23416, 34035));
 
         Experiment e = new Experiment();
         for (int i = 0; i < queriers.size(); i++) {

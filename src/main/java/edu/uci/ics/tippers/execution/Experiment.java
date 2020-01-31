@@ -75,22 +75,32 @@ public class Experiment {
                 NUM_OF_REPS = Integer.parseInt(props.getProperty("num_repetitions"));
                 RESULTS_FILE = props.getProperty("results_file");
             }
-
         } catch (IOException ie) {
             ie.printStackTrace();
         }
     }
 
-
+    /**
+     * Compares the query cardinality (sel(Q)) against guard cardinality (sel(G)) to decide which index to use
+     * sel(Q) = 1) Run explain(Q) 2) multiply rows * filtered
+     * sel(G) = sum (sel(Gi))
+     * if sel(Q) < sel(G) then query index is decided by retrieving the key column (if there are multiple indices
+     * mentioned in this column, then the first one is used)
+     * @param guardExp
+     * @param guardQuery
+     * @param queryPredicates
+     * @return
+     */
     public String hintOrNot(GuardExp guardExp, String guardQuery, String queryPredicates){
-        double querySel = mySQLQueryManager.checkSelectivity(queryPredicates);
+        QueryExplainer qe = new QueryExplainer();
+        double querySel = qe.estimateSelectivity(queryPredicates);
         double totalCard = guardExp.getGuardParts().stream().mapToDouble(GuardPart::getCardinality).sum();
         String sieve_query = null;
         if (querySel > totalCard) { //Use Guards
-            sieve_query+=  guardQuery + "Select * from polEval where " + queryPredicates;
+            sieve_query =  guardQuery + "Select * from polEval where " + queryPredicates;
         }
         else { //Use queries
-            String query_hint = "date_tree"; //TODO: What is the query hint to be given?
+            String query_hint = qe.keyUsed(queryPredicates);
             sieve_query = "SELECT * from ( SELECT * from PRESENCE force index(" + query_hint
                     + ") where " + queryPredicates + " ) as P where " + guardExp.createQueryWithOR();
         }
@@ -136,7 +146,7 @@ public class Experiment {
                 MySQLResult execResult = mySQLQueryManager.runTimedQueryExp(udf_query, NUM_OF_REPS);
                 execTime = execTime.plus(execResult.getTimeTaken());
                 resultString.append(execTime.toMillis()).append(",");
-                System.out.println("UDF execution: "  + " Time: " + execTime.toMillis());
+                System.out.println("Baseline UDF: "  + " Time: " + execTime.toMillis());
             }
 
             GuardPersistor guardPersistor = new GuardPersistor();
@@ -209,10 +219,15 @@ public class Experiment {
         Experiment e = new Experiment();
         PolicyGen pg = new PolicyGen();
 //        List<Integer> users = pg.getAllUsers(true);
-        List<QueryStatement> queries = e.getQueries(1, 50);
+        List<QueryStatement> queries = e.getQueries(1, 1);
+        //users with increasing number of guards
 //        List <Integer> users = new ArrayList<>(Arrays.asList(26389, 15230, 30769, 12445, 36430, 21951,
 //                13411, 7079, 364, 26000, 5949, 34372, 6371, 26083, 34290, 2917, 33425, 35503, 26927, 15007));
-        List <Integer> users = new ArrayList<>(Arrays.asList(177));
+        //users with increasing number of policies
+//        List <Integer> users = new ArrayList<>(Arrays.asList(17360, 27297, 28795, 28392, 26941, 2018, 13321, 24805, 22995));
+        //users with guards of increasing cardinality
+        List <Integer> users = new ArrayList<>(Arrays.asList(14215, 56, 2050, 2819, 37, 625, 23519, 8817, 6215, 387,
+                945, 8962, 23416, 34035));
         PolicyPersistor polper = new PolicyPersistor();
         String file_header = "Querier,Query_Cardinality,Query_Type,Number_Of_Policies, Query_Alone," +
                 "Baseline_Policies,Number_of_Guards,Sieve \n";
