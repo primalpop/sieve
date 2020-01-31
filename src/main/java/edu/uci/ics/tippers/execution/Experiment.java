@@ -98,11 +98,14 @@ public class Experiment {
         String sieve_query = null;
         if (querySel > totalCard) { //Use Guards
             sieve_query =  guardQuery + "Select * from polEval where " + queryPredicates;
+            System.out.println("Guards strategy used");
         }
         else { //Use queries
             String query_hint = qe.keyUsed(queryPredicates);
             sieve_query = "SELECT * from ( SELECT * from PRESENCE force index(" + query_hint
                     + ") where " + queryPredicates + " ) as P where " + guardExp.createQueryWithOR();
+            System.out.println("Query + Guards strategy");
+
         }
         return sieve_query;
     }
@@ -111,8 +114,9 @@ public class Experiment {
 
         BEExpression beExpression = new BEExpression(bePolicies);
         StringBuilder resultString = new StringBuilder();
-        resultString.append(querier).append(",").append(selectivity * PolicyConstants.NUMBER_OR_TUPLES).append(",")
+        resultString.append(querier).append(",")
                 .append(template).append(",")
+                .append(selectivity).append(",")
                 .append(bePolicies.size()).append(",");
         try {
             if(QUERY_EXEC){
@@ -146,13 +150,15 @@ public class Experiment {
                 MySQLResult execResult = mySQLQueryManager.runTimedQueryExp(udf_query, NUM_OF_REPS);
                 execTime = execTime.plus(execResult.getTimeTaken());
                 resultString.append(execTime.toMillis()).append(",");
-                System.out.println("Baseline UDF: "  + " Time: " + execTime.toMillis());
+                System.out.println("Baseline UDF: " + " , Time: " + execTime.toMillis());
             }
 
             GuardPersistor guardPersistor = new GuardPersistor();
             GuardExp guardExp = guardPersistor.retrieveGuardExpression(querier, "user", bePolicies);
             if(guardExp.getGuardParts().isEmpty()) return "empty";
             resultString.append(guardExp.getGuardParts().size()).append(",");
+            double guardTotalCard = guardExp.getGuardParts().stream().mapToDouble(GuardPart::getCardinality).sum();
+            resultString.append(guardTotalCard).append(",");
 
             if(GUARD_POLICY_INLINE) {
                 Duration execTime = Duration.ofMillis(0);
@@ -204,6 +210,7 @@ public class Experiment {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        System.out.println(resultString);
         return resultString.append("\n").toString();
     }
 
@@ -219,7 +226,7 @@ public class Experiment {
         Experiment e = new Experiment();
         PolicyGen pg = new PolicyGen();
 //        List<Integer> users = pg.getAllUsers(true);
-        List<QueryStatement> queries = e.getQueries(1, 1);
+        List<QueryStatement> queries = e.getQueries(1, 50);
         //users with increasing number of guards
 //        List <Integer> users = new ArrayList<>(Arrays.asList(26389, 15230, 30769, 12445, 36430, 21951,
 //                13411, 7079, 364, 26000, 5949, 34372, 6371, 26083, 34290, 2917, 33425, 35503, 26927, 15007));
@@ -229,8 +236,8 @@ public class Experiment {
         List <Integer> users = new ArrayList<>(Arrays.asList(14215, 56, 2050, 2819, 37, 625, 23519, 8817, 6215, 387,
                 945, 8962, 23416, 34035));
         PolicyPersistor polper = new PolicyPersistor();
-        String file_header = "Querier,Query_Cardinality,Query_Type,Number_Of_Policies, Query_Alone," +
-                "Baseline_Policies,Number_of_Guards,Sieve \n";
+        String file_header = "Querier,Query_Type,Query_Cardinality,Number_Of_Policies, Query_Alone," +
+                "Baseline_Policies, Baseline_UDF,Number_of_Guards,Total_Guard_Cardinality,Sieve,Sieve_Parameters \n";
         Writer writer = new Writer();
         writer.writeString(file_header, PolicyConstants.BE_POLICY_DIR, RESULTS_FILE);
         for (int i = 0; i < users.size(); i++) {

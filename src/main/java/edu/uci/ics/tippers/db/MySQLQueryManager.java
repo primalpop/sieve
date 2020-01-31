@@ -158,7 +158,6 @@ public class MySQLQueryManager {
             mySQLResult.setTimeTaken(gCost);
             return mySQLResult;
         } catch (Exception e) {
-            e.printStackTrace();
             throw new PolicyEngineException("Error Running Query");
         }
     }
@@ -192,7 +191,6 @@ public class MySQLQueryManager {
             mySQLResult.setTimeTaken(gCost);
             return mySQLResult;
         } catch (Exception e) {
-            e.printStackTrace();
             throw new PolicyEngineException("Error Running Query");
         }
     }
@@ -209,7 +207,6 @@ public class MySQLQueryManager {
             MySQLResult mySQLResult = new MySQLResult();
             return runWithThread(PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS + predicates, mySQLResult).getTimeTaken();
         } catch (Exception e) {
-            e.printStackTrace();
             throw new PolicyEngineException("Error Running Query");
         }
     }
@@ -227,7 +224,6 @@ public class MySQLQueryManager {
             mySQLResult.setResultsCheck(resultCheck);
             return runWithThread(completeQuery, mySQLResult);
         } catch (Exception e) {
-            e.printStackTrace();
             throw new PolicyEngineException("Error Running Query");
         }
     }
@@ -247,7 +243,6 @@ public class MySQLQueryManager {
             else
                 return runWithThread(PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS_WHERE + predicates, mySQLResult);
         } catch (Exception e) {
-            e.printStackTrace();
             throw new PolicyEngineException("Error Running Query");
         }
     }
@@ -280,7 +275,6 @@ public class MySQLQueryManager {
             mySQLResult.setTimeTaken(gCost);
             return mySQLResult;
         } catch (Exception e) {
-            e.printStackTrace();
             throw new PolicyEngineException("Error Running Query");
         }
 
