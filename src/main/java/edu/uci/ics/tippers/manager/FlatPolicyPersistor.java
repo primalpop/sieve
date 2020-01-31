@@ -44,11 +44,23 @@ public class FlatPolicyPersistor {
                 policyStmt.setString(8, bePolicy.fetchGroup());
                 policyStmt.setString(9, bePolicy.fetchLocation());
                 List<Date> start_date = bePolicy.fetchDate();
-                policyStmt.setDate(10, start_date.get(0));
-                policyStmt.setDate(11, start_date.get(1));
+                if(start_date.size() > 0){
+                    policyStmt.setDate(10, start_date.get(0));
+                    policyStmt.setDate(11, start_date.get(1));
+                }
+                else {
+                    policyStmt.setDate(10, null);
+                    policyStmt.setDate(11, null);
+                }
                 List<Time> start_time = bePolicy.fetchTime();
-                policyStmt.setTime(12, start_time.get(0));
-                policyStmt.setTime(13, start_time.get(1));
+                if(start_time.size() > 0) {
+                    policyStmt.setTime(12, start_time.get(0));
+                    policyStmt.setTime(13, start_time.get(1));
+                }
+                else {
+                    policyStmt.setTime(12, null);
+                    policyStmt.setTime(13, null);
+                }
                 policyStmt.setFloat(14, bePolicy.computeL());
                 policyStmt.addBatch();
             }
