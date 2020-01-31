@@ -201,10 +201,24 @@ public class Experiment {
             }
             if(SIEVE_EXEC){
                 Duration execTime = Duration.ofMillis(0);
-                String sieve_query = hintOrNot(guardExp, guardExp.inlineOrNot(true), queryPredicates) ;
+                String guardQuery = guardExp.inlineOrNot(true);
+                QueryExplainer qe = new QueryExplainer();
+                double querySel = qe.estimateSelectivity(queryPredicates);
+                double totalCard = guardExp.getGuardParts().stream().mapToDouble(GuardPart::getCardinality).sum();
+                String sieve_query = null;
+                if (querySel > totalCard) { //Use Guards
+                    sieve_query =  guardQuery + "Select * from polEval where " + queryPredicates;
+                    resultString.append("Guard Index").append(",");
+                }
+                else { //Use queries
+                    String query_hint = qe.keyUsed(queryPredicates);
+                    sieve_query = "SELECT * from ( SELECT * from PRESENCE force index(" + query_hint
+                            + ") where " + queryPredicates + " ) as P where " + guardExp.createQueryWithOR();
+                    resultString.append("Query Index").append(",");
+                }
                 MySQLResult execResult = mySQLQueryManager.runTimedQueryExp(sieve_query, NUM_OF_REPS);
                 execTime = execTime.plus(execResult.getTimeTaken());
-                resultString.append(execTime.toMillis()).append(",");
+                resultString.append(execTime.toMillis());
                 System.out.println("Sieve Query: "  + " Time: " + execTime.toMillis());
             }
         } catch (Exception e) {
@@ -237,7 +251,7 @@ public class Experiment {
                 945, 8962, 23416, 34035));
         PolicyPersistor polper = new PolicyPersistor();
         String file_header = "Querier,Query_Type,Query_Cardinality,Number_Of_Policies, Query_Alone," +
-                "Baseline_Policies, Baseline_UDF,Number_of_Guards,Total_Guard_Cardinality,Sieve,Sieve_Parameters \n";
+                "Baseline_Policies, Baseline_UDF,Number_of_Guards,Total_Guard_Cardinality,Sieve_Parameters, Sieve\n";
         Writer writer = new Writer();
         writer.writeString(file_header, PolicyConstants.BE_POLICY_DIR, RESULTS_FILE);
         for (int i = 0; i < users.size(); i++) {
@@ -249,7 +263,6 @@ public class Experiment {
             for (int j = 0; j < queries.size(); j++) {
                 writer.writeString(e.runBEPolicies(querier, queries.get(j).getQuery(), queries.get(j).getTemplate(), queries.get(j).getSelectivity(),
                         allowPolicies), PolicyConstants.BE_POLICY_DIR, RESULTS_FILE);
-                QUERY_EXEC = false; //Baseline policy execution done only once
             }
         }
     }
