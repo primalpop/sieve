@@ -36,21 +36,21 @@ public class DesignChoice2Experiment {
             guard_query_optimal = guard_query_with_hint_query;
         MySQLResult execResult = null;
         if(!guardTO) {
-            execResult = mySQLQueryManager.runTimedQueryExp(guard_query_with_hint_inline, 1);
+            execResult = mySQLQueryManager.runTimedQueryExp(guard_query_with_hint_inline, 3);
             rString.append(execResult.getTimeTaken().toMillis()).append(",");
             if(execResult.getTimeTaken().equals(PolicyConstants.MAX_DURATION)) guardTO = true;
         }
         else
             rString.append(PolicyConstants.MAX_DURATION.toMillis()).append(",");
         if(!queryTO) {
-            execResult = mySQLQueryManager.runTimedQueryExp(guard_query_with_hint_query, 1);
+            execResult = mySQLQueryManager.runTimedQueryExp(guard_query_with_hint_query, 3);
             rString.append(execResult.getTimeTaken().toMillis()).append(",");
             if(execResult.getTimeTaken().equals(PolicyConstants.MAX_DURATION)) queryTO = true;
         }
         else
             rString.append(PolicyConstants.MAX_DURATION.toMillis()).append(",");
         if(!sieveTO){
-            execResult = mySQLQueryManager.runTimedQueryExp(guard_query_optimal, 1);
+            execResult = mySQLQueryManager.runTimedQueryExp(guard_query_optimal, 3);
             rString.append(execResult.getTimeTaken().toMillis()).append(",");
             if(execResult.getTimeTaken().equals(PolicyConstants.MAX_DURATION)) sieveTO = true;
             rString.append(guard_hint);
@@ -166,14 +166,14 @@ public class DesignChoice2Experiment {
         List<Integer> queriers = new ArrayList<>(Arrays.asList(14215, 56, 2050, 2819, 37, 625, 23519, 8817, 6215, 387,
                 945, 8962, 23416, 34035));
         //Queriers with <low, medium, high> guard cardinalities
-//        List<Integer> rep_queriers = new ArrayList<>(Arrays.asList(queriers.get((int) Math.ceil(queriers.size()/10.0)),
-//                queriers.get((int) Math.ceil(queriers.size()/2.0)), queriers.get(queriers.size()-1)));
-//        //Running Query Experiment with three guard cardinalities
-//        for (int i = 0; i < rep_queriers.size(); i++) {
-//            writer.writeString(dc2e.runQueryExpt(String.valueOf(rep_queriers.get(i)), queries), PolicyConstants.BE_POLICY_DIR,
-//                    filename);
-//            dc2e.resetFlags();
-//        }
+        List<Integer> rep_queriers = new ArrayList<>(Arrays.asList(queriers.get((int) Math.ceil(queriers.size()/10.0)),
+                queriers.get((int) Math.ceil(queriers.size()/2.0)), queriers.get(queriers.size()-1)));
+        //Running Query Experiment with three guard cardinalities
+        for (int i = 0; i < rep_queriers.size(); i++) {
+            writer.writeString(dc2e.runQueryExpt(String.valueOf(rep_queriers.get(i)), queries), PolicyConstants.BE_POLICY_DIR,
+                    filename);
+            dc2e.resetFlags();
+        }
 
         //Queries with <low, medium, high> cardinalities
         List<String> rep_queries = new ArrayList<>(Arrays.asList(queries.get((int) Math.ceil(queries.size()/10.0)),
