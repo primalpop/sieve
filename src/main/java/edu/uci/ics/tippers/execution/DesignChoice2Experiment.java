@@ -71,6 +71,7 @@ public class DesignChoice2Experiment {
                     PolicyConstants.USER_INDIVIDUAL, PolicyConstants.ACTION_ALLOW);
             GuardPersistor guardPersistor = new GuardPersistor();
             GuardExp guardExp = guardPersistor.retrieveGuardExpression(String.valueOf(queriers.get(i)), "user", allowPolicies);
+            System.out.println("Querier: " + queriers.get(i) + ", # Policies: " + allowPolicies.size() + ", # guards: " + guardExp.getGuardParts().size());
             double totalCard = 0.0;
             for (int j = 0; j < guardExp.getGuardParts().size(); j++) {
                 GuardPart gp = guardExp.getGuardParts().get(j);
@@ -144,6 +145,12 @@ public class DesignChoice2Experiment {
         return queries;
     }
 
+    private void resetFlags(){
+        guardTO = false;
+        queryTO = false;
+        sieveTO = false;
+    }
+
     /**
      * Experiment for testing when it is useful to force guard index versus query index for traversal
      * @param args
@@ -162,14 +169,11 @@ public class DesignChoice2Experiment {
         List<Integer> rep_queriers = new ArrayList<>(Arrays.asList(queriers.get((int) Math.ceil(queriers.size()/10.0)),
                 queriers.get((int) Math.ceil(queriers.size()/2.0)), queriers.get(queriers.size()-1)));
         //Running Query Experiment with three guard cardinalities
-        for (int i = 2; i < rep_queriers.size(); i++) {
+        for (int i = 0; i < rep_queriers.size(); i++) {
             writer.writeString(dc2e.runQueryExpt(String.valueOf(rep_queriers.get(i)), queries), PolicyConstants.BE_POLICY_DIR,
                     filename);
+            dc2e.resetFlags();
         }
-        //Resetting the time out flags for the next experiment
-        dc2e.guardTO = false;
-        dc2e.queryTO = false;
-        dc2e.sieveTO = false;
 
         //Queries with <low, medium, high> cardinalities
         List<String> rep_queries = new ArrayList<>(Arrays.asList(queries.get((int) Math.ceil(queries.size()/10.0)),
@@ -177,6 +181,7 @@ public class DesignChoice2Experiment {
         for (int i = 0; i < rep_queries.size(); i++) {
             writer.writeString(dc2e.runGuardExpt(rep_queries.get(i), queriers), PolicyConstants.BE_POLICY_DIR,
                     filename);
+            dc2e.resetFlags();
         }
     }
 }
