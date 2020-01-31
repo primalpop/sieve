@@ -61,7 +61,6 @@ public class FlatPolicyPersistor {
 
 
     public static void main(String [] args){
-        PolicyGen pg = new PolicyGen();
         PolicyPersistor polper = new PolicyPersistor();
         FlatPolicyPersistor flapolper = new FlatPolicyPersistor();
         List<BEPolicy> allowPolicies = polper.retrievePolicies(null,

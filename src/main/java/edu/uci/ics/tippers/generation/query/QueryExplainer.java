@@ -10,15 +10,16 @@ public class QueryExplainer {
     private static Connection connection = MySQLConnectionManager.getInstance().getConnection();
     private static final int NUMBER_OF_BLOCKS = 6365;
 
-    public QExplain access_method(String query){
+    public QExplain access_method(String queryPredicates){
         PreparedStatement explainStm = null;
         QExplain qe = new QExplain();
         try{
-            explainStm = connection.prepareStatement("explain " + query);
+            explainStm = connection.prepareStatement("explain select * from PRESENCE where " + queryPredicates);
             ResultSet rs = explainStm.executeQuery();
             rs.next();
             qe.setAccess_method(rs.getString("key"));
             qe.setNum_rows(rs.getInt("rows"));
+            qe.setFiltered(rs.getFloat("filtered"));
 
         } catch(SQLException e) {
             e.printStackTrace();
@@ -48,12 +49,10 @@ public class QueryExplainer {
         return exResult.toString();
     }
 
-    public double estimateCost(String query){
-        double costQuery = 0.0;
+    public double estimateSelectivity(String query){
         QExplain qe = access_method(query);
-        if(qe.getAccess_method() == null) costQuery = NUMBER_OF_BLOCKS * PolicyConstants.IO_BLOCK_READ_COST;
-        else costQuery = qe.num_rows * PolicyConstants.IO_BLOCK_READ_COST;
-        return costQuery;
+        if(qe.getAccess_method() == null) return 1;
+        else return qe.getNum_rows() * qe.getFiltered();
     }
 
     public String keyUsed(String query){
@@ -68,10 +67,12 @@ public class QueryExplainer {
     class QExplain {
         String access_method;
         int num_rows;
+        double filtered;
 
-        public QExplain(String access_method, int num_rows) {
+        public QExplain(String access_method, int num_rows, double filtered) {
             this.access_method = access_method;
             this.num_rows = num_rows;
+            this.filtered = filtered;
         }
 
         public QExplain() {
@@ -92,6 +93,14 @@ public class QueryExplainer {
 
         public void setNum_rows(int num_rows) {
             this.num_rows = num_rows;
+        }
+
+        public double getFiltered() {
+            return filtered;
+        }
+
+        public void setFiltered(double filtered) {
+            this.filtered = filtered;
         }
     }
 

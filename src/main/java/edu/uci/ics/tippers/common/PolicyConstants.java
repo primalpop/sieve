@@ -150,7 +150,7 @@ public class PolicyConstants {
                     .put(PolicyConstants.PROFILE_ATTR, "profile_hash")
                     .put(PolicyConstants.START_TIME, "time_tree")
                     .put(PolicyConstants.START_DATE, "date_tree")
-                    .put(PolicyConstants.LOCATIONID_ATTR, "location_hash")
+                    .put(PolicyConstants.LOCATIONID_ATTR, "loc_hash")
                     .build();
 
 
