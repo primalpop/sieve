@@ -48,6 +48,10 @@ public class Experiment {
     private static boolean SIEVE_EXEC;
     private static boolean RESULT_CHECK;
 
+    private long QUERY_EXECUTION_TIME;
+    private float QUERY_PREDICATE_SELECTIVITY;
+
+
     private static int NUM_OF_REPS;
 
     private static String RESULTS_FILE;
@@ -118,16 +122,28 @@ public class Experiment {
                 .append(template).append(",")
                 .append(selectivity).append(",")
                 .append(bePolicies.size()).append(",");
+
+        QueryExplainer qe = new QueryExplainer();
+        double querySel = qe.estimateSelectivity(queryPredicates);
+        resultString.append(querySel).append(",");
+
         try {
             if(QUERY_EXEC){
                 MySQLResult queryResult = new MySQLResult();
-                String baselineQuery = " Select * from PRESENCE where " + queryPredicates;
-                queryResult = mySQLQueryManager.runTimedQueryExp(baselineQuery, NUM_OF_REPS);
+                queryResult = mySQLQueryManager.runTimedQueryWithOutSorting(queryPredicates, true);
                 Duration runTime = Duration.ofMillis(0);
                 runTime = runTime.plus(queryResult.getTimeTaken());
                 System.out.println("Time taken by query alone " + runTime.toMillis());
-                resultString.append(runTime.toMillis()).append(",");
+                QUERY_EXECUTION_TIME = runTime.toMillis();
+                QUERY_PREDICATE_SELECTIVITY = queryResult.getResultCount()/(float) PolicyConstants.NUMBER_OR_TUPLES;
+                resultString.append(QUERY_PREDICATE_SELECTIVITY).append(","); //appending the real selectivity of query
+                resultString.append(QUERY_EXECUTION_TIME).append(",");
                 mySQLQueryManager.increaseTimeout(runTime.toMillis()); //Updating timeout to query exec time + constant
+
+            }
+            else {
+                resultString.append(QUERY_PREDICATE_SELECTIVITY).append(","); //appending the real selectivity of query
+                resultString.append(QUERY_EXECUTION_TIME).append(",");
             }
 
             if (BASE_LINE_POLICIES) {
@@ -202,8 +218,6 @@ public class Experiment {
             if(SIEVE_EXEC){
                 Duration execTime = Duration.ofMillis(0);
                 String guardQuery = guardExp.inlineOrNot(true);
-                QueryExplainer qe = new QueryExplainer();
-                double querySel = qe.estimateSelectivity(queryPredicates);
                 double totalCard = guardExp.getGuardParts().stream().mapToDouble(GuardPart::getCardinality).sum();
                 String sieve_query = null;
                 if (querySel > totalCard) { //Use Guards
@@ -240,30 +254,33 @@ public class Experiment {
         Experiment e = new Experiment();
         PolicyGen pg = new PolicyGen();
 //        List<Integer> users = pg.getAllUsers(true);
-        List<QueryStatement> queries = e.getQueries(1, 50);
+        List<QueryStatement> queries = e.getQueries(1, 3);
         //users with increasing number of guards
 //        List <Integer> users = new ArrayList<>(Arrays.asList(26389, 15230, 30769, 12445, 36430, 21951,
 //                13411, 7079, 364, 26000, 5949, 34372, 6371, 26083, 34290, 2917, 33425, 35503, 26927, 15007));
         //users with increasing number of policies
-//        List <Integer> users = new ArrayList<>(Arrays.asList(17360, 27297, 28795, 28392, 26941, 2018, 13321, 24805, 22995));
+        List <Integer> users = new ArrayList<>(Arrays.asList(22995, 32467, 22636));
         //users with guards of increasing cardinality
-        List <Integer> users = new ArrayList<>(Arrays.asList(14215, 56, 2050, 2819, 37, 625, 23519, 8817, 6215, 387,
-                945, 8962, 23416, 34035));
+//        List <Integer> users = new ArrayList<>(Arrays.asList(14215, 56, 2050, 2819, 37, 625, 23519, 8817, 6215, 387,
+//                945, 8962, 23416, 34035));
         PolicyPersistor polper = new PolicyPersistor();
-        String file_header = "Querier,Query_Type,Query_Cardinality,Number_Of_Policies, Query_Alone," +
+        String file_header = "Querier,Query_Type,Query_Cardinality,Number_Of_Policies,Estimated_QPS,Actual_QPS,Query_Alone," +
                 "Baseline_Policies, Baseline_UDF,Number_of_Guards,Total_Guard_Cardinality,Sieve_Parameters, Sieve\n";
         Writer writer = new Writer();
         writer.writeString(file_header, PolicyConstants.BE_POLICY_DIR, RESULTS_FILE);
-        for (int i = 0; i < users.size(); i++) {
-            String querier = String.valueOf(users.get(i));
-            List<BEPolicy> allowPolicies = polper.retrievePolicies(querier,
-                    PolicyConstants.USER_INDIVIDUAL, PolicyConstants.ACTION_ALLOW);
-            if(allowPolicies == null) continue;
-            System.out.println("Querier " + querier);
-            for (int j = 0; j < queries.size(); j++) {
+        for (int j = 0; j < queries.size(); j++) {
+            System.out.println("Total Query Selectivity " + queries.get(j).getSelectivity());
+            for (int i = 0; i < users.size(); i++) {
+                String querier = String.valueOf(users.get(i));
+                List<BEPolicy> allowPolicies = polper.retrievePolicies(querier,
+                        PolicyConstants.USER_INDIVIDUAL, PolicyConstants.ACTION_ALLOW);
+                if (allowPolicies == null) continue;
+                System.out.println("Querier " + querier);
                 writer.writeString(e.runBEPolicies(querier, queries.get(j).getQuery(), queries.get(j).getTemplate(), queries.get(j).getSelectivity(),
                         allowPolicies), PolicyConstants.BE_POLICY_DIR, RESULTS_FILE);
+                QUERY_EXEC = false;
             }
+            QUERY_EXEC = true;
         }
     }
 }
