@@ -27,13 +27,6 @@ import java.util.Properties;
 public class Experiment {
 
 
-    /**
-     * 1) Retrieve policies - Change the code to retrieve list of policies
-     * 2) Create Policy Expression
-     * 3) Generate guard based on the policy
-     * 4) Execute guards as a union on top of the database
-     */
-
     PolicyPersistor polper;
     QueryExplainer queryExplainer;
     MySQLQueryManager mySQLQueryManager;
@@ -255,7 +248,7 @@ public class Experiment {
     public List<QueryStatement> getQueries(int template, int query_count){
         QueryGeneration qg = new QueryGeneration();
         List<QueryStatement> queries = new ArrayList<>();
-        queries.addAll(qg.retrieveQueries(template,"high", query_count));
+        queries.addAll(qg.retrieveQueries(template,"all", query_count));
         return queries;
     }
 
@@ -274,7 +267,7 @@ public class Experiment {
         Experiment e = new Experiment();
         PolicyGen pg = new PolicyGen();
 //        List<Integer> users = pg.getAllUsers(true);
-        List<QueryStatement> queries = e.getQueries(1, 10);
+        List<QueryStatement> queries = e.getQueries(2, 10);
         //users with increasing number of guards
 //        List <Integer> users = new ArrayList<>(Arrays.asList(26389, 15230, 30769, 12445, 36430, 21951,
 //                13411, 7079, 364, 26000, 5949, 34372, 6371, 26083, 34290, 2917, 33425, 35503, 26927, 15007));
@@ -296,7 +289,7 @@ public class Experiment {
                 "Baseline_Policies, Baseline_UDF,Number_of_Guards,Total_Guard_Cardinality,With_Guard_Index,With_Query_Index,Sieve_Parameters, Sieve\n";
         Writer writer = new Writer();
         writer.writeString(file_header, PolicyConstants.BE_POLICY_DIR, RESULTS_FILE);
-        for (int j = 1; j < queries.size(); j++) {
+        for (int j = 0; j < queries.size(); j++) {
             System.out.println("Total Query Selectivity " + queries.get(j).getSelectivity());
             for (int i = 0; i < users.size(); i++) {
                 String querier = String.valueOf(users.get(i));
