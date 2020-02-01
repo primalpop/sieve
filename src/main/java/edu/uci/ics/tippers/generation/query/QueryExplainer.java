@@ -49,9 +49,16 @@ public class QueryExplainer {
         return exResult.toString();
     }
 
+    /**
+     * Very poor estimate of selectivity based on explain of a query
+     * if key == null: return filtered/100
+     * else return rows * filtered/(100 * D)
+     * @param query
+     * @return
+     */
     public double estimateSelectivity(String query){
         QExplain qe = access_method(query);
-        if(qe.getAccess_method() == null) return 1; //Linear scan
+        if(qe.getAccess_method() == null) return qe.getFiltered()/100; //Linear scan
         else return (qe.getNum_rows() * qe.getFiltered())/(100*PolicyConstants.NUMBER_OR_TUPLES); //Index scan
     }
 
