@@ -17,6 +17,7 @@ public class QueryGeneration {
 
     private List<Integer> user_ids;
     private List<String> locations;
+    private List<String> user_groups;
     Timestamp start_beg, start_fin;
     private MySQLQueryManager mySQLQueryManager;
     private Connection connection = MySQLConnectionManager.getInstance().getConnection();
@@ -35,17 +36,21 @@ public class QueryGeneration {
         this.locations = pg.getAllLocations();
         this.start_beg = pg.getDate("MIN");
         this.start_fin = pg.getDate("MAX");
-
+        this.user_groups = new ArrayList<>();
+        user_groups.addAll(locations);
+        user_groups.addAll(new ArrayList<>(Arrays.asList("faculty", "staff", "undergrad", "graduate", "visitor")));
         hours = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 7, 10, 12, 15, 17, 20, 23));
-        numUsers = new ArrayList<Integer>(Arrays.asList(10, 20, 30, 40, 50, 75, 100, 200, 300, 500, 750, 1000, 1250, 1500, 2000));
+//        numUsers = new ArrayList<Integer>(Arrays.asList(10, 20, 30, 40, 50, 75, 100, 150, 200, 250, 300, 350, 400, 450,
+//                500, 550, 600, 650, 700, 750, 800, 850, 1000, 1250, 1500, 2000));
+        numUsers = new ArrayList<Integer>(Arrays.asList(1000, 2000, 3000, 5000, 10000, 11000, 12000, 13000, 14000, 15000));
         numLocs = new ArrayList<Integer>(Arrays.asList(1, 2, 3, 5, 10, 15, 20, 30, 50));
 
-        lowSelDown = 0.0001;
-        lowSelUp = 0.009;
-        medSelDown = 0.01;
-        medSelUp = 0.09;
-        highSelDown = 0.6;
-        highSelUp = 0.9;
+        lowSelDown = 0.00001;
+        lowSelUp = 0.001;
+        medSelDown = 0.001;
+        medSelUp = 0.2;
+        highSelDown = 0.3;
+        highSelUp = 0.5;
 
         this.mySQLQueryManager = new MySQLQueryManager();
         Random r = new Random();
@@ -62,11 +67,19 @@ public class QueryGeneration {
             return highSelDown + Math.random() * (highSelUp - highSelDown);
     }
 
+    private String checkStaticRangeSelectivity(double selectivity) {
+        String selType = null;
+        if (lowSelDown < selectivity && selectivity < lowSelUp) selType = "low";
+        if (medSelDown < selectivity && selectivity < medSelUp) selType = "medium";
+        if (highSelDown < selectivity && selectivity < highSelUp) selType = "high";
+        return selType;
+    }
+
     private String checkSelectivityType(double chosenSel, double selectivity) {
         String selType = null;
-        if (chosenSel/5 < selectivity && selectivity < chosenSel) selType = "low";
-        if (chosenSel/2 < selectivity && selectivity < chosenSel * 2) selType = "medium";
-        if (chosenSel < selectivity) selType = "high";
+        if (chosenSel/10 < selectivity && selectivity < chosenSel) selType = "low";
+        if (chosenSel/5 < selectivity && selectivity < chosenSel * 5) selType = "medium";
+        if (chosenSel/2 < selectivity) selType = "high";
         return selType;
     }
 
@@ -210,6 +223,7 @@ public class QueryGeneration {
             boolean userFlag = false;
             String selType = selTypes.get(k);
             double chosenSel = getSelectivity(selType);
+            System.out.println("Chosen Selectivity " + chosenSel);
             do {
                 duration = Math.min(duration, 1439); //maximum of a day
                 TimeStampPredicate tsPred = new TimeStampPredicate(pg.getDate("MIN"), days, "00:00", duration);
@@ -230,13 +244,27 @@ public class QueryGeneration {
                 float selQuery = mySQLQueryManager.checkSelectivity(query);
                 String querySelType = checkSelectivityType(chosenSel, selQuery);
                 if(querySelType == null){
-                    if (duration < 1439) duration += 100;
-                    else if (userFlag && i++ < numUsers.size()) {
-                        userCount = numUsers.get(i);
-                        userFlag = false;
-                    } else if (!userFlag && days < 90) {
-                        days += 1;
-                        if(days % 5 == 0) userFlag = true;
+                    if(selType.equalsIgnoreCase("low") || selType.equalsIgnoreCase("medium")) {
+                        if (duration < 1439) duration += 100;
+                        else if (userFlag && ++i < numUsers.size()) {
+                            userCount = numUsers.get(i);
+                            userFlag = false;
+                        } else if (!userFlag && days < 90) {
+                            days += 1;
+                            userFlag = true;
+                        }
+                    }
+                    else {
+                        if (duration < 1439) duration += 500;
+                        else if (userFlag && ++i < numUsers.size()) {
+                            userCount = numUsers.get(i);
+                            userFlag = false;
+                        } else if (!userFlag && days < 90) {
+                            days += 10;
+                            userFlag = true;
+                        }
+                        else
+                            userFlag = true;
                     }
                     continue;
                 }
@@ -245,6 +273,8 @@ public class QueryGeneration {
                     queries.add(new QueryStatement(query, 2, selQuery, querySelType,
                             new Timestamp(System.currentTimeMillis())));
                     numQ++;
+                    chosenSel = getSelectivity(selType);
+                    System.out.println("Chosen Selectivity " + chosenSel);
                     continue;
                 }
                 if (selType.equalsIgnoreCase("low")){
@@ -257,28 +287,30 @@ public class QueryGeneration {
                 else if (selType.equalsIgnoreCase("medium")) {
                     if(querySelType.equalsIgnoreCase("low")) {
                         if (duration < 1439) duration += 200;
-                        else if (userFlag && i++ < numUsers.size()) {
+                        else if (userFlag && ++i < numUsers.size()) {
                             userCount = numUsers.get(i);
                             userFlag = false;
                         } else if (!userFlag && days < 90) {
                             days += 1;
-                            if(days % 10 == 0) userFlag = true;
+                            if(days % 2 == 0) userFlag = true;
                         }
                     }
                     else if(querySelType.equalsIgnoreCase("high")){
-                        duration = duration - 15;
+                        duration = duration - 200;
+                        days -= 2;
+                        userCount -= 50;
                     }
                 }
                 else {
                     if (querySelType.equalsIgnoreCase("low")
                             || querySelType.equalsIgnoreCase("medium")){
                         if (duration < 1439) duration += 200;
-                        else if (userFlag && i++ < numUsers.size()) {
+                        else if (userFlag && ++i < numUsers.size()) {
                             userCount = numUsers.get(i);
                             userFlag = false;
                         } else if (!userFlag && days < 90) {
                             days += 1;
-                            if(days % 20 == 0) userFlag = true;
+                            if(days % 2 == 0) userFlag = true;
                         }
                     }
                 }
@@ -288,31 +320,67 @@ public class QueryGeneration {
     }
 
     /**
-     * Query 3: Select location_id, count(*) as occupancy from PRESENCE where
-     * P1.start_date <= P2.start_date and P1.start_time <= P2.start_time
-     * @param selTypes   - types of query selectivity needed
-     * @param queryCount - number of each queries of each selectivity type
+     * Query 3: Select user_id from PRESENCE as p, USER_GROUP_MEMBERSHIP as m
+     * where m.id = "x" and p.user_id = m.user_id and
+     * p.ts < time and ps.date ();
      * @return
      */
-    private List<QueryStatement> createQuery3(List<String> selTypes, int queryCount) {
+    private List<QueryStatement> createQuery3() {
         List<QueryStatement> queries = new ArrayList<>();
+        for (int k = 0; k < user_groups.size(); k++) {
+            for (int i = 5; i < 90 ; i=i+10) {
+                String query = String.format("Select p.user_id from PRESENCE as p, USER_GROUP_MEMBERSHIP as m " +
+                        "where m.user_group_id = \"%s\" AND p.user_id = m.user_id AND ", user_groups.get(k));
+                TimeStampPredicate tsPred = new TimeStampPredicate(pg.getDate("MIN"), i, "00:00", 1439);
+                query += String.format("start_date >= \"%s\" AND start_date <= \"%s\" ", tsPred.getStartDate().toString(),
+                        tsPred.getEndDate().toString());
+                float selQuery = mySQLQueryManager.checkSelectivityFullQuery(query);
+                String querySelType = checkStaticRangeSelectivity(selQuery);
+                if (querySelType == null) continue;
+                queries.add(new QueryStatement(query, 3, selQuery, querySelType,
+                        new Timestamp(System.currentTimeMillis())));
+            }
+        }
         return queries;
 
     }
 
 
     /**
-     * Query 4: Select user_id from PRESENCE P1, PRESENCE P2 where P1.location = l1
-     * and P2.location = l2 and P1.start_date <= P2.start_date and
-     * P1.start_time <= P2.start_time
-     * @param selTypes   - types of query selectivity needed
-     * @param queryCount - number of each queries of each selectivity type
+     * Query 4: Select location_id, count(*) from PRESENCE
+     * where ts-time < time and ts-date < date group by location_id;
      * @return
      */
-    private List<QueryStatement> createQuery4(List<String> selTypes, int queryCount) {
+    private List<QueryStatement> createQuery4() {
         List<QueryStatement> queries = new ArrayList<>();
+        for (int j =0; j < 200; j++) {
+            TimeStampPredicate tsPred = new TimeStampPredicate(pg.getDate("MIN"), 0, "00:00", 7*j);
+            String query = String.format("Select location_id, count(*) from PRESENCE where start_time >= \"%s\" " +
+                            "AND start_time <= \"%s\" group by location_id", tsPred.getStartTime().toString(),
+                    tsPred.getEndTime().toString());
+            String query_for_sel = String.format("start_time >= \"%s\" AND start_time <= \"%s\" ", tsPred.getStartTime().toString(),
+                    tsPred.getEndTime().toString());
+            float sel = mySQLQueryManager.checkSelectivity(query_for_sel);
+            if (checkStaticRangeSelectivity(sel) == null) continue;
+            queries.add(new QueryStatement(query, 4, sel,
+                    checkStaticRangeSelectivity(sel), new Timestamp(System.currentTimeMillis())));
+            System.out.println("Added query of selectivity " + checkStaticRangeSelectivity(sel));
+        }
+        int duration =  1439; //maximum of a day
+//        for (int i = 0; i < 90; i=i+3) {
+//            TimeStampPredicate tsPred = new TimeStampPredicate(pg.getDate("MIN"), i, "00:00", duration);
+//            String query = String.format("Select location_id, count(*) from PRESENCE where start_date >= \"%s\" " +
+//                            "AND start_date <= \"%s\" group by location_id", tsPred.getStartDate().toString(),
+//                    tsPred.getEndDate().toString());
+//            String query_for_sel = String.format("start_date >= \"%s\" AND start_date <= \"%s\" ", tsPred.getStartDate().toString(),
+//                    tsPred.getEndDate().toString());
+//            float sel = mySQLQueryManager.checkSelectivity(query_for_sel);
+//            if (checkStaticRangeSelectivity(sel) == null) continue;
+//            queries.add(new QueryStatement(query, 4, sel,
+//                    checkStaticRangeSelectivity(sel), new Timestamp(System.currentTimeMillis())));
+//            System.out.println("Added query of selectivity " + checkStaticRangeSelectivity(sel));
+//        }
         return queries;
-
     }
 
     private List<QueryStatement> getQueries(int templateNum, List<String> selTypes, int numOfQueries) {
@@ -321,9 +389,9 @@ public class QueryGeneration {
         } else if (templateNum == 1) {
             return createQuery2(selTypes, numOfQueries);
         } else if (templateNum == 2) {
-            return null;
+            return createQuery3();
         } else if (templateNum == 3) {
-            return null;
+            return createQuery4();
         }
         return null;
     }
@@ -389,8 +457,8 @@ public class QueryGeneration {
 
     public void constructWorkload(boolean[] templates, int numOfQueries) {
         List<String> selTypes = new ArrayList<>();
-//        selTypes.add("low");
-//        selTypes.add("medium");
+        selTypes.add("low");
+        selTypes.add("medium");
         selTypes.add("high");
         List<QueryStatement> queries = new ArrayList<>();
         for (int i = 0; i < templates.length; i++) {
@@ -401,7 +469,7 @@ public class QueryGeneration {
 
     public static void main(String[] args) {
         QueryGeneration qg = new QueryGeneration();
-        boolean[] templates = {true, false, false, false};
+        boolean[] templates = {false, false, false, true};
         int numOfQueries = 3;
         qg.constructWorkload(templates, numOfQueries);
     }

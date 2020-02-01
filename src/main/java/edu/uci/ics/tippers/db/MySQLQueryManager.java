@@ -127,8 +127,13 @@ public class MySQLQueryManager {
         }
     }
 
-    public float checkSelectivity(String query) {
-        MySQLResult mySQLResult = runTimedQueryWithOutSorting(query, true);
+    public float checkSelectivity(String queryPredicates) {
+        MySQLResult mySQLResult = runTimedQueryWithOutSorting(queryPredicates, true);
+        return (float) mySQLResult.getResultCount() / (float) PolicyConstants.NUMBER_OR_TUPLES;
+    }
+
+    public float checkSelectivityFullQuery(String query) {
+        MySQLResult mySQLResult = runTimedQueryWithOutSorting(query);
         return (float) mySQLResult.getResultCount() / (float) PolicyConstants.NUMBER_OR_TUPLES;
     }
 
@@ -242,6 +247,20 @@ public class MySQLQueryManager {
                 return runWithThread(PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS + predicates, mySQLResult);
             else
                 return runWithThread(PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS_WHERE + predicates, mySQLResult);
+        } catch (Exception e) {
+            throw new PolicyEngineException("Error Running Query");
+        }
+    }
+
+    /**
+     * @param full_query
+     * @return
+     * @throws PolicyEngineException
+     */
+    public MySQLResult runTimedQueryWithOutSorting(String full_query) throws PolicyEngineException {
+        try {
+            MySQLResult mySQLResult = new MySQLResult();
+            return runWithThread(full_query, mySQLResult);
         } catch (Exception e) {
             throw new PolicyEngineException("Error Running Query");
         }
