@@ -10,12 +10,16 @@ public class QueryExplainer {
     private static Connection connection = MySQLConnectionManager.getInstance().getConnection();
     private static final int NUMBER_OF_BLOCKS = 6365;
 
+
+    //TODO: Be able to handle query template 3 without the hack
     public QExplain access_method(String queryPredicates){
         PreparedStatement explainStm = null;
         QExplain qe = new QExplain();
+        queryPredicates = queryPredicates.replace("polEval", "PRESENCE");
         try{
-            explainStm = connection.prepareStatement("explain select * from PRESENCE where " + queryPredicates);
+            explainStm = connection.prepareStatement("explain " + queryPredicates);
             ResultSet rs = explainStm.executeQuery();
+            rs.next();
             rs.next();
             qe.setAccess_method(rs.getString("key"));
             qe.setNum_rows(rs.getInt("rows"));
