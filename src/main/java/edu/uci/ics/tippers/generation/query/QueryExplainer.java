@@ -51,8 +51,8 @@ public class QueryExplainer {
 
     public double estimateSelectivity(String query){
         QExplain qe = access_method(query);
-        if(qe.getAccess_method() == null) return 1;
-        else return qe.getNum_rows() * qe.getFiltered();
+        if(qe.getAccess_method() == null) return 1; //Linear scan
+        else return (qe.getNum_rows() * qe.getFiltered())/(100*PolicyConstants.NUMBER_OR_TUPLES); //Index scan
     }
 
     public String keyUsed(String query){
