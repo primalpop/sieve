@@ -17,7 +17,6 @@ import edu.uci.ics.tippers.model.query.QueryStatement;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -45,7 +44,8 @@ public class Experiment {
     private static boolean GENERATE_GUARD;
     private static boolean GUARD_POLICY_INLINE;
     private static boolean GUARD_UDF;
-    private static boolean GUARD_HYBRID;
+    private static boolean GUARD_INDEX;
+    private static boolean QUERY_INDEX;
     private static boolean SIEVE_EXEC;
     private static boolean RESULT_CHECK;
 
@@ -74,7 +74,8 @@ public class Experiment {
                 GUARD_POLICY_INLINE = Boolean.parseBoolean(props.getProperty("guard_policies"));
                 BASELINE_UDF = Boolean.parseBoolean(props.getProperty("baseline_udf"));
                 GUARD_UDF = Boolean.parseBoolean(props.getProperty("guard_udf"));
-                GUARD_HYBRID = Boolean.parseBoolean(props.getProperty("guard_hybrid"));
+                GUARD_INDEX = Boolean.parseBoolean(props.getProperty("guard_index"));
+                QUERY_INDEX = Boolean.parseBoolean(props.getProperty("query_index"));
                 SIEVE_EXEC = Boolean.parseBoolean(props.getProperty("sieve_exec"));
                 RESULT_CHECK = Boolean.parseBoolean(props.getProperty("resultCheck"));
                 NUM_OF_REPS = Integer.parseInt(props.getProperty("num_repetitions"));
@@ -207,21 +208,30 @@ public class Experiment {
                 resultString.append(execTime.toMillis());
                 System.out.println("Guard udf execution with OR: "  + " Time: " + execTime.toMillis());
             }
-            if(GUARD_HYBRID) {
+            if(GUARD_INDEX) {
                 Duration execTime = Duration.ofMillis(0);
                 String guard_hybrid_query = guardExp.inlineOrNot(true);
                 guard_hybrid_query += "Select * from polEval where " + queryPredicates;
-                MySQLResult execResult = mySQLQueryManager.runTimedQueryExp(guard_hybrid_query, NUM_OF_REPS);
+                MySQLResult execResult = mySQLQueryManager.runTimedQueryExp(guard_hybrid_query, 1);
                 execTime = execTime.plus(execResult.getTimeTaken());
                 resultString.append(execTime.toMillis()).append(",");
-                System.out.println("Guard Hybrid execution : "  + " Time: " + execTime.toMillis());
+                System.out.println("Guard Index execution : "  + " Time: " + execTime.toMillis());
+            }
+            if(QUERY_INDEX) {
+                Duration execTime = Duration.ofMillis(0);
+                String query_hint = qe.keyUsed(queryPredicates) != null? qe.keyUsed(queryPredicates): "date_tree";
+                String query_index_query = "SELECT * from ( SELECT * from PRESENCE force index(" + query_hint
+                        + ") where " + queryPredicates + " ) as P where " + guardExp.createQueryWithOR();
+                MySQLResult execResult = mySQLQueryManager.runTimedQueryExp(query_index_query, 1);
+                execTime = execTime.plus(execResult.getTimeTaken());
+                resultString.append(execTime.toMillis()).append(",");
+                System.out.println("Query Index execution : "  + " Time: " + execTime.toMillis());
             }
             if(SIEVE_EXEC){
                 Duration execTime = Duration.ofMillis(0);
                 String guardQuery = guardExp.inlineOrNot(true);
-                double totalCard = guardExp.getGuardParts().stream().mapToDouble(GuardPart::getCardinality).sum();
                 String sieve_query = null;
-                if (querySel > totalCard) { //Use Guards
+                if (querySel > guardTotalCard) { //Use Guards
                     sieve_query =  guardQuery + "Select * from polEval where " + queryPredicates;
                     resultString.append("Guard Index").append(",");
                 }
@@ -246,16 +256,15 @@ public class Experiment {
     public List<QueryStatement> getQueries(int template, int query_count){
         QueryGeneration qg = new QueryGeneration();
         List<QueryStatement> queries = new ArrayList<>();
-        queries.addAll(qg.retrieveQueries(template,"high", query_count));
+        queries.addAll(qg.retrieveQueries(template,"all", query_count));
         return queries;
     }
-
 
     public static void main(String[] args) {
         Experiment e = new Experiment();
         PolicyGen pg = new PolicyGen();
 //        List<Integer> users = pg.getAllUsers(true);
-        List<QueryStatement> queries = e.getQueries(1, 3);
+        List<QueryStatement> queries = e.getQueries(1, 10);
         //users with increasing number of guards
 //        List <Integer> users = new ArrayList<>(Arrays.asList(26389, 15230, 30769, 12445, 36430, 21951,
 //                13411, 7079, 364, 26000, 5949, 34372, 6371, 26083, 34290, 2917, 33425, 35503, 26927, 15007));
@@ -263,18 +272,18 @@ public class Experiment {
 //        List <Integer> users = new ArrayList<>(Arrays.asList(14215, 56, 2050, 2819, 37, 625, 23519, 8817, 6215, 387,
 //                945, 8962, 23416, 34035));
         //users with increasing number of policies
-        List <Integer> spaceUsers = new ArrayList<>(Arrays.asList(22995, 2039, 18094, 32467, 22636, 15007));
-        List <Integer> highUsers = new ArrayList<>(Arrays.asList(10727, 7964, 24101, 3980, 14677, 12225));
-        List<Integer> mediumUsers = new ArrayList<>(Arrays.asList(16439, 6213, 11506, 18289, 10473, 19987));
-        List<Integer> lowUsers = new ArrayList<>(Arrays.asList(31398, 30528, 34035, 11695, 9661, 9892));
+        List <Integer> faculty = new ArrayList<>(Arrays.asList(1023, 5352, 11043, 13353, 18575));
+        List <Integer> undergrad = new ArrayList<>(Arrays.asList(4686, 7632, 12555, 15936, 15007));
+        List<Integer> grad = new ArrayList<>(Arrays.asList(100, 532, 5990, 11815, 32467));
+        List<Integer> staff = new ArrayList<>(Arrays.asList(888, 2550, 5293, 9733, 20021));
         List<Integer> users = new ArrayList<>();
-        users.addAll(spaceUsers);
-        users.addAll(highUsers);
-        users.addAll(mediumUsers);
-        users.addAll(lowUsers);
+        users.addAll(faculty);
+        users.addAll(undergrad);
+        users.addAll(grad);
+        users.addAll(staff);
         PolicyPersistor polper = new PolicyPersistor();
         String file_header = "Querier,Query_Type,Query_Cardinality,Number_Of_Policies,Estimated_QPS,Actual_QPS,Query_Alone," +
-                "Baseline_Policies, Baseline_UDF,Number_of_Guards,Total_Guard_Cardinality,Sieve_Parameters, Sieve\n";
+                "Baseline_Policies, Baseline_UDF,Number_of_Guards,Total_Guard_Cardinality,With_Guard_Index,With_Query_Index,Sieve_Parameters, Sieve\n";
         Writer writer = new Writer();
         writer.writeString(file_header, PolicyConstants.BE_POLICY_DIR, RESULTS_FILE);
         for (int j = 0; j < queries.size(); j++) {

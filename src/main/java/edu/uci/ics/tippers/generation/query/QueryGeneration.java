@@ -1,15 +1,12 @@
 package edu.uci.ics.tippers.generation.query;
 
-import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.db.MySQLConnectionManager;
 import edu.uci.ics.tippers.db.MySQLQueryManager;
-import edu.uci.ics.tippers.db.MySQLResult;
 import edu.uci.ics.tippers.generation.policy.PolicyGen;
 import edu.uci.ics.tippers.model.policy.TimeStampPredicate;
 import edu.uci.ics.tippers.model.query.QueryStatement;
 
 import java.sql.*;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
