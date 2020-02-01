@@ -17,6 +17,7 @@ import edu.uci.ics.tippers.model.query.QueryStatement;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -245,7 +246,7 @@ public class Experiment {
     public List<QueryStatement> getQueries(int template, int query_count){
         QueryGeneration qg = new QueryGeneration();
         List<QueryStatement> queries = new ArrayList<>();
-        queries.addAll(qg.retrieveQueries(template,"medium", query_count));
+        queries.addAll(qg.retrieveQueries(template,"high", query_count));
         return queries;
     }
 
@@ -258,11 +259,19 @@ public class Experiment {
         //users with increasing number of guards
 //        List <Integer> users = new ArrayList<>(Arrays.asList(26389, 15230, 30769, 12445, 36430, 21951,
 //                13411, 7079, 364, 26000, 5949, 34372, 6371, 26083, 34290, 2917, 33425, 35503, 26927, 15007));
-        //users with increasing number of policies
-        List <Integer> users = new ArrayList<>(Arrays.asList(22995, 32467, 22636));
         //users with guards of increasing cardinality
 //        List <Integer> users = new ArrayList<>(Arrays.asList(14215, 56, 2050, 2819, 37, 625, 23519, 8817, 6215, 387,
 //                945, 8962, 23416, 34035));
+        //users with increasing number of policies
+        List <Integer> spaceUsers = new ArrayList<>(Arrays.asList(22995, 2039, 18094, 32467, 22636, 15007));
+        List <Integer> highUsers = new ArrayList<>(Arrays.asList(10727, 7964, 24101, 3980, 14677, 12225));
+        List<Integer> mediumUsers = new ArrayList<>(Arrays.asList(16439, 6213, 11506, 18289, 10473, 19987));
+        List<Integer> lowUsers = new ArrayList<>(Arrays.asList(31398, 30528, 34035, 11695, 9661, 9892));
+        List<Integer> users = new ArrayList<>();
+        users.addAll(spaceUsers);
+        users.addAll(highUsers);
+        users.addAll(mediumUsers);
+        users.addAll(lowUsers);
         PolicyPersistor polper = new PolicyPersistor();
         String file_header = "Querier,Query_Type,Query_Cardinality,Number_Of_Policies,Estimated_QPS,Actual_QPS,Query_Alone," +
                 "Baseline_Policies, Baseline_UDF,Number_of_Guards,Total_Guard_Cardinality,Sieve_Parameters, Sieve\n";
