@@ -121,6 +121,7 @@ public class Experiment {
         BEExpression beExpression = new BEExpression(bePolicies);
         StringBuilder resultString = new StringBuilder();
         resultString.append(querier).append(",")
+                .append(userProfile(Integer.parseInt(querier))).append(",")
                 .append(template).append(",")
                 .append(selectivity).append(",")
                 .append(bePolicies.size()).append(",");
@@ -138,13 +139,11 @@ public class Experiment {
                 System.out.println("Time taken by query alone " + runTime.toMillis());
                 QUERY_EXECUTION_TIME = runTime.toMillis();
                 QUERY_PREDICATE_SELECTIVITY = queryResult.getResultCount()/(float) PolicyConstants.NUMBER_OR_TUPLES;
-                resultString.append(QUERY_PREDICATE_SELECTIVITY).append(","); //appending the real selectivity of query
                 resultString.append(QUERY_EXECUTION_TIME).append(",");
-                mySQLQueryManager.increaseTimeout(runTime.toMillis()); //Updating timeout to query exec time + constant
+//                mySQLQueryManager.increaseTimeout(runTime.toMillis()); //Updating timeout to query exec time + constant
 
             }
             else {
-                resultString.append(QUERY_PREDICATE_SELECTIVITY).append(","); //appending the real selectivity of query
                 resultString.append(QUERY_EXECUTION_TIME).append(",");
             }
 
@@ -153,7 +152,7 @@ public class Experiment {
                 String baselineQuery = "With polEval as ( Select * from PRESENCE where "
                         + beExpression.createQueryFromPolices() + "  )"
                         + "Select * from polEval where " + queryPredicates;
-                tradResult = mySQLQueryManager.runTimedQueryExp(baselineQuery, NUM_OF_REPS);
+                tradResult = mySQLQueryManager.runTimedQueryExp(baselineQuery, 1);
                 Duration runTime = Duration.ofMillis(0);
                 runTime = runTime.plus(tradResult.getTimeTaken());
                 resultString.append(runTime.toMillis()).append(",");
@@ -165,7 +164,7 @@ public class Experiment {
                 String udf_query = "SELECT * FROM PRESENCE as p where " + queryPredicates
                         + " and pcheck( " + querier + ", p.user_id, p.location_id, " +
                         "p.start_date, p.start_time, p.user_profile, p.user_group) = 1";
-                MySQLResult execResult = mySQLQueryManager.runTimedQueryExp(udf_query, NUM_OF_REPS);
+                MySQLResult execResult = mySQLQueryManager.runTimedQueryExp(udf_query, 1);
                 execTime = execTime.plus(execResult.getTimeTaken());
                 resultString.append(execTime.toMillis()).append(",");
                 System.out.println("Baseline UDF: " + " , Time: " + execTime.toMillis());
@@ -256,8 +255,19 @@ public class Experiment {
     public List<QueryStatement> getQueries(int template, int query_count){
         QueryGeneration qg = new QueryGeneration();
         List<QueryStatement> queries = new ArrayList<>();
-        queries.addAll(qg.retrieveQueries(template,"all", query_count));
+        queries.addAll(qg.retrieveQueries(template,"high", query_count));
         return queries;
+    }
+
+    private String userProfile(int querier){
+        List <Integer> faculty = new ArrayList<>(Arrays.asList(1023, 5352, 11043, 13353, 18575));
+        List <Integer> undergrad = new ArrayList<>(Arrays.asList(4686, 7632, 12555, 15936, 15007));
+        List<Integer> grad = new ArrayList<>(Arrays.asList(100, 532, 5990, 11815, 32467));
+        List<Integer> staff = new ArrayList<>(Arrays.asList(888, 2550, 5293, 9733, 20021));
+        if(faculty.contains(querier)) return "faculty";
+        else if(undergrad.contains(querier)) return "undergrad";
+        else if(grad.contains(querier)) return "graduate";
+        else return "staff" ;
     }
 
     public static void main(String[] args) {
@@ -282,11 +292,11 @@ public class Experiment {
         users.addAll(grad);
         users.addAll(staff);
         PolicyPersistor polper = new PolicyPersistor();
-        String file_header = "Querier,Query_Type,Query_Cardinality,Number_Of_Policies,Estimated_QPS,Actual_QPS,Query_Alone," +
+        String file_header = "Querier,Querier_Profile,Query_Type,Query_Cardinality,Number_Of_Policies,Estimated_QPS,Query_Alone," +
                 "Baseline_Policies, Baseline_UDF,Number_of_Guards,Total_Guard_Cardinality,With_Guard_Index,With_Query_Index,Sieve_Parameters, Sieve\n";
         Writer writer = new Writer();
         writer.writeString(file_header, PolicyConstants.BE_POLICY_DIR, RESULTS_FILE);
-        for (int j = 0; j < queries.size(); j++) {
+        for (int j = 1; j < queries.size(); j++) {
             System.out.println("Total Query Selectivity " + queries.get(j).getSelectivity());
             for (int i = 0; i < users.size(); i++) {
                 String querier = String.valueOf(users.get(i));
