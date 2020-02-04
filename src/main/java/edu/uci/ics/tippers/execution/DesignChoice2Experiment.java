@@ -29,11 +29,6 @@ public class DesignChoice2Experiment {
         String query_hint = "date_tree";
         String guard_query_with_hint_query = "SELECT * from ( SELECT * from PRESENCE force index(" + query_hint
                 + ") where " + queryPredicates + " ) as P where " + guardExp.createQueryWithOR();
-        String guard_query_optimal = null;
-        if(guard_hint)
-            guard_query_optimal = guard_query_with_hint_inline;
-        else
-            guard_query_optimal = guard_query_with_hint_query;
         MySQLResult execResult = null;
         if(!guardTO) {
             execResult = mySQLQueryManager.runTimedQueryExp(guard_query_with_hint_inline, 3);
@@ -46,14 +41,6 @@ public class DesignChoice2Experiment {
             execResult = mySQLQueryManager.runTimedQueryExp(guard_query_with_hint_query, 3);
             rString.append(execResult.getTimeTaken().toMillis()).append(",");
             if(execResult.getTimeTaken().equals(PolicyConstants.MAX_DURATION)) queryTO = true;
-        }
-        else
-            rString.append(PolicyConstants.MAX_DURATION.toMillis()).append(",");
-        if(!sieveTO){
-            execResult = mySQLQueryManager.runTimedQueryExp(guard_query_optimal, 3);
-            rString.append(execResult.getTimeTaken().toMillis()).append(",");
-            if(execResult.getTimeTaken().equals(PolicyConstants.MAX_DURATION)) sieveTO = true;
-            rString.append(guard_hint);
         }
         else
             rString.append(PolicyConstants.MAX_DURATION.toMillis()).append(",");
@@ -91,7 +78,6 @@ public class DesignChoice2Experiment {
 
     private String runQueryExpt(String querier, List<String> queries){
         PolicyPersistor polper = new PolicyPersistor();
-        boolean guardTO = false, queryTO = false, sieveTO = false;
         List<BEPolicy> allowPolicies = polper.retrievePolicies(querier,
                 PolicyConstants.USER_INDIVIDUAL, PolicyConstants.ACTION_ALLOW);
         GuardPersistor guardPersistor = new GuardPersistor();
@@ -136,7 +122,7 @@ public class DesignChoice2Experiment {
             queries.add(query);
         }
         int duration =  1439; //maximum of a day
-        for (int i = 0; i < 90; i=i+3) {
+        for (int i = 0; i < 20; i=i+2) {
             TimeStampPredicate tsPred = new TimeStampPredicate(pg.getDate("MIN"), i, "00:00", duration);
             String query = String.format("start_date >= \"%s\" AND start_date <= \"%s\" ", tsPred.getStartDate().toString(),
                     tsPred.getEndDate().toString());
@@ -157,17 +143,20 @@ public class DesignChoice2Experiment {
      */
     public static void main(String[] args) {
         DesignChoice2Experiment dc2e = new DesignChoice2Experiment();
-        String filename = "expts2_final.csv";
-        String file_header = "Guard Cardinality,Query Cardinality,With Guard Hint Inline,With Query Hint,Our Approach,flag \n";
+        String filename = "expts2_calibration.csv";
+        String file_header = "Guard Cardinality,Query Cardinality,With Guard Hint Inline,With Query Hint \n";
         Writer writer = new Writer();
         writer.writeString(file_header, PolicyConstants.BE_POLICY_DIR, filename);
         List<String> queries = dc2e.generateQueries();
-        //Queriers with increasing order of cardinalities
-        List<Integer> queriers = new ArrayList<>(Arrays.asList(14215, 56, 2050, 2819, 37, 625, 23519, 8817, 6215, 387,
-                945, 8962, 23416, 34035));
         //Queriers with <low, medium, high> guard cardinalities
-        List<Integer> rep_queriers = new ArrayList<>(Arrays.asList(queriers.get((int) Math.ceil(queriers.size()/10.0)),
-                queriers.get((int) Math.ceil(queriers.size()/2.0)), queriers.get(queriers.size()-1)));
+        //From Sheet: Copy of guard analysis
+        List<Integer> queriers = new ArrayList<>(Arrays.asList(31398, 16439, 10727, 22995,
+                30528, 6213, 7964, 2039,
+                34035, 11506, 24101, 18094,
+                11695, 18289, 3980,	32467,
+                9661, 10473, 14677, 22636,
+                9892, 19987, 12225, 15007));
+        List<Integer> rep_queriers = new ArrayList<>(queriers);
         //Running Query Experiment with three guard cardinalities
         for (int i = 0; i < rep_queriers.size(); i++) {
             writer.writeString(dc2e.runQueryExpt(String.valueOf(rep_queriers.get(i)), queries), PolicyConstants.BE_POLICY_DIR,
@@ -175,13 +164,13 @@ public class DesignChoice2Experiment {
             dc2e.resetFlags();
         }
 
-        //Queries with <low, medium, high> cardinalities
-        List<String> rep_queries = new ArrayList<>(Arrays.asList(queries.get((int) Math.ceil(queries.size()/10.0)),
-                queries.get((int) Math.ceil(queries.size()/5.0)), queries.get((int) Math.ceil(queries.size()/2.0))));
-        for (int i = 0; i < rep_queries.size(); i++) {
-            writer.writeString(dc2e.runGuardExpt(rep_queries.get(i), queriers), PolicyConstants.BE_POLICY_DIR,
-                    filename);
-            dc2e.resetFlags();
-        }
+//        //Queries with <low, medium, high> cardinalities
+//        List<String> rep_queries = new ArrayList<>(Arrays.asList(queries.get((int) Math.ceil(queries.size()/10.0)),
+//                queries.get((int) Math.ceil(queries.size()/5.0)), queries.get((int) Math.ceil(queries.size()/2.0))));
+//        for (int i = 0; i < rep_queries.size(); i++) {
+//            writer.writeString(dc2e.runGuardExpt(rep_queries.get(i), queriers), PolicyConstants.BE_POLICY_DIR,
+//                    filename);
+//            dc2e.resetFlags();
+//        }
     }
 }
