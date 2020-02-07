@@ -34,7 +34,6 @@ public class Experiment {
     private static boolean QUERY_EXEC;
     private static boolean BASE_LINE_POLICIES;
     private static boolean BASELINE_UDF;
-    private static boolean GENERATE_GUARD;
     private static boolean GUARD_POLICY_INLINE;
     private static boolean GUARD_UDF;
     private static boolean GUARD_INDEX;
@@ -43,7 +42,6 @@ public class Experiment {
     private static boolean RESULT_CHECK;
 
     private long QUERY_EXECUTION_TIME;
-    private float QUERY_PREDICATE_SELECTIVITY;
 
 
     private static int NUM_OF_REPS;
@@ -63,7 +61,6 @@ public class Experiment {
                 props.load(inputStream);
                 QUERY_EXEC = Boolean.parseBoolean(props.getProperty("query_exec"));
                 BASE_LINE_POLICIES = Boolean.parseBoolean(props.getProperty("baseline_policies"));
-                GENERATE_GUARD = Boolean.parseBoolean(props.getProperty("generate_guard"));
                 GUARD_POLICY_INLINE = Boolean.parseBoolean(props.getProperty("guard_policies"));
                 BASELINE_UDF = Boolean.parseBoolean(props.getProperty("baseline_udf"));
                 GUARD_UDF = Boolean.parseBoolean(props.getProperty("guard_udf"));
@@ -79,71 +76,46 @@ public class Experiment {
         }
     }
 
-    /**
-     * Compares the query cardinality (sel(Q)) against guard cardinality (sel(G)) to decide which index to use
-     * sel(Q) = 1) Run explain(Q) 2) multiply rows * filtered
-     * sel(G) = sum (sel(Gi))
-     * if sel(Q) < sel(G) then query index is decided by retrieving the key column (if there are multiple indices
-     * mentioned in this column, then the first one is used)
-     * @param guardExp
-     * @param guardQuery
-     * @param queryPredicates
-     * @return
-     */
-    public String hintOrNot(GuardExp guardExp, String guardQuery, String queryPredicates){
-        QueryExplainer qe = new QueryExplainer();
-        double querySel = qe.estimateSelectivity(queryPredicates);
-        double totalCard = guardExp.getGuardParts().stream().mapToDouble(GuardPart::getCardinality).sum();
-        String sieve_query = null;
-        if (querySel > totalCard) { //Use Guards
-            sieve_query =  guardQuery + "Select * from polEval where " + queryPredicates;
-            System.out.println("Guards strategy used");
-        }
-        else { //Use queries
-            String query_hint = qe.keyUsed(queryPredicates);
-            sieve_query = "SELECT * from ( SELECT * from PRESENCE force index(" + query_hint
-                    + ") where " + queryPredicates + " ) as P where " + guardExp.createQueryWithOR();
-            System.out.println("Query + Guards strategy");
-
-        }
-        return sieve_query;
-    }
-
-    public String runBEPolicies(String querier, String queryPredicates, int template, float selectivity, List<BEPolicy> bePolicies) {
+    public String runBEPolicies(String querier, QueryStatement queryStatement, List<BEPolicy> bePolicies) {
 
         BEExpression beExpression = new BEExpression(bePolicies);
         StringBuilder resultString = new StringBuilder();
         resultString.append(querier).append(",")
                 .append(userProfile(Integer.parseInt(querier))).append(",")
-                .append(template).append(",")
-                .append(selectivity).append(",")
+                .append(queryStatement.getTemplate()).append(",")
+                .append(queryStatement.getSelectivity()).append(",")
                 .append(bePolicies.size()).append(",");
 
         QueryExplainer qe = new QueryExplainer();
-        double querySel = qe.estimateSelectivity(queryPredicates);
+        double querySel = qe.estimateSelectivity(queryStatement);
         resultString.append(querySel).append(",");
-        //TODO: Making changes for template 3, undo after experiment
+
         try {
-//            if(QUERY_EXEC){
-//                MySQLResult queryResult = new MySQLResult();
-//                queryResult = mySQLQueryManager.runTimedQueryWithOutSorting(queryPredicates, true);
-//                Duration runTime = Duration.ofMillis(0);
-//                runTime = runTime.plus(queryResult.getTimeTaken());
-//                System.out.println("Time taken by query alone " + runTime.toMillis());
-//                QUERY_EXECUTION_TIME = runTime.toMillis();
-//                QUERY_PREDICATE_SELECTIVITY = queryResult.getResultCount()/(float) PolicyConstants.NUMBER_OR_TUPLES;
-//                resultString.append(QUERY_EXECUTION_TIME).append(",");
-////                mySQLQueryManager.increaseTimeout(runTime.toMillis()); //Updating timeout to query exec time + constant
-//
-//            }
-//            else resultString.append(QUERY_EXECUTION_TIME).append(",");
+            if (QUERY_EXEC){
+                MySQLResult queryResult;
+                if(queryStatement.getTemplate() == 3)
+                    queryResult = mySQLQueryManager.runTimedSubQuery(queryStatement.getQuery(), RESULT_CHECK);
+                else
+                    queryResult = mySQLQueryManager.runTimedQueryWithOutSorting(queryStatement.getQuery(), true);
+                Duration runTime = Duration.ofMillis(0);
+                runTime = runTime.plus(queryResult.getTimeTaken());
+                System.out.println("Time taken by query alone " + runTime.toMillis());
+                QUERY_EXECUTION_TIME = runTime.toMillis();
+                resultString.append(QUERY_EXECUTION_TIME).append(",");
+//                mySQLQueryManager.increaseTimeout(runTime.toMillis()); //Updating timeout to query exec time + constant
+
+            }
+            else resultString.append(QUERY_EXECUTION_TIME).append(",");
 
             if (BASE_LINE_POLICIES) {
                 MySQLResult tradResult = new MySQLResult();
-                String baselineQuery = "With polEval as ( Select * from PRESENCE where "
-                        + beExpression.createQueryFromPolices() + "  )"
-                        + queryPredicates;
-                tradResult = mySQLQueryManager.runTimedQueryExp(baselineQuery, 1);
+                String polEvalQuery = "With polEval as ( Select * from PRESENCE where "
+                        + beExpression.createQueryFromPolices() + "  )" ;
+                if(queryStatement.getTemplate() == 3)
+                    tradResult = mySQLQueryManager.runTimedQueryExp(polEvalQuery + queryStatement.getQuery(), 1);
+                else
+                    tradResult = mySQLQueryManager.runTimedQueryExp(polEvalQuery + "SELECT * from polEval where "
+                            + queryStatement.getQuery(), 1);
                 Duration runTime = Duration.ofMillis(0);
                 runTime = runTime.plus(tradResult.getTimeTaken());
                 resultString.append(runTime.toMillis()).append(",");
@@ -151,15 +123,16 @@ public class Experiment {
             }
 
             if(BASELINE_UDF){
-                Duration execTime = Duration.ofMillis(0);
-                queryPredicates = queryPredicates.replace("polEval", "PRESENCE");
-                String udf_query =  queryPredicates
-                        + " and pcheck( " + querier + ", p.user_id, p.location_id, " +
-                        "p.start_date, p.start_time, p.user_profile, p.user_group) = 1";
-                MySQLResult execResult = mySQLQueryManager.runTimedQueryExp(udf_query, 1);
-                execTime = execTime.plus(execResult.getTimeTaken());
-                resultString.append(execTime.toMillis()).append(",");
-                System.out.println("Baseline UDF: " + " , Time: " + execTime.toMillis());
+                MySQLResult execResult;
+                String udf_query = " and pcheck( " + querier + ", PRESENCE.user_id, PRESENCE.location_id, " +
+                        "PRESENCE.start_date, PRESENCE.start_time, PRESENCE.user_profile, PRESENCE.user_group) = 1";
+                if(queryStatement.getTemplate() == 3)
+                    execResult = mySQLQueryManager.runTimedQueryExp(queryStatement.getQuery() + udf_query, 1);
+                else
+                    execResult = mySQLQueryManager.runTimedQueryExp("SELECT * from PRESENCE where "
+                            + queryStatement.getQuery() + udf_query, 1);
+                resultString.append(execResult.getTimeTaken().toMillis()).append(",");
+                System.out.println("Baseline UDF: " + " , Time: " + execResult.getTimeTaken().toMillis());
             }
 
             GuardPersistor guardPersistor = new GuardPersistor();
@@ -169,12 +142,14 @@ public class Experiment {
             double guardTotalCard = guardExp.getGuardParts().stream().mapToDouble(GuardPart::getCardinality).sum();
             resultString.append(guardTotalCard).append(",");
 
+
             if(GUARD_POLICY_INLINE) {
+                //TODO: Does not work for template 3
                 Duration execTime = Duration.ofMillis(0);
                 String guard_query_with_union = guardExp.inlineRewrite(true);
                 String guard_query_with_or = guardExp.inlineRewrite(false);
-                guard_query_with_union += "Select * from polEval where " + queryPredicates;
-                guard_query_with_or += "Select * from polEval where " + queryPredicates;
+                guard_query_with_union += "Select * from polEval where " + queryStatement.getQuery();
+                guard_query_with_or += "Select * from polEval where " + queryStatement.getQuery();
                 MySQLResult execResult = mySQLQueryManager.runTimedQueryExp(guard_query_with_union, NUM_OF_REPS);
                 execTime = execTime.plus(execResult.getTimeTaken());
                 resultString.append(execTime.toMillis()).append(",");
@@ -185,11 +160,12 @@ public class Experiment {
                 System.out.println("Guard inline execution with OR: "  + " Time: " + execTime.toMillis());
             }
             if(GUARD_UDF){
+                //TODO: Does not work for template 3
                 Duration execTime = Duration.ofMillis(0);
                 String guard_query_with_union = guardExp.udfRewrite(true);
                 String guard_query_with_or = guardExp.udfRewrite(false);
-                guard_query_with_union += "Select * from polEval where " + queryPredicates;
-                guard_query_with_or += "Select * from polEval where " + queryPredicates;
+                guard_query_with_union += "Select * from polEval where " + queryStatement.getQuery();
+                guard_query_with_or += "Select * from polEval where " + queryStatement.getQuery();
                 MySQLResult execResult = mySQLQueryManager.runTimedQueryExp(guard_query_with_union, NUM_OF_REPS);
                 execTime = execTime.plus(execResult.getTimeTaken());
                 resultString.append(execTime.toMillis()).append(",");
@@ -202,8 +178,11 @@ public class Experiment {
             if(GUARD_INDEX) {
                 Duration execTime = Duration.ofMillis(0);
                 String guard_hybrid_query = guardExp.inlineOrNot(true);
-                String g_queryPredicates = queryPredicates.replace("PRESENCE", "polEval");
-                guard_hybrid_query +=  g_queryPredicates;
+                if(queryStatement.getTemplate() == 3){
+                    guard_hybrid_query +=  queryStatement.getQuery().replace("PRESENCE", "polEval");
+                }
+                else
+                    guard_hybrid_query += "Select * from polEval where " + queryStatement.getQuery();
                 MySQLResult execResult = mySQLQueryManager.runTimedQueryExp(guard_hybrid_query, 1);
                 execTime = execTime.plus(execResult.getTimeTaken());
                 resultString.append(execTime.toMillis()).append(",");
@@ -211,32 +190,47 @@ public class Experiment {
             }
             if(QUERY_INDEX) {
                 Duration execTime = Duration.ofMillis(0);
-                String query_hint = qe.keyUsed(queryPredicates) != null? qe.keyUsed(queryPredicates): "date_tree";
-                String q_queryPredicates = queryPredicates.replace("Select p.user_id",
-                        "SELECT p.user_id, p.location_id, p.start_date, p.start_time, p.user_group, p.user_profile" );
-                q_queryPredicates = q_queryPredicates.replace("PRESENCE as p", "PRESENCE as p force index("
-                        + query_hint +")" );
-                String query_index_query = "SELECT * from ( " + q_queryPredicates + " ) as P where " + guardExp.createQueryWithOR();
-                MySQLResult execResult = mySQLQueryManager.runTimedQueryExp(query_index_query, 1);
-                execTime = execTime.plus(execResult.getTimeTaken());
-                resultString.append(execTime.toMillis()).append(",");
-                System.out.println("Query Index execution : "  + " Time: " + execTime.toMillis());
+                String query_hint = qe.keyUsed(queryStatement);
+                String queryPredicates = queryStatement.getQuery();
+                String query_index_query;
+                if(query_hint != null) {
+                    if(queryStatement.getTemplate() == 3) {
+                        queryPredicates = queryPredicates.replace("from PRESENCE", "from PRESENCE force index("
+                                + query_hint +")" );
+                        query_index_query = "SELECT * from ( " + queryPredicates + " ) as P where " + guardExp.createQueryWithOR();
+                    }
+                    else
+                        query_index_query = "SELECT * from ( SELECT * from PRESENCE force index(" + query_hint
+                                + ") where " + queryPredicates + " ) as P where " + guardExp.createQueryWithOR();
+                    MySQLResult execResult = mySQLQueryManager.runTimedQueryExp(query_index_query, 1);
+                    execTime = execTime.plus(execResult.getTimeTaken());
+                    resultString.append(execTime.toMillis()).append(",");
+                    System.out.println("Query Index execution : "  + " Time: " + execTime.toMillis());
+                }
+                else resultString.append("NA").append(","); //No index scan used with query predicate
             }
             if(SIEVE_EXEC){
                 Duration execTime = Duration.ofMillis(0);
                 String guardQuery = guardExp.inlineOrNot(true);
+                String query_hint = qe.keyUsed(queryStatement);
                 String sieve_query = null;
-                if (querySel > guardTotalCard) { //Use Guards
-                    sieve_query =  guardQuery + "Select * from polEval where " + queryPredicates;
+                if (querySel > guardTotalCard || query_hint == null) { //Use Guards
+                    if(queryStatement.getTemplate() == 3){
+                        sieve_query = guardQuery + queryStatement.getQuery().replace("PRESENCE", "polEval");
+                    }
+                    else
+                        sieve_query = guardQuery + "Select * from polEval where " + queryStatement.getQuery();
                     resultString.append("Guard Index").append(",");
                 }
                 else { //Use queries
-                    String query_hint = qe.keyUsed(queryPredicates);
-                    String q_queryPredicates = queryPredicates.replace("Select p.user_id",
-                            "SELECT p.user_id, p.location_id, p.start_date, p.start_time, p.user_group, p.user_profile" );
-                    q_queryPredicates = q_queryPredicates.replace("PRESENCE as p", "PRESENCE as p force index("
-                            + query_hint +")" );
-                    sieve_query = "SELECT * from ( " + q_queryPredicates + " ) as P where " + guardExp.createQueryWithOR();
+                    if(queryStatement.getTemplate() == 3) {
+                        String query_index = queryStatement.getQuery().replace("from PRESENCE", "from PRESENCE force index("
+                                + query_hint +")" );
+                        sieve_query = "SELECT * from ( " + query_index + " ) as P where " + guardExp.createQueryWithOR();
+                    }
+                    else
+                        sieve_query = "SELECT * from ( SELECT * from PRESENCE force index(" + query_hint
+                                + ") where " + queryStatement.getQuery() + " ) as P where " + guardExp.createQueryWithOR();
                     resultString.append("Query Index").append(",");
                 }
                 MySQLResult execResult = mySQLQueryManager.runTimedQueryExp(sieve_query, NUM_OF_REPS);
@@ -303,7 +297,7 @@ public class Experiment {
                         PolicyConstants.USER_INDIVIDUAL, PolicyConstants.ACTION_ALLOW);
                 if (allowPolicies == null) continue;
                 System.out.println("Querier " + querier);
-                writer.writeString(e.runBEPolicies(querier, queries.get(j).getQuery(), queries.get(j).getTemplate(), queries.get(j).getSelectivity(),
+                writer.writeString(e.runBEPolicies(querier, queries.get(j),
                         allowPolicies), PolicyConstants.BE_POLICY_DIR, RESULTS_FILE);
                 QUERY_EXEC = false;
             }
