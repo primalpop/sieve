@@ -329,19 +329,17 @@ public class QueryGeneration {
         List<QueryStatement> queries = new ArrayList<>();
         for (int k = 0; k < user_groups.size(); k++) {
             for (int i = 5; i < 90 ; i=i+10) {
-                String query = String.format("Select p.user_id from PRESENCE as p, USER_GROUP_MEMBERSHIP as m " +
-                        "where m.user_group_id = \"%s\" AND p.user_id = m.user_id AND ", user_groups.get(k));
+                String query = String.format("Select PRESENCE.user_id, PRESENCE.location_id, PRESENCE.start_date, " +
+                        "PRESENCE.start_time, PRESENCE.user_group, PRESENCE.user_profile  " +
+                        "from PRESENCE, USER_GROUP_MEMBERSHIP " +
+                        "where USER_GROUP_MEMBERSHIP.user_group_id = \"%s\" AND PRESENCE.user_id = USER_GROUP_MEMBERSHIP.user_id " +
+                        "AND ", user_groups.get(k));
                 TimeStampPredicate tsPred = new TimeStampPredicate(pg.getDate("MIN"), i, "00:00", 1439);
                 query += String.format("start_date >= \"%s\" AND start_date <= \"%s\" ", tsPred.getStartDate().toString(),
                         tsPred.getEndDate().toString());
                 float selQuery = mySQLQueryManager.checkSelectivityFullQuery(query);
                 String querySelType = checkStaticRangeSelectivity(selQuery);
                 if (querySelType == null) continue;
-                //Rewriting with polEval instead of presence to make appending to WITH clause easier
-                query = String.format("Select p.user_id from polEval as p, USER_GROUP_MEMBERSHIP as m " +
-                        "where m.user_group_id = \"%s\" AND p.user_id = m.user_id AND ", user_groups.get(k));
-                query += String.format("start_date >= \"%s\" AND start_date <= \"%s\" ", tsPred.getStartDate().toString(),
-                        tsPred.getEndDate().toString());
                 queries.add(new QueryStatement(query, 3, selQuery, querySelType,
                         new Timestamp(System.currentTimeMillis())));
             }
