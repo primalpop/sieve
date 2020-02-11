@@ -14,14 +14,13 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 
 /**
  * Experiment for measuring the time time taken for generating guards belonging to queriers
  * of different policy selectivities.
+ * Experiment 1.1 in the paper
  */
 public class GuardGenExp {
 

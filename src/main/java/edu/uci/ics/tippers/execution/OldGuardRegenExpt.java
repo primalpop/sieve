@@ -15,11 +15,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 
-public class RunExp {
+public class OldGuardRegenExpt {
 
     List<BEPolicy> bePolicyList;
 
-    public RunExp() {
+    public OldGuardRegenExpt() {
         bePolicyList = new ArrayList<>();
     }
 
@@ -186,7 +186,7 @@ public class RunExp {
         String[] fileNames = {"policy200.json"};
         List<Duration> times = new ArrayList<>();
         TreeMap<String, String> runTimes = new TreeMap<>();
-        RunExp re = new RunExp();
+        OldGuardRegenExpt re = new OldGuardRegenExpt();
         Writer writer = new Writer();
         for (int kValue : kValues) {
             times = re.runExpt(start_policies, kValue, rpq, epochs, fileNames[0]);
