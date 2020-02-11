@@ -11,6 +11,10 @@ import edu.uci.ics.tippers.model.policy.BEPolicy;
 
 import java.util.List;
 
+/**
+ * Experiment 1.2 in the paper except for Guard effectiveness
+ * TODO: Include guard effectiveness as part of this experiment
+ */
 public class GuardSelectivityExperiment {
 
     public static void main(String[] args){

@@ -214,7 +214,15 @@ public class Experiment {
                 String guardQuery = guardExp.inlineOrNot(true);
                 String query_hint = qe.keyUsed(queryStatement);
                 String sieve_query = null;
-                if (querySel > guardTotalCard || query_hint == null) { //Use Guards
+                /** Calibration of choosing between IndexGuards and IndexQuery
+                 *  based on the ratio of querySel/guardTotalCard. In template 3
+                 *  because of the join, this ratio is a much smaller number.
+                 */
+                boolean indexGuards = querySel > 0.5 * guardTotalCard;
+                if(queryStatement.getTemplate() == 3) {
+                    indexGuards = querySel > 0.01 *guardTotalCard;
+                }
+                if (indexGuards || query_hint == null) { //Use Guards
                     if(queryStatement.getTemplate() == 3){
                         sieve_query = guardQuery + queryStatement.getQuery().replace("PRESENCE", "polEval");
                     }
@@ -267,7 +275,6 @@ public class Experiment {
         Experiment e = new Experiment();
         PolicyGen pg = new PolicyGen();
 //        List<Integer> users = pg.getAllUsers(true);
-        List<QueryStatement> queries = e.getQueries(3, 10);
         //users with increasing number of guards
 //        List <Integer> users = new ArrayList<>(Arrays.asList(26389, 15230, 30769, 12445, 36430, 21951,
 //                13411, 7079, 364, 26000, 5949, 34372, 6371, 26083, 34290, 2917, 33425, 35503, 26927, 15007));
@@ -289,6 +296,8 @@ public class Experiment {
                 "Baseline_Policies, Baseline_UDF,Number_of_Guards,Total_Guard_Cardinality,With_Guard_Index,With_Query_Index,Sieve_Parameters, Sieve\n";
         Writer writer = new Writer();
         writer.writeString(file_header, PolicyConstants.BE_POLICY_DIR, RESULTS_FILE);
+        List<QueryStatement> queries = e.getQueries(2, 10);
+        queries.addAll(e.getQueries(3, 10));
         for (int j = 0; j < queries.size(); j++) {
             System.out.println("Total Query Selectivity " + queries.get(j).getSelectivity());
             for (int i = 0; i < users.size(); i++) {
