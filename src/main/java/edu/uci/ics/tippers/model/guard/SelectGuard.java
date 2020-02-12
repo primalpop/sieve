@@ -171,6 +171,30 @@ public class SelectGuard {
     }
 
     /**
+     * For large policies experiment
+     * Same as above except it doesn't include a querier, querier type, or purpose
+     * @return
+     */
+    public GuardExp create(){
+        List<GuardPart> gps = new ArrayList<>();
+        for (Term mt: finalForm) {
+            String gpID =  UUID.randomUUID().toString();
+            GuardPart gp = new GuardPart();
+            gp.setId(gpID);
+            gp.setGuard(mt.getFactor());
+            gp.setGuardPartition(mt.getQuotient());
+            gps.add(gp);
+        }
+        GuardExp guardExp = new GuardExp();
+        guardExp.setGuardParts(gps);
+        guardExp.setAction(finalForm.get(0).getQuotient().getPolicies().get(0).getAction());
+        guardExp.setPurpose(finalForm.get(0).getQuotient().getPolicies().get(0).getPurpose());
+        guardExp.setDirty("false");
+        guardExp.setLast_updated(new Timestamp(new Date().getTime()));
+        return guardExp;
+    }
+
+    /**
      * (Select * from Presence where G1 and Partition1
      *  UNION Select * from Presence where G2 and Partition2
      *  ....
