@@ -125,9 +125,6 @@ public class SelectGuard {
         Term mTerm;
         while (!this.allTerms.isEmpty()) {
             mTerm = this.allTerms.poll();
-            if(mTerm.getFactor().getAttribute().equalsIgnoreCase(PolicyConstants.START_TIME)) {
-                System.out.println("DATE OR GROUP");
-            }
             if (mTerm == null) break;
             if (mTerm.getFactor() == null || mTerm.getQuotient() == null || mTerm.getQuotient().getPolicies().isEmpty())
                 break;

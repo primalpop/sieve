@@ -16,7 +16,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.Random;
 
 public class LargePolicyExperiment {
 
@@ -32,26 +32,32 @@ public class LargePolicyExperiment {
         Writer writer = new Writer();
         writer.writeString(file_header, PolicyConstants.BE_POLICY_DIR, RESULTS_FILE);
         List<BEPolicy> bePolicies = new ArrayList<>();
-        for (Integer user : users) {
-            String querier = String.valueOf(user);
+        Random rand = new Random();
+        while(bePolicies.size() < 2000) {
+            String querier = String.valueOf(users.get(rand.nextInt(users.size())));
             bePolicies.addAll(polper.retrievePolicies(querier, PolicyConstants.USER_INDIVIDUAL, PolicyConstants.ACTION_ALLOW));
-            if (bePolicies.size() > 2000) break;
         }
         int chunkSize = 100;
-        AtomicInteger counter = new AtomicInteger();
+        int counter = 0;
         List<BEPolicy> chunkPolicies = new ArrayList<>();
+        boolean QUERY_EXEC_TIMEOUT = false;
         for (BEPolicy bePolicy: bePolicies) {
-            if (counter.incrementAndGet() % chunkSize == 0) {
+            if (++counter % chunkSize == 0) {
                 StringBuilder rString = new StringBuilder();
                 rString.append(chunkPolicies.size()).append(",");
                 BEExpression beExpression = new BEExpression(chunkPolicies);
                 //Baseline Policies
-                String polEvalQuery = "With polEval as ( Select * from PRESENCE where " + beExpression.createQueryFromPolices() + "  )" ;
-                MySQLResult tradResult = mySQLQueryManager.runTimedQueryExp(polEvalQuery + "SELECT * from polEval ", 1);
-                Duration runTime = Duration.ofMillis(0);
-                runTime = runTime.plus(tradResult.getTimeTaken());
-                rString.append(runTime.toMillis()).append(",");
-                System.out.println("Baseline inlining policies: No of Policies: " + beExpression.getPolicies().size() + " , Time: " + runTime.toMillis());
+                if(!QUERY_EXEC_TIMEOUT) {
+                    String polEvalQuery = "With polEval as ( Select * from PRESENCE where " + beExpression.createQueryFromPolices() + "  )" ;
+                    MySQLResult tradResult = mySQLQueryManager.runTimedQueryExp(polEvalQuery + "SELECT * from polEval ", 1);
+                    Duration runTime = Duration.ofMillis(0);
+                    runTime = runTime.plus(tradResult.getTimeTaken());
+                    if(runTime.equals(PolicyConstants.MAX_DURATION)) QUERY_EXEC_TIMEOUT = true;
+                    rString.append(runTime.toMillis()).append(",");
+                    System.out.println("Baseline inlining policies: No of Policies: " + beExpression.getPolicies().size() + " , Time: " + runTime.toMillis());
+                }
+                else rString.append(PolicyConstants.MAX_DURATION.toMillis()).append(",");
+
                 //Guard Generation
                 Duration guardGen = Duration.ofMillis(0);
                 Instant fsStart = Instant.now();
