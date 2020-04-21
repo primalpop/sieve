@@ -1,8 +1,8 @@
-package edu.uci.ics.tippers.execution;
+package edu.uci.ics.tippers.execution.PaperExperiments;
 
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.db.MySQLQueryManager;
-import edu.uci.ics.tippers.db.MySQLResult;
+import edu.uci.ics.tippers.db.QueryResult;
 import edu.uci.ics.tippers.fileop.Writer;
 import edu.uci.ics.tippers.generation.policy.PolicyGen;
 import edu.uci.ics.tippers.manager.GuardPersistor;
@@ -29,7 +29,7 @@ public class DesignChoice2Experiment {
         String query_hint = "date_tree";
         String guard_query_with_hint_query = "SELECT * from ( SELECT * from PRESENCE force index(" + query_hint
                 + ") where " + queryPredicates + " ) as P where " + guardExp.createQueryWithOR();
-        MySQLResult execResult = null;
+        QueryResult execResult = null;
         if(!guardTO) {
             execResult = mySQLQueryManager.runTimedQueryExp(guard_query_with_hint_inline, 3);
             rString.append(execResult.getTimeTaken().toMillis()).append(",");

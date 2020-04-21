@@ -2,7 +2,7 @@ package edu.uci.ics.tippers.model.guard;
 
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.db.MySQLQueryManager;
-import edu.uci.ics.tippers.db.MySQLResult;
+import edu.uci.ics.tippers.db.QueryResult;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
 import edu.uci.ics.tippers.model.policy.ObjectCondition;
@@ -272,9 +272,9 @@ public class SelectGuard {
             guardString.append(mt.getUtility());
             guardString.append(",");
             if(execution) {
-                MySQLResult completeResult = mySQLQueryManager.executeQuery(createCleanQueryFromGQ(mt.getFactor(), mt.getQuotient()),
+                QueryResult completeResult = mySQLQueryManager.executeQuery(createCleanQueryFromGQ(mt.getFactor(), mt.getQuotient()),
                         false, repetitions);
-                MySQLResult guardResult = mySQLQueryManager.runTimedQueryWithOutSorting(mt.getFactor().print(), true);
+                QueryResult guardResult = mySQLQueryManager.runTimedQueryWithOutSorting(mt.getFactor().print(), true);
                 int gCount = 0, tCount = 0;
                 tCount = completeResult.getResultCount();
                 gCount = guardResult.getResultCount();

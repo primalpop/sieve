@@ -1,8 +1,8 @@
-package edu.uci.ics.tippers.execution;
+package edu.uci.ics.tippers.execution.PaperExperiments;
 
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.db.MySQLQueryManager;
-import edu.uci.ics.tippers.db.MySQLResult;
+import edu.uci.ics.tippers.db.QueryResult;
 import edu.uci.ics.tippers.fileop.Writer;
 import edu.uci.ics.tippers.generation.query.QueryExplainer;
 import edu.uci.ics.tippers.manager.GuardPersistor;
@@ -61,7 +61,7 @@ public class ExperimentGuards {
             resultString.append("Guard Index").append(",");
 
 
-            MySQLResult execResult = mySQLQueryManager.runTimedQueryExp(sieve_query, 3);
+            QueryResult execResult = mySQLQueryManager.runTimedQueryExp(sieve_query, 3);
             execTime = execTime.plus(execResult.getTimeTaken());
             resultString.append(execTime.toMillis());
             System.out.println("Sieve Query: " + " Time: " + execTime.toMillis());

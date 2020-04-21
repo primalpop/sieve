@@ -1,9 +1,9 @@
-package edu.uci.ics.tippers.execution;
+package edu.uci.ics.tippers.execution.deprecated;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.db.MySQLQueryManager;
-import edu.uci.ics.tippers.db.MySQLResult;
+import edu.uci.ics.tippers.db.QueryResult;
 import edu.uci.ics.tippers.fileop.Reader;
 import edu.uci.ics.tippers.fileop.Writer;
 import edu.uci.ics.tippers.model.guard.SelectGuard;
@@ -23,7 +23,7 @@ import java.util.*;
 /**
  * Created by cygnus on 12/12/17.
  */
-public class PolicyExecution {
+public class OldPolicyExecution {
     private SyntheticPolicy policyGen;
 
     private Writer writer;
@@ -42,7 +42,7 @@ public class PolicyExecution {
     private static String RESULTS_FILE;
 
 
-    public PolicyExecution() {
+    public OldPolicyExecution() {
 
         try {
             InputStream inputStream = getClass().getClassLoader().getResourceAsStream("config/basic.properties");
@@ -94,7 +94,7 @@ public class PolicyExecution {
 
                 try {
 
-                    MySQLResult tradResult = new MySQLResult();
+                    QueryResult tradResult = new QueryResult();
 
                     if (BASE_LINE) {
                         tradResult = mySQLQueryManager.runTimedQueryWithRepetitions(beExpression.createQueryFromPolices(),
@@ -125,7 +125,7 @@ public class PolicyExecution {
                     if(RESULT_CHECK){
                         System.out.println("Verifying results......");
                         System.out.println("Guard query: " + gh.createGuardedQuery(false));
-                        MySQLResult guardResult = mySQLQueryManager.runTimedSubQuery(gh.createGuardedQuery(false),
+                        QueryResult guardResult = mySQLQueryManager.runTimedSubQuery(gh.createGuardedQuery(false),
                                 RESULT_CHECK);
                         Boolean resultSame = tradResult.checkResults(guardResult);
                         if(!resultSame){
@@ -137,7 +137,7 @@ public class PolicyExecution {
 
                     if(GUARD_UNION) {
                         Duration execTime = Duration.ofMillis(0);
-                        MySQLResult execResult = mySQLQueryManager.runTimedQueryExp(gh.createGuardedQuery(GUARD_UNION), 1);
+                        QueryResult execResult = mySQLQueryManager.runTimedQueryExp(gh.createGuardedQuery(GUARD_UNION), 1);
                         execTime = execTime.plus(execResult.getTimeTaken());
                         policyRunTimes.put(file.getName() + "-executionTime with UNION", String.valueOf(execTime.toMillis()));
                         writer.appendToCSVReport(policyRunTimes, policyDir, RESULTS_FILE);
@@ -158,7 +158,7 @@ public class PolicyExecution {
 
 
     public static void main(String args[]) {
-        PolicyExecution pe = new PolicyExecution();
+        OldPolicyExecution pe = new OldPolicyExecution();
 //        pe.persistPolicies(100);
 //        pe.generatePolicies(PolicyConstants.BE_POLICY_DIR);
         pe.runBEPolicies(PolicyConstants.BE_POLICY_DIR);
