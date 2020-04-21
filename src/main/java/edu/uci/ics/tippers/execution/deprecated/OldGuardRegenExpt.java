@@ -1,4 +1,4 @@
-package edu.uci.ics.tippers.execution;
+package edu.uci.ics.tippers.execution.deprecated;
 
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.fileop.Reader;

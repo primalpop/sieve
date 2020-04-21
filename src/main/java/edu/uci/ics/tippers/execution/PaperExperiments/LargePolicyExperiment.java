@@ -1,8 +1,8 @@
-package edu.uci.ics.tippers.execution;
+package edu.uci.ics.tippers.execution.PaperExperiments;
 
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.db.MySQLQueryManager;
-import edu.uci.ics.tippers.db.MySQLResult;
+import edu.uci.ics.tippers.db.QueryResult;
 import edu.uci.ics.tippers.fileop.Writer;
 import edu.uci.ics.tippers.generation.policy.PolicyGen;
 import edu.uci.ics.tippers.manager.PolicyPersistor;
@@ -49,7 +49,7 @@ public class LargePolicyExperiment {
                 //Baseline Policies
                 if(!QUERY_EXEC_TIMEOUT) {
                     String polEvalQuery = "With polEval as ( Select * from PRESENCE where " + beExpression.createQueryFromPolices() + "  )" ;
-                    MySQLResult tradResult = mySQLQueryManager.runTimedQueryExp(polEvalQuery + "SELECT * from polEval ", 1);
+                    QueryResult tradResult = mySQLQueryManager.runTimedQueryExp(polEvalQuery + "SELECT * from polEval ", 1);
                     Duration runTime = Duration.ofMillis(0);
                     runTime = runTime.plus(tradResult.getTimeTaken());
                     if(runTime.equals(PolicyConstants.MAX_DURATION)) QUERY_EXEC_TIMEOUT = true;
@@ -76,7 +76,7 @@ public class LargePolicyExperiment {
                 //Sieve approach
                 Duration execTime = Duration.ofMillis(0);
                 String guard_hybrid_query = guardExp.inlineOrNot(true) + "Select * from polEval";
-                MySQLResult execResult = mySQLQueryManager.runTimedQueryExp(guard_hybrid_query, 1);
+                QueryResult execResult = mySQLQueryManager.runTimedQueryExp(guard_hybrid_query, 1);
                 execTime = execTime.plus(execResult.getTimeTaken());
                 rString.append(execTime.toMillis()).append("\n");
                 System.out.println("Guard Query execution : "  + " Time: " + execTime.toMillis());

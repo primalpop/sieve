@@ -1,8 +1,8 @@
-package edu.uci.ics.tippers.execution;
+package edu.uci.ics.tippers.execution.PaperExperiments;
 
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.db.MySQLQueryManager;
-import edu.uci.ics.tippers.db.MySQLResult;
+import edu.uci.ics.tippers.db.QueryResult;
 
 
 public class ExperimentInline {
@@ -27,7 +27,7 @@ public class ExperimentInline {
         String udf_query = " hybcheck(" + querier + ", "
                  + guard_id +  " , user_id, location_id, start_date, " +
                         "start_time, user_profile, user_group ) = 1";
-        MySQLResult udfTime = mySQLQueryManager.runTimedQueryExp(guard + PolicyConstants.CONJUNCTION
+        QueryResult udfTime = mySQLQueryManager.runTimedQueryExp(guard + PolicyConstants.CONJUNCTION
                 + udf_query + query_predicates, 3);
         System.out.println("UDF time " + udfTime.getTimeTaken().toMillis());
         String add_policy_1 = "((user_profile= \"faculty\") " +
@@ -50,7 +50,7 @@ public class ExperimentInline {
                 else
                     query += PolicyConstants.DISJUNCTION + add_policy_2;
             query += query_predicates;
-            MySQLResult execTime = mySQLQueryManager.runTimedQueryExp(query, 3);
+            QueryResult execTime = mySQLQueryManager.runTimedQueryExp(query, 3);
             System.out.println(" Num of " + i + " policies: " + execTime.getTimeTaken().toMillis());
         }
     }

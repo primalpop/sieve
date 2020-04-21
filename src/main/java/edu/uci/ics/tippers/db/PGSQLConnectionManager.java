@@ -22,7 +22,7 @@ public class PGSQLConnectionManager {
 
     private PGSQLConnectionManager() {
         try {
-            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("postgresql/pgsql.properties");
+            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("postgresql/local.properties");
             props = new Properties();
             props.load(inputStream);
 

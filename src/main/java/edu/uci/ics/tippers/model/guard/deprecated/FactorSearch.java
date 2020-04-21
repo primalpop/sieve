@@ -2,7 +2,7 @@ package edu.uci.ics.tippers.model.guard.deprecated;
 
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.db.MySQLQueryManager;
-import edu.uci.ics.tippers.db.MySQLResult;
+import edu.uci.ics.tippers.db.QueryResult;
 import edu.uci.ics.tippers.model.guard.GuardExp;
 import edu.uci.ics.tippers.model.guard.GuardPart;
 import edu.uci.ics.tippers.model.guard.Term;
@@ -312,10 +312,10 @@ public class FactorSearch {
             List<Long> cList = new ArrayList<>();
             int gCount = 0, tCount = 0;
             for (int i = 0; i < repetitions; i++) {
-                MySQLResult guardResult = mySQLQueryManager.runTimedQueryWithOutSorting(kOb, true);
+                QueryResult guardResult = mySQLQueryManager.runTimedQueryWithOutSorting(kOb, true);
                 if (gCount == 0) gCount = guardResult.getResultCount();
                 gList.add(guardResult.getTimeTaken().toMillis());
-                MySQLResult completeResult = mySQLQueryManager.runTimedQueryWithOutSorting(kOb, true);
+                QueryResult completeResult = mySQLQueryManager.runTimedQueryWithOutSorting(kOb, true);
                 if (tCount == 0) tCount = completeResult.getResultCount();
                 cList.add(completeResult.getTimeTaken().toMillis());
 

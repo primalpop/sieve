@@ -12,7 +12,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.stream.IntStream;
 
-public class MySQLResult {
+public class QueryResult {
 
     String pathName;
     String fileName;
@@ -21,7 +21,7 @@ public class MySQLResult {
     List<LongPresence> queryResult;
     Boolean resultsCheck;
 
-    public MySQLResult() {
+    public QueryResult() {
         this.timeTaken = Duration.ofMillis(0);
         this.resultCount = 0;
         this.resultsCheck = false;
@@ -97,7 +97,7 @@ public class MySQLResult {
         this.fileName = fileName;
     }
 
-    public MySQLResult(String pathName, String fileName) {
+    public QueryResult(String pathName, String fileName) {
         this.pathName = pathName;
         this.fileName = fileName;
     }
@@ -126,7 +126,7 @@ public class MySQLResult {
             writer.writeJSONToFile(query_results, pathName, fileName);
     }
 
-    public Boolean checkResults(MySQLResult otherResult) {
+    public Boolean checkResults(QueryResult otherResult) {
         List<LongPresence> og = this.getQueryResult();
         List<LongPresence> tbc = otherResult.getQueryResult();
         if(og.size() != tbc.size()) {

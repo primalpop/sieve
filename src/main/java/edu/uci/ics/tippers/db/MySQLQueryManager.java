@@ -35,18 +35,18 @@ public class MySQLQueryManager {
         this.timeout +=  timeout;
     }
 
-    public MySQLResult runWithThread(String query, MySQLResult mySQLResult) {
+    public QueryResult runWithThread(String query, QueryResult queryResult) {
 
         Statement statement = null;
         ExecutorService executor = Executors.newSingleThreadExecutor();
-        Future<MySQLResult> future = null;
+        Future<QueryResult> future = null;
         try {
             statement = connection.createStatement();
-            QueryExecutor queryExecutor = new QueryExecutor(statement, query, mySQLResult);
+            QueryExecutor queryExecutor = new QueryExecutor(statement, query, queryResult);
             future = executor.submit(queryExecutor);
-            mySQLResult = future.get(timeout, TimeUnit.MILLISECONDS);
+            queryResult = future.get(timeout, TimeUnit.MILLISECONDS);
             executor.shutdown();
-            return mySQLResult;
+            return queryResult;
         } catch (SQLException | InterruptedException | ExecutionException ex) {
             cancelStatement(statement, ex);
             ex.printStackTrace();
@@ -54,8 +54,8 @@ public class MySQLQueryManager {
         } catch (TimeoutException ex) {
             cancelStatement(statement, ex);
             future.cancel(true);
-            mySQLResult.setTimeTaken(PolicyConstants.MAX_DURATION);
-            return mySQLResult;
+            queryResult.setTimeTaken(PolicyConstants.MAX_DURATION);
+            return queryResult;
         } finally {
             DbUtils.closeQuietly(statement);
             executor.shutdownNow();
@@ -72,26 +72,26 @@ public class MySQLQueryManager {
     }
 
 
-    private class QueryExecutor implements  Callable<MySQLResult>{
+    private class QueryExecutor implements  Callable<QueryResult>{
 
         Statement statement;
         String query;
-        MySQLResult mySQLResult;
+        QueryResult queryResult;
 
-        public QueryExecutor(Statement statement, String query, MySQLResult mySQLResult) {
+        public QueryExecutor(Statement statement, String query, QueryResult queryResult) {
             this.statement = statement;
             this.query = query;
-            this.mySQLResult = mySQLResult;
+            this.queryResult = queryResult;
         }
 
         @Override
-        public MySQLResult call() throws Exception {
+        public QueryResult call() throws Exception {
             try {
                 Instant start = Instant.now();
                 ResultSet rs = statement.executeQuery(query);
                 Instant end = Instant.now();
-                if(mySQLResult.getResultsCheck())
-                    mySQLResult.setQueryResult(rs);
+                if(queryResult.getResultsCheck())
+                    queryResult.setQueryResult(rs);
                 int rowcount = 0;
                 if (hasColumn(rs, "total")){
                     rs.next();
@@ -101,12 +101,12 @@ public class MySQLQueryManager {
                     rowcount = rs.getRow();
                     rs.beforeFirst();
                 }
-                if(mySQLResult.getPathName() != null && mySQLResult.getFileName() != null){
-                    mySQLResult.writeResultsToFile(rs);
+                if(queryResult.getPathName() != null && queryResult.getFileName() != null){
+                    queryResult.writeResultsToFile(rs);
                 }
-                mySQLResult.setResultCount(rowcount);
-                mySQLResult.setTimeTaken(Duration.between(start, end));
-                return mySQLResult;
+                queryResult.setResultCount(rowcount);
+                queryResult.setTimeTaken(Duration.between(start, end));
+                return queryResult;
             } catch (SQLException e) {
                 System.out.println("Exception raised by : " + query);
                 cancelStatement(statement, e);
@@ -128,13 +128,13 @@ public class MySQLQueryManager {
     }
 
     public float checkSelectivity(String queryPredicates) {
-        MySQLResult mySQLResult = runTimedQueryWithOutSorting(queryPredicates, true);
-        return (float) mySQLResult.getResultCount() / (float) PolicyConstants.NUMBER_OR_TUPLES;
+        QueryResult queryResult = runTimedQueryWithOutSorting(queryPredicates, true);
+        return (float) queryResult.getResultCount() / (float) PolicyConstants.NUMBER_OR_TUPLES;
     }
 
     public float checkSelectivityFullQuery(String query) {
-        MySQLResult mySQLResult = runTimedQueryWithOutSorting(query);
-        return (float) mySQLResult.getResultCount() / (float) PolicyConstants.NUMBER_OR_TUPLES;
+        QueryResult queryResult = runTimedQueryWithOutSorting(query);
+        return (float) queryResult.getResultCount() / (float) PolicyConstants.NUMBER_OR_TUPLES;
     }
 
     /**
@@ -143,13 +143,13 @@ public class MySQLQueryManager {
      * @throws PolicyEngineException
      */
 
-    public MySQLResult runTimedQueryExp(String query, int repetitions) throws PolicyEngineException {
+    public QueryResult runTimedQueryExp(String query, int repetitions) throws PolicyEngineException {
         try {
-            MySQLResult mySQLResult = new MySQLResult();
-            mySQLResult.setResultsCheck(false);
+            QueryResult queryResult = new QueryResult();
+            queryResult.setResultsCheck(false);
             List<Long> gList = new ArrayList<>();
             for (int i = 0; i < repetitions; i++) {
-                gList.add(runWithThread(query, mySQLResult).getTimeTaken().toMillis());
+                gList.add(runWithThread(query, queryResult).getTimeTaken().toMillis());
             }
             Duration gCost;
             if(repetitions >= 3) {
@@ -160,8 +160,8 @@ public class MySQLQueryManager {
             else{
                 gCost =  Duration.ofMillis(gList.stream().mapToLong(i -> i).sum() / gList.size());
             }
-            mySQLResult.setTimeTaken(gCost);
-            return mySQLResult;
+            queryResult.setTimeTaken(gCost);
+            return queryResult;
         } catch (Exception e) {
             throw new PolicyEngineException("Error Running Query");
         }
@@ -175,14 +175,14 @@ public class MySQLQueryManager {
      * @throws PolicyEngineException
      */
 
-    public MySQLResult runTimedQueryWithRepetitions(String predicates, Boolean resultCheck, int repetitions) throws PolicyEngineException {
+    public QueryResult runTimedQueryWithRepetitions(String predicates, Boolean resultCheck, int repetitions) throws PolicyEngineException {
         try {
-            MySQLResult mySQLResult = new MySQLResult();
-            mySQLResult.setResultsCheck(resultCheck);
+            QueryResult queryResult = new QueryResult();
+            queryResult.setResultsCheck(resultCheck);
             List<Long> gList = new ArrayList<>();
             for (int i = 0; i < repetitions; i++)
                 gList.add(runWithThread(PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS_WHERE + predicates,
-                        mySQLResult).getTimeTaken().toMillis());
+                        queryResult).getTimeTaken().toMillis());
             Duration gCost;
             if(repetitions >= 3) {
                 Collections.sort(gList);
@@ -193,8 +193,8 @@ public class MySQLQueryManager {
                 gCost =  Duration.ofMillis(gList.stream().mapToLong(i -> i).sum() / gList.size());
 
             }
-            mySQLResult.setTimeTaken(gCost);
-            return mySQLResult;
+            queryResult.setTimeTaken(gCost);
+            return queryResult;
         } catch (Exception e) {
             throw new PolicyEngineException("Error Running Query");
         }
@@ -209,8 +209,8 @@ public class MySQLQueryManager {
 
     public Duration runTimedQuery(String predicates) throws PolicyEngineException {
         try {
-            MySQLResult mySQLResult = new MySQLResult();
-            return runWithThread(PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS + predicates, mySQLResult).getTimeTaken();
+            QueryResult queryResult = new QueryResult();
+            return runWithThread(PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS + predicates, queryResult).getTimeTaken();
         } catch (Exception e) {
             throw new PolicyEngineException("Error Running Query");
         }
@@ -223,11 +223,11 @@ public class MySQLQueryManager {
      * @throws PolicyEngineException
      */
 
-    public MySQLResult runTimedSubQuery(String completeQuery, boolean resultCheck) throws PolicyEngineException {
+    public QueryResult runTimedSubQuery(String completeQuery, boolean resultCheck) throws PolicyEngineException {
         try {
-            MySQLResult mySQLResult = new MySQLResult();
-            mySQLResult.setResultsCheck(resultCheck);
-            return runWithThread(completeQuery, mySQLResult);
+            QueryResult queryResult = new QueryResult();
+            queryResult.setResultsCheck(resultCheck);
+            return runWithThread(completeQuery, queryResult);
         } catch (Exception e) {
             throw new PolicyEngineException("Error Running Query");
         }
@@ -240,13 +240,13 @@ public class MySQLQueryManager {
      * @return
      * @throws PolicyEngineException
      */
-    public MySQLResult runTimedQueryWithOutSorting(String predicates, boolean where) throws PolicyEngineException {
+    public QueryResult runTimedQueryWithOutSorting(String predicates, boolean where) throws PolicyEngineException {
         try {
-            MySQLResult mySQLResult = new MySQLResult();
+            QueryResult queryResult = new QueryResult();
             if(!where)
-                return runWithThread(PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS + predicates, mySQLResult);
+                return runWithThread(PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS + predicates, queryResult);
             else
-                return runWithThread(PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS_WHERE + predicates, mySQLResult);
+                return runWithThread(PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS_WHERE + predicates, queryResult);
         } catch (Exception e) {
             throw new PolicyEngineException("Error Running Query");
         }
@@ -257,10 +257,10 @@ public class MySQLQueryManager {
      * @return
      * @throws PolicyEngineException
      */
-    public MySQLResult runTimedQueryWithOutSorting(String full_query) throws PolicyEngineException {
+    public QueryResult runTimedQueryWithOutSorting(String full_query) throws PolicyEngineException {
         try {
-            MySQLResult mySQLResult = new MySQLResult();
-            return runWithThread(full_query, mySQLResult);
+            QueryResult queryResult = new QueryResult();
+            return runWithThread(full_query, queryResult);
         } catch (Exception e) {
             throw new PolicyEngineException("Error Running Query");
         }
@@ -271,9 +271,9 @@ public class MySQLQueryManager {
      * Execution time for guards which doesn't cost of sorting the results
      * @throws PolicyEngineException
      */
-    public MySQLResult executeQuery(String predicates, boolean where, int repetitions) throws PolicyEngineException {
+    public QueryResult executeQuery(String predicates, boolean where, int repetitions) throws PolicyEngineException {
         try {
-            MySQLResult mySQLResult = new MySQLResult();
+            QueryResult queryResult = new QueryResult();
             String query;
             if (!where)
                 query = PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS + predicates;
@@ -281,7 +281,7 @@ public class MySQLQueryManager {
                 query = PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS_WHERE + predicates;
             List<Long> gList = new ArrayList<>();
             for (int i = 0; i < repetitions; i++)
-                gList.add(runWithThread(query, mySQLResult).getTimeTaken().toMillis());
+                gList.add(runWithThread(query, queryResult).getTimeTaken().toMillis());
             Duration gCost;
             if (repetitions >= 3) {
                 Collections.sort(gList);
@@ -291,8 +291,8 @@ public class MySQLQueryManager {
                 gCost = Duration.ofMillis(gList.stream().mapToLong(i -> i).sum() / gList.size());
 
             }
-            mySQLResult.setTimeTaken(gCost);
-            return mySQLResult;
+            queryResult.setTimeTaken(gCost);
+            return queryResult;
         } catch (Exception e) {
             throw new PolicyEngineException("Error Running Query");
         }
