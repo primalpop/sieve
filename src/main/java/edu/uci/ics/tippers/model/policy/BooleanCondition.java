@@ -103,7 +103,7 @@ public class BooleanCondition  implements Comparable<BooleanCondition>  {
         dupElim.getBooleanPredicates().addAll(og);
         for (BooleanPredicate bp: dupElim.getBooleanPredicates()) {
             r.append(delim);
-            r.append("(" + this.getAttribute() + bp.getOperator() + " \"" + bp.getValue() + "\"" + ")");
+            r.append("(" + this.getAttribute() + bp.getOperator() + " \'" + bp.getValue() + "\'" + ")");
             delim = PolicyConstants.CONJUNCTION;
         }
         return r.toString();

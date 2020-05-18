@@ -127,6 +127,27 @@ public class PolicyConstants {
 
     public static final String ACTIVITY_ATTR = "activity";
 
+    //TPCH orders table attributes
+
+    public static final String ORDER_KEY = "O_ORDERKEY";
+
+    public static final String ORDER_CUSTOMER_KEY = "O_CUSTKEY";
+
+    public static final String ORDER_STATUS = "O_ORDERSTATUS";
+
+    public static final String ORDER_TOTAL_PRICE = "O_TOTALPRICE";
+
+    public static final String ORDER_DATE = "O_ORDERDATE";
+
+    public static final String ORDER_PRIORITY = "O_ORDERPRIORITY";
+
+    public static final String ORDER_CLERK = "O_CLERK";
+
+    public static final String ORDER_SHIP_PRIORITY = "O_SHIPPRIORITY";
+
+    public static final String ORDER_COMMENT = "O_COMMENT";
+
+
 
     //DIRECTORY PATHS
     public static final String BE_POLICY_DIR = "results/be_policies/";
