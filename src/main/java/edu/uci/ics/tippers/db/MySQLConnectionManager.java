@@ -27,7 +27,7 @@ public class MySQLConnectionManager {
 
     private MySQLConnectionManager() {
         try {
-            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("matrix/sensoria_matrix.properties");
+            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("home/home.properties");
             props = new Properties();
             props.load(inputStream);
 

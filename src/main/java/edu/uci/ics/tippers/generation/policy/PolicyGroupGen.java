@@ -17,7 +17,6 @@ import java.util.*;
  */
 public class PolicyGroupGen {
 
-    private static final int NUMBER_OF_CLUSTERS = 10;
     private Connection connection;
     Random r;
     PolicyPersistor polper;
