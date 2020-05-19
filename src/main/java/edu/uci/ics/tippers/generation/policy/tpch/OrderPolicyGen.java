@@ -4,6 +4,7 @@ import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.db.MySQLConnectionManager;
 import edu.uci.ics.tippers.manager.PolicyPersistor;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
+import edu.uci.ics.tippers.model.tpch.OrderProfile;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,11 +19,14 @@ public class OrderPolicyGen {
     TPolicyGen tpg;
     PolicyPersistor polper;
     private Connection connection;
+    Random r;
 
     private HashMap<Integer, List<String>> customer_clerks;
     private HashMap<Integer, String> customer_profile;
     private HashMap<String, List<Integer>> clerks_customers;
 
+    private final int GROUP_MEMBER_ACTIVE_LIMIT = 10;
+    private final double TIMESTAMP_CHANCE = 0.7;
     private static final double PERCENTAGE_DEFAULT = 0.6;
     private static final int ACTIVE_CHOICES = 10;
     private static final double TOTAL_PRICE_STD = 88621.40;
@@ -38,6 +42,7 @@ public class OrderPolicyGen {
         tpg = new TPolicyGen();
         polper = PolicyPersistor.getInstance();
         connection = MySQLConnectionManager.getInstance().getConnection();
+        r = new Random();
         customer_clerks = new HashMap<>();
         customer_profile = new HashMap<>();
         clerks_customers = new HashMap<>();
@@ -91,7 +96,7 @@ public class OrderPolicyGen {
             queryStm.setString(1, clerk);
             ResultSet rs = queryStm.executeQuery();
             while (rs.next()) {
-                cust_keys.add(rs.getInt("uid"));
+                cust_keys.add(rs.getInt("ckey"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -154,7 +159,7 @@ public class OrderPolicyGen {
      * @param cust_key
      * @return
      */
-    private String getProfiles(int cust_key) {
+    private String getProfile(int cust_key) {
         String profile = null;
         if (customer_profile.containsKey(cust_key))
             profile = customer_profile.get(cust_key);
@@ -165,6 +170,18 @@ public class OrderPolicyGen {
         return profile;
     }
 
+    private List<Integer> getListOfCustomers(String clerk, String profile, int limit){
+        List<Integer> customers = new ArrayList<>();
+        List<Integer> members = getCustomers(clerk, limit);
+        if (profile == null) return members;
+        for (int u: members) {
+            if (getProfile(u).equalsIgnoreCase(profile))
+                customers.add(u);
+        }
+        return customers;
+    }
+
+
     private List<String> randomClerks(List<String> clerks, int new_size) {
         List s_clerks = new ArrayList<>(clerks);
         Collections.shuffle(s_clerks);
@@ -173,10 +190,10 @@ public class OrderPolicyGen {
 
     private void generateDefaultPolicies(List<Integer> allCustomers) {
         List<BEPolicy> defaultPolicies = new ArrayList<>();
-        for (int k = 0; k < 2; k++) { //DEBUGGING
+        for (int k = 0; k < allCustomers.size(); k++) { //DEBUGGING
             int querier = allCustomers.get(k);
             List<String> querierGroups = getClerks(querier);
-            String querierProfile = getProfiles(querier);
+            String querierProfile = getProfile(querier);
             if (querierGroups != null || !querierGroups.isEmpty()) {
                 int newSize = Math.min(querierGroups.size(), 3);
                 List<String> s_clerks = randomClerks(querierGroups, newSize);
@@ -198,37 +215,34 @@ public class OrderPolicyGen {
     }
 
 
-//        private void generateActivePolicies(int cust_key, String orderClerk) {
-//        List<BEPolicy> activePolicies = new ArrayList<>();
-//        for (int i = 0; i < ACTIVE_CHOICES; i++) {
-//            String querierProfile = null;
-//            if (Math.random() > (float) 1 / PolicyConstants.USER_PROFILES.size())
-//                querierProfile = PolicyConstants.USER_PROFILES.get(new Random().nextInt(PolicyConstants.USER_PROFILES.size()));
-//            String querierGroup = owner_groups.get(0); //number of groups per user is 1
-//            List<Integer> queriers = getListOfUsers(querierGroup, querierProfile, GROUP_MEMBER_ACTIVE_LIMIT);
-//            int offset = 0, duration = 0, week = 0;
-//            if (Math.random() < TIMESTAMP_CHANCE) {
-//                offset = r.nextInt(8) + 1;
-//                offset = offset * 60; //converting to minutes
-//                duration = r.nextInt(3) + 1;
-//                duration = duration * 60;
-//                week = r.nextInt(12);
-//            }
-//            TimeStampPredicate tsPred = new TimeStampPredicate(pg.getDate("MIN"), week, START_WORKING_HOURS, offset, duration);
-//            List<String> locations = includeLocation();
-//            for (int querier : queriers) {
-//                if(querier == owner_id) continue;
-//                if (locations != null)
-//                    for (String loc : locations)
-//                        activePolicies.add(pg.generatePolicies(querier, owner_id, null, null, tsPred,
-//                                loc, PolicyConstants.ACTION_ALLOW));
-//                else
-//                    activePolicies.add(pg.generatePolicies(querier, owner_id, null, null, tsPred,
-//                            null, PolicyConstants.ACTION_ALLOW));
-//            }
-//        }
-//        polper.insertPolicy(activePolicies);
-//    }
+    private void generateActivePolicies(int cust_key, List<String> orderClerks) {
+        List<BEPolicy> activePolicies = new ArrayList<>();
+        int newSize = Math.min(orderClerks.size(), 3);
+        List<String> s_clerks = randomClerks(orderClerks, newSize);
+        for (int i = 0; i < ACTIVE_CHOICES; i++) {
+            String querierProfile = null;
+            if (Math.random() > (float) 1 / PolicyConstants.ORDER_PROFILES.size())
+                querierProfile = PolicyConstants.ORDER_PROFILES.get(new Random().nextInt(PolicyConstants.ORDER_PROFILES.size()));
+            for (int j = 0; j < s_clerks.size(); j++) {
+                String querierGroup = s_clerks.get(0); //number of groups per user is 1
+                List<Integer> queriers = getListOfCustomers(querierGroup, querierProfile, GROUP_MEMBER_ACTIVE_LIMIT);
+                DatePredicate datePred = null;
+                if (Math.random() < TIMESTAMP_CHANCE) {
+                    int offset = Math.max(3, r.nextInt(27));
+                    datePred = new DatePredicate(
+                            tpg.getOrderDate("MIN").toLocalDateTime().toLocalDate().plus(offset - 3, ChronoUnit.MONTHS),
+                            tpg.getOrderDate("MIN").toLocalDateTime().toLocalDate().plus(offset + 3, ChronoUnit.MONTHS));
+                }
+                double seed = r.nextGaussian() * TOTAL_PRICE_STD + TOTAL_PRICE_AVG;
+                PricePredicate totalPricePed = new PricePredicate(seed - TOTAL_PRICE_STD / 5, seed + TOTAL_PRICE_STD / 5);
+                for (int querier : queriers) {
+                    if (querier == cust_key) continue;
+                    activePolicies.add(tpg.generatePolicies(querier, cust_key, null, null, totalPricePed, datePred, PolicyConstants.ACTION_ALLOW));
+                }
+            }
+        }
+        polper.insertPolicy(activePolicies);
+    }
 
 
     /**
@@ -238,19 +252,19 @@ public class OrderPolicyGen {
         List<Integer> allCustomers = tpg.getAllCustomerKeys();
         generateDefaultPolicies(allCustomers);
         int default_count = 0, active_count = 0;
-//        for (int cust_key: allCustomers) {
-//            String orderPriority = getOrderPriority(cust_key);
-//            String orderClerk = getClerk(cust_key);
-//            if(Math.random() < PERCENTAGE_DEFAULT) //Default users
-//                default_count += 1;
-//            else { //Active users
-//                if (!orderPriority.equalsIgnoreCase(OrderPriority.LOW.getPriority())) {
-//                    System.out.println("Active customer: " + cust_key);
-//                    generateActivePolicies(cust_key, orderClerk);
-//                    active_count += 1;
-//                }
-//            }
-//        }
+        for (int cust_key: allCustomers) {
+            String profile = getProfile(cust_key);
+            List<String> orderClerks = getClerks(cust_key);
+            if(Math.random() < PERCENTAGE_DEFAULT) //Default users
+                default_count += 1;
+            else { //Active users
+                if (!profile.equalsIgnoreCase(OrderProfile.LOW.getPriority())) {
+                    System.out.println("Active customer: " + cust_key);
+                    generateActivePolicies(cust_key, orderClerks);
+                    active_count += 1;
+                }
+            }
+        }
         System.out.println("Default count: " + default_count + " Active count: " + active_count);
     }
 

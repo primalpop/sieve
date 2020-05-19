@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableMap;
 import edu.uci.ics.tippers.model.data.UserProfile;
 import edu.uci.ics.tippers.model.policy.Operation;
 import edu.uci.ics.tippers.model.policy.QuerierCondition;
+import edu.uci.ics.tippers.model.tpch.OrderProfile;
 
 import java.time.Duration;
 import java.time.format.DateTimeFormatter;
@@ -146,6 +147,11 @@ public class PolicyConstants {
     public static final String ORDER_SHIP_PRIORITY = "O_SHIPPRIORITY";
 
     public static final String ORDER_COMMENT = "O_COMMENT";
+
+    public static final String ORDER_PROFILE = "O_PROFILE";
+
+    public static final List<String> ORDER_PROFILES = Stream.of(OrderProfile.values()).map(OrderProfile::getPriority).collect(Collectors.toList());
+
 
 
 
