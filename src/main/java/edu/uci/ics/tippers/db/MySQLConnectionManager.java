@@ -27,7 +27,7 @@ public class MySQLConnectionManager {
 
     private MySQLConnectionManager() {
         try {
-            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("home/home.properties");
+            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("home/tpch.properties");
             props = new Properties();
             props.load(inputStream);
 

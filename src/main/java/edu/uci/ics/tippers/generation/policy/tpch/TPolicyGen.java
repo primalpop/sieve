@@ -10,16 +10,11 @@ import java.util.*;
 
 public class TPolicyGen {
 
-    /**
-     * 1. Read all distinct user ids from database and store them in USER TABLE if it doesn't already exist
-     * 2. Read all distinct locations from database and store them in LOCATION TABLE if it doesn't already exist
-     * 3. Read smallest and largest values for start and end timestamps
-     */
 
     private Connection connection;
     private Random r;
     private List<Integer> customer_keys;
-    private List<String> order_priorities;
+    private List<String> customer_profiles;
     private double startTotPrice, endTotPrice;
     private List<String> clerks;
     private Timestamp startOrderDate = null, endOrderDate = null;
@@ -42,17 +37,17 @@ public class TPolicyGen {
         return customer_keys;
     }
 
-    public List<String> getAllLOrderPriorities() {
+    public List<String> getAllProfiles() {
         PreparedStatement queryStm = null;
-        order_priorities = new ArrayList<>();
+        customer_profiles = new ArrayList<>();
         try {
-            queryStm = connection.prepareStatement("SELECT O_ORDERPRIORITY as op FROM ORDERS");
+            queryStm = connection.prepareStatement("SELECT O_PROFILE as op FROM ORDERS");
             ResultSet rs = queryStm.executeQuery();
-            while (rs.next()) order_priorities.add(rs.getString("op"));
+            while (rs.next()) customer_profiles.add(rs.getString("op"));
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return order_priorities;
+        return customer_profiles;
     }
 
     public Timestamp retrieveDate(String valType){
@@ -107,14 +102,14 @@ public class TPolicyGen {
      * @param querier - customer key of the user to whom policy applies
      * @param o_custkey - customer key of the tuple
      * @param o_clerk - clerk of the tuple (1000 values) mimics owner_group
-     * @param o_priority - order priority of the tuple  (6 values) mimics owner_profile
+     * @param o_profile - order profile of the tuple  (6 values) the maximum of order_priority values for a customer
      * @param totalPricePred  - low and high range predicates of total price
      * @param datePred - low and high range predicates of date
      * @param action - allow
      * @param
      * @return
      */
-    public BEPolicy generatePolicies(int querier, int o_custkey, String o_clerk, String o_priority,
+    public BEPolicy generatePolicies(int querier, int o_custkey, String o_clerk, String o_profile,
                                      PricePredicate totalPricePred, DatePredicate datePred, String action) {
         String policyID = UUID.randomUUID().toString();
         List<QuerierCondition> querierConditions = new ArrayList<>(Arrays.asList(
@@ -131,9 +126,9 @@ public class TPolicyGen {
                     o_clerk, Operation.EQ);
             objectConditions.add(ownerGroup);
         }
-        if (o_priority != null) {
+        if (o_profile != null) {
             ObjectCondition ownerProfile = new ObjectCondition(policyID, PolicyConstants.ORDER_PRIORITY, AttributeType.STRING,
-                    o_priority, Operation.EQ);
+                    o_profile, Operation.EQ);
             objectConditions.add(ownerProfile);
         }
         if (datePred != null) {
