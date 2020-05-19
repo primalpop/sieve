@@ -1,6 +1,6 @@
 package edu.uci.ics.tippers.model.tpch;
 
-public enum OrderPriority {
+public enum OrderProfile {
     LOW ("5-LOW") ,
     URGENT ("1-URGENT"),
     NOT_SPECIFIED ("4-NOT SPECIFIED"),
@@ -9,7 +9,7 @@ public enum OrderPriority {
 
     private final String priority;
 
-    private OrderPriority(String profile) {
+    private OrderProfile(String profile) {
         this.priority = profile;
     }
 

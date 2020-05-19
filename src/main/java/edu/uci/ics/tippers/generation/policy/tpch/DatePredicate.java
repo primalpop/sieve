@@ -1,6 +1,7 @@
 package edu.uci.ics.tippers.generation.policy.tpch;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 public class DatePredicate {
 
@@ -10,6 +11,11 @@ public class DatePredicate {
     public DatePredicate(LocalDate startDate, LocalDate endDate){
         this.startDate = startDate;
         this.endDate = endDate;
+    }
+
+    public DatePredicate(LocalDate startDate, int offset){
+        this.startDate = startDate;
+        this.endDate = startDate.plus(offset, ChronoUnit.MONTHS);
     }
 
     public LocalDate getStartDate() {

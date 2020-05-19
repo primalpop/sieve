@@ -127,7 +127,7 @@ public class TPolicyGen {
             objectConditions.add(ownerGroup);
         }
         if (o_profile != null) {
-            ObjectCondition ownerProfile = new ObjectCondition(policyID, PolicyConstants.ORDER_PRIORITY, AttributeType.STRING,
+            ObjectCondition ownerProfile = new ObjectCondition(policyID, PolicyConstants.ORDER_PROFILE, AttributeType.STRING,
                     o_profile, Operation.EQ);
             objectConditions.add(ownerProfile);
         }
