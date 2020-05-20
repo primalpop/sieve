@@ -110,7 +110,7 @@ public class TPolicyGen {
      * @return
      */
     public BEPolicy generatePolicies(int querier, int o_custkey, String o_clerk, String o_profile,
-                                     PricePredicate totalPricePred, DatePredicate datePred, String action) {
+                                     PricePredicate totalPricePred, DatePredicate datePred, String orderPriority, String action) {
         String policyID = UUID.randomUUID().toString();
         List<QuerierCondition> querierConditions = new ArrayList<>(Arrays.asList(
                 new QuerierCondition(policyID, "policy_type", AttributeType.STRING, Operation.EQ, "user"),
@@ -140,6 +140,11 @@ public class TPolicyGen {
             ObjectCondition totalPricePredicate = new ObjectCondition(policyID, PolicyConstants.ORDER_TOTAL_PRICE, AttributeType.DOUBLE,
                     String.valueOf(totalPricePred.getLow_range()), Operation.GTE, String.valueOf(totalPricePred.getHigh_range()), Operation.LTE);
             objectConditions.add(totalPricePredicate);
+        }
+        if (orderPriority != null) {
+            ObjectCondition orderPriorityPredicate = new ObjectCondition(policyID, PolicyConstants.ORDER_PRIORITY, AttributeType.STRING,
+                    orderPriority, Operation.EQ);
+            objectConditions.add(orderPriorityPredicate);
         }
         if(objectConditions.isEmpty()){
             System.out.println("Empty Object Conditions");
