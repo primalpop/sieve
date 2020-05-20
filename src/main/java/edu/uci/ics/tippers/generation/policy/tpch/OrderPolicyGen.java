@@ -204,10 +204,10 @@ public class OrderPolicyGen {
                 for (int i = 0; i < s_clerks.size(); i++) {
                     //Create default policy for user group
                     defaultPolicies.add(tpg.generatePolicies(querier, 0, s_clerks.get(i), null, totalPrice,
-                            datePred, PolicyConstants.ACTION_ALLOW));
+                            datePred, null, PolicyConstants.ACTION_ALLOW));
                     //Create default policy for user profiles within user groups
                     defaultPolicies.add(tpg.generatePolicies(querier, 0,  s_clerks.get(i), querierProfile, totalPrice,
-                            datePred, PolicyConstants.ACTION_ALLOW));
+                            datePred, null, PolicyConstants.ACTION_ALLOW));
                 }
             }
         }
@@ -235,9 +235,11 @@ public class OrderPolicyGen {
                 }
                 double seed = r.nextGaussian() * TOTAL_PRICE_STD + TOTAL_PRICE_AVG;
                 PricePredicate totalPricePed = new PricePredicate(seed - TOTAL_PRICE_STD / 5, seed + TOTAL_PRICE_STD / 5);
+                String orderPriorityPred = PolicyConstants.ORDER_PROFILES.get(r.nextInt(PolicyConstants.ORDER_PROFILES.size()));
                 for (int querier : queriers) {
                     if (querier == cust_key) continue;
-                    activePolicies.add(tpg.generatePolicies(querier, cust_key, null, null, totalPricePed, datePred, PolicyConstants.ACTION_ALLOW));
+                    activePolicies.add(tpg.generatePolicies(querier, cust_key, null, null, totalPricePed,
+                            datePred, orderPriorityPred, PolicyConstants.ACTION_ALLOW));
                 }
             }
         }
