@@ -353,7 +353,7 @@ public class BEPolicy {
     public double estimateCost(Boolean evalOnly) {
         ObjectCondition selected = this.getObject_conditions().get(0);
         for (ObjectCondition oc : this.getObject_conditions()) {
-            if (PolicyConstants.ATTR_LIST.contains(oc.getAttribute()))
+            if (PolicyConstants.WIFI_DBH_ATTR_LIST.contains(oc.getAttribute()))
                 if (oc.computeL() < selected.computeL())
                     selected = oc;
         }

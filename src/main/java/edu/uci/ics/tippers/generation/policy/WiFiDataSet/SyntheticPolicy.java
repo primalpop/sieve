@@ -1,4 +1,4 @@
-package edu.uci.ics.tippers.generation.policy;
+package edu.uci.ics.tippers.generation.policy.WiFiDataSet;
 
 import edu.uci.ics.tippers.common.AttributeType;
 import edu.uci.ics.tippers.common.PolicyConstants;

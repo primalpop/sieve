@@ -16,9 +16,9 @@ public class GenerateCandidate {
     public GenerateCandidate(BEExpression inputExp) {
         oMap = new HashMap<>();
         aMap = new HashMap<>();
-        for (int i = 0; i < PolicyConstants.RANGE_ATTR_LIST.size(); i++) {
+        for (int i = 0; i < PolicyConstants.WIFI_DBH_RANGE_ATTR_LIST.size(); i++) {
             List<ObjectCondition> attrToOc = new ArrayList<>();
-            String attr = PolicyConstants.RANGE_ATTR_LIST.get(i);
+            String attr = PolicyConstants.WIFI_DBH_RANGE_ATTR_LIST.get(i);
             aMap.put(attr, attrToOc);
         }
         constructMaps(inputExp);
@@ -29,7 +29,7 @@ public class GenerateCandidate {
             BEPolicy pol = inputExp.getPolicies().get(i);
             for (int j = 0; j < pol.getObject_conditions().size(); j++) {
                 ObjectCondition oc = pol.getObject_conditions().get(j);
-                if (!PolicyConstants.RANGE_ATTR_LIST.contains(oc.getAttribute())) continue;
+                if (!PolicyConstants.WIFI_DBH_RANGE_ATTR_LIST.contains(oc.getAttribute())) continue;
                 aMap.get(oc.getAttribute()).add(oc);
                 if (oMap.containsKey(oc)) {
                     System.out.println("Duplicate policy id or object condition id");
@@ -138,7 +138,7 @@ public class GenerateCandidate {
      */
     public void extend(){
         for (String attrKey: aMap.keySet()) {
-            if (!PolicyConstants.RANGE_ATTR_LIST.contains(attrKey)) continue;
+            if (!PolicyConstants.WIFI_DBH_RANGE_ATTR_LIST.contains(attrKey)) continue;
             if(aMap.get(attrKey).size()>1) {
                 extendOnAttribute(attrKey);
             }

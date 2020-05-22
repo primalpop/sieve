@@ -128,6 +128,14 @@ public class Bucket implements Comparable<Bucket> {
                 e.printStackTrace();
             }
         }
+        else if(this.getAttribute().equalsIgnoreCase(PolicyConstants.ORDER_DATE)) {
+            DateFormat formatter = new SimpleDateFormat(PolicyConstants.DATE_FORMAT);
+            try {
+                return formatter.parse(this.getLower()).compareTo((formatter.parse(bucket.getLower())));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
         else if(this.getAttribute().equalsIgnoreCase(PolicyConstants.START_TIME)){
             DateFormat formatter = new SimpleDateFormat(PolicyConstants.TIME_FORMAT);
             try {
@@ -135,6 +143,9 @@ public class Bucket implements Comparable<Bucket> {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
+        }
+        else if(this.getAttribute().equalsIgnoreCase(PolicyConstants.ORDER_TOTAL_PRICE)){
+            return (int) (Double.parseDouble(this.getLower()) - Double.parseDouble((bucket.getLower())));
         }
         else if (this.getAttribute().equalsIgnoreCase(PolicyConstants.LOCATIONID_ATTR)
                 || this.getAttribute().equalsIgnoreCase(PolicyConstants.PROFILE_ATTR)

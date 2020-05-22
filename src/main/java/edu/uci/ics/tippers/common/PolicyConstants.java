@@ -70,8 +70,6 @@ public class PolicyConstants {
 
     public static final String ORDER_BY_ID = " order by id ";
 
-
-
     //POLICY GENERATION PARAMETERS
     public static final int LOW_TEMPERATURE = 55;
 
@@ -98,15 +96,15 @@ public class PolicyConstants {
                     new QuerierCondition("test", "querier", AttributeType.STRING, Operation.EQ, "10"));
 
     //ATTRIBUTE NAMES
-    public static final ImmutableList<String> ATTR_LIST = ImmutableList.of("user_id", "location_id", "user_profile",
+    public static final ImmutableList<String> WIFI_DBH_ATTR_LIST = ImmutableList.of("user_id", "location_id", "user_profile",
             "user_group", "start_date", "start_time");
 
     //INDEXED ATTRIBUTES
-    public static final ImmutableList<String> INDEX_ATTRS = ImmutableList.of("user_id", "location_id", "user_profile",
+    public static final ImmutableList<String> WIFI_DBH_INDEX_ATTRS = ImmutableList.of("user_id", "location_id", "user_profile",
             "user_group", "start_date", "start_time");
 
     //RANGED ATTRIBUTE NAMES
-    public static final ImmutableList<String> RANGE_ATTR_LIST = ImmutableList.of("start_date", "start_time");
+    public static final ImmutableList<String> WIFI_DBH_RANGE_ATTR_LIST = ImmutableList.of("start_date", "start_time");
 
     public static final String START_DATE = "start_date";
 
@@ -152,6 +150,16 @@ public class PolicyConstants {
 
     public static final List<String> ORDER_PROFILES = Stream.of(OrderProfile.values()).map(OrderProfile::getPriority).collect(Collectors.toList());
 
+    //ATTRIBUTE NAMES
+    public static final ImmutableList<String> TPCH_ORDERS_ATTR_LIST = ImmutableList.of("O_CUSTKEY", "O_TOTALPRICE", "O_ORDERDATE",
+            "O_ORDERPRIORITY", "O_CLERK", "O_PROFILE");
+
+    //INDEXED ATTRIBUTES
+    public static final ImmutableList<String> TPCH_ORDERS_INDEX_ATTRS = ImmutableList.of("O_CUSTKEY", "O_TOTALPRICE", "O_ORDERDATE",
+            "O_ORDERPRIORITY", "O_CLERK", "O_PROFILE");
+
+    //RANGED ATTRIBUTE NAMES
+    public static final ImmutableList<String> TPCH_ORDERS_RANGE_ATTR_LIST = ImmutableList.of("O_TOTALPRICE", "O_ORDERDATE");
 
 
     //DIRECTORY PATHS
@@ -169,7 +177,7 @@ public class PolicyConstants {
 
     //TODO: Read this automatically
     //Indices available in the database
-    public static final ImmutableMap<String, String> ATTRIBUTE_IND =
+    public static final ImmutableMap<String, String> WIFI_DBH_ATTRIBUTE_IND =
             new ImmutableMap.Builder<String, String>()
                     .put(PolicyConstants.USERID_ATTR, "user_hash")
                     .put(PolicyConstants.GROUP_ATTR, "group_hash")

@@ -1,7 +1,7 @@
 package edu.uci.ics.tippers.generation.data;
 
 import edu.uci.ics.tippers.db.MySQLConnectionManager;
-import edu.uci.ics.tippers.generation.policy.PolicyGen;
+import edu.uci.ics.tippers.generation.policy.WiFiDataSet.PolicyGen;
 import edu.uci.ics.tippers.model.data.*;
 
 import java.sql.*;

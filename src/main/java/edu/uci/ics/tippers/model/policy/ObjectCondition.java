@@ -122,7 +122,7 @@ public class ObjectCondition extends BooleanCondition {
 
     /**
      * For attribute type of INTEGER and histogram type of equi-height
-     * e.g., user_id
+     * e.g., user_id or O_CUSTKEY
      * @return estimated selectivity
      */
     private double equiheightEquality() {
@@ -138,13 +138,88 @@ public class ObjectCondition extends BooleanCondition {
         return frequency / 100;
     }
 
+    private double dateEquiheightRange() {
+        double frequency = 0.0001;
+        List<Bucket> buckets = Histogram.getInstance().getBucketMap().get(this.attribute);
+        Bucket lKey = new Bucket();
+        lKey.setAttribute(PolicyConstants.ORDER_DATE);
+        lKey.setLower(this.getBooleanPredicates().get(0).getValue());
+        Bucket uKey = new Bucket();
+        uKey.setAttribute(PolicyConstants.ORDER_DATE);
+        uKey.setLower(this.getBooleanPredicates().get(1).getValue());
+        int lIndex = Collections.binarySearch(buckets, lKey);
+        if (lIndex < 0) { // no exact match
+            if (-lIndex > 2) {
+                lIndex = -lIndex - 2;
+            } else {//first bucket
+                lIndex = -lIndex - 1;
+            }
+        }
+        int uIndex = Collections.binarySearch(buckets, uKey);
+        if (uIndex < 0) { // no exact match
+            if (-uIndex > 2) {
+                uIndex = -uIndex - 2;
+            } else {//first bucket
+                uIndex = -uIndex - 1;
+            }
+        }
+        if (lIndex > buckets.size() - 1) return frequency;
+        if (uIndex > buckets.size() - 1) uIndex = buckets.size() - 1;
+//        for (int i = lIndex; i <= uIndex; i++) {
+//            frequency += (buckets.get(i).getFreq()/buckets.get(i).getNumberOfItems());
+//        }
+//        return frequency/100;
+        int indDiff = (uIndex - lIndex) == 0 ? 1 : uIndex - lIndex;
+        return (indDiff) / (double) buckets.size();
+    }
+
     /**
-     * For attribute type of TIME and histogram type of equi-height
-     * e.g. start_time
-     * @return
+     * For attribute type of DOUBLE and histogram type of equi-height
+     * e.g., O_TOTALPRICE
+     * @return estimated selectivity
      */
+    private double doubleEquiheightRange() {
+        double frequency = 0.0001;
+        List<Bucket> buckets = Histogram.getInstance().getBucketMap().get(this.attribute);
+        Bucket lKey = new Bucket();
+        lKey.setAttribute(PolicyConstants.ORDER_TOTAL_PRICE);
+        lKey.setLower(this.getBooleanPredicates().get(0).getValue());
+        Bucket uKey = new Bucket();
+        uKey.setAttribute(PolicyConstants.ORDER_TOTAL_PRICE);
+        uKey.setLower(this.getBooleanPredicates().get(1).getValue());
+        int lIndex = Collections.binarySearch(buckets, lKey);
+        if (lIndex < 0) { // no exact match
+            if (-lIndex > 2) {
+                lIndex = -lIndex - 2;
+            } else {//first bucket
+                lIndex = -lIndex - 1;
+            }
+        }
+        int uIndex = Collections.binarySearch(buckets, uKey);
+        if (uIndex < 0) { // no exact match
+            if (-uIndex > 2) {
+                uIndex = -uIndex - 2;
+            } else {//first bucket
+                uIndex = -uIndex - 1;
+            }
+        }
+        if (lIndex > buckets.size() - 1) return frequency;
+        if (uIndex > buckets.size() - 1) uIndex = buckets.size() - 1;
+//        for (int i = lIndex; i <= uIndex; i++) {
+//            frequency += (buckets.get(i).getFreq()/buckets.get(i).getNumberOfItems());
+//        }
+//        return frequency/100;
+        int indDiff = (uIndex - lIndex) == 0 ? 1 : uIndex - lIndex;
+        return (indDiff) / (double) buckets.size();
+    }
+
+        /**
+         * For attribute type of TIME and histogram type of equi-height
+         * e.g. start_time
+         * @return
+         */
     //TODO: Overestimates the selectivity as the partially contained buckets are completely counted
-    private double equiheightRange(){
+    private double timeEquiheightRange(){
         double frequency = 0.0001;
         List<Bucket> buckets = Histogram.getInstance().getBucketMap().get(this.attribute);
         Bucket lKey = new Bucket();
@@ -184,18 +259,26 @@ public class ObjectCondition extends BooleanCondition {
 
     public double computeL(){
         List mBuckets = null;
-        if (Stream.of(PolicyConstants.LOCATIONID_ATTR, PolicyConstants.GROUP_ATTR, PolicyConstants.PROFILE_ATTR)
+        if (Stream.of(PolicyConstants.LOCATIONID_ATTR, PolicyConstants.GROUP_ATTR, PolicyConstants.PROFILE_ATTR,
+                PolicyConstants.ORDER_PRIORITY, PolicyConstants.ORDER_CLERK, PolicyConstants.ORDER_PROFILE)
                 .anyMatch(this.getAttribute()::equalsIgnoreCase)){
             return singletonEquality();
         }
         else if (this.getAttribute().equalsIgnoreCase(PolicyConstants.START_DATE)) {
             return singletonRange();
         }
-        else if (this.getAttribute().equalsIgnoreCase(PolicyConstants.USERID_ATTR)){
+        else if (this.getAttribute().equalsIgnoreCase(PolicyConstants.USERID_ATTR) ||
+                this.getAttribute().equalsIgnoreCase(PolicyConstants.ORDER_CUSTOMER_KEY)){
            return equiheightEquality();
         }
         else if (this.getAttribute().equalsIgnoreCase(PolicyConstants.START_TIME)){
-           return equiheightRange();
+           return timeEquiheightRange();
+        }
+        else if (this.getAttribute().equalsIgnoreCase(PolicyConstants.ORDER_TOTAL_PRICE)) {
+            return doubleEquiheightRange();
+        }
+        else if (this.getAttribute().equalsIgnoreCase(PolicyConstants.ORDER_DATE)){
+            return dateEquiheightRange();
         }
         else {
             throw new PolicyEngineException("Unknown attribute");

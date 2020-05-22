@@ -174,7 +174,7 @@ public class FactorSelectionOld {
                 .collect(Collectors.toSet());
         FactorSelectionOld currentFactor = new FactorSelectionOld(this.expression);
         for (ObjectCondition objectCondition : singletonSet) {
-            if(!PolicyConstants.ATTR_LIST.contains(objectCondition.getAttribute())) continue;
+            if(!PolicyConstants.WIFI_DBH_ATTR_LIST.contains(objectCondition.getAttribute())) continue;
             BEExpression temp = new BEExpression(this.expression);
             temp.checkAgainstPolices(objectCondition);
             if (temp.getPolicies().size() > 1) { //was able to factorize

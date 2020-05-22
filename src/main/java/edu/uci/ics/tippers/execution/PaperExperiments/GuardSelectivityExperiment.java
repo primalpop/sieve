@@ -2,7 +2,7 @@ package edu.uci.ics.tippers.execution.PaperExperiments;
 
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.fileop.Writer;
-import edu.uci.ics.tippers.generation.policy.PolicyGen;
+import edu.uci.ics.tippers.generation.policy.WiFiDataSet.PolicyGen;
 import edu.uci.ics.tippers.manager.GuardPersistor;
 import edu.uci.ics.tippers.manager.PolicyPersistor;
 import edu.uci.ics.tippers.model.guard.GuardExp;

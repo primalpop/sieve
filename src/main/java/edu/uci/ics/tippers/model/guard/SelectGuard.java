@@ -59,7 +59,7 @@ public class SelectGuard {
     private Set<ObjectCondition> collectAllFactors(BEExpression originalExp){
         Set<ObjectCondition> pFactors = originalExp.getPolicies().stream()
                 .flatMap(p -> p.getObject_conditions().stream())
-                .filter(o -> PolicyConstants.INDEX_ATTRS.contains(o.getAttribute()))
+                .filter(o -> PolicyConstants.WIFI_DBH_INDEX_ATTRS.contains(o.getAttribute()))
                 .collect(Collectors.toSet());
         Set<ObjectCondition> pGuards = new HashSet<>();
         for (ObjectCondition pf: pFactors) {
@@ -223,7 +223,7 @@ public class SelectGuard {
 
     private String createCleanQueryFromGQ(ObjectCondition guard, BEExpression partition) {
         StringBuilder query = new StringBuilder();
-        query.append("USE INDEX (" + PolicyConstants.ATTRIBUTE_IND.get(guard.getAttribute()) + ")");
+        query.append("USE INDEX (" + PolicyConstants.WIFI_DBH_ATTRIBUTE_IND.get(guard.getAttribute()) + ")");
         query.append(" WHERE ");
         query.append(guard.print());
         partition.removeDuplicates();

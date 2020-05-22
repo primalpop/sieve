@@ -8,7 +8,7 @@
 //import edu.uci.ics.tippers.fileop.Writer;
 //import edu.uci.ics.tippers.model.guard.SelectGuard;
 //import edu.uci.ics.tippers.model.policy.BEExpression;
-//import edu.uci.ics.tippers.generation.policy.SyntheticPolicy;
+//import edu.uci.ics.tippers.generation.policy.WiFiDataSet.SyntheticPolicy;
 //
 //import java.io.File;
 //import java.io.IOException;
