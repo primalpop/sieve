@@ -312,6 +312,12 @@ public class ObjectCondition extends BooleanCondition {
             LocalTime end1 = LocalTime.parse(o2.getBooleanPredicates().get(0).getValue());
             LocalTime end2 = LocalTime.parse(o2.getBooleanPredicates().get(1).getValue());
             return (start1.isBefore(end2) && end1.isAfter(start2));
+        } else if (this.getType() == AttributeType.DOUBLE) {
+            double start1 = Double.parseDouble(this.getBooleanPredicates().get(0).getValue());
+            double end1 = Double.parseDouble(this.getBooleanPredicates().get(1).getValue());
+            double start2 = Double.parseDouble(o2.getBooleanPredicates().get(0).getValue());
+            double end2 = Double.parseDouble(o2.getBooleanPredicates().get(1).getValue());
+            return start1 <= end2 && end1 >= start2;
         } else {
             throw new PolicyEngineException("Incompatible Attribute Type");
         }

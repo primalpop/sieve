@@ -22,10 +22,17 @@ public class SelectGuard {
     Map<String, BEPolicy> pMap;
     Map<ObjectCondition, Double> costMap;
     Map<BEPolicy, List<Term>> ptMap;
+    List<String> DataSetAttributes;
+    List<String> DataSetRangeAttributes;
+    Map<String, String> DataSetAttributeIndices;
 
     MySQLQueryManager mySQLQueryManager = new MySQLQueryManager();
 
-    public SelectGuard(BEExpression originalExp, boolean extend){
+    public SelectGuard(BEExpression originalExp, boolean extend, List<String> dataSetAttributes,
+                       List<String> dataSetRangeAttributes, Map<String, String> dataSetAttributeIndices){
+        this.DataSetAttributes = dataSetAttributes;
+        this.DataSetRangeAttributes = dataSetRangeAttributes;
+        this.DataSetAttributeIndices = dataSetAttributeIndices;
         this.input = new Term();
         this.input.setRemainder(originalExp);
         this.input.setQuotient(originalExp);
@@ -36,7 +43,7 @@ public class SelectGuard {
         this.ptMap = new HashMap<>();
         houseKeep();
         if(extend){
-            GenerateCandidate pm = new GenerateCandidate(this.input.getRemainder());
+            GenerateCandidate pm = new GenerateCandidate(this.input.getRemainder(), this.DataSetRangeAttributes);
             pm.extend();
         }
         this.canFactors = collectAllFactors(this.input.getRemainder());
@@ -59,7 +66,7 @@ public class SelectGuard {
     private Set<ObjectCondition> collectAllFactors(BEExpression originalExp){
         Set<ObjectCondition> pFactors = originalExp.getPolicies().stream()
                 .flatMap(p -> p.getObject_conditions().stream())
-                .filter(o -> PolicyConstants.WIFI_DBH_INDEX_ATTRS.contains(o.getAttribute()))
+                .filter(o -> this.DataSetAttributeIndices.keySet().contains(o.getAttribute()))
                 .collect(Collectors.toSet());
         Set<ObjectCondition> pGuards = new HashSet<>();
         for (ObjectCondition pf: pFactors) {
@@ -223,7 +230,7 @@ public class SelectGuard {
 
     private String createCleanQueryFromGQ(ObjectCondition guard, BEExpression partition) {
         StringBuilder query = new StringBuilder();
-        query.append("USE INDEX (" + PolicyConstants.WIFI_DBH_ATTRIBUTE_IND.get(guard.getAttribute()) + ")");
+        query.append("USE INDEX (" + this.DataSetAttributeIndices.get(guard.getAttribute()) + ")");
         query.append(" WHERE ");
         query.append(guard.print());
         partition.removeDuplicates();

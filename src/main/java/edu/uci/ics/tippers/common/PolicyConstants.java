@@ -118,6 +118,18 @@ public class PolicyConstants {
 
     public static final String PROFILE_ATTR = "user_profile";
 
+    //TODO: Read this automatically
+    //Indices available in the database
+    public static final ImmutableMap<String, String> WIFI_DBH_ATTRIBUTE_IND =
+            new ImmutableMap.Builder<String, String>()
+                    .put(PolicyConstants.USERID_ATTR, "user_hash")
+                    .put(PolicyConstants.GROUP_ATTR, "group_hash")
+                    .put(PolicyConstants.PROFILE_ATTR, "profile_hash")
+                    .put(PolicyConstants.START_TIME, "time_tree")
+                    .put(PolicyConstants.START_DATE, "date_tree")
+                    .put(PolicyConstants.LOCATIONID_ATTR, "loc_hash")
+                    .build();
+
     //Auxiliary attributes
 
     public static final String ENERGY_ATTR = "energy";
@@ -142,10 +154,6 @@ public class PolicyConstants {
 
     public static final String ORDER_CLERK = "O_CLERK";
 
-    public static final String ORDER_SHIP_PRIORITY = "O_SHIPPRIORITY";
-
-    public static final String ORDER_COMMENT = "O_COMMENT";
-
     public static final String ORDER_PROFILE = "O_PROFILE";
 
     public static final List<String> ORDER_PROFILES = Stream.of(OrderProfile.values()).map(OrderProfile::getPriority).collect(Collectors.toList());
@@ -154,12 +162,20 @@ public class PolicyConstants {
     public static final ImmutableList<String> TPCH_ORDERS_ATTR_LIST = ImmutableList.of("O_CUSTKEY", "O_TOTALPRICE", "O_ORDERDATE",
             "O_ORDERPRIORITY", "O_CLERK", "O_PROFILE");
 
-    //INDEXED ATTRIBUTES
-    public static final ImmutableList<String> TPCH_ORDERS_INDEX_ATTRS = ImmutableList.of("O_CUSTKEY", "O_TOTALPRICE", "O_ORDERDATE",
-            "O_ORDERPRIORITY", "O_CLERK", "O_PROFILE");
-
     //RANGED ATTRIBUTE NAMES
     public static final ImmutableList<String> TPCH_ORDERS_RANGE_ATTR_LIST = ImmutableList.of("O_TOTALPRICE", "O_ORDERDATE");
+
+    //TODO: Read this automatically
+    //Indices available in the database
+    public static final ImmutableMap<String, String> TPCH_ORDERS_ATTRIBUTE_IND =
+            new ImmutableMap.Builder<String, String>()
+                    .put(PolicyConstants.ORDER_CUSTOMER_KEY, "cust_hash")
+                    .put(PolicyConstants.ORDER_TOTAL_PRICE, "total_price_tree")
+                    .put(PolicyConstants.ORDER_DATE, "date_tree")
+                    .put(PolicyConstants.ORDER_CLERK, "clerk_hash")
+                    .put(PolicyConstants.ORDER_PRIORITY, "priority_hash")
+                    .put(PolicyConstants.ORDER_PROFILE, "profile_hash")
+                    .build();
 
 
     //DIRECTORY PATHS
@@ -175,17 +191,6 @@ public class PolicyConstants {
 
     public static final String QR_EXTENDED = "query_results/extended/"; //results from approximation/extension
 
-    //TODO: Read this automatically
-    //Indices available in the database
-    public static final ImmutableMap<String, String> WIFI_DBH_ATTRIBUTE_IND =
-            new ImmutableMap.Builder<String, String>()
-                    .put(PolicyConstants.USERID_ATTR, "user_hash")
-                    .put(PolicyConstants.GROUP_ATTR, "group_hash")
-                    .put(PolicyConstants.PROFILE_ATTR, "profile_hash")
-                    .put(PolicyConstants.START_TIME, "time_tree")
-                    .put(PolicyConstants.START_DATE, "date_tree")
-                    .put(PolicyConstants.LOCATIONID_ATTR, "loc_hash")
-                    .build();
 
 
     public static final String ACTION_ALLOW = "allow";

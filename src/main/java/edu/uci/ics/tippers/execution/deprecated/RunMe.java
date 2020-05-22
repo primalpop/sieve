@@ -33,7 +33,8 @@ public class RunMe {
 //                pm.extend();
                 System.out.println(beExpression.getPolicies().stream().mapToInt(BEPolicy::countNumberOfPredicates).sum());
 //                System.out.println(beExpression.createQueryFromPolices());
-                SelectGuard gh = new SelectGuard(beExpression, true);
+                SelectGuard gh = new SelectGuard(beExpression, true, PolicyConstants.WIFI_DBH_ATTR_LIST,
+                        PolicyConstants.WIFI_DBH_RANGE_ATTR_LIST, PolicyConstants.WIFI_DBH_ATTRIBUTE_IND);
             }
         }
 
