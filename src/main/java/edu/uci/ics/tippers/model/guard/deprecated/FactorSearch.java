@@ -44,7 +44,7 @@ public class FactorSearch {
         this.canFactors = new HashSet<>();
         Set<ObjectCondition> pFactors = originalExp.getPolicies().stream()
                 .flatMap(p -> p.getObject_conditions().stream())
-                .filter(o -> PolicyConstants.INDEX_ATTRS.contains(o.getAttribute()))
+                .filter(o -> PolicyConstants.WIFI_DBH_INDEX_ATTRS.contains(o.getAttribute()))
                 .collect(Collectors.toSet());
         for (ObjectCondition pf: pFactors) {
             Boolean match = false;
@@ -217,7 +217,7 @@ public class FactorSearch {
                 double freq = PolicyConstants.NUMBER_OR_TUPLES;
                 ObjectCondition gOC = new ObjectCondition();
                 for (ObjectCondition oc : bePolicy.getObject_conditions()) {
-                    if (!PolicyConstants.INDEX_ATTRS.contains(oc.getAttribute())) continue;
+                    if (!PolicyConstants.WIFI_DBH_INDEX_ATTRS.contains(oc.getAttribute())) continue;
                     if (oc.computeL() < freq) {
                         freq = oc.computeL();
                         gOC = oc;
@@ -266,7 +266,7 @@ public class FactorSearch {
                 double freq = PolicyConstants.NUMBER_OR_TUPLES;
                 ObjectCondition gOC = new ObjectCondition();
                 for (ObjectCondition oc : bePolicy.getObject_conditions()) {
-                    if (!PolicyConstants.INDEX_ATTRS.contains(oc.getAttribute())) continue;
+                    if (!PolicyConstants.WIFI_DBH_INDEX_ATTRS.contains(oc.getAttribute())) continue;
                     if (oc.computeL() < freq) {
                         freq = oc.computeL();
                         gOC = oc;

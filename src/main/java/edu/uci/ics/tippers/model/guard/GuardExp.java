@@ -200,7 +200,7 @@ public class GuardExp {
                 queryExp.append(delim);
                 queryExp.append(PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS)
                         .append(" force index (")
-                        .append(PolicyConstants.ATTRIBUTE_IND.get(gp.getGuard().getAttribute()))
+                        .append(PolicyConstants.WIFI_DBH_ATTRIBUTE_IND.get(gp.getGuard().getAttribute()))
                         .append(" ) Where")
                         .append(gp.getGuard().print())
                         .append(PolicyConstants.CONJUNCTION);
@@ -230,7 +230,7 @@ public class GuardExp {
                 queryExp.append(delim);
                 queryExp.append(PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS)
                         .append(" force index (")
-                        .append(PolicyConstants.ATTRIBUTE_IND.get(gp.getGuard().getAttribute()))
+                        .append(PolicyConstants.WIFI_DBH_ATTRIBUTE_IND.get(gp.getGuard().getAttribute()))
                         .append(" ) Where")
                         .append(gp.getGuard().print())
                         .append(PolicyConstants.CONJUNCTION);
@@ -270,7 +270,7 @@ public class GuardExp {
                 queryExp.append(delim);
                 queryExp.append(PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS)
                         .append(" force index (")
-                        .append(PolicyConstants.ATTRIBUTE_IND.get(gp.getGuard().getAttribute()))
+                        .append(PolicyConstants.WIFI_DBH_ATTRIBUTE_IND.get(gp.getGuard().getAttribute()))
                         .append(" ) Where")
                         .append(gp.getGuard().print())
                         .append(PolicyConstants.CONJUNCTION);

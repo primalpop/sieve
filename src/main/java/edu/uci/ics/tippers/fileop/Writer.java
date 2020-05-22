@@ -48,7 +48,7 @@ public class Writer {
                 f = new File(dir + "policy" + items.size() + ".json");
                 if (f.exists()) f = new File(dir + "policy" + items.size() + "-af.json");
             } else {
-                f = new File(dir + "policy" + items.size() + filename + ".json");
+                f = new File(dir + filename + ".json");
             }
             writer.writeValue(f, items);
         } catch (IOException e) {

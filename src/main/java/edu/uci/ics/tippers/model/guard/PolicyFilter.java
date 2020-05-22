@@ -37,7 +37,7 @@ public class PolicyFilter {
             double freq = PolicyConstants.NUMBER_OR_TUPLES;
             ObjectCondition gOC = new ObjectCondition();
             for (ObjectCondition oc : bePolicy.getObject_conditions()) {
-                if (!PolicyConstants.ATTR_LIST.contains(oc.getAttribute())) continue;
+                if (!PolicyConstants.WIFI_DBH_ATTR_LIST.contains(oc.getAttribute())) continue;
                 if (oc.computeL() < freq) {
                     freq = oc.computeL();
                     gOC = oc;

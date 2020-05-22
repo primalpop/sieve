@@ -79,7 +79,7 @@ public class FactorSelection {
     public void selectGuards(Boolean evalOnly) {
         Set<ObjectCondition> singletonSet = this.expression.getPolicies().stream()
                 .flatMap(p -> p.getObject_conditions().stream())
-                .filter(o -> PolicyConstants.ATTR_LIST.contains(o.getAttribute()))
+                .filter(o -> PolicyConstants.WIFI_DBH_ATTR_LIST.contains(o.getAttribute()))
                 .collect(Collectors.toSet());
         oneTimeFactor(singletonSet, evalOnly);
     }
@@ -176,7 +176,7 @@ public class FactorSelection {
                 double freq = PolicyConstants.NUMBER_OR_TUPLES;
                 ObjectCondition gOC = new ObjectCondition();
                 for (ObjectCondition oc : bePolicy.getObject_conditions()) {
-                    if (!PolicyConstants.ATTR_LIST.contains(oc.getAttribute())) continue;
+                    if (!PolicyConstants.WIFI_DBH_ATTR_LIST.contains(oc.getAttribute())) continue;
                     if (oc.computeL() < freq) {
                         freq = oc.computeL();
                         gOC = oc;
@@ -209,7 +209,7 @@ public class FactorSelection {
                 double freq = PolicyConstants.NUMBER_OR_TUPLES;
                 ObjectCondition gOC = new ObjectCondition();
                 for (ObjectCondition oc : bePolicy.getObject_conditions()) {
-                    if (!PolicyConstants.ATTR_LIST.contains(oc.getAttribute())) continue;
+                    if (!PolicyConstants.WIFI_DBH_ATTR_LIST.contains(oc.getAttribute())) continue;
                     if (oc.computeL() < freq) {
                         freq = oc.computeL();
                         gOC = oc;

@@ -32,9 +32,9 @@ public class FactorExtension {
         oMap = new HashMap<>();
         aMap = new HashMap<>();
         replacementMap = new HashMap<>();
-        for (int i = 0; i < PolicyConstants.RANGE_ATTR_LIST.size(); i++) {
+        for (int i = 0; i < PolicyConstants.WIFI_DBH_RANGE_ATTR_LIST.size(); i++) {
             List<ObjectCondition> attrToOc = new ArrayList<>();
-            String attr = PolicyConstants.RANGE_ATTR_LIST.get(i);
+            String attr = PolicyConstants.WIFI_DBH_RANGE_ATTR_LIST.get(i);
             aMap.put(attr, attrToOc);
         }
         constructMaps();
@@ -45,7 +45,7 @@ public class FactorExtension {
             BEPolicy pol = genExpression.getPolicies().get(i);
             for (int j = 0; j < pol.getObject_conditions().size(); j++) {
                 ObjectCondition oc = pol.getObject_conditions().get(j);
-                if(!PolicyConstants.RANGE_ATTR_LIST.contains(oc.getAttribute())) continue;
+                if(!PolicyConstants.WIFI_DBH_RANGE_ATTR_LIST.contains(oc.getAttribute())) continue;
                 aMap.get(oc.getAttribute()).add(oc);
                 if (oMap.containsKey(oc)) {
                     oMap.get(oc).add(pol);
