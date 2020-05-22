@@ -61,7 +61,8 @@ public class LargePolicyExperiment {
                 //Guard Generation
                 Duration guardGen = Duration.ofMillis(0);
                 Instant fsStart = Instant.now();
-                SelectGuard gh = new SelectGuard(beExpression, true);
+                SelectGuard gh = new SelectGuard(beExpression, true, PolicyConstants.WIFI_DBH_ATTR_LIST,
+                        PolicyConstants.WIFI_DBH_RANGE_ATTR_LIST, PolicyConstants.WIFI_DBH_ATTRIBUTE_IND);
                 Instant fsEnd = Instant.now();
                 guardGen = guardGen.plus(Duration.between(fsStart, fsEnd));
                 rString.append(guardGen).append(",").append(gh.numberOfGuards()).append(",");

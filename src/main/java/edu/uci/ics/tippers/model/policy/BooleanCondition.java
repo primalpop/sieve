@@ -183,6 +183,13 @@ public class BooleanCondition  implements Comparable<BooleanCondition>  {
             String end2 = booleanCondition.getBooleanPredicates().get(1).getValue();
             return start1.compareTo(start2) != 0? start1.compareTo(start2) : end1.compareTo(end2);
         }
+        else if(booleanCondition.getType() == AttributeType.DOUBLE) {
+            double start1 = Double.parseDouble(this.getBooleanPredicates().get(0).getValue());
+            double end1 = Double.parseDouble(this.getBooleanPredicates().get(1).getValue());
+            double start2 = Double.parseDouble(booleanCondition.getBooleanPredicates().get(0).getValue());
+            double end2 = Double.parseDouble(booleanCondition.getBooleanPredicates().get(1).getValue());
+            return (int) (start1 != start2? start1 - start2 : end1 - end2);
+        }
         else{
             throw new PolicyEngineException("Incompatible Attribute Type");
         }
