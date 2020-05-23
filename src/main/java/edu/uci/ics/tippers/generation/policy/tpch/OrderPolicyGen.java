@@ -252,11 +252,7 @@ public class OrderPolicyGen {
      * Creating default and active policies for a customer
      */
     public void generatePolicies(){
-        List<Integer> customers = tpg.getAllCustomerKeys();
-        List<Integer> allCustomers = new ArrayList<>();
-        allCustomers.add(customers.get(0));
-        allCustomers.add(customers.get(1));
-        allCustomers.add(customers.get(2));
+        List<Integer> allCustomers = tpg.getAllCustomerKeys();
         generateDefaultPolicies(allCustomers);
         int default_count = 0, active_count = 0;
         for (int cust_key: allCustomers) {
