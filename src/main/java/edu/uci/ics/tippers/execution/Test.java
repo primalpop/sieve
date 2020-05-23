@@ -26,7 +26,7 @@ public class Test {
 //        QueryResult queryResult = pgsqlQueryManager.runTimedQueryExp("Select * from PRESENCE", 1);
 //        System.out.println(queryResult.getTimeTaken().toMillis());
 
-        String querier = "1";
+        String querier = "10";
         PolicyPersistor polper = new PolicyPersistor();
         List<BEPolicy> bePolicyList = polper.retrievePolicies(querier, PolicyConstants.USER_INDIVIDUAL, PolicyConstants.ACTION_ALLOW);
 //        for (BEPolicy bePolicy: bePolicyList) {
