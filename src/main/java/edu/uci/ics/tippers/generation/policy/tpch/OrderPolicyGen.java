@@ -196,18 +196,16 @@ public class OrderPolicyGen {
             List<String> querierGroups = getClerks(querier);
             String querierProfile = getProfile(querier);
             if (querierGroups != null || !querierGroups.isEmpty()) {
-                int newSize = Math.min(querierGroups.size(), 3);
-                List<String> s_clerks = randomClerks(querierGroups, newSize);
 //                PricePredicate totalPrice = new PricePredicate(TOTAL_PRICE_AVG - TOTAL_PRICE_STD/2, TOTAL_PRICE_AVG + 2*TOTAL_PRICE_STD);
                 LocalDate startDate = this.MIN_DATE.plus(r.nextInt(3), ChronoUnit.YEARS);
                 LocalDate endDate = this.MAX_DATE.minus(r.nextInt(3), ChronoUnit.YEARS);
                 DatePredicate datePred = new DatePredicate(startDate, endDate);
-                for (int i = 0; i < s_clerks.size(); i++) {
+                for (int i = 0; i < querierGroups.size(); i++) {
                     //Create default policy for user group
-                    defaultPolicies.add(tpg.generatePolicies(querier, 0, s_clerks.get(i), null, null,
+                    defaultPolicies.add(tpg.generatePolicies(querier, 0, querierGroups.get(i), null, null,
                             datePred, null, PolicyConstants.ACTION_ALLOW));
                     //Create default policy for user profiles within user groups
-                    defaultPolicies.add(tpg.generatePolicies(querier, 0,  s_clerks.get(i), querierProfile, null,
+                    defaultPolicies.add(tpg.generatePolicies(querier, 0,  querierGroups.get(i), querierProfile, null,
                             null, null, PolicyConstants.ACTION_ALLOW));
                 }
             }
