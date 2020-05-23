@@ -1,4 +1,4 @@
-package edu.uci.ics.tippers.generation.query;
+package edu.uci.ics.tippers.generation.query.WiFiDataSet;
 
 import edu.uci.ics.tippers.db.MySQLConnectionManager;
 import edu.uci.ics.tippers.db.MySQLQueryManager;

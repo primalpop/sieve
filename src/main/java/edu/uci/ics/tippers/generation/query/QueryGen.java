@@ -1,0 +1,156 @@
+package edu.uci.ics.tippers.generation.query;
+
+import edu.uci.ics.tippers.db.MySQLConnectionManager;
+import edu.uci.ics.tippers.db.MySQLQueryManager;
+import edu.uci.ics.tippers.generation.policy.WiFiDataSet.PolicyGen;
+import edu.uci.ics.tippers.model.query.QueryStatement;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+public abstract class QueryGen {
+
+
+    private MySQLQueryManager mySQLQueryManager;
+    private Connection connection = MySQLConnectionManager.getInstance().getConnection();
+    double lowSelDown, lowSelUp;
+    double medSelDown, medSelUp;
+    double highSelDown, highSelUp;
+
+    private PolicyGen pg; //helper methods defined in this class
+
+    public QueryGen() {
+        pg = new PolicyGen();
+
+        lowSelDown = 0.00001;
+        lowSelUp = 0.001;
+        medSelDown = 0.001;
+        medSelUp = 0.2;
+        highSelDown = 0.3;
+        highSelUp = 0.5;
+
+        this.mySQLQueryManager = new MySQLQueryManager();
+        Random r = new Random();
+    }
+
+    private double getSelectivity(String selType){
+        if(selType.equalsIgnoreCase("low")){
+            return lowSelDown + Math.random() * (lowSelUp - lowSelDown);
+        }
+        else if(selType.equalsIgnoreCase("medium")){
+            return medSelDown + Math.random() * (medSelUp - medSelDown);
+        }
+        else
+            return highSelDown + Math.random() * (highSelUp - highSelDown);
+    }
+
+    private String checkStaticRangeSelectivity(double selectivity) {
+        String selType = null;
+        if (lowSelDown < selectivity && selectivity < lowSelUp) selType = "low";
+        if (medSelDown < selectivity && selectivity < medSelUp) selType = "medium";
+        if (highSelDown < selectivity && selectivity < highSelUp) selType = "high";
+        return selType;
+    }
+
+    private String checkSelectivityType(double chosenSel, double selectivity) {
+        String selType = null;
+        if (chosenSel/10 < selectivity && selectivity < chosenSel) selType = "low";
+        if (chosenSel/5 < selectivity && selectivity < chosenSel * 5) selType = "medium";
+        if (chosenSel/2 < selectivity) selType = "high";
+        return selType;
+    }
+
+    private List<QueryStatement> getQueries(int templateNum, List<String> selTypes, int numOfQueries) {
+        if (templateNum == 0) {
+            return createQuery1(selTypes, numOfQueries);
+        } else if (templateNum == 1) {
+            return createQuery2(selTypes, numOfQueries);
+        } else if (templateNum == 2) {
+            return createQuery3(selTypes, numOfQueries);
+        } else if (templateNum == 3) {
+            return createQuery4(selTypes, numOfQueries);
+        }
+        return null;
+    }
+
+    public abstract List<QueryStatement> createQuery1(List<String> selTypes, int numOfQueries);
+
+    public abstract List<QueryStatement> createQuery2(List<String> selTypes, int numOfQueries);
+
+    public abstract List<QueryStatement> createQuery3(List<String> selTypes, int numOfQueries);
+
+    public abstract List<QueryStatement> createQuery4(List<String> selTypes, int numOfQueries);
+
+    private void insertQuery(List<QueryStatement> queryStatements) {
+        String soInsert = "INSERT INTO queries " +
+                "(query_statement, template, selectivity, selectivity_type, inserted_at) " +
+                "VALUES (?, ?, ?, ?, ?)";
+        try {
+
+            PreparedStatement stm = connection.prepareStatement(soInsert);
+            int queryCount = 0;
+            for (QueryStatement qs : queryStatements) {
+                stm.setString(1, qs.getQuery());
+                stm.setInt(2, qs.getTemplate());
+                stm.setFloat(3, qs.getSelectivity());
+                stm.setString(4, qs.getSelectivity_type());
+                stm.setTimestamp(5, qs.getInserted_at());
+                stm.addBatch();
+                queryCount++;
+                if (queryCount % 100 == 0) {
+                    stm.executeBatch();
+                    System.out.println("# " + queryCount + " inserted");
+                }
+            }
+            stm.executeBatch();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public List<QueryStatement> retrieveQueries(int template, String selectivity_type, int query_count) {
+        List<QueryStatement> queryStatements = new ArrayList<>();
+        PreparedStatement queryStm = null;
+        try {
+            if (selectivity_type.equalsIgnoreCase("all")) {
+                queryStm = connection.prepareStatement("SELECT id, query_statement, selectivity FROM queries as q " +
+                        "WHERE q.template = ? order by selectivity limit " + query_count);
+                queryStm.setInt(1, template);
+            }
+            else {
+                queryStm = connection.prepareStatement("SELECT id, query_statement, selectivity FROM queries as q " +
+                        "WHERE q.selectivity_type = ? AND q.template = ? order by selectivity limit " + query_count);
+                queryStm.setString(1, selectivity_type);
+                queryStm.setInt(2, template);
+            }
+            ResultSet rs = queryStm.executeQuery();
+            while (rs.next()) {
+                QueryStatement qs = new QueryStatement();
+                qs.setQuery(rs.getString("query_statement"));
+                qs.setId(rs.getInt("id"));
+                qs.setSelectivity(rs.getFloat("selectivity"));
+                qs.setTemplate(template);
+                queryStatements.add(qs);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return queryStatements;
+    }
+
+
+    public void constructWorkload(boolean[] templates, int numOfQueries) {
+        List<String> selTypes = new ArrayList<>();
+        selTypes.add("low");
+        selTypes.add("medium");
+        selTypes.add("high");
+        List<QueryStatement> queries = new ArrayList<>();
+        for (int i = 0; i < templates.length; i++) {
+            if (templates[i]) queries.addAll(getQueries(i, selTypes, numOfQueries));
+        }
+        insertQuery(queries);
+    }
+}
