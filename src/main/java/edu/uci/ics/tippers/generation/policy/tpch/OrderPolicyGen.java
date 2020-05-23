@@ -26,7 +26,7 @@ public class OrderPolicyGen {
     private HashMap<String, List<Integer>> clerks_customers;
 
     private final int GROUP_MEMBER_ACTIVE_LIMIT = 10;
-    private final double TIMESTAMP_CHANCE = 0.7;
+    private final double TIMESTAMP_CHANCE = 0.3;
     private static final double PERCENTAGE_DEFAULT = 0.6;
     private static final int ACTIVE_CHOICES = 10;
     private static final double TOTAL_PRICE_STD = 88621.40;
@@ -188,26 +188,27 @@ public class OrderPolicyGen {
         return s_clerks.subList(0, new_size);
     }
 
+    //Add more noise in total price and date
     private void generateDefaultPolicies(List<Integer> allCustomers) {
         List<BEPolicy> defaultPolicies = new ArrayList<>();
-        for (int k = 0; k < allCustomers.size(); k++) { //DEBUGGING
+        for (int k = 0; k < allCustomers.size(); k++) {
             int querier = allCustomers.get(k);
             List<String> querierGroups = getClerks(querier);
             String querierProfile = getProfile(querier);
             if (querierGroups != null || !querierGroups.isEmpty()) {
                 int newSize = Math.min(querierGroups.size(), 3);
                 List<String> s_clerks = randomClerks(querierGroups, newSize);
-                PricePredicate totalPrice = new PricePredicate(TOTAL_PRICE_AVG - TOTAL_PRICE_STD/2, TOTAL_PRICE_AVG + 2*TOTAL_PRICE_STD);
-                LocalDate startDate = this.MIN_DATE.plus(2, ChronoUnit.YEARS);
-                LocalDate endDate = this.MAX_DATE.minus(2, ChronoUnit.YEARS);
+//                PricePredicate totalPrice = new PricePredicate(TOTAL_PRICE_AVG - TOTAL_PRICE_STD/2, TOTAL_PRICE_AVG + 2*TOTAL_PRICE_STD);
+                LocalDate startDate = this.MIN_DATE.plus(r.nextInt(3), ChronoUnit.YEARS);
+                LocalDate endDate = this.MAX_DATE.minus(r.nextInt(3), ChronoUnit.YEARS);
                 DatePredicate datePred = new DatePredicate(startDate, endDate);
                 for (int i = 0; i < s_clerks.size(); i++) {
                     //Create default policy for user group
-                    defaultPolicies.add(tpg.generatePolicies(querier, 0, s_clerks.get(i), null, totalPrice,
+                    defaultPolicies.add(tpg.generatePolicies(querier, 0, s_clerks.get(i), null, null,
                             datePred, null, PolicyConstants.ACTION_ALLOW));
                     //Create default policy for user profiles within user groups
-                    defaultPolicies.add(tpg.generatePolicies(querier, 0,  s_clerks.get(i), querierProfile, totalPrice,
-                            datePred, null, PolicyConstants.ACTION_ALLOW));
+                    defaultPolicies.add(tpg.generatePolicies(querier, 0,  s_clerks.get(i), querierProfile, null,
+                            null, null, PolicyConstants.ACTION_ALLOW));
                 }
             }
         }
@@ -224,17 +225,17 @@ public class OrderPolicyGen {
             if (Math.random() > (float) 1 / PolicyConstants.ORDER_PROFILES.size())
                 querierProfile = PolicyConstants.ORDER_PROFILES.get(new Random().nextInt(PolicyConstants.ORDER_PROFILES.size()));
             for (int j = 0; j < s_clerks.size(); j++) {
-                String querierGroup = s_clerks.get(0); //number of groups per user is 1
-                List<Integer> queriers = getListOfCustomers(querierGroup, querierProfile, GROUP_MEMBER_ACTIVE_LIMIT);
+                List<Integer> queriers = getListOfCustomers(s_clerks.get(j), querierProfile, GROUP_MEMBER_ACTIVE_LIMIT);
                 DatePredicate datePred = null;
-                if (Math.random() < TIMESTAMP_CHANCE) {
-                    int offset = Math.max(3, r.nextInt(27));
+                if (Math.random() > TIMESTAMP_CHANCE) {
+                    int offset = Math.max(2, r.nextInt(27));
                     datePred = new DatePredicate(
-                            tpg.getOrderDate("MIN").toLocalDateTime().toLocalDate().plus(offset - 3, ChronoUnit.MONTHS),
-                            tpg.getOrderDate("MIN").toLocalDateTime().toLocalDate().plus(offset + 3, ChronoUnit.MONTHS));
+                            tpg.getOrderDate("MIN").toLocalDateTime().toLocalDate().plus(offset * 4 - 3, ChronoUnit.MONTHS),
+                            tpg.getOrderDate("MIN").toLocalDateTime().toLocalDate().plus(offset * 4 + 3, ChronoUnit.MONTHS));
                 }
                 double seed = r.nextGaussian() * TOTAL_PRICE_STD + TOTAL_PRICE_AVG;
-                PricePredicate totalPricePed = new PricePredicate(seed - TOTAL_PRICE_STD / 5, seed + TOTAL_PRICE_STD / 5);
+                int price_offset = Math.max(1, r.nextInt(5));
+                PricePredicate totalPricePed = new PricePredicate(seed - TOTAL_PRICE_STD / price_offset, seed + TOTAL_PRICE_STD / price_offset);
                 String orderPriorityPred = PolicyConstants.ORDER_PROFILES.get(r.nextInt(PolicyConstants.ORDER_PROFILES.size()));
                 for (int querier : queriers) {
                     if (querier == cust_key) continue;
@@ -251,21 +252,24 @@ public class OrderPolicyGen {
      * Creating default and active policies for a customer
      */
     public void generatePolicies(){
-        List<Integer> allCustomers = tpg.getAllCustomerKeys();
+        List<Integer> customers = tpg.getAllCustomerKeys();
+        List<Integer> allCustomers = new ArrayList<>();
+        allCustomers.add(customers.get(0));
+        allCustomers.add(customers.get(1));
+        allCustomers.add(customers.get(2));
         generateDefaultPolicies(allCustomers);
         int default_count = 0, active_count = 0;
         for (int cust_key: allCustomers) {
             String profile = getProfile(cust_key);
             List<String> orderClerks = getClerks(cust_key);
-            if(Math.random() < PERCENTAGE_DEFAULT) //Default users
-                default_count += 1;
-            else { //Active users
+            if(Math.random() > PERCENTAGE_DEFAULT) { //Active users
                 if (!profile.equalsIgnoreCase(OrderProfile.LOW.getPriority())) {
                     System.out.println("Active customer: " + cust_key);
                     generateActivePolicies(cust_key, orderClerks);
                     active_count += 1;
                 }
             }
+            default_count += 1; //
         }
         System.out.println("Default count: " + default_count + " Active count: " + active_count);
     }
