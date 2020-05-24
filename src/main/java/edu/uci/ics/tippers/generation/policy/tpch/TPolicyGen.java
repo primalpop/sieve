@@ -14,6 +14,7 @@ public class TPolicyGen {
     private Connection connection;
     private Random r;
     private List<Integer> customer_keys;
+    private List<String> customer_clerks;
     private List<String> customer_profiles;
     private double startTotPrice, endTotPrice;
     private List<String> clerks;
@@ -35,6 +36,19 @@ public class TPolicyGen {
             e.printStackTrace();
         }
         return customer_keys;
+    }
+
+    public List<String> getAllClerks() {
+        PreparedStatement queryStm = null;
+        customer_clerks = new ArrayList<>();
+        try {
+            queryStm = connection.prepareStatement("SELECT distinct O_CLERK as id FROM ORDERS");
+            ResultSet rs = queryStm.executeQuery();
+            while (rs.next()) customer_clerks.add(rs.getString("id"));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return customer_clerks;
     }
 
     public List<String> getAllProfiles() {
@@ -87,6 +101,8 @@ public class TPolicyGen {
         return total_price;
     }
 
+
+
     public double getTotalPrice(String valType){
         if (valType.equalsIgnoreCase("MIN")) {
             if(startTotPrice == 0) startTotPrice = retrieveTotalPrice(valType);
@@ -96,6 +112,8 @@ public class TPolicyGen {
             return endTotPrice;
         }
     }
+
+
 
 
     /**

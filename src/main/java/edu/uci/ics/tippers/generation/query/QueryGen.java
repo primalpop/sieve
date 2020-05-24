@@ -13,17 +13,15 @@ import java.util.Random;
 public abstract class QueryGen {
 
 
-    private MySQLQueryManager mySQLQueryManager;
-    private Connection connection = MySQLConnectionManager.getInstance().getConnection();
+    public MySQLQueryManager mySQLQueryManager;
+    public Connection connection = MySQLConnectionManager.getInstance().getConnection();
+    Random r;
     double lowSelDown, lowSelUp;
     double medSelDown, medSelUp;
     double highSelDown, highSelUp;
 
-    private PolicyGen pg; //helper methods defined in this class
 
     public QueryGen() {
-        pg = new PolicyGen();
-
         lowSelDown = 0.00001;
         lowSelUp = 0.001;
         medSelDown = 0.001;
@@ -32,7 +30,7 @@ public abstract class QueryGen {
         highSelUp = 0.5;
 
         this.mySQLQueryManager = new MySQLQueryManager();
-        Random r = new Random();
+        r = new Random();
     }
 
     public double getSelectivity(String selType){
