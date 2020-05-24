@@ -35,7 +35,7 @@ public abstract class QueryGen {
         Random r = new Random();
     }
 
-    private double getSelectivity(String selType){
+    public double getSelectivity(String selType){
         if(selType.equalsIgnoreCase("low")){
             return lowSelDown + Math.random() * (lowSelUp - lowSelDown);
         }
@@ -46,7 +46,7 @@ public abstract class QueryGen {
             return highSelDown + Math.random() * (highSelUp - highSelDown);
     }
 
-    private String checkStaticRangeSelectivity(double selectivity) {
+    public String checkStaticRangeSelectivity(double selectivity) {
         String selType = null;
         if (lowSelDown < selectivity && selectivity < lowSelUp) selType = "low";
         if (medSelDown < selectivity && selectivity < medSelUp) selType = "medium";
@@ -54,7 +54,7 @@ public abstract class QueryGen {
         return selType;
     }
 
-    private String checkSelectivityType(double chosenSel, double selectivity) {
+    public String checkSelectivityType(double chosenSel, double selectivity) {
         String selType = null;
         if (chosenSel/10 < selectivity && selectivity < chosenSel) selType = "low";
         if (chosenSel/5 < selectivity && selectivity < chosenSel * 5) selType = "medium";
@@ -62,15 +62,15 @@ public abstract class QueryGen {
         return selType;
     }
 
-    private List<QueryStatement> getQueries(int templateNum, List<String> selTypes, int numOfQueries) {
+    public List<QueryStatement> getQueries(int templateNum, List<String> selTypes, int numOfQueries) {
         if (templateNum == 0) {
             return createQuery1(selTypes, numOfQueries);
         } else if (templateNum == 1) {
             return createQuery2(selTypes, numOfQueries);
         } else if (templateNum == 2) {
-            return createQuery3(selTypes, numOfQueries);
+            return createQuery3();
         } else if (templateNum == 3) {
-            return createQuery4(selTypes, numOfQueries);
+            return createQuery4();
         }
         return null;
     }
@@ -79,11 +79,11 @@ public abstract class QueryGen {
 
     public abstract List<QueryStatement> createQuery2(List<String> selTypes, int numOfQueries);
 
-    public abstract List<QueryStatement> createQuery3(List<String> selTypes, int numOfQueries);
+    public abstract List<QueryStatement> createQuery3();
 
-    public abstract List<QueryStatement> createQuery4(List<String> selTypes, int numOfQueries);
+    public abstract List<QueryStatement> createQuery4();
 
-    private void insertQuery(List<QueryStatement> queryStatements) {
+    public void insertQuery(List<QueryStatement> queryStatements) {
         String soInsert = "INSERT INTO queries " +
                 "(query_statement, template, selectivity, selectivity_type, inserted_at) " +
                 "VALUES (?, ?, ?, ?, ?)";
