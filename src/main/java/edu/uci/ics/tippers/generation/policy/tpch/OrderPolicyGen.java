@@ -192,6 +192,7 @@ public class OrderPolicyGen {
     private void generateDefaultPolicies(List<Integer> allCustomers) {
         List<BEPolicy> defaultPolicies = new ArrayList<>();
         for (int k = 0; k < allCustomers.size(); k++) {
+            System.out.println("Default customer: "  + allCustomers.get(k));
             int querier = allCustomers.get(k);
             List<String> querierGroups = getClerks(querier);
             String querierProfile = getProfile(querier);
