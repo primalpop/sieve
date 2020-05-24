@@ -222,6 +222,9 @@ public class OrderPolicyGen {
                 defaultPolicies.clear();
             }
         }
+        polper.insertPolicy(defaultPolicies);
+        count+=defaultPolicies.size();
+        System.out.println("Default policies completed at  "  + count + " policies");
     }
 
 

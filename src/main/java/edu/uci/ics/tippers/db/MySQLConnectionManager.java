@@ -27,7 +27,7 @@ public class MySQLConnectionManager {
 
     private MySQLConnectionManager() {
         try {
-            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("home/mini.properties");
+            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("sensoria/mini.properties");
             props = new Properties();
             props.load(inputStream);
 
