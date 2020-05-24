@@ -1,7 +1,5 @@
 package edu.uci.ics.tippers.generation.query.WiFiDataSet;
 
-import edu.uci.ics.tippers.db.MySQLConnectionManager;
-import edu.uci.ics.tippers.db.MySQLQueryManager;
 import edu.uci.ics.tippers.generation.policy.WiFiDataSet.PolicyGen;
 import edu.uci.ics.tippers.generation.query.QueryGen;
 import edu.uci.ics.tippers.model.policy.TimeStampPredicate;
@@ -14,24 +12,19 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
-public class QueryGeneration extends QueryGen {
+public class WiFiDataSetQueryGeneration extends QueryGen {
 
     private List<Integer> user_ids;
     private List<String> locations;
     private List<String> user_groups;
     Timestamp start_beg, start_fin;
-    private MySQLQueryManager mySQLQueryManager;
-    private Connection connection = MySQLConnectionManager.getInstance().getConnection();
     private List<Integer> hours;
     private List<Integer> numUsers;
     private List<Integer> numLocs;
-    double lowSelDown, lowSelUp;
-    double medSelDown, medSelUp;
-    double highSelDown, highSelUp;
 
     private PolicyGen pg; //helper methods defined in this class
 
-    public QueryGeneration() {
+    public WiFiDataSetQueryGeneration() {
         pg = new PolicyGen();
         this.user_ids = pg.getAllUsers(false);
         this.locations = pg.getAllLocations();
@@ -46,15 +39,6 @@ public class QueryGeneration extends QueryGen {
         numUsers = new ArrayList<Integer>(Arrays.asList(1000, 2000, 3000, 5000, 10000, 11000, 12000, 13000, 14000, 15000));
         numLocs = new ArrayList<Integer>(Arrays.asList(1, 2, 3, 5, 10, 15, 20, 30, 50));
 
-        lowSelDown = 0.00001;
-        lowSelUp = 0.001;
-        medSelDown = 0.001;
-        medSelUp = 0.2;
-        highSelDown = 0.3;
-        highSelUp = 0.5;
-
-        this.mySQLQueryManager = new MySQLQueryManager();
-        Random r = new Random();
     }
 
 
@@ -75,7 +59,7 @@ public class QueryGeneration extends QueryGen {
     @Override
     public List<QueryStatement> createQuery1(List<String> selTypes, int queryCount) {
         List<QueryStatement> queries = new ArrayList<>();
-        int i = 0, j = 0;
+        int i = 0;
         for (int k = 0; k < selTypes.size(); k++) {
             int numQ = 0;
             int locs = numLocs.get(i);
@@ -366,20 +350,9 @@ public class QueryGeneration extends QueryGen {
         return queries;
     }
 
-    public void constructWorkload(boolean[] templates, int numOfQueries) {
-        List<String> selTypes = new ArrayList<>();
-        selTypes.add("low");
-        selTypes.add("medium");
-        selTypes.add("high");
-        List<QueryStatement> queries = new ArrayList<>();
-        for (int i = 0; i < templates.length; i++) {
-            if (templates[i]) queries.addAll(getQueries(i, selTypes, numOfQueries));
-        }
-        insertQuery(queries);
-    }
 
     public static void main(String[] args) {
-        QueryGeneration qg = new QueryGeneration();
+        WiFiDataSetQueryGeneration qg = new WiFiDataSetQueryGeneration();
         boolean[] templates = {false, false, true, false};
         int numOfQueries = 3;
         qg.constructWorkload(templates, numOfQueries);

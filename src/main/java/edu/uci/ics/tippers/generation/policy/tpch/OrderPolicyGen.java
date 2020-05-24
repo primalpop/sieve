@@ -29,6 +29,8 @@ public class OrderPolicyGen {
     private final double TIMESTAMP_CHANCE = 0.3;
     private static final double PERCENTAGE_DEFAULT = 0.6;
     private static final int ACTIVE_CHOICES = 10;
+    private static final int ACTIVE_GROUP_CHOICES = 5;
+
     private static final double TOTAL_PRICE_STD = 88621.40;
     private static final double TOTAL_PRICE_AVG = 151219.53;
 
@@ -53,7 +55,40 @@ public class OrderPolicyGen {
         MIN_DATE = tpg.getOrderDate("MIN").toLocalDateTime().toLocalDate();
     }
 
-    private List<String> retrieveClerks(int cust_key){
+    /**
+     * Get groups of a customer
+     * @return
+     */
+    private List<String> getClerks(int cust_key){
+        List<String> clerks = null;
+        if (customer_clerks.containsKey(cust_key))
+            clerks = customer_clerks.get(cust_key);
+        else {
+            clerks = retrieveClerks(cust_key);
+            customer_clerks.put(cust_key, clerks);
+        }
+        return clerks;
+    }
+
+    private String retrieveProfiles(int cust_key){
+        PreparedStatement queryStm = null;
+        String profile = null;
+        String query;
+        try {
+            if(cust_key == 0)
+                query = "SELECT distinct O_PROFILE as id FROM ORDERS";
+            else
+                query = "SELECT distinct O_PROFILE as id FROM ORDERS WHERE O_CUSTKEY = " + cust_key;
+            queryStm = connection.prepareStatement(query);
+            ResultSet rs = queryStm.executeQuery();
+            while (rs.next()) profile = rs.getString("id");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return profile;
+    }
+
+    public List<String> retrieveClerks(int cust_key){
         PreparedStatement queryStm = null;
         List<String> clerks = new ArrayList<>();
         String query;
@@ -71,38 +106,6 @@ public class OrderPolicyGen {
         return clerks;
     }
 
-    /**
-     * Get groups of a customer
-     * @return
-     */
-    private List<String> getClerks(int cust_key){
-        List<String> clerks = null;
-        if (customer_clerks.containsKey(cust_key))
-            clerks = customer_clerks.get(cust_key);
-        else {
-            clerks = retrieveClerks(cust_key);
-            customer_clerks.put(cust_key, clerks);
-        }
-        return clerks;
-    }
-
-
-    private List<Integer> retrieveClerkCustomers(String clerk){
-        List<Integer> cust_keys = new ArrayList<>();
-        PreparedStatement queryStm = null;
-        try {
-            queryStm = connection.prepareStatement("SELECT O_CUSTKEY as ckey " +
-                    "FROM ORDERS WHERE O_CLERK  = ? " );
-            queryStm.setString(1, clerk);
-            ResultSet rs = queryStm.executeQuery();
-            while (rs.next()) {
-                cust_keys.add(rs.getInt("ckey"));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return cust_keys;
-    }
 
     // Function select an element based on index and return an element
     public List<Integer> getRandomElements(List<Integer> list, int limit) {
@@ -136,22 +139,22 @@ public class OrderPolicyGen {
         return c_customers;
     }
 
-    private String retrieveProfiles(int cust_key){
+
+    public List<Integer> retrieveClerkCustomers(String clerk){
+        List<Integer> cust_keys = new ArrayList<>();
         PreparedStatement queryStm = null;
-        String profile = null;
-        String query;
         try {
-            if(cust_key == 0)
-                query = "SELECT distinct O_PROFILE as id FROM ORDERS";
-            else
-                query = "SELECT distinct O_PROFILE as id FROM ORDERS WHERE O_CUSTKEY = " + cust_key;
-            queryStm = connection.prepareStatement(query);
+            queryStm = connection.prepareStatement("SELECT O_CUSTKEY as ckey " +
+                    "FROM ORDERS WHERE O_CLERK  = ? " );
+            queryStm.setString(1, clerk);
             ResultSet rs = queryStm.executeQuery();
-            while (rs.next()) profile = rs.getString("id");
+            while (rs.next()) {
+                cust_keys.add(rs.getInt("ckey"));
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return profile;
+        return cust_keys;
     }
 
     /**
@@ -191,34 +194,40 @@ public class OrderPolicyGen {
     //Add more noise in total price and date
     private void generateDefaultPolicies(List<Integer> allCustomers) {
         List<BEPolicy> defaultPolicies = new ArrayList<>();
+        int count = 0;
         for (int k = 0; k < allCustomers.size(); k++) {
-            System.out.println("Default customer: "  + allCustomers.get(k));
             int querier = allCustomers.get(k);
             List<String> querierGroups = getClerks(querier);
             String querierProfile = getProfile(querier);
             if (querierGroups != null || !querierGroups.isEmpty()) {
+                int newSize = Math.min(3 + r.nextInt(querierGroups.size()), querierGroups.size());
+                List<String> s_clerks = randomClerks(querierGroups, newSize);
 //                PricePredicate totalPrice = new PricePredicate(TOTAL_PRICE_AVG - TOTAL_PRICE_STD/2, TOTAL_PRICE_AVG + 2*TOTAL_PRICE_STD);
                 LocalDate startDate = this.MIN_DATE.plus(r.nextInt(3), ChronoUnit.YEARS);
                 LocalDate endDate = this.MAX_DATE.minus(r.nextInt(3), ChronoUnit.YEARS);
                 DatePredicate datePred = new DatePredicate(startDate, endDate);
-                for (int i = 0; i < querierGroups.size(); i++) {
+                for (int i = 0; i < s_clerks.size(); i++) {
                     //Create default policy for user group
-                    defaultPolicies.add(tpg.generatePolicies(querier, 0, querierGroups.get(i), null, null,
+                    defaultPolicies.add(tpg.generatePolicies(querier, 0, s_clerks.get(i), null, null,
                             datePred, null, PolicyConstants.ACTION_ALLOW));
                     //Create default policy for user profiles within user groups
-                    defaultPolicies.add(tpg.generatePolicies(querier, 0,  querierGroups.get(i), querierProfile, null,
+                    defaultPolicies.add(tpg.generatePolicies(querier, 0,  s_clerks.get(i), querierProfile, null,
                             null, null, PolicyConstants.ACTION_ALLOW));
                 }
             }
+            if(defaultPolicies.size() % 10000 == 0) {
+                polper.insertPolicy(defaultPolicies);
+                count+=defaultPolicies.size();
+                System.out.println("Default policies inserted: "  + count);
+                defaultPolicies.clear();
+            }
         }
-        polper.insertPolicy(defaultPolicies);
     }
 
 
     private void generateActivePolicies(int cust_key, List<String> orderClerks) {
         List<BEPolicy> activePolicies = new ArrayList<>();
-        int newSize = Math.min(orderClerks.size(), 3);
-        List<String> s_clerks = randomClerks(orderClerks, newSize);
+        List<String> s_clerks = randomClerks(orderClerks, Math.min(ACTIVE_GROUP_CHOICES, orderClerks.size()));
         for (int i = 0; i < ACTIVE_CHOICES; i++) {
             String querierProfile = null;
             if (Math.random() > (float) 1 / PolicyConstants.ORDER_PROFILES.size())
@@ -244,6 +253,7 @@ public class OrderPolicyGen {
             }
         }
         polper.insertPolicy(activePolicies);
+        System.out.println("Active customer: " + cust_key + "with " + activePolicies.size() + " policies");
     }
 
 
@@ -259,7 +269,6 @@ public class OrderPolicyGen {
             List<String> orderClerks = getClerks(cust_key);
             if(Math.random() > PERCENTAGE_DEFAULT) { //Active users
                 if (!profile.equalsIgnoreCase(OrderProfile.LOW.getPriority())) {
-                    System.out.println("Active customer: " + cust_key);
                     generateActivePolicies(cust_key, orderClerks);
                     active_count += 1;
                 }

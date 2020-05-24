@@ -6,7 +6,7 @@ import edu.uci.ics.tippers.db.QueryResult;
 import edu.uci.ics.tippers.fileop.Writer;
 import edu.uci.ics.tippers.generation.policy.WiFiDataSet.PolicyGen;
 import edu.uci.ics.tippers.generation.query.QueryExplainer;
-import edu.uci.ics.tippers.generation.query.WiFiDataSet.QueryGeneration;
+import edu.uci.ics.tippers.generation.query.WiFiDataSet.WiFiDataSetQueryGeneration;
 import edu.uci.ics.tippers.manager.GuardPersistor;
 import edu.uci.ics.tippers.manager.PolicyPersistor;
 import edu.uci.ics.tippers.model.guard.GuardExp;
@@ -257,7 +257,7 @@ public class Experiment {
     }
 
     public List<QueryStatement> getQueries(int template, int query_count){
-        QueryGeneration qg = new QueryGeneration();
+        WiFiDataSetQueryGeneration qg = new WiFiDataSetQueryGeneration();
         List<QueryStatement> queries = new ArrayList<>();
         queries.addAll(qg.retrieveQueries(template,"all", query_count));
         return queries;
