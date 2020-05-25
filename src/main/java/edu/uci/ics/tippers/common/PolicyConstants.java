@@ -159,7 +159,7 @@ public class PolicyConstants {
     public static final List<String> ORDER_PROFILES = Stream.of(OrderProfile.values()).map(OrderProfile::getPriority).collect(Collectors.toList());
 
     //ATTRIBUTE NAMES
-    public static final ImmutableList<String> TPCH_ORDERS_ATTR_LIST = ImmutableList.of("O_CUSTKEY", "O_TOTALPRICE", "O_ORDERDATE",
+    public static final ImmutableList<String> TPCH_ORDERS_ATTR_LIST = ImmutableList.of("O_TOTALPRICE", "O_ORDERDATE",
             "O_ORDERPRIORITY", "O_CLERK", "O_PROFILE");
 
     //RANGED ATTRIBUTE NAMES
@@ -169,7 +169,6 @@ public class PolicyConstants {
     //Indices available in the database
     public static final ImmutableMap<String, String> TPCH_ORDERS_ATTRIBUTE_IND =
             new ImmutableMap.Builder<String, String>()
-                    .put(PolicyConstants.ORDER_CUSTOMER_KEY, "cust_hash")
                     .put(PolicyConstants.ORDER_TOTAL_PRICE, "total_price_tree")
                     .put(PolicyConstants.ORDER_DATE, "date_tree")
                     .put(PolicyConstants.ORDER_CLERK, "clerk_hash")

@@ -29,7 +29,7 @@ public class TPolicyGen {
         PreparedStatement queryStm = null;
         customer_keys = new ArrayList<>();
         try {
-            queryStm = connection.prepareStatement("SELECT distinct O_CUSTKEY as id FROM ORDERS");
+            queryStm = connection.prepareStatement("SELECT distinct O_CUSTKEY as id FROM ORDERS order by O_CUSTKEY");
             ResultSet rs = queryStm.executeQuery();
             while (rs.next()) customer_keys.add(rs.getInt("id"));
         } catch (SQLException e) {
@@ -42,7 +42,7 @@ public class TPolicyGen {
         PreparedStatement queryStm = null;
         customer_clerks = new ArrayList<>();
         try {
-            queryStm = connection.prepareStatement("SELECT distinct O_CLERK as id FROM ORDERS");
+            queryStm = connection.prepareStatement("SELECT distinct O_CLERK as id FROM ORDERS order by O_CLERK");
             ResultSet rs = queryStm.executeQuery();
             while (rs.next()) customer_clerks.add(rs.getString("id"));
         } catch (SQLException e) {
