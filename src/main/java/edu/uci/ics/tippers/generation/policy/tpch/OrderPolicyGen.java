@@ -191,7 +191,6 @@ public class OrderPolicyGen {
         return s_clerks.subList(0, new_size);
     }
 
-    //Add more noise in total price and date
     private void generateDefaultPolicies(List<Integer> allCustomers) {
         List<BEPolicy> defaultPolicies = new ArrayList<>();
         int count = 0;

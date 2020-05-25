@@ -47,6 +47,7 @@ public class SelectGuard {
             pm.extend();
         }
         this.canFactors = collectAllFactors(this.input.getRemainder());
+        System.out.println(this.canFactors.size());
         selectGuards();
     }
 

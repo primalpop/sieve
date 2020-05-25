@@ -18,6 +18,11 @@ public class DatePredicate {
         this.endDate = startDate.plus(offset, ChronoUnit.MONTHS);
     }
 
+    public DatePredicate(LocalDate startDate, long offset){
+        this.startDate = startDate;
+        this.endDate = startDate.plus(offset, ChronoUnit.DAYS);
+    }
+
     public LocalDate getStartDate() {
         return startDate;
     }
