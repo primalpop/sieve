@@ -1,7 +1,7 @@
 package edu.uci.ics.tippers.model.guard.deprecated;
 
 import com.github.davidmoten.guavamini.Lists;
-import edu.uci.ics.tippers.db.MySQLQueryManager;
+import edu.uci.ics.tippers.db.QueryManager;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
 import edu.uci.ics.tippers.model.policy.ObjectCondition;
@@ -20,7 +20,7 @@ public class ExactFactorization {
 
     Map<BEExpression, ExactFactor> fMap = new HashMap<>();
 
-    MySQLQueryManager mySQLQueryManager = new MySQLQueryManager();
+    QueryManager queryManager = new QueryManager();
 
     public ExactFactorization(){
 
@@ -99,7 +99,7 @@ public class ExactFactorization {
 
 
     public long computeCost(BEExpression beExpression){
-        return mySQLQueryManager.runTimedQuery(beExpression.createQueryFromPolices()).toMillis();
+        return queryManager.runTimedQuery(beExpression.createQueryFromPolices()).toMillis();
     }
 
 

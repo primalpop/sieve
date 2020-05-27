@@ -1,7 +1,7 @@
 package edu.uci.ics.tippers.model.guard;
 
 import edu.uci.ics.tippers.common.PolicyConstants;
-import edu.uci.ics.tippers.db.MySQLQueryManager;
+import edu.uci.ics.tippers.db.QueryManager;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
 import edu.uci.ics.tippers.model.policy.ObjectCondition;
@@ -16,7 +16,7 @@ public class PolicyFilter {
 
     BEExpression expression;
 
-    MySQLQueryManager mySQLQueryManager = new MySQLQueryManager();
+    QueryManager queryManager = new QueryManager();
 
 
     public PolicyFilter(BEExpression beExpression){
@@ -34,10 +34,10 @@ public class PolicyFilter {
     public Duration computeCost(){
         HashMap<ObjectCondition, BEExpression> pFilterMap = new HashMap<>();
         for (BEPolicy bePolicy : this.expression.getPolicies()) {
-            double freq = PolicyConstants.NUMBER_OR_TUPLES;
+            double freq = PolicyConstants.getNumberOfTuples();
             ObjectCondition gOC = new ObjectCondition();
             for (ObjectCondition oc : bePolicy.getObject_conditions()) {
-                if (!PolicyConstants.WIFI_DBH_ATTR_LIST.contains(oc.getAttribute())) continue;
+                if (!PolicyConstants.ATTRIBUTES.contains(oc.getAttribute())) continue;
                 if (oc.computeL() < freq) {
                     freq = oc.computeL();
                     gOC = oc;
@@ -56,7 +56,7 @@ public class PolicyFilter {
         for (ObjectCondition kOb : gMap.keySet()) {
             List<Long> cList = new ArrayList<>();
             for (int i = 0; i < repetitions; i++) {
-                Duration tCost = mySQLQueryManager.runTimedQuery(createQueryFromGQ(kOb, gMap.get(kOb)));
+                Duration tCost = queryManager.runTimedQuery(createQueryFromGQ(kOb, gMap.get(kOb)));
                 cList.add(tCost.toMillis());
             }
             Collections.sort(cList);

@@ -23,7 +23,6 @@
     </build>
     <dependencies>
 
-
         <!-- Unit testing libraries -->
         <dependency>
             <groupId>org.hamcrest</groupId>
@@ -162,6 +161,11 @@
             <version>3.3</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-configuration2</artifactId>
+            <version>2.7</version>
+        </dependency>
 
     </dependencies>
 

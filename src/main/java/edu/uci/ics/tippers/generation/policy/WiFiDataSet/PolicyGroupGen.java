@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.*;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Generation of semi-realistic policies based on group memberships of a user
@@ -47,6 +49,8 @@ public class PolicyGroupGen {
     private int DURATION_NIGHT_DUSK_HOURS;
     private int DURATION_NIGHT_DAWN_HOURS;
 
+    private List<String> USER_PROFILES;
+
 
     public PolicyGroupGen(){
         this.connection = MySQLConnectionManager.getInstance().getConnection();
@@ -67,6 +71,8 @@ public class PolicyGroupGen {
             int cluster = r.nextInt(10);
             location_clusters.get(cluster).add(loc);
         }
+
+        USER_PROFILES = Stream.of(UserProfile.values()).map(UserProfile::getValue).collect(Collectors.toList());
 
         try {
             InputStream inputStream = getClass().getClassLoader().getResourceAsStream("config/policygen.properties");
@@ -115,10 +121,10 @@ public class PolicyGroupGen {
         }
         if(user_id != ALL_GROUPS) {
             List<String> userProfiles = new ArrayList<>(groups);
-            userProfiles.retainAll(PolicyConstants.USER_PROFILES);
+            userProfiles.retainAll(USER_PROFILES);
             user_profiles.put(user_id, userProfiles.get(0));
         }
-        groups.removeAll(PolicyConstants.USER_PROFILES);
+        groups.removeAll(USER_PROFILES);
         return groups;
     }
 
@@ -261,8 +267,8 @@ public class PolicyGroupGen {
         List<BEPolicy> activePolicies = new ArrayList<>();
         for (int i = 0; i < ACTIVE_CHOICES; i++) {
             String querierProfile = null;
-            if (Math.random() > (float) 1 / PolicyConstants.USER_PROFILES.size())
-                querierProfile = PolicyConstants.USER_PROFILES.get(new Random().nextInt(PolicyConstants.USER_PROFILES.size()));
+            if (Math.random() > (float) 1 / USER_PROFILES.size())
+                querierProfile = USER_PROFILES.get(new Random().nextInt(USER_PROFILES.size()));
             String querierGroup = owner_groups.get(0); //number of groups per user is 1
             List<Integer> queriers = getListOfUsers(querierGroup, querierProfile, GROUP_MEMBER_ACTIVE_LIMIT);
             int offset = 0, duration = 0, week = 0;

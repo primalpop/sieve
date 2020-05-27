@@ -1,7 +1,7 @@
 package edu.uci.ics.tippers.execution.PaperExperiments;
 
 import edu.uci.ics.tippers.common.PolicyConstants;
-import edu.uci.ics.tippers.db.MySQLQueryManager;
+import edu.uci.ics.tippers.db.QueryManager;
 import edu.uci.ics.tippers.db.QueryResult;
 import edu.uci.ics.tippers.fileop.Writer;
 import edu.uci.ics.tippers.generation.policy.WiFiDataSet.PolicyGen;
@@ -20,7 +20,7 @@ import java.util.Random;
 
 public class LargePolicyExperiment {
 
-    static MySQLQueryManager mySQLQueryManager = new MySQLQueryManager();
+    static QueryManager queryManager = new QueryManager();
 
 
     public static void main(String[] args) {
@@ -49,7 +49,7 @@ public class LargePolicyExperiment {
                 //Baseline Policies
                 if(!QUERY_EXEC_TIMEOUT) {
                     String polEvalQuery = "With polEval as ( Select * from PRESENCE where " + beExpression.createQueryFromPolices() + "  )" ;
-                    QueryResult tradResult = mySQLQueryManager.runTimedQueryExp(polEvalQuery + "SELECT * from polEval ", 1);
+                    QueryResult tradResult = queryManager.runTimedQueryExp(polEvalQuery + "SELECT * from polEval ", 1);
                     Duration runTime = Duration.ofMillis(0);
                     runTime = runTime.plus(tradResult.getTimeTaken());
                     if(runTime.equals(PolicyConstants.MAX_DURATION)) QUERY_EXEC_TIMEOUT = true;
@@ -61,8 +61,7 @@ public class LargePolicyExperiment {
                 //Guard Generation
                 Duration guardGen = Duration.ofMillis(0);
                 Instant fsStart = Instant.now();
-                SelectGuard gh = new SelectGuard(beExpression, true, PolicyConstants.WIFI_DBH_ATTR_LIST,
-                        PolicyConstants.WIFI_DBH_RANGE_ATTR_LIST, PolicyConstants.WIFI_DBH_ATTRIBUTE_IND);
+                SelectGuard gh = new SelectGuard(beExpression, true);
                 Instant fsEnd = Instant.now();
                 guardGen = guardGen.plus(Duration.between(fsStart, fsEnd));
                 rString.append(guardGen).append(",").append(gh.numberOfGuards()).append(",");
@@ -71,13 +70,13 @@ public class LargePolicyExperiment {
                 GuardExp guardExp = gh.create();
                 double guardTotalCard = 0.0;
                 for (GuardPart gp: guardExp.getGuardParts()) {
-                    guardTotalCard += mySQLQueryManager.checkSelectivity(gp.getGuard().print());
+                    guardTotalCard += queryManager.checkSelectivity(gp.getGuard().print());
                 }
                 rString.append(guardTotalCard).append(",");
                 //Sieve approach
                 Duration execTime = Duration.ofMillis(0);
                 String guard_hybrid_query = guardExp.inlineOrNot(true) + "Select * from polEval";
-                QueryResult execResult = mySQLQueryManager.runTimedQueryExp(guard_hybrid_query, 1);
+                QueryResult execResult = queryManager.runTimedQueryExp(guard_hybrid_query, 1);
                 execTime = execTime.plus(execResult.getTimeTaken());
                 rString.append(execTime.toMillis()).append("\n");
                 System.out.println("Guard Query execution : "  + " Time: " + execTime.toMillis());

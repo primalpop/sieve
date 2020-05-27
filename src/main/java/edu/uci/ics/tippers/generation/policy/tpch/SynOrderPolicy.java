@@ -4,6 +4,7 @@ import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.db.MySQLConnectionManager;
 import edu.uci.ics.tippers.manager.PolicyPersistor;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
+import edu.uci.ics.tippers.model.tpch.OrderProfile;
 
 import java.sql.Connection;
 import java.time.LocalDate;
@@ -13,6 +14,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 public class SynOrderPolicy {
@@ -22,7 +25,7 @@ public class SynOrderPolicy {
     private Connection connection;
     Random r;
 
-    private final double INDIVIDUAL_CHANCE =  0.5;
+    private final double INDIVIDUAL_CHANCE =  0.7;
     private final double DATE_CHANCE = 0.75;
     private final double PRICE_CHANCE = 0.7;
     private final double CLERK_CHANCE = 0.6;
@@ -42,6 +45,7 @@ public class SynOrderPolicy {
     private final LocalDate MAX_DATE;
     private final LocalDate MIN_DATE;
 
+    public static final List<String> ORDER_PROFILES = Stream.of(OrderProfile.values()).map(OrderProfile::getPriority).collect(Collectors.toList());
 
     public SynOrderPolicy(){
 
@@ -60,7 +64,6 @@ public class SynOrderPolicy {
     public void generatePolicies(double overlap){
         List<BEPolicy> synPolicies = new ArrayList<>();
         List<Integer> allCustomers = tpg.getAllCustomerKeys();
-        List<String> allClerks = tpg.getAllClerks();
 
         for (int querier: allCustomers) {
             //Selecting number of policies
@@ -71,9 +74,9 @@ public class SynOrderPolicy {
             Collections.shuffle(owners);
             owners = owners.subList(0, (int) (numOfPolicies - numOfPolicies*overlap));
             //Selecting profile for the user
-            String profile = PolicyConstants.ORDER_PROFILES.get(r.nextInt(PolicyConstants.ORDER_PROFILES.size()));
+            String profile = ORDER_PROFILES.get(r.nextInt(ORDER_PROFILES.size()));
             //Selecting priority for the user
-            List<String> priorties = new ArrayList<>(PolicyConstants.ORDER_PROFILES);
+            List<String> priorties = new ArrayList<>(ORDER_PROFILES);
             Collections.shuffle(priorties);
             priorties = priorties.subList(0, PRIORITIES_PER_QUERIER);
             //Selecting delta for price predicate
@@ -81,26 +84,21 @@ public class SynOrderPolicy {
             //Selecting delta for date predicate
             long days = ChronoUnit.DAYS.between(MIN_DATE, MAX_DATE);
             long day_delta = (long) (overlap * days);
-            //Selecting the list of clerks (Number of Policies - Number of Policies * overlap)
-            List<String> s_clerks = new ArrayList<>(allClerks);
-            Collections.shuffle(s_clerks);
-            s_clerks = s_clerks.subList(0, (int) (numOfPolicies - numOfPolicies*overlap));
+            //Selecting the clerk
+            String clerk = String.valueOf(r.nextInt(10));
             int cnt = 0;
             for (int i = 0; i < numOfPolicies; i++) {
                 int ownerPred = Math.random() < INDIVIDUAL_CHANCE? owners.get(r.nextInt(owners.size())): 0;
-                if(ownerPred == 0) cnt+= 1;
-                String profilePred = ownerPred == 0? profile: null;
                 double priceSeed = r.nextGaussian() * TOTAL_PRICE_STD + TOTAL_PRICE_AVG;
                 PricePredicate pricePred = Math.random() < PRICE_CHANCE?
                         new PricePredicate(priceSeed, Math.min(priceSeed + price_delta, MAX_TOTAL_PRICE)): null;
                 LocalDate randomDate = MIN_DATE.plusDays(ThreadLocalRandom.current().nextLong(days+1));
                 DatePredicate datePred = Math.random() < DATE_CHANCE? new DatePredicate(randomDate, day_delta): null;
-                String clerkPred = Math.random() < CLERK_CHANCE? s_clerks.get(r.nextInt(s_clerks.size())): null;
+                String clerkPred = Math.random() < CLERK_CHANCE? clerk: null;
                 String priorityPred = Math.random() < PRIORITY_CHANCE? priorties.get(r.nextInt(priorties.size())): null;
-                synPolicies.add(tpg.generatePolicies(querier, ownerPred, clerkPred, profilePred, pricePred, datePred,
+                synPolicies.add(tpg.generatePolicies(querier, ownerPred, clerkPred, null, pricePred, datePred,
                         priorityPred, PolicyConstants.ACTION_ALLOW));
             }
-            System.out.println("Default policies: "+ cnt);
             polper.insertPolicy(synPolicies);
             break; //TODO: REMOVE THIS!!!!!!!
         }
@@ -108,6 +106,6 @@ public class SynOrderPolicy {
 
     public static void main(String [] args) {
         SynOrderPolicy sop = new SynOrderPolicy();
-        sop.generatePolicies(0.1);
+        sop.generatePolicies(0.005);
     }
 }

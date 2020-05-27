@@ -195,8 +195,8 @@ public class PredicateExtensionOld {
      */
     public void approximateFactorization() {
         Map<ObjectCondition, ObjectCondition> replacementMap = new HashMap<>();
-        for (int i = 0; i < PolicyConstants.WIFI_DBH_ATTR_LIST.size(); i++) {
-            HashMap<ObjectCondition, List<BEPolicy>> predOnAttr = getPredicatesOnAttr(PolicyConstants.WIFI_DBH_ATTR_LIST.get(i));
+        for (int i = 0; i < PolicyConstants.ATTRIBUTES.size(); i++) {
+            HashMap<ObjectCondition, List<BEPolicy>> predOnAttr = getPredicatesOnAttr(PolicyConstants.ATTRIBUTES.get(i));
             if (predOnAttr.isEmpty()) continue;
             List<ObjectCondition> objectConditions = new ArrayList<>();
             objectConditions.addAll(predOnAttr.keySet());

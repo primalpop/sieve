@@ -1,7 +1,7 @@
 package edu.uci.ics.tippers.model.guard.deprecated;
 
 import edu.uci.ics.tippers.common.PolicyConstants;
-import edu.uci.ics.tippers.db.MySQLQueryManager;
+import edu.uci.ics.tippers.db.QueryManager;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
 import edu.uci.ics.tippers.model.policy.ObjectCondition;
@@ -27,7 +27,7 @@ public class FactorSelectionOld {
     //Cost of evaluating the expression
     double cost;
 
-    MySQLQueryManager mySQLQueryManager = new MySQLQueryManager();
+    QueryManager queryManager = new QueryManager();
 
     public FactorSelectionOld() {
         this.expression = new BEExpression();
@@ -91,9 +91,9 @@ public class FactorSelectionOld {
      * @return
      */
     public long computeGain(BEExpression original, ObjectCondition objectCondition, BEExpression quotient) {
-        long gain = (long) ((quotient.getPolicies().size() - 1)* objectCondition.computeL() * PolicyConstants.NUMBER_OR_TUPLES);
-        gain += original.computeL() * PolicyConstants.NUMBER_OR_TUPLES;
-        gain -= quotient.computeL() * PolicyConstants.NUMBER_OR_TUPLES;
+        long gain = (long) ((quotient.getPolicies().size() - 1)* objectCondition.computeL() * PolicyConstants.getNumberOfTuples());
+        gain += original.computeL() * PolicyConstants.getNumberOfTuples();
+        gain -= quotient.computeL() * PolicyConstants.getNumberOfTuples();
         return gain;
     }
 
@@ -107,8 +107,8 @@ public class FactorSelectionOld {
      * @return
      */
     public double computeBenefit(ObjectCondition objectCondition, BEExpression original, BEExpression quotient){
-        double guardFreq = objectCondition.computeL() * PolicyConstants.NUMBER_OR_TUPLES;
-        double filterFreq = quotient.computeL() - original.computeL() * PolicyConstants.NUMBER_OR_TUPLES;
+        double guardFreq = objectCondition.computeL() * PolicyConstants.getNumberOfTuples();
+        double filterFreq = quotient.computeL() - original.computeL() * PolicyConstants.getNumberOfTuples();
         return ((0.8 * guardFreq) + (0.2 * filterFreq))/ (guardFreq + filterFreq);
     }
 
@@ -174,7 +174,7 @@ public class FactorSelectionOld {
                 .collect(Collectors.toSet());
         FactorSelectionOld currentFactor = new FactorSelectionOld(this.expression);
         for (ObjectCondition objectCondition : singletonSet) {
-            if(!PolicyConstants.WIFI_DBH_ATTR_LIST.contains(objectCondition.getAttribute())) continue;
+            if(!PolicyConstants.ATTRIBUTES.contains(objectCondition.getAttribute())) continue;
             BEExpression temp = new BEExpression(this.expression);
             temp.checkAgainstPolices(objectCondition);
             if (temp.getPolicies().size() > 1) { //was able to factorize
@@ -270,11 +270,11 @@ public class FactorSelectionOld {
         if(multiplier.isEmpty()){
             Duration rcost = Duration.ofMillis(0);
             for(BEPolicy bePolicy: this.expression.getPolicies()){
-                rcost.plus(mySQLQueryManager.runTimedQuery(bePolicy.createQueryFromObjectConditions() ));
+                rcost.plus(queryManager.runTimedQuery(bePolicy.createQueryFromObjectConditions() ));
             }
             return rcost;
         }
-        return mySQLQueryManager.runTimedQuery(createQueryFromGQ(multiplier.get(0),
+        return queryManager.runTimedQuery(createQueryFromGQ(multiplier.get(0),
                 this.quotient.getExpression()) ).plus(this.remainder.computeGuardCosts());
     }
 

@@ -1,7 +1,7 @@
 package edu.uci.ics.tippers.model.guard.deprecated;
 
 import edu.uci.ics.tippers.common.PolicyConstants;
-import edu.uci.ics.tippers.db.MySQLQueryManager;
+import edu.uci.ics.tippers.db.QueryManager;
 import edu.uci.ics.tippers.db.QueryResult;
 import edu.uci.ics.tippers.model.guard.GuardExp;
 import edu.uci.ics.tippers.model.guard.GuardPart;
@@ -27,7 +27,7 @@ public class FactorSearch {
     Set<ObjectCondition> canFactors;
     double epsilon;
     double totalCost;
-    MySQLQueryManager mySQLQueryManager;
+    QueryManager queryManager;
 
 
     public FactorSearch(BEExpression originalExp ){
@@ -44,7 +44,7 @@ public class FactorSearch {
         this.canFactors = new HashSet<>();
         Set<ObjectCondition> pFactors = originalExp.getPolicies().stream()
                 .flatMap(p -> p.getObject_conditions().stream())
-                .filter(o -> PolicyConstants.WIFI_DBH_INDEX_ATTRS.contains(o.getAttribute()))
+                .filter(o -> PolicyConstants.ATTRIBUTES.contains(o.getAttribute()))
                 .collect(Collectors.toSet());
         for (ObjectCondition pf: pFactors) {
             Boolean match = false;
@@ -55,7 +55,7 @@ public class FactorSearch {
         }
         this.epsilon = 1.0;
         this.totalCost = originalExp.getPolicies().stream().mapToDouble(BEPolicy::getEstCost).sum();
-        this.mySQLQueryManager = new MySQLQueryManager();
+        this.queryManager = new QueryManager();
         this.finalTerm = null;
     }
 
@@ -110,7 +110,7 @@ public class FactorSearch {
             }
             if (sel < lowSel) lowSel = sel;
         }
-        return PolicyConstants.NUMBER_OR_TUPLES * lowSel *(PolicyConstants.IO_BLOCK_READ_COST  +
+        return PolicyConstants.getNumberOfTuples() * lowSel *(PolicyConstants.IO_BLOCK_READ_COST  +
                 PolicyConstants.ROW_EVALUATE_COST * PolicyConstants.NUMBER_OF_PREDICATES_EVALUATED *
                         aMap.keySet().size());
     }
@@ -203,7 +203,7 @@ public class FactorSearch {
         String delim = "";
         for (String g: gList) {
             queryExp.append(delim);
-            queryExp.append(PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS + g);
+            queryExp.append(PolicyConstants.SELECT_ALL + g);
             delim = noDuplicates ? PolicyConstants.UNION : PolicyConstants.UNION_ALL;
         }
         return queryExp.toString();
@@ -214,10 +214,10 @@ public class FactorSearch {
         List<GuardPart> gps = new ArrayList<>();
         if(finalTerm.getRemainder().getPolicies().size() > 0) {
             for (BEPolicy bePolicy : finalTerm.getRemainder().getPolicies()) {
-                double freq = PolicyConstants.NUMBER_OR_TUPLES;
+                double freq = PolicyConstants.getNumberOfTuples();
                 ObjectCondition gOC = new ObjectCondition();
                 for (ObjectCondition oc : bePolicy.getObject_conditions()) {
-                    if (!PolicyConstants.WIFI_DBH_INDEX_ATTRS.contains(oc.getAttribute())) continue;
+                    if (!PolicyConstants.ATTRIBUTES.contains(oc.getAttribute())) continue;
                     if (oc.computeL() < freq) {
                         freq = oc.computeL();
                         gOC = oc;
@@ -263,10 +263,10 @@ public class FactorSearch {
         int guardCount = 0;
         if(finalTerm.getRemainder().getPolicies().size()>0){
             for (BEPolicy bePolicy : finalTerm.getRemainder().getPolicies()) {
-                double freq = PolicyConstants.NUMBER_OR_TUPLES;
+                double freq = PolicyConstants.getNumberOfTuples();
                 ObjectCondition gOC = new ObjectCondition();
                 for (ObjectCondition oc : bePolicy.getObject_conditions()) {
-                    if (!PolicyConstants.WIFI_DBH_INDEX_ATTRS.contains(oc.getAttribute())) continue;
+                    if (!PolicyConstants.ATTRIBUTES.contains(oc.getAttribute())) continue;
                     if (oc.computeL() < freq) {
                         freq = oc.computeL();
                         gOC = oc;
@@ -312,10 +312,10 @@ public class FactorSearch {
             List<Long> cList = new ArrayList<>();
             int gCount = 0, tCount = 0;
             for (int i = 0; i < repetitions; i++) {
-                QueryResult guardResult = mySQLQueryManager.runTimedQueryWithOutSorting(kOb, true);
+                QueryResult guardResult = queryManager.runTimedQueryWithOutSorting(kOb, true);
                 if (gCount == 0) gCount = guardResult.getResultCount();
                 gList.add(guardResult.getTimeTaken().toMillis());
-                QueryResult completeResult = mySQLQueryManager.runTimedQueryWithOutSorting(kOb, true);
+                QueryResult completeResult = queryManager.runTimedQueryWithOutSorting(kOb, true);
                 if (tCount == 0) tCount = completeResult.getResultCount();
                 cList.add(completeResult.getTimeTaken().toMillis());
 

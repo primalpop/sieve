@@ -1,7 +1,7 @@
 package edu.uci.ics.tippers.execution.PaperExperiments;
 
 import edu.uci.ics.tippers.common.PolicyConstants;
-import edu.uci.ics.tippers.db.MySQLQueryManager;
+import edu.uci.ics.tippers.db.QueryManager;
 import edu.uci.ics.tippers.db.QueryResult;
 import edu.uci.ics.tippers.fileop.Writer;
 import edu.uci.ics.tippers.generation.policy.WiFiDataSet.PolicyGen;
@@ -32,7 +32,7 @@ public class Experiment {
 
     PolicyPersistor polper;
     QueryExplainer queryExplainer;
-    MySQLQueryManager mySQLQueryManager;
+    QueryManager queryManager;
 
     private static boolean QUERY_EXEC;
     private static boolean BASE_LINE_POLICIES;
@@ -54,7 +54,7 @@ public class Experiment {
     public Experiment() {
         polper = new PolicyPersistor();
         queryExplainer = new QueryExplainer();
-        mySQLQueryManager = new MySQLQueryManager();
+        queryManager = new QueryManager();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
         try {
@@ -97,9 +97,9 @@ public class Experiment {
             if (QUERY_EXEC){
                 QueryResult queryResult;
                 if(queryStatement.getTemplate() == 3)
-                    queryResult = mySQLQueryManager.runTimedSubQuery(queryStatement.getQuery(), RESULT_CHECK);
+                    queryResult = queryManager.runTimedSubQuery(queryStatement.getQuery(), RESULT_CHECK);
                 else
-                    queryResult = mySQLQueryManager.runTimedQueryWithOutSorting(queryStatement.getQuery(), true);
+                    queryResult = queryManager.runTimedQueryWithOutSorting(queryStatement.getQuery(), true);
                 Duration runTime = Duration.ofMillis(0);
                 runTime = runTime.plus(queryResult.getTimeTaken());
                 System.out.println("Time taken by query alone " + runTime.toMillis());
@@ -115,9 +115,9 @@ public class Experiment {
                 String polEvalQuery = "With polEval as ( Select * from PRESENCE where "
                         + beExpression.createQueryFromPolices() + "  )" ;
                 if(queryStatement.getTemplate() == 3)
-                    tradResult = mySQLQueryManager.runTimedQueryExp(polEvalQuery + queryStatement.getQuery(), 1);
+                    tradResult = queryManager.runTimedQueryExp(polEvalQuery + queryStatement.getQuery(), 1);
                 else
-                    tradResult = mySQLQueryManager.runTimedQueryExp(polEvalQuery + "SELECT * from polEval where "
+                    tradResult = queryManager.runTimedQueryExp(polEvalQuery + "SELECT * from polEval where "
                             + queryStatement.getQuery(), 1);
                 Duration runTime = Duration.ofMillis(0);
                 runTime = runTime.plus(tradResult.getTimeTaken());
@@ -130,9 +130,9 @@ public class Experiment {
                 String udf_query = " and pcheck( " + querier + ", PRESENCE.user_id, PRESENCE.location_id, " +
                         "PRESENCE.start_date, PRESENCE.start_time, PRESENCE.user_profile, PRESENCE.user_group) = 1";
                 if(queryStatement.getTemplate() == 3)
-                    execResult = mySQLQueryManager.runTimedQueryExp(queryStatement.getQuery() + udf_query, 1);
+                    execResult = queryManager.runTimedQueryExp(queryStatement.getQuery() + udf_query, 1);
                 else
-                    execResult = mySQLQueryManager.runTimedQueryExp("SELECT * from PRESENCE where "
+                    execResult = queryManager.runTimedQueryExp("SELECT * from PRESENCE where "
                             + queryStatement.getQuery() + udf_query, 1);
                 resultString.append(execResult.getTimeTaken().toMillis()).append(",");
                 System.out.println("Baseline UDF: " + " , Time: " + execResult.getTimeTaken().toMillis());
@@ -153,11 +153,11 @@ public class Experiment {
                 String guard_query_with_or = guardExp.inlineRewrite(false);
                 guard_query_with_union += "Select * from polEval where " + queryStatement.getQuery();
                 guard_query_with_or += "Select * from polEval where " + queryStatement.getQuery();
-                QueryResult execResult = mySQLQueryManager.runTimedQueryExp(guard_query_with_union, NUM_OF_REPS);
+                QueryResult execResult = queryManager.runTimedQueryExp(guard_query_with_union, NUM_OF_REPS);
                 execTime = execTime.plus(execResult.getTimeTaken());
                 resultString.append(execTime.toMillis()).append(",");
                 System.out.println("Guard inline execution with union: "  + " Time: " + execTime.toMillis());
-                execResult = mySQLQueryManager.runTimedQueryExp(guard_query_with_or, NUM_OF_REPS);
+                execResult = queryManager.runTimedQueryExp(guard_query_with_or, NUM_OF_REPS);
                 execTime = execTime.plus(execResult.getTimeTaken());
                 resultString.append(execTime.toMillis()).append(",");
                 System.out.println("Guard inline execution with OR: "  + " Time: " + execTime.toMillis());
@@ -169,11 +169,11 @@ public class Experiment {
                 String guard_query_with_or = guardExp.udfRewrite(false);
                 guard_query_with_union += "Select * from polEval where " + queryStatement.getQuery();
                 guard_query_with_or += "Select * from polEval where " + queryStatement.getQuery();
-                QueryResult execResult = mySQLQueryManager.runTimedQueryExp(guard_query_with_union, NUM_OF_REPS);
+                QueryResult execResult = queryManager.runTimedQueryExp(guard_query_with_union, NUM_OF_REPS);
                 execTime = execTime.plus(execResult.getTimeTaken());
                 resultString.append(execTime.toMillis()).append(",");
                 System.out.println("Guard udf execution with union: "  + " Time: " + execTime.toMillis());
-                execResult = mySQLQueryManager.runTimedQueryExp(guard_query_with_or, NUM_OF_REPS);
+                execResult = queryManager.runTimedQueryExp(guard_query_with_or, NUM_OF_REPS);
                 execTime = execTime.plus(execResult.getTimeTaken());
                 resultString.append(execTime.toMillis());
                 System.out.println("Guard udf execution with OR: "  + " Time: " + execTime.toMillis());
@@ -186,7 +186,7 @@ public class Experiment {
                 }
                 else
                     guard_hybrid_query += "Select * from polEval where " + queryStatement.getQuery();
-                QueryResult execResult = mySQLQueryManager.runTimedQueryExp(guard_hybrid_query, 1);
+                QueryResult execResult = queryManager.runTimedQueryExp(guard_hybrid_query, 1);
                 execTime = execTime.plus(execResult.getTimeTaken());
                 resultString.append(execTime.toMillis()).append(",");
                 System.out.println("Guard Index execution : "  + " Time: " + execTime.toMillis());
@@ -205,7 +205,7 @@ public class Experiment {
                     else
                         query_index_query = "SELECT * from ( SELECT * from PRESENCE force index(" + query_hint
                                 + ") where " + queryPredicates + " ) as P where " + guardExp.createQueryWithOR();
-                    QueryResult execResult = mySQLQueryManager.runTimedQueryExp(query_index_query, 1);
+                    QueryResult execResult = queryManager.runTimedQueryExp(query_index_query, 1);
                     execTime = execTime.plus(execResult.getTimeTaken());
                     resultString.append(execTime.toMillis()).append(",");
                     System.out.println("Query Index execution : "  + " Time: " + execTime.toMillis());
@@ -244,7 +244,7 @@ public class Experiment {
                                 + ") where " + queryStatement.getQuery() + " ) as P where " + guardExp.createQueryWithOR();
                     resultString.append("Query Index").append(",");
                 }
-                QueryResult execResult = mySQLQueryManager.runTimedQueryExp(sieve_query, NUM_OF_REPS);
+                QueryResult execResult = queryManager.runTimedQueryExp(sieve_query, NUM_OF_REPS);
                 execTime = execTime.plus(execResult.getTimeTaken());
                 resultString.append(execTime.toMillis());
                 System.out.println("Sieve Query: "  + " Time: " + execTime.toMillis());

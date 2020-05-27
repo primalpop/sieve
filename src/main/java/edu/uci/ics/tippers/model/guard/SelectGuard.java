@@ -1,7 +1,7 @@
 package edu.uci.ics.tippers.model.guard;
 
 import edu.uci.ics.tippers.common.PolicyConstants;
-import edu.uci.ics.tippers.db.MySQLQueryManager;
+import edu.uci.ics.tippers.db.QueryManager;
 import edu.uci.ics.tippers.db.QueryResult;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
@@ -22,17 +22,11 @@ public class SelectGuard {
     Map<String, BEPolicy> pMap;
     Map<ObjectCondition, Double> costMap;
     Map<BEPolicy, List<Term>> ptMap;
-    List<String> DataSetAttributes;
-    List<String> DataSetRangeAttributes;
-    Map<String, String> DataSetAttributeIndices;
 
-    MySQLQueryManager mySQLQueryManager = new MySQLQueryManager();
 
-    public SelectGuard(BEExpression originalExp, boolean extend, List<String> dataSetAttributes,
-                       List<String> dataSetRangeAttributes, Map<String, String> dataSetAttributeIndices){
-        this.DataSetAttributes = dataSetAttributes;
-        this.DataSetRangeAttributes = dataSetRangeAttributes;
-        this.DataSetAttributeIndices = dataSetAttributeIndices;
+    QueryManager queryManager = new QueryManager();
+
+    public SelectGuard(BEExpression originalExp, boolean extend){
         this.input = new Term();
         this.input.setRemainder(originalExp);
         this.input.setQuotient(originalExp);
@@ -43,7 +37,7 @@ public class SelectGuard {
         this.ptMap = new HashMap<>();
         houseKeep();
         if(extend){
-            GenerateCandidate pm = new GenerateCandidate(this.input.getRemainder(), this.DataSetRangeAttributes);
+            GenerateCandidate pm = new GenerateCandidate(this.input.getRemainder(), PolicyConstants.RANGED_ATTRIBUTES);
             pm.extend();
         }
         this.canFactors = collectAllFactors(this.input.getRemainder());
@@ -67,7 +61,7 @@ public class SelectGuard {
     private Set<ObjectCondition> collectAllFactors(BEExpression originalExp){
         Set<ObjectCondition> pFactors = originalExp.getPolicies().stream()
                 .flatMap(p -> p.getObject_conditions().stream())
-                .filter(o -> this.DataSetAttributeIndices.keySet().contains(o.getAttribute()))
+                .filter(o -> PolicyConstants.ATTRIBUTE_INDEXES.keySet().contains(o.getAttribute()))
                 .collect(Collectors.toSet());
         Set<ObjectCondition> pGuards = new HashSet<>();
         for (ObjectCondition pf: pFactors) {
@@ -92,7 +86,7 @@ public class SelectGuard {
     }
 
     private double cost(ObjectCondition factor){
-        return PolicyConstants.NUMBER_OR_TUPLES * factor.computeL() * PolicyConstants.IO_BLOCK_READ_COST ;
+        return PolicyConstants.getNumberOfTuples() * factor.computeL() * PolicyConstants.IO_BLOCK_READ_COST ;
         //+ PolicyConstants.NUMBER_OR_TUPLES * factor.computeL() * PolicyConstants.ROW_EVALUATE_COST;
     }
 
@@ -213,7 +207,7 @@ public class SelectGuard {
         String delim = "";
         for (String g: gList) {
             queryExp.append(delim);
-            queryExp.append(PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS_WHERE + g);
+            queryExp.append(PolicyConstants.SELECT_ALL_WHERE + g);
             delim = noDuplicates ? PolicyConstants.UNION : PolicyConstants.UNION_ALL;
         }
         return queryExp.toString();
@@ -231,7 +225,7 @@ public class SelectGuard {
 
     private String createCleanQueryFromGQ(ObjectCondition guard, BEExpression partition) {
         StringBuilder query = new StringBuilder();
-        query.append("USE INDEX (" + this.DataSetAttributeIndices.get(guard.getAttribute()) + ")");
+        query.append("USE INDEX (" + PolicyConstants.ATTRIBUTE_INDEXES.get(guard.getAttribute()) + ")");
         query.append(" WHERE ");
         query.append(guard.print());
         partition.removeDuplicates();
@@ -280,9 +274,9 @@ public class SelectGuard {
             guardString.append(mt.getUtility());
             guardString.append(",");
             if(execution) {
-                QueryResult completeResult = mySQLQueryManager.executeQuery(createCleanQueryFromGQ(mt.getFactor(), mt.getQuotient()),
+                QueryResult completeResult = queryManager.executeQuery(createCleanQueryFromGQ(mt.getFactor(), mt.getQuotient()),
                         false, repetitions);
-                QueryResult guardResult = mySQLQueryManager.runTimedQueryWithOutSorting(mt.getFactor().print(), true);
+                QueryResult guardResult = queryManager.runTimedQueryWithOutSorting(mt.getFactor().print(), true);
                 int gCount = 0, tCount = 0;
                 tCount = completeResult.getResultCount();
                 gCount = guardResult.getResultCount();
@@ -312,5 +306,4 @@ public class SelectGuard {
         }
         return guardResults;
     }
-
 }

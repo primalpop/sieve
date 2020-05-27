@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.davidmoten.guavamini.Lists;
 import edu.uci.ics.tippers.common.PolicyConstants;
-import edu.uci.ics.tippers.db.MySQLQueryManager;
+import edu.uci.ics.tippers.db.QueryManager;
 
 import java.io.IOException;
 import java.util.*;
@@ -17,7 +17,7 @@ public class BEExpression{
 
     List<BEPolicy> policies;
 
-    MySQLQueryManager mySQLQueryManager = new MySQLQueryManager();
+    QueryManager queryManager = new QueryManager();
 
     public BEExpression(){
         this.policies = new ArrayList<BEPolicy>();
@@ -253,7 +253,7 @@ public class BEExpression{
      * @return
      */
     public double estimateCPUCost(ObjectCondition oc, long numPreds){
-        return PolicyConstants.NUMBER_OR_TUPLES * oc.computeL() * (
+        return PolicyConstants.getNumberOfTuples() * oc.computeL() * (
                     PolicyConstants.ROW_EVALUATE_COST * numPreds * PolicyConstants.NUMBER_OF_PREDICATES_EVALUATED);
     }
 
@@ -269,11 +269,11 @@ public class BEExpression{
     public double estimateCostOfGuardRep(ObjectCondition oc, boolean evalOnly){
         long numOfPreds = this.getPolicies().stream().mapToInt(BEPolicy::countNumberOfPredicates).sum();
         if(!evalOnly){
-            return PolicyConstants.NUMBER_OR_TUPLES * oc.computeL() * (PolicyConstants.IO_BLOCK_READ_COST  +
+            return PolicyConstants.getNumberOfTuples() * oc.computeL() * (PolicyConstants.IO_BLOCK_READ_COST  +
                     PolicyConstants.ROW_EVALUATE_COST * numOfPreds * PolicyConstants.NUMBER_OF_PREDICATES_EVALUATED);
         }
         else {
-            return PolicyConstants.NUMBER_OR_TUPLES * oc.computeL() *
+            return PolicyConstants.getNumberOfTuples() * oc.computeL() *
                     PolicyConstants.ROW_EVALUATE_COST * numOfPreds * PolicyConstants.NUMBER_OF_PREDICATES_EVALUATED;
         }
 

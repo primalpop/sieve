@@ -2,118 +2,218 @@ package edu.uci.ics.tippers.db;
 
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.common.PolicyEngineException;
-import org.apache.commons.dbutils.DbUtils;
 
 import java.sql.*;
 import java.time.Duration;
-import java.time.Instant;
-import java.util.concurrent.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import static edu.uci.ics.tippers.common.PolicyConstants.SELECT_ALL;
+import static edu.uci.ics.tippers.common.PolicyConstants.SELECT_ALL_WHERE;
 
 public class QueryManager {
 
-    private long timeout = 0;
-
-    private final long QUERY_EXECUTION_TIMEOUT = 30000; //30 seconds
-
     private Connection connection;
-
-    public QueryManager(Connection connection, long timeout){
-        this.connection = connection;
-        this.timeout = timeout + QUERY_EXECUTION_TIMEOUT;
-    }
+    private final QueryExecutor queryExecutor;
 
     public QueryManager(){
-        this.timeout = QUERY_EXECUTION_TIMEOUT;
+        if(PolicyConstants.DBMS_CHOICE.equalsIgnoreCase(PolicyConstants.MYSQL_DBMS))
+            connection = MySQLConnectionManager.getInstance().getConnection();
+        else if(PolicyConstants.DBMS_CHOICE.equalsIgnoreCase(PolicyConstants.PGSQL_DBMS))
+            connection = PGSQLConnectionManager.getInstance().getConnection();
+        else
+            System.out.println("DBMS choice not set or unknown DBMS");
+        queryExecutor = new QueryExecutor(connection, PolicyConstants.MAX_DURATION.getSeconds());
+
     }
 
-    public QueryResult runWithThread(String query, QueryResult queryResult) {
+    public float checkSelectivity(String queryPredicates) {
+        QueryResult queryResult = runTimedQueryWithOutSorting(queryPredicates, true);
+        return (float) queryResult.getResultCount() / (float) PolicyConstants.getNumberOfTuples();
+    }
 
-        Statement statement = null;
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        Future<QueryResult> future = null;
+    public float checkSelectivityFullQuery(String query) {
+        QueryResult queryResult = runTimedQueryWithOutSorting(query);
+        return (float) queryResult.getResultCount() / (float) PolicyConstants.getNumberOfTuples();
+    }
+
+    /**
+     * Compute the cost by execution time of the query and writes the results to file
+     * @return
+     * @throws PolicyEngineException
+     */
+    public QueryResult runTimedQueryExp(String query, int repetitions) throws PolicyEngineException {
         try {
-            statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            QueryManager.QueryExecutor queryExecutor = new QueryManager.QueryExecutor(statement, query, queryResult);
-            future = executor.submit(queryExecutor);
-            queryResult = future.get(timeout, TimeUnit.MILLISECONDS);
-            executor.shutdown();
+            QueryResult queryResult = new QueryResult();
+            queryResult.setResultsCheck(false);
+            List<Long> gList = new ArrayList<>();
+            for (int i = 0; i < repetitions; i++) {
+                gList.add(queryExecutor.runWithThread(query, queryResult).getTimeTaken().toMillis());
+            }
+            Duration gCost;
+            if(repetitions >= 3) {
+                Collections.sort(gList);
+                List<Long> clippedGList = gList.subList(1, repetitions - 1);
+                gCost = Duration.ofMillis(clippedGList.stream().mapToLong(i -> i).sum() / clippedGList.size());
+            }
+            else{
+                gCost =  Duration.ofMillis(gList.stream().mapToLong(i -> i).sum() / gList.size());
+            }
+            queryResult.setTimeTaken(gCost);
             return queryResult;
-        } catch (SQLException | InterruptedException | ExecutionException ex) {
-            cancelStatement(statement, ex);
-            ex.printStackTrace();
-            throw new PolicyEngineException("Failed to query the database. " + ex);
-        } catch (TimeoutException ex) {
-            cancelStatement(statement, ex);
-            future.cancel(true);
-            queryResult.setTimeTaken(PolicyConstants.MAX_DURATION);
-            return queryResult;
-        } finally {
-            DbUtils.closeQuietly(statement);
-            executor.shutdownNow();
+        } catch (Exception e) {
+            throw new PolicyEngineException("Error Running Query");
         }
     }
 
-    private void cancelStatement(Statement statement, Exception ex) {
-        System.out.println("Cancelling the current query statement. Timeout occurred");
+    /**
+     * Compute the cost by execution time of the query and writes the results to file
+     * @param predicates
+     * @param resultCheck
+     * @return
+     * @throws PolicyEngineException
+     */
+
+    public QueryResult runTimedQueryWithRepetitions(String predicates, Boolean resultCheck, int repetitions) throws PolicyEngineException {
         try {
-            statement.cancel();
-        } catch (SQLException exception) {
-            throw new PolicyEngineException("Calling cancel() on the Statement issued exception. Details are: " + exception);
+            QueryResult queryResult = new QueryResult();
+            queryResult.setResultsCheck(resultCheck);
+            List<Long> gList = new ArrayList<>();
+            for (int i = 0; i < repetitions; i++)
+                gList.add(queryExecutor.runWithThread(SELECT_ALL_WHERE + predicates,
+                        queryResult).getTimeTaken().toMillis());
+            Duration gCost;
+            if(repetitions >= 3) {
+                Collections.sort(gList);
+                List<Long> clippedGList = gList.subList(1, repetitions - 1);
+                gCost = Duration.ofMillis(clippedGList.stream().mapToLong(i -> i).sum() / clippedGList.size());
+            }
+            else{
+                gCost =  Duration.ofMillis(gList.stream().mapToLong(i -> i).sum() / gList.size());
+
+            }
+            queryResult.setTimeTaken(gCost);
+            return queryResult;
+        } catch (Exception e) {
+            throw new PolicyEngineException("Error Running Query");
         }
     }
 
-    private class QueryExecutor implements  Callable<QueryResult>{
+    /**
+     * Compute the cost by execution time of the query
+     * @param predicates
+     * @return
+     * @throws PolicyEngineException
+     */
 
-        Statement statement;
-        String query;
-        QueryResult queryResult;
+    public Duration runTimedQuery(String predicates) throws PolicyEngineException {
+        try {
+            QueryResult queryResult = new QueryResult();
+            return queryExecutor.runWithThread(SELECT_ALL + predicates, queryResult).getTimeTaken();
+        } catch (Exception e) {
+            throw new PolicyEngineException("Error Running Query");
+        }
+    }
 
-        public QueryExecutor(Statement statement, String query, QueryResult queryResult) {
-            this.statement = statement;
-            this.query = query;
-            this.queryResult = queryResult;
+    /**
+     * Compute the cost by execution time of the query which includes a subquery clause
+     * @param completeQuery - including the FROM clause
+     * @return
+     * @throws PolicyEngineException
+     */
+
+    public QueryResult runTimedSubQuery(String completeQuery, boolean resultCheck) throws PolicyEngineException {
+        try {
+            QueryResult queryResult = new QueryResult();
+            queryResult.setResultsCheck(resultCheck);
+            return queryExecutor.runWithThread(completeQuery, queryResult);
+        } catch (Exception e) {
+            throw new PolicyEngineException("Error Running Query");
+        }
+    }
+
+
+    /**
+     * Execution time for guards which includes cost of sorting the results
+     * @param predicates
+     * @return
+     * @throws PolicyEngineException
+     */
+    public QueryResult runTimedQueryWithOutSorting(String predicates, boolean where) throws PolicyEngineException {
+        try {
+            QueryResult queryResult = new QueryResult();
+            if(!where)
+                return queryExecutor.runWithThread(SELECT_ALL + predicates, queryResult);
+            else
+                return queryExecutor.runWithThread(SELECT_ALL_WHERE + predicates, queryResult);
+        } catch (Exception e) {
+            throw new PolicyEngineException("Error Running Query");
+        }
+    }
+
+    /**
+     * @param full_query
+     * @return
+     * @throws PolicyEngineException
+     */
+    public QueryResult runTimedQueryWithOutSorting(String full_query) throws PolicyEngineException {
+        try {
+            QueryResult queryResult = new QueryResult();
+            return queryExecutor.runWithThread(full_query, queryResult);
+        } catch (Exception e) {
+            throw new PolicyEngineException("Error Running Query");
+        }
+    }
+
+
+    /**
+     * Execution time for guards which doesn't cost of sorting the results
+     * @throws PolicyEngineException
+     */
+    public QueryResult executeQuery(String predicates, boolean where, int repetitions) throws PolicyEngineException {
+        try {
+            QueryResult queryResult = new QueryResult();
+            String query;
+            if (!where)
+                query = SELECT_ALL + predicates;
+            else
+                query = SELECT_ALL_WHERE + predicates;
+            List<Long> gList = new ArrayList<>();
+            for (int i = 0; i < repetitions; i++)
+                gList.add(queryExecutor.runWithThread(query, queryResult).getTimeTaken().toMillis());
+            Duration gCost;
+            if (repetitions >= 3) {
+                Collections.sort(gList);
+                List<Long> clippedGList = gList.subList(1, repetitions - 1);
+                gCost = Duration.ofMillis(clippedGList.stream().mapToLong(i -> i).sum() / clippedGList.size());
+            } else {
+                gCost = Duration.ofMillis(gList.stream().mapToLong(i -> i).sum() / gList.size());
+
+            }
+            queryResult.setTimeTaken(gCost);
+            return queryResult;
+        } catch (Exception e) {
+            throw new PolicyEngineException("Error Running Query");
         }
 
-        @Override
-        public QueryResult call() throws Exception {
-            try {
-                Instant start = Instant.now();
-                ResultSet rs = statement.executeQuery(query);
-                Instant end = Instant.now();
-                if(queryResult.getResultsCheck())
-                    queryResult.setQueryResult(rs);
-                int rowcount = 0;
-                if (hasColumn(rs, "total")){
-                    rs.next();
-                    rowcount = rs.getInt(1);
-                }
-                else if (rs.last()) {
-                    rowcount = rs.getRow();
-                    rs.beforeFirst();
-                }
-                if(queryResult.getPathName() != null && queryResult.getFileName() != null){
-                    queryResult.writeResultsToFile(rs);
-                }
-                queryResult.setResultCount(rowcount);
-                queryResult.setTimeTaken(Duration.between(start, end));
-                return queryResult;
-            } catch (SQLException e) {
-                System.out.println("Exception raised by : " + query);
-                cancelStatement(statement, e);
-                e.printStackTrace();
-                throw new PolicyEngineException("Error Running Query");
-            }
-        }
+    }
 
-        public boolean hasColumn(ResultSet rs, String columnName) throws SQLException {
-            ResultSetMetaData rsmd = rs.getMetaData();
-            int columns = rsmd.getColumnCount();
-            for (int x = 1; x <= columns; x++) {
-                if (columnName.equals(rsmd.getColumnName(x))) {
-                    return true;
-                }
-            }
-            return false;
+    /**
+     * Simple counting query with(out) predicates
+     * @param predicates
+     * @return
+     * @throws PolicyEngineException
+     */
+    public long runCountingQuery(String predicates) throws PolicyEngineException {
+        try {
+            if(predicates != null)
+                return queryExecutor.runWithThread(SELECT_ALL_WHERE + predicates,
+                        new QueryResult()).resultCount;
+            else
+                return queryExecutor.runWithThread(SELECT_ALL, new QueryResult()).resultCount;
+        } catch (Exception e) {
+            throw new PolicyEngineException("Error Running Query");
         }
     }
 

@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.davidmoten.guavamini.Lists;
 import com.google.common.collect.Sets;
 import edu.uci.ics.tippers.common.PolicyConstants;
-import edu.uci.ics.tippers.db.MySQLQueryManager;
+import edu.uci.ics.tippers.db.QueryManager;
 
 import java.io.IOException;
 import java.sql.Timestamp;
@@ -68,7 +68,7 @@ public class BEPolicy {
     @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss", locale = "America/Phoenix")
     private Timestamp inserted_at;
 
-    private MySQLQueryManager mySQLQueryManager = new MySQLQueryManager();
+    private QueryManager queryManager = new QueryManager();
 
     public BEPolicy(){
         this.object_conditions = new ArrayList<ObjectCondition>();
@@ -337,7 +337,7 @@ public class BEPolicy {
     }
 
     public double estimateTableScanCost() {
-        return PolicyConstants.NUMBER_OR_TUPLES * (
+        return PolicyConstants.getNumberOfTuples() * (
                     PolicyConstants.ROW_EVALUATE_COST * PolicyConstants.NUMBER_OF_PREDICATES_EVALUATED *
                             countNumberOfPredicates());
     }
@@ -358,12 +358,12 @@ public class BEPolicy {
         }
         double cost;
         if(!evalOnly){
-            cost = PolicyConstants.NUMBER_OR_TUPLES * selected.computeL() *(PolicyConstants.IO_BLOCK_READ_COST  +
+            cost = PolicyConstants.getNumberOfTuples() * selected.computeL() *(PolicyConstants.IO_BLOCK_READ_COST  +
                     PolicyConstants.ROW_EVALUATE_COST * PolicyConstants.NUMBER_OF_PREDICATES_EVALUATED *
                             countNumberOfPredicates());
         }
         else{
-            cost = PolicyConstants.NUMBER_OR_TUPLES * selected.computeL() *
+            cost = PolicyConstants.getNumberOfTuples() * selected.computeL() *
                     PolicyConstants.ROW_EVALUATE_COST * PolicyConstants.NUMBER_OF_PREDICATES_EVALUATED *
                             countNumberOfPredicates();
         }
@@ -396,7 +396,7 @@ public class BEPolicy {
      */
     public double estimateCostForExtension(String attribute) {
         ObjectCondition selected = this.getObject_conditions().stream().filter(o -> o.getAttribute().equals(attribute)).findFirst().get();
-        double cost = PolicyConstants.NUMBER_OR_TUPLES * selected.computeL() *(PolicyConstants.IO_BLOCK_READ_COST  +
+        double cost = PolicyConstants.getNumberOfTuples() * selected.computeL() *(PolicyConstants.IO_BLOCK_READ_COST  +
                 PolicyConstants.ROW_EVALUATE_COST * PolicyConstants.NUMBER_OF_PREDICATES_EVALUATED *
                         countNumberOfPredicates());
         return cost;

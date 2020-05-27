@@ -57,8 +57,7 @@ public class GuardGenExp {
             BEExpression allowBeExpression = new BEExpression(allowPolicies);
             Duration guardGen = Duration.ofMillis(0);
             Instant fsStart = Instant.now();
-            SelectGuard gh = new SelectGuard(allowBeExpression, true, PolicyConstants.WIFI_DBH_ATTR_LIST,
-                    PolicyConstants.WIFI_DBH_RANGE_ATTR_LIST, PolicyConstants.WIFI_DBH_ATTRIBUTE_IND);
+            SelectGuard gh = new SelectGuard(allowBeExpression, true);
             Instant fsEnd = Instant.now();
             System.out.println(gh.createGuardedQuery(true));
             guardGen = guardGen.plus(Duration.between(fsStart, fsEnd));

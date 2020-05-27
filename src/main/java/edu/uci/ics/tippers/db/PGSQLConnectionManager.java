@@ -1,5 +1,6 @@
 package edu.uci.ics.tippers.db;
 
+import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.common.PolicyEngineException;
 
 import java.io.IOException;
@@ -22,7 +23,7 @@ public class PGSQLConnectionManager {
 
     private PGSQLConnectionManager() {
         try {
-            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("postgresql/local.properties");
+            InputStream inputStream = getClass().getClassLoader().getResourceAsStream(PolicyConstants.DBMS_LOCATION + PolicyConstants.DBMS_CREDENTIALS + ".properties");
             props = new Properties();
             props.load(inputStream);
 
@@ -44,13 +45,10 @@ public class PGSQLConnectionManager {
 
     public Connection getConnection() throws PolicyEngineException {
         try {
-
             Class.forName("org.postgresql.Driver");
-
         } catch (ClassNotFoundException e) {
             System.out.println("Driver not found");
             e.printStackTrace();
-
         }
 
         Connection connection;

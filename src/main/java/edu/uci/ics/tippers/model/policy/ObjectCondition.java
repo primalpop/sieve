@@ -20,7 +20,7 @@ import java.util.stream.Stream;
  */
 public class ObjectCondition extends BooleanCondition {
 
-    public ObjectCondition() {
+    public ObjectCondition(){
 
     }
 
@@ -372,52 +372,5 @@ public class ObjectCondition extends BooleanCondition {
         extended.getBooleanPredicates().add(bp1);
         extended.getBooleanPredicates().add(bp2);
         return extended;
-    }
-
-    /**
-     * Shifting the object condition by a random value such that original and new object condition overlaps
-     * Used to generate overlapping Policies
-     */
-    public void shift() {
-        String start, end;
-        if (this.getType().getID() == 4) { //Integer
-            int s = Integer.parseInt(this.getBooleanPredicates().get(0).getValue());
-            int e = Integer.parseInt(this.getBooleanPredicates().get(1).getValue());
-            if (this.getAttribute().equalsIgnoreCase(PolicyConstants.TEMPERATURE_ATTR)){
-                if (Math.random() > 0.3){
-                    int noise =  ((int) (1 + Math.random() * (3)));
-                    if (s - noise > PolicyConstants.LOW_TEMPERATURE)
-                        s -= noise;
-                    if (e + noise < PolicyConstants.HIGH_TEMPERATURE)
-                        e += noise;
-                }
-            }
-            else if (this.getAttribute().equalsIgnoreCase(PolicyConstants.ENERGY_ATTR)){
-                if (Math.random()> 0.3) {
-                    int noise =  ((int) (1 + Math.random() * (8)));
-                    if (s - noise > PolicyConstants.LOW_WEMO)
-                        s -= noise;
-                    if (e + noise < PolicyConstants.HIGH_WEMO)
-                        e += noise;
-                }
-            }
-            start = String.valueOf(s);
-            end = String.valueOf(e);
-        } else if (this.getType().getID() == 2) { //Timestamp
-            double hours [] = {1.0, 2.0, 3.0, 5.0, 10.0, 12.0, 24.0, 48.0};
-            int hourIndex = new Random().nextInt(hours.length);
-            double rHour = hours[hourIndex];
-            rHour = rHour * Math.random();
-            long milliseconds = (long)(rHour * 60.0 * 60.0 * 1000.0);
-            SimpleDateFormat sdf = new SimpleDateFormat(PolicyConstants.TIMESTAMP_FORMAT);
-            start = sdf.format(Timestamp.valueOf(this.getBooleanPredicates().get(0).getValue()).getTime() - milliseconds);
-            end = sdf.format(Timestamp.valueOf(this.getBooleanPredicates().get(1).getValue()).getTime() + milliseconds);
-        } else if (this.getType().getID() == 1) { //Type string and equality predicates, no shifting done
-            return;
-        } else {
-            throw new PolicyEngineException("Incompatible Attribute Type");
-        }
-        this.getBooleanPredicates().get(0).setValue(start);
-        this.getBooleanPredicates().get(1).setValue(end);
     }
 }

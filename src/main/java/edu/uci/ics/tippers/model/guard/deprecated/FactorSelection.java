@@ -1,7 +1,7 @@
 package edu.uci.ics.tippers.model.guard.deprecated;
 
 import edu.uci.ics.tippers.common.PolicyConstants;
-import edu.uci.ics.tippers.db.MySQLQueryManager;
+import edu.uci.ics.tippers.db.QueryManager;
 import edu.uci.ics.tippers.db.QueryResult;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
@@ -29,7 +29,7 @@ public class FactorSelection {
     //Approximate Cost of evaluating the expression
     double cost;
 
-    MySQLQueryManager mySQLQueryManager = new MySQLQueryManager();
+    QueryManager queryManager = new QueryManager();
 
     public FactorSelection(BEExpression expression) {
         this.expression = new BEExpression(expression);
@@ -79,7 +79,7 @@ public class FactorSelection {
     public void selectGuards(Boolean evalOnly) {
         Set<ObjectCondition> singletonSet = this.expression.getPolicies().stream()
                 .flatMap(p -> p.getObject_conditions().stream())
-                .filter(o -> PolicyConstants.WIFI_DBH_ATTR_LIST.contains(o.getAttribute()))
+                .filter(o -> PolicyConstants.ATTRIBUTES.contains(o.getAttribute()))
                 .collect(Collectors.toSet());
         oneTimeFactor(singletonSet, evalOnly);
     }
@@ -173,10 +173,10 @@ public class FactorSelection {
         if (this.getMultiplier().isEmpty()) {
             HashMap<ObjectCondition, BEExpression> remainderMap = new HashMap<>();
             for (BEPolicy bePolicy : this.expression.getPolicies()) {
-                double freq = PolicyConstants.NUMBER_OR_TUPLES;
+                double freq = PolicyConstants.getNumberOfTuples();
                 ObjectCondition gOC = new ObjectCondition();
                 for (ObjectCondition oc : bePolicy.getObject_conditions()) {
-                    if (!PolicyConstants.WIFI_DBH_ATTR_LIST.contains(oc.getAttribute())) continue;
+                    if (!PolicyConstants.ATTRIBUTES.contains(oc.getAttribute())) continue;
                     if (oc.computeL() < freq) {
                         freq = oc.computeL();
                         gOC = oc;
@@ -206,10 +206,10 @@ public class FactorSelection {
         if (this.getMultiplier().isEmpty()) {
             List<String> rQueries = new ArrayList<>();
             for (BEPolicy bePolicy : this.expression.getPolicies()) {
-                double freq = PolicyConstants.NUMBER_OR_TUPLES;
+                double freq = PolicyConstants.getNumberOfTuples();
                 ObjectCondition gOC = new ObjectCondition();
                 for (ObjectCondition oc : bePolicy.getObject_conditions()) {
-                    if (!PolicyConstants.WIFI_DBH_ATTR_LIST.contains(oc.getAttribute())) continue;
+                    if (!PolicyConstants.ATTRIBUTES.contains(oc.getAttribute())) continue;
                     if (oc.computeL() < freq) {
                         freq = oc.computeL();
                         gOC = oc;
@@ -273,7 +273,7 @@ public class FactorSelection {
             List<Long> cList = new ArrayList<>();
             QueryResult queryResult = new QueryResult();
             for (int i = 0; i < repetitions; i++) {
-                queryResult = mySQLQueryManager.runTimedQueryWithOutSorting(createCleanQueryFromGQ(kOb, gMap.get(kOb)), true);
+                queryResult = queryManager.runTimedQueryWithOutSorting(createCleanQueryFromGQ(kOb, gMap.get(kOb)), true);
                 cList.add(queryResult.getTimeTaken().toMillis());
             }
             Collections.sort(cList);
@@ -314,10 +314,10 @@ public class FactorSelection {
             List<Long> cList = new ArrayList<>();
             int gCount = 0, tCount = 0;
             for (int i = 0; i < repetitions; i++) {
-                QueryResult guardResult = mySQLQueryManager.runTimedQueryWithOutSorting(kOb.print(), true);
+                QueryResult guardResult = queryManager.runTimedQueryWithOutSorting(kOb.print(), true);
                 if (gCount == 0) gCount = guardResult.getResultCount();
                 gList.add(guardResult.getTimeTaken().toMillis());
-                QueryResult completeResult = mySQLQueryManager.runTimedQueryWithOutSorting(createCleanQueryFromGQ(kOb, gMap.get(kOb)), true);
+                QueryResult completeResult = queryManager.runTimedQueryWithOutSorting(createCleanQueryFromGQ(kOb, gMap.get(kOb)), true);
                 if (tCount == 0) tCount = completeResult.getResultCount();
                 cList.add(completeResult.getTimeTaken().toMillis());
 
