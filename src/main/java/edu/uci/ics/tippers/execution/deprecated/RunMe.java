@@ -51,7 +51,7 @@ public class RunMe {
 //        qg.constructWorkload(templates, numOfQueries);
 
 //        DataGeneration dataGeneration = new DataGeneration();
-//        dataGeneration.runScript("mysql/schema.sql");
+//        dataGeneration.runScript("mysql/wifi_schema.sql");
 //
 //        BEExpression beExpression = new BEExpression();
 //        beExpression.parseJSONList(Reader.readFile("/policies/policytestlong.json"));
