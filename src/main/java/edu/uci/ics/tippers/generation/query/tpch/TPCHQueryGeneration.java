@@ -70,7 +70,7 @@ public class TPCHQueryGeneration extends QueryGen {
                 query += order_clerks.stream().map(item -> "\"" + item + "\", ").collect(Collectors.joining(" "));
                 query = query.substring(0, query.length() - 2); //removing the extra comma
                 query += ")";
-                float selQuery = mySQLQueryManager.checkSelectivity(query);
+                float selQuery = queryManager.checkSelectivity(query);
                 String querySelType = checkSelectivityType(chosenSel, selQuery);
                 if(querySelType == null){
                     if(selType.equalsIgnoreCase("low") || selType.equalsIgnoreCase("medium")) {

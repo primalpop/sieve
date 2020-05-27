@@ -135,7 +135,7 @@ public class GuardExp {
         String delim = "";
         for (GuardPart gp: this.guardParts) {
             queryExp.append(delim);
-            queryExp.append(PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS_WHERE)
+            queryExp.append(PolicyConstants.SELECT_ALL_WHERE)
                     .append(gp.getGuard().print());
             queryExp.append(PolicyConstants.CONJUNCTION);
             queryExp.append(gp.getGuardPartition().createQueryFromPolices());
@@ -157,7 +157,7 @@ public class GuardExp {
         String delim = "";
         for (GuardPart gp: this.guardParts) {
             queryExp.append(delim);
-            queryExp.append(PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS_WHERE)
+            queryExp.append(PolicyConstants.SELECT_ALL_WHERE)
                     .append(gp.getGuard().print());
             delim = PolicyConstants.UNION;
         }
@@ -169,7 +169,7 @@ public class GuardExp {
     public double estimateCostofGuardScan(){
         double gcost = 0.0;
         for (GuardPart gp: this.guardParts) {
-            gcost += gp.getGuard().computeL() * PolicyConstants.NUMBER_OR_TUPLES * PolicyConstants.IO_BLOCK_READ_COST;
+            gcost += gp.getGuard().computeL() * PolicyConstants.getNumberOfTuples() * PolicyConstants.IO_BLOCK_READ_COST;
         }
         return gcost;
     }
@@ -180,7 +180,7 @@ public class GuardExp {
         String delim = "";
         for (GuardPart gp : this.guardParts) {
             queryExp.append(delim);
-            queryExp.append(PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS)
+            queryExp.append(PolicyConstants.SELECT_ALL)
                     .append(" where")
                     .append(gp.getGuard().print())
                     .append(PolicyConstants.CONJUNCTION);
@@ -198,9 +198,9 @@ public class GuardExp {
         if (union) {
             for (GuardPart gp : this.guardParts) {
                 queryExp.append(delim);
-                queryExp.append(PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS)
+                queryExp.append(PolicyConstants.SELECT_ALL)
                         .append(" force index (")
-                        .append(PolicyConstants.WIFI_DBH_ATTRIBUTE_IND.get(gp.getGuard().getAttribute()))
+                        .append(PolicyConstants.ATTRIBUTE_INDEXES.get(gp.getGuard().getAttribute()))
                         .append(" ) Where")
                         .append(gp.getGuard().print())
                         .append(PolicyConstants.CONJUNCTION);
@@ -209,7 +209,7 @@ public class GuardExp {
             }
         }
         else {
-            queryExp.append(PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS_WHERE);
+            queryExp.append(PolicyConstants.SELECT_ALL_WHERE);
             for (GuardPart gp: this.guardParts) {
                 queryExp.append(delim).append(gp.getGuard().print())
                         .append(PolicyConstants.CONJUNCTION);
@@ -228,9 +228,9 @@ public class GuardExp {
         if (union) {
             for (GuardPart gp : this.guardParts) {
                 queryExp.append(delim);
-                queryExp.append(PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS)
+                queryExp.append(PolicyConstants.SELECT_ALL)
                         .append(" force index (")
-                        .append(PolicyConstants.WIFI_DBH_ATTRIBUTE_IND.get(gp.getGuard().getAttribute()))
+                        .append(PolicyConstants.ATTRIBUTE_INDEXES.get(gp.getGuard().getAttribute()))
                         .append(" ) Where")
                         .append(gp.getGuard().print())
                         .append(PolicyConstants.CONJUNCTION);
@@ -241,7 +241,7 @@ public class GuardExp {
                 delim = PolicyConstants.UNION;
             }
         } else {
-            queryExp.append(PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS_WHERE);
+            queryExp.append(PolicyConstants.SELECT_ALL_WHERE);
             for (GuardPart gp : this.guardParts) {
                 queryExp.append(delim).append(gp.getGuard().print())
                         .append(PolicyConstants.CONJUNCTION);
@@ -268,9 +268,9 @@ public class GuardExp {
         if (union){
             for (GuardPart gp: this.guardParts) {
                 queryExp.append(delim);
-                queryExp.append(PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS)
+                queryExp.append(PolicyConstants.SELECT_ALL)
                         .append(" force index (")
-                        .append(PolicyConstants.WIFI_DBH_ATTRIBUTE_IND.get(gp.getGuard().getAttribute()))
+                        .append(PolicyConstants.ATTRIBUTE_INDEXES.get(gp.getGuard().getAttribute()))
                         .append(" ) Where")
                         .append(gp.getGuard().print())
                         .append(PolicyConstants.CONJUNCTION);
@@ -285,7 +285,7 @@ public class GuardExp {
             }
         }
         else {
-            queryExp.append(PolicyConstants.SELECT_ALL_SEMANTIC_OBSERVATIONS_WHERE);
+            queryExp.append(PolicyConstants.SELECT_ALL_WHERE);
             for (GuardPart gp: this.guardParts) {
                 queryExp.append(delim).append(gp.getGuard().print())
                         .append(PolicyConstants.CONJUNCTION);

@@ -1,7 +1,7 @@
 package edu.uci.ics.tippers.execution.PaperExperiments;
 
 import edu.uci.ics.tippers.common.PolicyConstants;
-import edu.uci.ics.tippers.db.MySQLQueryManager;
+import edu.uci.ics.tippers.db.QueryManager;
 import edu.uci.ics.tippers.db.QueryResult;
 import edu.uci.ics.tippers.fileop.Writer;
 import edu.uci.ics.tippers.generation.query.QueryExplainer;
@@ -26,14 +26,14 @@ public class ExperimentGuards {
 
     PolicyPersistor polper;
     QueryExplainer queryExplainer;
-    MySQLQueryManager mySQLQueryManager;
+    QueryManager queryManager;
 
     private static String RESULTS_FILE;
 
     public ExperimentGuards() {
         polper = new PolicyPersistor();
         queryExplainer = new QueryExplainer();
-        mySQLQueryManager = new MySQLQueryManager();
+        queryManager = new QueryManager();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
         RESULTS_FILE = "expts_3.2_results.csv";
@@ -61,7 +61,7 @@ public class ExperimentGuards {
             resultString.append("Guard Index").append(",");
 
 
-            QueryResult execResult = mySQLQueryManager.runTimedQueryExp(sieve_query, 3);
+            QueryResult execResult = queryManager.runTimedQueryExp(sieve_query, 3);
             execTime = execTime.plus(execResult.getTimeTaken());
             resultString.append(execTime.toMillis());
             System.out.println("Sieve Query: " + " Time: " + execTime.toMillis());

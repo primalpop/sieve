@@ -1,7 +1,7 @@
 package edu.uci.ics.tippers.model.guard.deprecated;
 
 import edu.uci.ics.tippers.common.PolicyConstants;
-import edu.uci.ics.tippers.db.MySQLQueryManager;
+import edu.uci.ics.tippers.db.QueryManager;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.policy.ObjectCondition;
 
@@ -17,7 +17,7 @@ public class Factorino {
 
     //Cost of evaluating the expression
     long cost;
-    private MySQLQueryManager mySQLQueryManager = new MySQLQueryManager();
+    private QueryManager queryManager = new QueryManager();
 
 
     public Factorino(List<ObjectCondition> multiplier, BEExpression quotient) {

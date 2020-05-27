@@ -3,7 +3,7 @@ package edu.uci.ics.tippers.manager;
 import edu.uci.ics.tippers.common.AttributeType;
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.db.MySQLConnectionManager;
-import edu.uci.ics.tippers.db.MySQLQueryManager;
+import edu.uci.ics.tippers.db.QueryManager;
 import edu.uci.ics.tippers.model.guard.GuardExp;
 import edu.uci.ics.tippers.model.guard.GuardPart;
 import edu.uci.ics.tippers.model.policy.BEExpression;
@@ -23,7 +23,7 @@ public class GuardPersistor {
 
     private static Connection connection = MySQLConnectionManager.getInstance().getConnection();
 
-    private static MySQLQueryManager mySQLQueryManager = new MySQLQueryManager();
+    private static QueryManager queryManager = new QueryManager();
 
     public static GuardPersistor getInstance() {
         return _instance;
@@ -92,7 +92,7 @@ public class GuardPersistor {
                     timeGe = new java.sql.Time(sdf.parse(gp.getGuard().getBooleanPredicates().get(0).getValue()).getTime());
                     timeLe = new java.sql.Time(sdf.parse(gp.getGuard().getBooleanPredicates().get(1).getValue()).getTime());
                 }
-                double gpSel = mySQLQueryManager.checkSelectivity(gp.getGuard().print());
+                double gpSel = queryManager.checkSelectivity(gp.getGuard().print());
                 if(ownerEq == 0)
                     gpStmt.setNull(2, Types.INTEGER);
                 else

@@ -1,7 +1,7 @@
 package edu.uci.ics.tippers.model.guard.deprecated;
 
 import edu.uci.ics.tippers.common.PolicyConstants;
-import edu.uci.ics.tippers.db.MySQLQueryManager;
+import edu.uci.ics.tippers.db.QueryManager;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
 import edu.uci.ics.tippers.model.policy.ObjectCondition;
@@ -14,7 +14,7 @@ public class PredicateExtension {
 
     FactorSelection gExpression;
     HashMap<ObjectCondition, BEExpression> guardMap;
-    MySQLQueryManager mySQLQueryManager = new MySQLQueryManager();
+    QueryManager queryManager = new QueryManager();
 
 
     public PredicateExtension(FactorSelection gExpression){
@@ -70,8 +70,8 @@ public class PredicateExtension {
     public void extendPredicate() {
         Map<ObjectCondition, ObjectCondition> replacementMap = new HashMap<>();
         HashMap<ObjectCondition, BEExpression> growMap = new HashMap<>(guardMap);
-        for (int i = 0; i < PolicyConstants.WIFI_DBH_ATTR_LIST.size(); i++) {
-            List<ObjectCondition> guards = getGuardsOnAttribute(PolicyConstants.WIFI_DBH_ATTR_LIST.get(i));
+        for (int i = 0; i < PolicyConstants.ATTRIBUTE_INDEXES.size(); i++) {
+            List<ObjectCondition> guards = getGuardsOnAttribute(PolicyConstants.ATTRIBUTE_INDEXES.get(i));
             Map<String, Double> memoized = new HashMap<>();
             for (int j = 0; j < guards.size(); j++) {
                 for (int k = j + 1; k < guards.size(); k++) {
@@ -94,7 +94,7 @@ public class PredicateExtension {
                 ObjectCondition m1 = null;
                 ObjectCondition m2 = null;
                 for (ObjectCondition g: growMap.keySet()) {
-                    if(!g.getAttribute().equalsIgnoreCase(PolicyConstants.WIFI_DBH_ATTR_LIST.get(i))) continue;
+                    if(!g.getAttribute().equalsIgnoreCase(PolicyConstants.ATTRIBUTE_INDEXES.get(i))) continue;
                     if(m1 != null && m2 != null) break;
                     if (g.hashCode() == Integer.parseInt(maxBenefitKey.split("\\.")[0])) m1 = g;
                     if (g.hashCode() == Integer.parseInt(maxBenefitKey.split("\\.")[1])) m2 = g;
@@ -117,8 +117,8 @@ public class PredicateExtension {
                     memoized.put(ocj.hashCode() + "" + ocM.hashCode(), benefit);
                 }
             }
-            chainEmUp(PolicyConstants.WIFI_DBH_ATTR_LIST.get(i), replacementMap,
-                    getGuardsOnAttribute(PolicyConstants.WIFI_DBH_ATTR_LIST.get(i)));
+            chainEmUp(PolicyConstants.ATTRIBUTE_INDEXES.get(i), replacementMap,
+                    getGuardsOnAttribute(PolicyConstants.ATTRIBUTE_INDEXES.get(i)));
         }
 
         //Rewriting the original expression
@@ -175,7 +175,7 @@ public class PredicateExtension {
             query.append(PolicyConstants.CONJUNCTION);
             query.append("(" +entry.getValue().createQueryFromPolices() + ")");
             long start_time = System.currentTimeMillis();
-            mySQLQueryManager.runTimedQuery(query.toString() ).toMillis();
+            queryManager.runTimedQuery(query.toString() ).toMillis();
             long end_time = System.currentTimeMillis();
             long difference = end_time - start_time;
             gcost += difference;

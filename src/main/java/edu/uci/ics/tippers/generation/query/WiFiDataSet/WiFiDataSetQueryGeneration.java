@@ -86,7 +86,7 @@ public class WiFiDataSetQueryGeneration extends QueryGen {
                 query += locPreds.stream().map(item -> "\"" + item + "\", ").collect(Collectors.joining(" "));
                 query = query.substring(0, query.length() - 2); //removing the extra comma
                 query += ")";
-                float selQuery = mySQLQueryManager.checkSelectivity(query);
+                float selQuery = queryManager.checkSelectivity(query);
                 String querySelType = checkSelectivityType(chosenSel, selQuery);
                 if(querySelType == null){
                     if(selType.equalsIgnoreCase("low") || selType.equalsIgnoreCase("medium")) {
@@ -202,7 +202,7 @@ public class WiFiDataSetQueryGeneration extends QueryGen {
                 query += userPreds.stream().map(item -> "\"" + item + "\", ").collect(Collectors.joining(" "));
                 query = query.substring(0, query.length() - 2); //removing the extra comma
                 query += ")";
-                float selQuery = mySQLQueryManager.checkSelectivity(query);
+                float selQuery = queryManager.checkSelectivity(query);
                 String querySelType = checkSelectivityType(chosenSel, selQuery);
                 if(querySelType == null){
                     if(selType.equalsIgnoreCase("low") || selType.equalsIgnoreCase("medium")) {
@@ -299,7 +299,7 @@ public class WiFiDataSetQueryGeneration extends QueryGen {
                 TimeStampPredicate tsPred = new TimeStampPredicate(pg.getDate("MIN"), i, "00:00", 1439);
                 query += String.format("start_date >= \"%s\" AND start_date <= \"%s\" ", tsPred.getStartDate().toString(),
                         tsPred.getEndDate().toString());
-                float selQuery = mySQLQueryManager.checkSelectivityFullQuery(query);
+                float selQuery = queryManager.checkSelectivityFullQuery(query);
                 String querySelType = checkStaticRangeSelectivity(selQuery);
                 if (querySelType == null) continue;
                 queries.add(new QueryStatement(query, 3, selQuery, querySelType,
@@ -327,7 +327,7 @@ public class WiFiDataSetQueryGeneration extends QueryGen {
                     tsPred.getEndTime().toString());
             String query_for_sel = String.format("start_time >= \"%s\" AND start_time <= \"%s\" ", tsPred.getStartTime().toString(),
                     tsPred.getEndTime().toString());
-            float sel = mySQLQueryManager.checkSelectivity(query_for_sel);
+            float sel = queryManager.checkSelectivity(query_for_sel);
             if (checkStaticRangeSelectivity(sel) == null) continue;
             queries.add(new QueryStatement(query, 4, sel,
                     checkStaticRangeSelectivity(sel), new Timestamp(System.currentTimeMillis())));

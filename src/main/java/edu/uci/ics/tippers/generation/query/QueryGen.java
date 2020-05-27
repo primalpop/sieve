@@ -1,8 +1,7 @@
 package edu.uci.ics.tippers.generation.query;
 
 import edu.uci.ics.tippers.db.MySQLConnectionManager;
-import edu.uci.ics.tippers.db.MySQLQueryManager;
-import edu.uci.ics.tippers.generation.policy.WiFiDataSet.PolicyGen;
+import edu.uci.ics.tippers.db.QueryManager;
 import edu.uci.ics.tippers.model.query.QueryStatement;
 
 import java.sql.*;
@@ -13,7 +12,7 @@ import java.util.Random;
 public abstract class QueryGen {
 
 
-    public MySQLQueryManager mySQLQueryManager;
+    public QueryManager queryManager;
     public Connection connection = MySQLConnectionManager.getInstance().getConnection();
     Random r;
     double lowSelDown, lowSelUp;
@@ -29,7 +28,7 @@ public abstract class QueryGen {
         highSelDown = 0.3;
         highSelUp = 0.5;
 
-        this.mySQLQueryManager = new MySQLQueryManager();
+        this.queryManager = new QueryManager();
         r = new Random();
     }
 

@@ -1,10 +1,13 @@
 package edu.uci.ics.tippers.generation.policy.WiFiDataSet;
 
+import com.google.common.collect.ImmutableList;
 import edu.uci.ics.tippers.common.AttributeType;
 import edu.uci.ics.tippers.common.PolicyConstants;
-import edu.uci.ics.tippers.db.MySQLQueryManager;
+import edu.uci.ics.tippers.common.PolicyEngineException;
+import edu.uci.ics.tippers.db.QueryManager;
 import edu.uci.ics.tippers.fileop.Writer;
 import edu.uci.ics.tippers.manager.FlatPolicyPersistor;
+import edu.uci.ics.tippers.model.data.UserProfile;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
 import edu.uci.ics.tippers.model.policy.ObjectCondition;
 import edu.uci.ics.tippers.model.policy.Operation;
@@ -15,10 +18,13 @@ import edu.uci.ics.tippers.model.tippers.dontuse.User;
 import edu.uci.ics.tippers.generation.data.DataGeneration;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Author primpap
@@ -31,7 +37,27 @@ public class SyntheticPolicy {
     List<User> users;
     Random r;
     Writer writer;
-    MySQLQueryManager mySQLQueryManager = new MySQLQueryManager();
+    QueryManager queryManager = new QueryManager();
+
+    //POLICY GENERATION PARAMETERS
+    public static final int LOW_TEMPERATURE = 55;
+
+    public static final int HIGH_TEMPERATURE = 75;
+
+    public static final int LOW_WEMO = 0;
+
+    public static final int HIGH_WEMO = 100;
+
+    public static final String START_TS = "2017-03-31 15:10:00 ";
+
+    public static final String END_TS = "2017-12-07 16:24:57";
+
+    public static final ImmutableList<String> ACTIVITIES = ImmutableList.of("class", "meeting", "seminar",
+            "private", "walking", "unknown", "work");
+
+    public static final List<String> USER_PROFILES = Stream.of(UserProfile.values()).map(UserProfile::getValue).collect(Collectors.toList());
+
+    public static final ImmutableList<Double> HOUR_EXTENSIONS = ImmutableList.of(144.0, 168.0, 180.0, 200.0, 300.0, 700.0, 1000.0);
 
     public SyntheticPolicy() {
 
@@ -45,9 +71,9 @@ public class SyntheticPolicy {
     }
 
     private long getRandomTimeBetweenTwoDates () {
-        long diff = Timestamp.valueOf(PolicyConstants.END_TS).getTime() -
-                Timestamp.valueOf(PolicyConstants.START_TS).getTime() + 1;
-        return Timestamp.valueOf(PolicyConstants.START_TS).getTime() + (long) (Math.random() * diff);
+        long diff = Timestamp.valueOf(END_TS).getTime() -
+                Timestamp.valueOf(START_TS).getTime() + 1;
+        return Timestamp.valueOf(START_TS).getTime() + (long) (Math.random() * diff);
     }
 
     private Timestamp getRandomTimeStamp() {
@@ -58,8 +84,8 @@ public class SyntheticPolicy {
     private Timestamp getEndingTimeInterval(Timestamp timestamp){
         if (timestamp == null)
             return getRandomTimeStamp();
-        int hourIndex = new Random().nextInt(PolicyConstants.HOUR_EXTENSIONS.size());
-        double rHour = PolicyConstants.HOUR_EXTENSIONS.get(hourIndex);
+        int hourIndex = new Random().nextInt(HOUR_EXTENSIONS.size());
+        double rHour = HOUR_EXTENSIONS.get(hourIndex);
 
         rHour = rHour * Math.random();
         Long milliseconds = (long)(rHour * 60.0 * 60.0 * 1000.0);
@@ -71,13 +97,13 @@ public class SyntheticPolicy {
 
         int temperature;
         if(temp == null)
-            return r.nextInt(PolicyConstants.HIGH_TEMPERATURE - PolicyConstants.LOW_TEMPERATURE) + PolicyConstants.LOW_TEMPERATURE;
+            return r.nextInt(HIGH_TEMPERATURE - LOW_TEMPERATURE) + LOW_TEMPERATURE;
         else
             temperature = Integer.parseInt(temp);
 
         int noise =  ((int) (1 + Math.random() * (4)));
 
-        if (temperature + noise < PolicyConstants.HIGH_TEMPERATURE){
+        if (temperature + noise < HIGH_TEMPERATURE){
             if (temperature + noise > temperature + 3) return temperature + 3;
             return temperature + noise;
         }
@@ -89,13 +115,13 @@ public class SyntheticPolicy {
 
         int energy;
         if(wemo == null)
-            return r.nextInt(PolicyConstants.HIGH_WEMO - PolicyConstants.LOW_WEMO) + PolicyConstants.LOW_WEMO;
+            return r.nextInt(HIGH_WEMO - LOW_WEMO) + LOW_WEMO;
         else
             energy = Integer.parseInt(wemo);
 
         int noise =  ((int) (1 + Math.random() * (20)));
 
-        if (energy + noise < PolicyConstants.HIGH_WEMO){
+        if (energy + noise < HIGH_WEMO){
             if (energy + noise > energy + 10) return energy + 10;
             return energy + noise;
         }
@@ -125,7 +151,7 @@ public class SyntheticPolicy {
                 rq.setStart_wemo(String.valueOf(getEnergy(null)));
                 rq.setEnd_wemo(String.valueOf(getEnergy(rq.getStart_wemo())));
             } else if (attribute.equalsIgnoreCase(PolicyConstants.ACTIVITY_ATTR)) {
-                rq.setActivity(PolicyConstants.ACTIVITIES.get(new Random().nextInt(PolicyConstants.ACTIVITIES.size())));
+                rq.setActivity(ACTIVITIES.get(new Random().nextInt(ACTIVITIES.size())));
             } else if (attribute.equalsIgnoreCase(PolicyConstants.TEMPERATURE_ATTR)){
                 rq.setStart_temp(String.valueOf(getTemperature(null)));
                 rq.setEnd_temp(String.valueOf(getTemperature(rq.getStart_temp())));
@@ -178,7 +204,7 @@ public class SyntheticPolicy {
                 oPolicy.setQuerier_conditions(querierConditions);
                 for (ObjectCondition objC: oPolicy.getObject_conditions()) {
                     objC.setPolicy_id(policyID);
-                    objC.shift();
+                    objC = shift(objC);
                 }
                 bePolicies.add(oPolicy);
             }
@@ -228,7 +254,7 @@ public class SyntheticPolicy {
                 rq.setStart_wemo(String.valueOf(getEnergy(null)));
                 rq.setEnd_wemo(String.valueOf(getEnergy(rq.getStart_wemo())));
             } else if (attribute.equalsIgnoreCase(PolicyConstants.ACTIVITY_ATTR)) {
-                rq.setActivity(PolicyConstants.ACTIVITIES.get(new Random().nextInt(PolicyConstants.ACTIVITIES.size())));
+                rq.setActivity(ACTIVITIES.get(new Random().nextInt(ACTIVITIES.size())));
             } else if (attribute.equalsIgnoreCase(PolicyConstants.TEMPERATURE_ATTR)){
                 rq.setStart_temp(String.valueOf(getTemperature(null)));
                 rq.setEnd_temp(String.valueOf(getTemperature(rq.getStart_temp())));
@@ -271,7 +297,7 @@ public class SyntheticPolicy {
                 oPolicy.setPurpose("analysis");
                 for (ObjectCondition objC: oPolicy.getObject_conditions()) {
                     objC.setPolicy_id(String.valueOf(i));
-                    objC.shift();
+                    objC = shift(objC);
                 }
                 bePolicies.add(oPolicy);
             }
@@ -376,6 +402,55 @@ public class SyntheticPolicy {
         }
         writer.writeJSONToFile(bePolicies, PolicyConstants.BE_POLICY_DIR, null);
         return bePolicies;
+    }
+
+    /**
+     * Shifting the object condition by a random value such that original and new object condition overlaps
+     * Used to generate overlapping Policies
+     * TODO: refactored and not debugged
+     */
+    public ObjectCondition shift(ObjectCondition oc) {
+        String start, end;
+        if (oc.getType().getID() == 4) { //Integer
+            int s = Integer.parseInt(oc.getBooleanPredicates().get(0).getValue());
+            int e = Integer.parseInt(oc.getBooleanPredicates().get(1).getValue());
+            if (oc.getAttribute().equalsIgnoreCase(PolicyConstants.TEMPERATURE_ATTR)){
+                if (Math.random() > 0.3){
+                    int noise =  ((int) (1 + Math.random() * (3)));
+                    if (s - noise > LOW_TEMPERATURE)
+                        s -= noise;
+                    if (e + noise < HIGH_TEMPERATURE)
+                        e += noise;
+                }
+            }
+            else if (oc.getAttribute().equalsIgnoreCase(PolicyConstants.ENERGY_ATTR)){
+                if (Math.random()> 0.3) {
+                    int noise =  ((int) (1 + Math.random() * (8)));
+                    if (s - noise > LOW_WEMO)
+                        s -= noise;
+                    if (e + noise < HIGH_WEMO)
+                        e += noise;
+                }
+            }
+            start = String.valueOf(s);
+            end = String.valueOf(e);
+        } else if (oc.getType().getID() == 2) { //Timestamp
+            double hours [] = {1.0, 2.0, 3.0, 5.0, 10.0, 12.0, 24.0, 48.0};
+            int hourIndex = new Random().nextInt(hours.length);
+            double rHour = hours[hourIndex];
+            rHour = rHour * Math.random();
+            long milliseconds = (long)(rHour * 60.0 * 60.0 * 1000.0);
+            SimpleDateFormat sdf = new SimpleDateFormat(PolicyConstants.TIMESTAMP_FORMAT);
+            start = sdf.format(Timestamp.valueOf(oc.getBooleanPredicates().get(0).getValue()).getTime() - milliseconds);
+            end = sdf.format(Timestamp.valueOf(oc.getBooleanPredicates().get(1).getValue()).getTime() + milliseconds);
+        } else if (oc.getType().getID() == 1) { //Type string and equality predicates, no shifting done
+            return oc;
+        } else {
+            throw new PolicyEngineException("Incompatible Attribute Type");
+        }
+        oc.getBooleanPredicates().get(0).setValue(start);
+        oc.getBooleanPredicates().get(1).setValue(end);
+        return oc;
     }
 
 

@@ -12,7 +12,6 @@ import java.util.stream.IntStream;
 public class QueryExplainer {
 
     private static Connection connection = MySQLConnectionManager.getInstance().getConnection();
-    private static final int NUMBER_OF_BLOCKS = 6365;
 
     public QExplain access_method(QueryStatement queryStatement){
         PreparedStatement explainStm = null;
@@ -80,7 +79,7 @@ public class QueryExplainer {
         if(qe.getAccess_method() == null) return 0.3; //Linear scan
         else {
             int total_rows = qe.getNum_rows().stream().reduce(1, (a, b) -> a * b);
-            return (double) (total_rows)/(PolicyConstants.NUMBER_OR_TUPLES); //Index scan
+            return (double) (total_rows)/(PolicyConstants.getNumberOfTuples()); //Index scan
         }
     }
 

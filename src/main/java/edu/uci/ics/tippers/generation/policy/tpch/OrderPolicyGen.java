@@ -13,6 +13,8 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class OrderPolicyGen {
 
@@ -24,6 +26,8 @@ public class OrderPolicyGen {
     private HashMap<Integer, List<String>> customer_clerks;
     private HashMap<Integer, String> customer_profile;
     private HashMap<String, List<Integer>> clerks_customers;
+    private static final List<String> ORDER_PROFILES = Stream.of(OrderProfile.values()).map(OrderProfile::getPriority).collect(Collectors.toList());
+
 
     private final int GROUP_MEMBER_ACTIVE_LIMIT = 10;
     private final double TIMESTAMP_CHANCE = 0.3;
@@ -232,8 +236,8 @@ public class OrderPolicyGen {
         List<String> s_clerks = randomClerks(orderClerks, Math.min(ACTIVE_GROUP_CHOICES, orderClerks.size()));
         for (int i = 0; i < ACTIVE_CHOICES; i++) {
             String querierProfile = null;
-            if (Math.random() > (float) 1 / PolicyConstants.ORDER_PROFILES.size())
-                querierProfile = PolicyConstants.ORDER_PROFILES.get(new Random().nextInt(PolicyConstants.ORDER_PROFILES.size()));
+            if (Math.random() > (float) 1 / ORDER_PROFILES.size())
+                querierProfile = ORDER_PROFILES.get(new Random().nextInt(ORDER_PROFILES.size()));
             for (int j = 0; j < s_clerks.size(); j++) {
                 List<Integer> queriers = getListOfCustomers(s_clerks.get(j), querierProfile, GROUP_MEMBER_ACTIVE_LIMIT);
                 DatePredicate datePred = null;
@@ -246,7 +250,7 @@ public class OrderPolicyGen {
                 double seed = r.nextGaussian() * TOTAL_PRICE_STD + TOTAL_PRICE_AVG;
                 int price_offset = Math.max(1, r.nextInt(5));
                 PricePredicate totalPricePed = new PricePredicate(seed - TOTAL_PRICE_STD / price_offset, seed + TOTAL_PRICE_STD / price_offset);
-                String orderPriorityPred = PolicyConstants.ORDER_PROFILES.get(r.nextInt(PolicyConstants.ORDER_PROFILES.size()));
+                String orderPriorityPred = ORDER_PROFILES.get(r.nextInt(ORDER_PROFILES.size()));
                 for (int querier : queriers) {
                     if (querier == cust_key) continue;
                     activePolicies.add(tpg.generatePolicies(querier, cust_key, null, null, totalPricePed,

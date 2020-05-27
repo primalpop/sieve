@@ -65,7 +65,7 @@ public class GuardPart {
      * TODO: Replace PolicyConstants.NUMBER_OF_PREDICATES_EVALUATED (alpha) with numbers from policy efficacy check
      */
     public double estimateCostOfInline(){
-        return PolicyConstants.NUMBER_OR_TUPLES * guard.computeL()
+        return PolicyConstants.getNumberOfTuples() * guard.computeL()
                 * guardPartition.getPolicies().size() * PolicyConstants.NUMBER_OF_PREDICATES_EVALUATED
                 * PolicyConstants.POLICY_EVAL_COST;
     }
@@ -74,6 +74,6 @@ public class GuardPart {
      * cost = size(D) * sel(g) * (udf_invocation_cost * policy_eval_cost)
      */
     public double estimateCostOfUDF(){
-        return  PolicyConstants.NUMBER_OR_TUPLES * guard.computeL() * PolicyConstants.UDF_INVOCATION_COST;
+        return  PolicyConstants.getNumberOfTuples() * guard.computeL() * PolicyConstants.UDF_INVOCATION_COST;
     }
 }

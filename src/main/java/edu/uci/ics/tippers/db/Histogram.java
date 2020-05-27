@@ -11,6 +11,7 @@ import edu.uci.ics.tippers.fileop.Writer;
 import edu.uci.ics.tippers.model.guard.Bucket;
 
 import java.io.*;
+import java.nio.file.Paths;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -26,18 +27,16 @@ public class Histogram {
 
     private static Histogram _instance;
 
-    private Histogram(List<String> attribute_names) {
-        File histDir = new File(PolicyConstants.HISTOGRAM_DIR);
+    private Histogram() {
+        File histDir = new File(String.valueOf(Paths.get(PolicyConstants.HISTOGRAM_DIR + PolicyConstants.TABLE_NAME.toLowerCase())));
         if (histDir.isDirectory() && Objects.requireNonNull(histDir.list()).length == 0)
-            writeBuckets();
-        else retrieveBuckets(attribute_names);
+            writeBuckets(PolicyConstants.TABLE_NAME);
+        else retrieveBuckets(PolicyConstants.ATTRIBUTES);
     }
 
     public static Histogram getInstance() {
-        //TODO: Pass this as an argument from whereever it is called
-        List<String> attribute_names = PolicyConstants.TPCH_ORDERS_ATTR_LIST;
         if (_instance == null)
-            _instance = new Histogram(attribute_names);
+            _instance = new Histogram();
         return _instance;
     }
 
@@ -242,34 +241,35 @@ public class Histogram {
         return hBuckets;
     }
 
-    //TODO: change it from a static method to run automatically if the json files are not present
-    public static void writeBuckets() {
-        //For WiFiDataSet
-//        writer.writeJSONToFile(getHistogram(PolicyConstants.START_DATE, "Date", "singleton"),
-//                PolicyConstants.HISTOGRAM_DIR, PolicyConstants.START_DATE);
-//        writer.writeJSONToFile(getHistogram(PolicyConstants.START_TIME, "Time", "equiheight"),
-//                PolicyConstants.HISTOGRAM_DIR, PolicyConstants.START_TIME);
-//        writer.writeJSONToFile(getHistogram(PolicyConstants.USERID_ATTR, "Integer", "equiheight"),
-//                PolicyConstants.HISTOGRAM_DIR, PolicyConstants.USERID_ATTR);
-//        writer.writeJSONToFile(getHistogram(PolicyConstants.LOCATIONID_ATTR, "String", "singleton"),
-//                PolicyConstants.HISTOGRAM_DIR, PolicyConstants.LOCATIONID_ATTR);
-//        writer.writeJSONToFile(getHistogram(PolicyConstants.GROUP_ATTR, "String", "singleton"),
-//                PolicyConstants.HISTOGRAM_DIR, PolicyConstants.GROUP_ATTR);
-//        writer.writeJSONToFile(getHistogram(PolicyConstants.PROFILE_ATTR, "String", "singleton"),
-//                PolicyConstants.HISTOGRAM_DIR, PolicyConstants.PROFILE_ATTR);
-        //For Orders table from TPCH
-        writer.writeJSONToFile(getHistogram(PolicyConstants.ORDER_CUSTOMER_KEY, "Integer", "equiheight"),
-                PolicyConstants.HISTOGRAM_DIR, PolicyConstants.ORDER_CUSTOMER_KEY);
-        writer.writeJSONToFile(getHistogram(PolicyConstants.ORDER_PRIORITY, "String", "singleton"),
-                PolicyConstants.HISTOGRAM_DIR, PolicyConstants.ORDER_PRIORITY);
-        writer.writeJSONToFile(getHistogram(PolicyConstants.ORDER_CLERK, "String", "singleton"),
-                PolicyConstants.HISTOGRAM_DIR, PolicyConstants.ORDER_CLERK);
-        writer.writeJSONToFile(getHistogram(PolicyConstants.ORDER_PROFILE, "String", "singleton"),
-                PolicyConstants.HISTOGRAM_DIR, PolicyConstants.ORDER_PROFILE);
-        writer.writeJSONToFile(getHistogram(PolicyConstants.ORDER_DATE, "Date", "equiheight"),
-                PolicyConstants.HISTOGRAM_DIR, PolicyConstants.ORDER_DATE);
-        writer.writeJSONToFile(getHistogram(PolicyConstants.ORDER_TOTAL_PRICE, "Double", "equiheight"),
-                PolicyConstants.HISTOGRAM_DIR, PolicyConstants.ORDER_TOTAL_PRICE);
+    public void writeBuckets(String table_name) {
+        if(table_name.equalsIgnoreCase(PolicyConstants.WIFI_TABLE)) {
+            writer.writeJSONToFile(getHistogram(PolicyConstants.START_DATE, "Date", "singleton"),
+                    PolicyConstants.HISTOGRAM_DIR, PolicyConstants.START_DATE);
+            writer.writeJSONToFile(getHistogram(PolicyConstants.START_TIME, "Time", "equiheight"),
+                    PolicyConstants.HISTOGRAM_DIR, PolicyConstants.START_TIME);
+            writer.writeJSONToFile(getHistogram(PolicyConstants.USERID_ATTR, "Integer", "equiheight"),
+                    PolicyConstants.HISTOGRAM_DIR, PolicyConstants.USERID_ATTR);
+            writer.writeJSONToFile(getHistogram(PolicyConstants.LOCATIONID_ATTR, "String", "singleton"),
+                    PolicyConstants.HISTOGRAM_DIR, PolicyConstants.LOCATIONID_ATTR);
+            writer.writeJSONToFile(getHistogram(PolicyConstants.GROUP_ATTR, "String", "singleton"),
+                    PolicyConstants.HISTOGRAM_DIR, PolicyConstants.GROUP_ATTR);
+            writer.writeJSONToFile(getHistogram(PolicyConstants.PROFILE_ATTR, "String", "singleton"),
+                    PolicyConstants.HISTOGRAM_DIR, PolicyConstants.PROFILE_ATTR);
+        }
+        else if(table_name.equalsIgnoreCase(PolicyConstants.ORDERS_TABLE)) {
+            writer.writeJSONToFile(getHistogram(PolicyConstants.ORDER_CUSTOMER_KEY, "Integer", "equiheight"),
+                    PolicyConstants.HISTOGRAM_DIR, PolicyConstants.ORDER_CUSTOMER_KEY);
+            writer.writeJSONToFile(getHistogram(PolicyConstants.ORDER_PRIORITY, "String", "singleton"),
+                    PolicyConstants.HISTOGRAM_DIR, PolicyConstants.ORDER_PRIORITY);
+            writer.writeJSONToFile(getHistogram(PolicyConstants.ORDER_CLERK, "String", "singleton"),
+                    PolicyConstants.HISTOGRAM_DIR, PolicyConstants.ORDER_CLERK);
+            writer.writeJSONToFile(getHistogram(PolicyConstants.ORDER_PROFILE, "String", "singleton"),
+                    PolicyConstants.HISTOGRAM_DIR, PolicyConstants.ORDER_PROFILE);
+            writer.writeJSONToFile(getHistogram(PolicyConstants.ORDER_DATE, "Date", "equiheight"),
+                    PolicyConstants.HISTOGRAM_DIR, PolicyConstants.ORDER_DATE);
+            writer.writeJSONToFile(getHistogram(PolicyConstants.ORDER_TOTAL_PRICE, "Double", "equiheight"),
+                    PolicyConstants.HISTOGRAM_DIR, PolicyConstants.ORDER_TOTAL_PRICE);
+        }
     }
 
     public Map<String, List<Bucket>> getBucketMap() {

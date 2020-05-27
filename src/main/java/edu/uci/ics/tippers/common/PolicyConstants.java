@@ -1,199 +1,161 @@
 package edu.uci.ics.tippers.common;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import edu.uci.ics.tippers.model.data.UserProfile;
+import edu.uci.ics.tippers.db.QueryManager;
 import edu.uci.ics.tippers.model.policy.Operation;
 import edu.uci.ics.tippers.model.policy.QuerierCondition;
-import edu.uci.ics.tippers.model.tpch.OrderProfile;
+import org.apache.commons.configuration2.Configuration;
+import org.apache.commons.configuration2.PropertiesConfiguration;
+import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder;
+import org.apache.commons.configuration2.builder.fluent.Configurations;
+import org.apache.commons.configuration2.builder.fluent.Parameters;
+import org.apache.commons.configuration2.convert.DefaultListDelimiterHandler;
+import org.apache.commons.configuration2.ex.ConfigurationException;
 
+import java.io.File;
 import java.time.Duration;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
-import java.time.temporal.ChronoField;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.*;
 
-/**
- * Author primpap
- */
+
+
 public class PolicyConstants {
 
+    public static String DBMS_CHOICE;
+    public static String DBMS_LOCATION;
+    public static String DBMS_CREDENTIALS;
+    public static String TABLE_NAME;
+    public static String DATE_FORMAT;
+    public static String TIME_FORMAT;
+    public static String TIMESTAMP_FORMAT;
+
+    public static String SELECT_ALL;
+    public static String SELECT_ALL_WHERE;
+
+    //Database related
+    public static long INFINTIY ;
+    public static int BATCH_SIZE_INSERTION ;
+    public static Duration MAX_DURATION;
+    public static double IO_BLOCK_READ_COST;
+    public static double MEMORY_BLOCK_READ_COST ;
+    public static double ROW_EVALUATE_COST ;
+    public static double UDF_INVOCATION_COST;
+    public static double POLICY_EVAL_COST ;
+    public static double NUMBER_OF_PREDICATES_EVALUATED;
+
+    //Dataset related
+    public static List<String> ATTRIBUTES;
+    public static List<String> INDEXED_ATTRIBUTES;
+    public static List<String> RANGED_ATTRIBUTES;
+    public static Map<String, String> ATTRIBUTE_INDEXES;
+
+    private static long NUMBER_OF_TUPLES = 0;
+
+    private PolicyConstants(){
+
+    }
+
+    public static void initialize(){
+
+        Configurations configs = new Configurations();
+        try {
+            Configuration datasetConfig = configs.properties("experiment/dataset.properties");
+            DBMS_LOCATION = datasetConfig.getString("location");
+            DBMS_CREDENTIALS = datasetConfig.getString("credentials");
+            DBMS_CHOICE = datasetConfig.getString("dbms");
+            DATE_FORMAT = datasetConfig.getString("date_format");
+            TIME_FORMAT = datasetConfig.getString("time_format");
+            TIMESTAMP_FORMAT = datasetConfig.getString("timestamp_format");
+            TABLE_NAME = datasetConfig.getString("table_name");
+
+            SELECT_ALL = "Select * from " + PolicyConstants.TABLE_NAME + " ";
+            SELECT_ALL_WHERE = "Select * from " + PolicyConstants.TABLE_NAME + " where ";
+
+            Configuration dbmsConfig = configs.properties("experiment/" + DBMS_CHOICE + ".properties");
+            INFINTIY = dbmsConfig.getLong("infinity");
+            BATCH_SIZE_INSERTION = dbmsConfig.getInt("batch_size");
+            MAX_DURATION = Duration.ofMillis(dbmsConfig.getLong("timeout"));
+            IO_BLOCK_READ_COST =dbmsConfig.getDouble("io_block_read_cost");
+            MEMORY_BLOCK_READ_COST = dbmsConfig.getDouble("memory_block_read_cost");
+            ROW_EVALUATE_COST = dbmsConfig.getDouble("row_evaluate_cost");
+            UDF_INVOCATION_COST = dbmsConfig.getDouble("udf_invocation_cost");
+            POLICY_EVAL_COST = dbmsConfig.getDouble("policy_eval_cost");
+            NUMBER_OF_PREDICATES_EVALUATED = dbmsConfig.getDouble("number_of_predicates_evaluated");
+
+            Parameters params = new Parameters();
+            FileBasedConfigurationBuilder<PropertiesConfiguration> builder =
+                    new FileBasedConfigurationBuilder<PropertiesConfiguration>(
+                            PropertiesConfiguration.class).configure(params.fileBased()
+                            .setListDelimiterHandler(new DefaultListDelimiterHandler(','))
+                            .setFile(new File("src/main/resources/experiment/" + TABLE_NAME.toLowerCase() + ".properties")));
+            PropertiesConfiguration tableConfig = builder.getConfiguration();
+
+            ATTRIBUTES = tableConfig.getList(String.class, "attrs");
+            INDEXED_ATTRIBUTES = tableConfig.getList(String.class, "indexed_attrs");
+            RANGED_ATTRIBUTES = tableConfig.getList(String.class, "range_attrs");
+            ATTRIBUTE_INDEXES = new HashMap<>();
+            for (int i = 0; i < ATTRIBUTES.size(); i++) {
+                ATTRIBUTE_INDEXES.put(ATTRIBUTES.get(i), tableConfig.getString(ATTRIBUTES.get(i)));
+            }
+        }
+        catch (ConfigurationException cex) {
+            cex.printStackTrace();
+        }
+    }
+
+
+    public static long getNumberOfTuples(){
+        if(NUMBER_OF_TUPLES == 0){
+            QueryManager queryManager  = new QueryManager();
+            NUMBER_OF_TUPLES = queryManager.runCountingQuery(null);
+        }
+        return NUMBER_OF_TUPLES;
+    }
+
+    //Simple Constants
     public static final String CONJUNCTION = " AND ";
-
     public static final String DISJUNCTION = " OR ";
-
     public static final String UNION  = " UNION ";
-
     public static final String UNION_ALL = " UNION ALL ";
-
-    //EXPERIMENTAL PARAMETERS
-    //TODO: Initialize this from the database
-    public static final long NUMBER_OR_TUPLES = 3896277;
-
-    public static final long INFINTIY = 10000000000000L;
-
-    public static final int BATCH_SIZE_INSERTION = 50000;
-
-    public static final Duration MAX_DURATION = Duration.ofSeconds(10000000, 0);
-
-    //SERVER COST AND ENGINE COST PARAMETERS DEFAULT VALUES FROM MYSQL
-    public static final double IO_BLOCK_READ_COST = 1;
-
-    public static final double MEMORY_BLOCK_READ_COST = 0.25;
-
-    public static final double ROW_EVALUATE_COST = 0.01;
-
-    public static final double KEY_COMPARE_COST = 0.1;
-
-    public static final double UDF_INVOCATION_COST = 0.00054; //includes cost of policy evaluation
-
-    public static final double POLICY_EVAL_COST = 0.0000044;
-
-    public static final double NUMBER_OF_PREDICATES_EVALUATED = 0.66;
-
-    public static final String DATE_FORMAT = "yyyy-MM-dd";
-
-    public static final String TIME_FORMAT = "HH:mm:ss";
-
-    //TIMESTAMP FORMAT
-    public static final String TIMESTAMP_FORMAT = "yyyy-MM-dd HH:mm:ss";
-
-    //QUERIES FOR EXPERIMENTATION
-    public static final String SELECT_ALL_SEMANTIC_OBSERVATIONS = "Select * from PRESENCE  ";
-
-    public static final String SELECT_ALL_SEMANTIC_OBSERVATIONS_WHERE = "Select * from PRESENCE WHERE ";
-
-    public static final String ORDER_BY_ID = " order by id ";
-
-    //POLICY GENERATION PARAMETERS
-    public static final int LOW_TEMPERATURE = 55;
-
-    public static final int HIGH_TEMPERATURE = 75;
-
-    public static final int LOW_WEMO = 0;
-
-    public static final int HIGH_WEMO = 100;
-
-    public static final String START_TS = "2017-03-31 15:10:00 ";
-
-    public static final String END_TS = "2017-12-07 16:24:57";
-
-    public static final ImmutableList<String> ACTIVITIES = ImmutableList.of("class", "meeting", "seminar",
-            "private", "walking", "unknown", "work");
-
-    public static final List<String> USER_PROFILES = Stream.of(UserProfile.values()).map(UserProfile::getValue).collect(Collectors.toList());
-
-    public static final ImmutableList<Double> HOUR_EXTENSIONS = ImmutableList.of(144.0, 168.0, 180.0, 200.0, 300.0, 700.0, 1000.0);
-
-    //TEMPORARY FIX: Querier Conditions
-    public static final ImmutableList<QuerierCondition> DEFAULT_QC = ImmutableList.
-            of(new QuerierCondition("test", "policy_type",AttributeType.STRING, Operation.EQ,"user"),
-                    new QuerierCondition("test", "querier", AttributeType.STRING, Operation.EQ, "10"));
-
-    //ATTRIBUTE NAMES
-    public static final ImmutableList<String> WIFI_DBH_ATTR_LIST = ImmutableList.of("user_id", "location_id", "user_profile",
-            "user_group", "start_date", "start_time");
-
-    //INDEXED ATTRIBUTES
-    public static final ImmutableList<String> WIFI_DBH_INDEX_ATTRS = ImmutableList.of("user_id", "location_id", "user_profile",
-            "user_group", "start_date", "start_time");
-
-    //RANGED ATTRIBUTE NAMES
-    public static final ImmutableList<String> WIFI_DBH_RANGE_ATTR_LIST = ImmutableList.of("start_date", "start_time");
-
-    public static final String START_DATE = "start_date";
-
-    public static final String START_TIME = "start_time";
-
-    public static final String LOCATIONID_ATTR = "location_id";
-
-    public static final String USERID_ATTR = "user_id";
-
-    public static final String GROUP_ATTR = "user_group";
-
-    public static final String PROFILE_ATTR = "user_profile";
-
-    //TODO: Read this automatically
-    //Indices available in the database
-    public static final ImmutableMap<String, String> WIFI_DBH_ATTRIBUTE_IND =
-            new ImmutableMap.Builder<String, String>()
-                    .put(PolicyConstants.USERID_ATTR, "user_hash")
-                    .put(PolicyConstants.GROUP_ATTR, "group_hash")
-                    .put(PolicyConstants.PROFILE_ATTR, "profile_hash")
-                    .put(PolicyConstants.START_TIME, "time_tree")
-                    .put(PolicyConstants.START_DATE, "date_tree")
-                    .put(PolicyConstants.LOCATIONID_ATTR, "loc_hash")
-                    .build();
-
-    //Auxiliary attributes
-
-    public static final String ENERGY_ATTR = "energy";
-
-    public static final String TEMPERATURE_ATTR = "temperature";
-
-    public static final String ACTIVITY_ATTR = "activity";
-
-    //TPCH orders table attributes
-
-    public static final String ORDER_KEY = "O_ORDERKEY";
-
-    public static final String ORDER_CUSTOMER_KEY = "O_CUSTKEY";
-
-    public static final String ORDER_STATUS = "O_ORDERSTATUS";
-
-    public static final String ORDER_TOTAL_PRICE = "O_TOTALPRICE";
-
-    public static final String ORDER_DATE = "O_ORDERDATE";
-
-    public static final String ORDER_PRIORITY = "O_ORDERPRIORITY";
-
-    public static final String ORDER_CLERK = "O_CLERK";
-
-    public static final String ORDER_PROFILE = "O_PROFILE";
-
-    public static final List<String> ORDER_PROFILES = Stream.of(OrderProfile.values()).map(OrderProfile::getPriority).collect(Collectors.toList());
-
-    //ATTRIBUTE NAMES
-    public static final ImmutableList<String> TPCH_ORDERS_ATTR_LIST = ImmutableList.of("O_TOTALPRICE", "O_ORDERDATE",
-            "O_ORDERPRIORITY", "O_CLERK", "O_PROFILE");
-
-    //RANGED ATTRIBUTE NAMES
-    public static final ImmutableList<String> TPCH_ORDERS_RANGE_ATTR_LIST = ImmutableList.of("O_TOTALPRICE", "O_ORDERDATE");
-
-    //TODO: Read this automatically
-    //Indices available in the database
-    public static final ImmutableMap<String, String> TPCH_ORDERS_ATTRIBUTE_IND =
-            new ImmutableMap.Builder<String, String>()
-                    .put(PolicyConstants.ORDER_TOTAL_PRICE, "total_price_tree")
-                    .put(PolicyConstants.ORDER_DATE, "date_tree")
-                    .put(PolicyConstants.ORDER_CLERK, "clerk_hash")
-                    .put(PolicyConstants.ORDER_PRIORITY, "priority_hash")
-                    .put(PolicyConstants.ORDER_PROFILE, "profile_hash")
-                    .build();
-
-
-    //DIRECTORY PATHS
-    public static final String BE_POLICY_DIR = "results/be_policies/";
-
-    public static final String HISTOGRAM_DIR = "histogram/";
-
-    public static final String QUERY_FILE = "queries.txt";
-
-    public static final String QUERY_RESULTS_DIR = "query_results/"; //results from traditional query rewrite
-
-    public static final String QR_FACTORIZED = "query_results/factorized/"; //results from greedy exact
-
-    public static final String QR_EXTENDED = "query_results/extended/"; //results from approximation/extension
-
-
 
     public static final String ACTION_ALLOW = "allow";
     public static final String ACTION_DENY = "deny";
     public static final String USER_INDIVIDUAL = "user";
     public static final String USER_GROUP = "group";
+
+    public static final String MYSQL_DBMS = "mysql";
+    public static final String PGSQL_DBMS = "postgres";
+    public static final String ORDERS_TABLE = "orders";
+    public static final String WIFI_TABLE = "presence";
+
+    //DIRECTORY PATHS
+    public static final String BE_POLICY_DIR = "results/be_policies/";
+    public static final String HISTOGRAM_DIR = "histogram/";
+
+    //Sample Querier Conditions
+    public static final ImmutableList<QuerierCondition> DEFAULT_QC = ImmutableList.
+            of(new QuerierCondition("test", "policy_type",AttributeType.STRING, Operation.EQ,"user"),
+                    new QuerierCondition("test", "querier", AttributeType.STRING, Operation.EQ, "10"));
+
+    //WiFiDataSet attributes
+    public static final String START_DATE = "start_date";
+    public static final String START_TIME = "start_time";
+    public static final String LOCATIONID_ATTR = "location_id";
+    public static final String USERID_ATTR = "user_id";
+    public static final String GROUP_ATTR = "user_group";
+    public static final String PROFILE_ATTR = "user_profile";
+    //Auxiliary attributes
+    public static final String ENERGY_ATTR = "energy";
+    public static final String TEMPERATURE_ATTR = "temperature";
+    public static final String ACTIVITY_ATTR = "activity";
+
+    //Orders table attributes
+    public static final String ORDER_KEY = "O_ORDERKEY";
+    public static final String ORDER_CUSTOMER_KEY = "O_CUSTKEY";
+    public static final String ORDER_STATUS = "O_ORDERSTATUS";
+    public static final String ORDER_TOTAL_PRICE = "O_TOTALPRICE";
+    public static final String ORDER_DATE = "O_ORDERDATE";
+    public static final String ORDER_PRIORITY = "O_ORDERPRIORITY";
+    public static final String ORDER_CLERK = "O_CLERK";
+    public static final String ORDER_PROFILE = "O_PROFILE";
+
 }

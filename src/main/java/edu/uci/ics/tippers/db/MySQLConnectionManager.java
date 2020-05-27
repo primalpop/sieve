@@ -1,5 +1,6 @@
 package edu.uci.ics.tippers.db;
 
+import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.common.PolicyEngineException;
 import org.apache.log4j.Logger;
 
@@ -27,7 +28,7 @@ public class MySQLConnectionManager {
 
     private MySQLConnectionManager() {
         try {
-            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("home/mini.properties");
+            InputStream inputStream = getClass().getClassLoader().getResourceAsStream(PolicyConstants.DBMS_LOCATION + PolicyConstants.DBMS_CREDENTIALS + ".properties");
             props = new Properties();
             props.load(inputStream);
 

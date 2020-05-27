@@ -1,7 +1,7 @@
 package edu.uci.ics.tippers.execution.PaperExperiments;
 
 import edu.uci.ics.tippers.common.PolicyConstants;
-import edu.uci.ics.tippers.db.MySQLQueryManager;
+import edu.uci.ics.tippers.db.QueryManager;
 import edu.uci.ics.tippers.db.QueryResult;
 import edu.uci.ics.tippers.fileop.Writer;
 import edu.uci.ics.tippers.generation.policy.WiFiDataSet.PolicyGen;
@@ -18,7 +18,7 @@ import java.util.List;
 
 public class DesignChoice2Experiment {
 
-    MySQLQueryManager mySQLQueryManager = new MySQLQueryManager();
+    QueryManager queryManager = new QueryManager();
     boolean guardTO = false, queryTO = false, sieveTO = false;
 
 
@@ -31,14 +31,14 @@ public class DesignChoice2Experiment {
                 + ") where " + queryPredicates + " ) as P where " + guardExp.createQueryWithOR();
         QueryResult execResult = null;
         if(!guardTO) {
-            execResult = mySQLQueryManager.runTimedQueryExp(guard_query_with_hint_inline, 3);
+            execResult = queryManager.runTimedQueryExp(guard_query_with_hint_inline, 3);
             rString.append(execResult.getTimeTaken().toMillis()).append(",");
             if(execResult.getTimeTaken().equals(PolicyConstants.MAX_DURATION)) guardTO = true;
         }
         else
             rString.append(PolicyConstants.MAX_DURATION.toMillis()).append(",");
         if(!queryTO) {
-            execResult = mySQLQueryManager.runTimedQueryExp(guard_query_with_hint_query, 3);
+            execResult = queryManager.runTimedQueryExp(guard_query_with_hint_query, 3);
             rString.append(execResult.getTimeTaken().toMillis()).append(",");
             if(execResult.getTimeTaken().equals(PolicyConstants.MAX_DURATION)) queryTO = true;
         }
@@ -50,7 +50,7 @@ public class DesignChoice2Experiment {
 
     private String runGuardExpt(String query, List<Integer> queriers){
         PolicyPersistor polper = new PolicyPersistor();
-        double querySel = mySQLQueryManager.checkSelectivity(query);
+        double querySel = queryManager.checkSelectivity(query);
         StringBuilder finalString = new StringBuilder();
         for (int i = 0; i < queriers.size(); i++) {
             StringBuilder rString = new StringBuilder();
@@ -92,7 +92,7 @@ public class DesignChoice2Experiment {
         StringBuilder finalString = new StringBuilder();
         for (int j = 0; j < queries.size(); j++) {
             StringBuilder rString = new StringBuilder();
-            double querySel = mySQLQueryManager.checkSelectivity(queries.get(j));
+            double querySel = queryManager.checkSelectivity(queries.get(j));
             rString.append(totalCard).append(",");
             rString.append(querySel).append(",");
             double k = querySel/(totalCard/(guardExp.getGuardParts().size()));

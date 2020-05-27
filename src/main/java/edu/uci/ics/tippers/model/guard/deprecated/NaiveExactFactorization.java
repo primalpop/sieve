@@ -1,7 +1,7 @@
 package edu.uci.ics.tippers.model.guard.deprecated;
 
 import edu.uci.ics.tippers.common.PolicyConstants;
-import edu.uci.ics.tippers.db.MySQLQueryManager;
+import edu.uci.ics.tippers.db.QueryManager;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
 import edu.uci.ics.tippers.model.policy.ObjectCondition;
@@ -33,7 +33,7 @@ public class NaiveExactFactorization {
     //Cost of evaluating the expression
     Long cost;
 
-    MySQLQueryManager mySQLQueryManager = new MySQLQueryManager();
+    QueryManager queryManager = new QueryManager();
 
     public NaiveExactFactorization(){
         this.expression = new BEExpression();
@@ -108,7 +108,7 @@ public class NaiveExactFactorization {
             this.quotient.getExpression().removeFromPolicies(objSet);
             this.reminder = new NaiveExactFactorization(this.getExpression());
             this.reminder.getExpression().getPolicies().removeAll(qoutientWithMultiplier.getPolicies());
-            this.cost = mySQLQueryManager.runTimedQuery(this.createQueryFromExactFactor() ).toMillis();
+            this.cost = queryManager.runTimedQuery(this.createQueryFromExactFactor() ).toMillis();
         }
     }
 
@@ -140,7 +140,7 @@ public class NaiveExactFactorization {
                     this.quotient.greedyFactorization();;
                     this.reminder = currentFactor.getReminder();
                     this.reminder.greedyFactorization();
-                    this.cost = mySQLQueryManager.runTimedQuery(this.createQueryFromExactFactor()).toMillis();
+                    this.cost = queryManager.runTimedQuery(this.createQueryFromExactFactor()).toMillis();
                 }
             }
         }

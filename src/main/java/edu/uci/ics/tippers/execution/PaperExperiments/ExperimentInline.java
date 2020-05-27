@@ -1,7 +1,7 @@
 package edu.uci.ics.tippers.execution.PaperExperiments;
 
 import edu.uci.ics.tippers.common.PolicyConstants;
-import edu.uci.ics.tippers.db.MySQLQueryManager;
+import edu.uci.ics.tippers.db.QueryManager;
 import edu.uci.ics.tippers.db.QueryResult;
 
 
@@ -18,7 +18,7 @@ public class ExperimentInline {
      * @param args
      */
     public static void main(String[] args){
-        MySQLQueryManager mySQLQueryManager = new MySQLQueryManager();
+        QueryManager queryManager = new QueryManager();
         String query_predicates = ") Select * from polEval";
         String querier = "7073";
         String guard_id = "'a21c9919-6e54-4b02-90d8-cc80720833a9'";
@@ -27,7 +27,7 @@ public class ExperimentInline {
         String udf_query = " hybcheck(" + querier + ", "
                  + guard_id +  " , user_id, location_id, start_date, " +
                         "start_time, user_profile, user_group ) = 1";
-        QueryResult udfTime = mySQLQueryManager.runTimedQueryExp(guard + PolicyConstants.CONJUNCTION
+        QueryResult udfTime = queryManager.runTimedQueryExp(guard + PolicyConstants.CONJUNCTION
                 + udf_query + query_predicates, 3);
         System.out.println("UDF time " + udfTime.getTimeTaken().toMillis());
         String add_policy_1 = "((user_profile= \"faculty\") " +
@@ -50,7 +50,7 @@ public class ExperimentInline {
                 else
                     query += PolicyConstants.DISJUNCTION + add_policy_2;
             query += query_predicates;
-            QueryResult execTime = mySQLQueryManager.runTimedQueryExp(query, 3);
+            QueryResult execTime = queryManager.runTimedQueryExp(query, 3);
             System.out.println(" Num of " + i + " policies: " + execTime.getTimeTaken().toMillis());
         }
     }
