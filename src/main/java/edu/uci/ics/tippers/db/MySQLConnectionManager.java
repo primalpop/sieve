@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -28,7 +29,9 @@ public class MySQLConnectionManager {
 
     private MySQLConnectionManager() {
         try {
-            InputStream inputStream = getClass().getClassLoader().getResourceAsStream(PolicyConstants.DBMS_LOCATION + PolicyConstants.DBMS_CREDENTIALS + ".properties");
+            InputStream inputStream = getClass().getClassLoader().getResourceAsStream(String.valueOf
+                    (Paths.get(PolicyConstants.DBMS_LOCATION.toLowerCase(),
+                            PolicyConstants.DBMS_CREDENTIALS.toLowerCase())) + ".properties");
             props = new Properties();
             props.load(inputStream);
 

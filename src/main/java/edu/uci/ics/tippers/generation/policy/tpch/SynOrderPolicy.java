@@ -26,8 +26,8 @@ public class SynOrderPolicy {
     Random r;
 
     private final double INDIVIDUAL_CHANCE =  0.7;
-    private final double DATE_CHANCE = 0.75;
-    private final double PRICE_CHANCE = 0.7;
+    private final double DATE_CHANCE = 0.8;
+    private final double PRICE_CHANCE = 0.8;
     private final double CLERK_CHANCE = 0.6;
     private final double PRIORITY_CHANCE = 0.5;
     private static final int PRIORITIES_PER_QUERIER = 2;
@@ -64,17 +64,23 @@ public class SynOrderPolicy {
     public void generatePolicies(double overlap){
         List<BEPolicy> synPolicies = new ArrayList<>();
         List<Integer> allCustomers = tpg.getAllCustomerKeys();
+        List<String> allClerks = tpg.getAllClerks();
+        List<Integer> some_customers = allCustomers.subList(0, 21);
+        Integer[] policyNum = {150, 150, 150, 175, 175, 175,  200, 200, 200, 225, 225, 225, 250, 250, 250, 275, 275, 275, 300, 300, 300, 300};
 
-        for (int querier: allCustomers) {
-            //Selecting number of policies
-            int numOfPolicies = (int) Math.min(MIN_POLICIES + r.nextGaussian() * POLICY_STD + POLICY_MEAN, MAX_POLICIES);
-            //Selecting the list of owners (Number of Policies - Number of Policies * overlap)
-            List<Integer> owners = new ArrayList<>(allCustomers);
-            owners.remove(new Integer(querier)); // removing the querier as an owner in the policy
-            Collections.shuffle(owners);
-            owners = owners.subList(0, (int) (numOfPolicies - numOfPolicies*overlap));
-            //Selecting profile for the user
-            String profile = ORDER_PROFILES.get(r.nextInt(ORDER_PROFILES.size()));
+        for (int i = 0; i < some_customers.size(); i++) {
+            //Choosing number of policies
+//            int numOfPolicies = (int) Math.min(MIN_POLICIES + r.nextGaussian() * POLICY_STD + POLICY_MEAN, MAX_POLICIES);
+            int numOfPolicies = policyNum[i];
+            //To include owners/customer keys uncomment below
+//            List<Integer> owners = new ArrayList<>(allCustomers);
+//            owners.remove(new Integer(querier)); // removing the querier as an owner in the policy
+//            Collections.shuffle(owners);
+//            owners = owners.subList(0, (int) (numOfPolicies - numOfPolicies*overlap));
+            //Selecting the list of clerks (Number of Policies - Number of Policies * overlap)
+            List<String> s_clerks = new ArrayList<>(allClerks);
+            Collections.shuffle(s_clerks);
+            s_clerks = s_clerks.subList(0, (int) (numOfPolicies - numOfPolicies*overlap));
             //Selecting priority for the user
             List<String> priorties = new ArrayList<>(ORDER_PROFILES);
             Collections.shuffle(priorties);
@@ -84,27 +90,31 @@ public class SynOrderPolicy {
             //Selecting delta for date predicate
             long days = ChronoUnit.DAYS.between(MIN_DATE, MAX_DATE);
             long day_delta = (long) (overlap * days);
-            //Selecting the clerk
-            String clerk = String.valueOf(r.nextInt(10));
-            int cnt = 0;
-            for (int i = 0; i < numOfPolicies; i++) {
-                int ownerPred = Math.random() < INDIVIDUAL_CHANCE? owners.get(r.nextInt(owners.size())): 0;
-                double priceSeed = r.nextGaussian() * TOTAL_PRICE_STD + TOTAL_PRICE_AVG;
+            for (int j = 0; j < numOfPolicies; j++) {
+//                int ownerPred = Math.random() < INDIVIDUAL_CHANCE? owners.get(r.nextInt(owners.size())): 0;
+                double priceSeed = Math.abs(r.nextGaussian() * TOTAL_PRICE_STD + TOTAL_PRICE_AVG);
                 PricePredicate pricePred = Math.random() < PRICE_CHANCE?
                         new PricePredicate(priceSeed, Math.min(priceSeed + price_delta, MAX_TOTAL_PRICE)): null;
                 LocalDate randomDate = MIN_DATE.plusDays(ThreadLocalRandom.current().nextLong(days+1));
                 DatePredicate datePred = Math.random() < DATE_CHANCE? new DatePredicate(randomDate, day_delta): null;
-                String clerkPred = Math.random() < CLERK_CHANCE? clerk: null;
+                String clerkPred = Math.random() < CLERK_CHANCE?  s_clerks.get(r.nextInt(s_clerks.size())): null;
                 String priorityPred = Math.random() < PRIORITY_CHANCE? priorties.get(r.nextInt(priorties.size())): null;
-                synPolicies.add(tpg.generatePolicies(querier, ownerPred, clerkPred, null, pricePred, datePred,
+                if (pricePred == null && datePred == null && clerkPred == null && priorityPred == null) {
+                    if(Math.random() <  0.5)
+                        pricePred = new PricePredicate(priceSeed, Math.min(priceSeed + price_delta, MAX_TOTAL_PRICE));
+                    else
+                        datePred = new DatePredicate(randomDate, day_delta);
+                }
+                synPolicies.add(tpg.generatePolicies(some_customers.get(i), 0, clerkPred, null, pricePred, datePred,
                         priorityPred, PolicyConstants.ACTION_ALLOW));
             }
             polper.insertPolicy(synPolicies);
-            break; //TODO: REMOVE THIS!!!!!!!
+            synPolicies.clear();
         }
     }
 
     public static void main(String [] args) {
+        PolicyConstants.initialize();
         SynOrderPolicy sop = new SynOrderPolicy();
         sop.generatePolicies(0.005);
     }

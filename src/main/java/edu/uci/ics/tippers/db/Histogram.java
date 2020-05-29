@@ -27,9 +27,12 @@ public class Histogram {
 
     private static Histogram _instance;
 
+    private static File histDirectory;
+
     private Histogram() {
-        File histDir = new File(String.valueOf(Paths.get(PolicyConstants.HISTOGRAM_DIR + PolicyConstants.TABLE_NAME.toLowerCase())));
-        if (histDir.isDirectory() && Objects.requireNonNull(histDir.list()).length == 0)
+        histDirectory = new File(String.valueOf(Paths.get(PolicyConstants.HISTOGRAM_DIR.toLowerCase(),
+                PolicyConstants.TABLE_NAME.toLowerCase())));
+        if (histDirectory.isDirectory() && Objects.requireNonNull(histDirectory.list()).length == 0)
             writeBuckets(PolicyConstants.TABLE_NAME);
         else retrieveBuckets(PolicyConstants.ATTRIBUTES);
     }
@@ -280,7 +283,7 @@ public class Histogram {
         bucketMap = new HashMap<>();
         for (String attribute : attribute_names) {
             bucketMap.put(attribute, sortBuckets(parseJSONList
-                    (Reader.readTxt(PolicyConstants.HISTOGRAM_DIR + attribute + ".json"))));
+                    (Reader.readTxt(String.valueOf(Paths.get(histDirectory.getPath(), attribute + ".json"))))));
         }
     }
 

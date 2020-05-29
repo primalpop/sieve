@@ -1,0 +1,84 @@
+package edu.uci.ics.tippers.execution;
+
+import edu.uci.ics.tippers.common.PolicyConstants;
+import edu.uci.ics.tippers.db.QueryManager;
+import edu.uci.ics.tippers.db.QueryResult;
+import edu.uci.ics.tippers.generation.policy.tpch.TPolicyGen;
+import edu.uci.ics.tippers.generation.query.QueryExplainer;
+import edu.uci.ics.tippers.manager.PolicyPersistor;
+import edu.uci.ics.tippers.model.guard.GuardExp;
+import edu.uci.ics.tippers.model.guard.GuardPart;
+import edu.uci.ics.tippers.model.guard.SelectGuard;
+import edu.uci.ics.tippers.model.policy.BEExpression;
+import edu.uci.ics.tippers.model.policy.BEPolicy;
+
+import java.time.Duration;
+import java.time.Instant;
+import java.util.List;
+
+/** Meeting on May 27 **/
+
+public class Test2 {
+
+
+    public void overlapSelExperiment(){
+
+    }
+
+
+    public static void main(String args[]) {
+        PolicyConstants.initialize();
+        QueryManager queryManager = new QueryManager();
+        QueryExplainer queryExplainer = new QueryExplainer();
+        TPolicyGen tpg  = new TPolicyGen();
+
+        List<Integer> allQueriers = tpg.getAllCustomerKeys().subList(0, 21);
+
+        System.out.println("Number of tuples: " + PolicyConstants.getNumberOfTuples());
+
+        for (int q : allQueriers) {
+            String querier = String.valueOf(q);
+            PolicyPersistor polper = new PolicyPersistor();
+            List<BEPolicy> bePolicyList = polper.retrievePolicies(querier, PolicyConstants.USER_INDIVIDUAL, PolicyConstants.ACTION_ALLOW);
+            if(bePolicyList == null) continue;
+            BEExpression beExpression = new BEExpression(bePolicyList);
+            double ben = 0.0;
+            long numPreds = 0;
+            for (BEPolicy bp : beExpression.getPolicies()) {
+                ben += bp.estimateTableScanCost();
+                numPreds += bp.countNumberOfPredicates();
+            }
+            System.out.println("Number of policies: " + bePolicyList.size());
+            System.out.println("Number of total predicates: " + numPreds);
+            System.out.println("Estimated Table Scan Cost (D.|P|.α.Ccpu): " + ben);
+            System.out.println("Time taken for vanilla rewrite: " + queryManager.runTimedQueryWithOutSorting(beExpression.createQueryFromPolices(), true).getTimeTaken());
+            System.out.println(beExpression.createQueryFromPolices());
+
+
+            Duration guardGen = Duration.ofMillis(0);
+            Instant fsStart = Instant.now();
+            SelectGuard gh = new SelectGuard(beExpression, true);
+            Instant fsEnd = Instant.now();
+            guardGen = guardGen.plus(Duration.between(fsStart, fsEnd));
+            System.out.println("Guard Generated and took " + guardGen);
+            GuardExp guardExp = gh.create(querier, "user");
+            double totalGuardCard = 0.0;
+            Duration guardLinearScan = Duration.ofMillis(0);
+            for (int j = 0; j < guardExp.getGuardParts().size(); j++) {
+                GuardPart gp = guardExp.getGuardParts().get(j);
+                Instant gs = Instant.now();
+                totalGuardCard += queryManager.checkSelectivity(gp.getGuard().print());
+                Instant ge = Instant.now();
+                guardLinearScan = guardLinearScan.plus(Duration.between(gs, ge));
+            }
+            System.out.println("Number of Guards: " + gh.numberOfGuards());
+            System.out.println("Total Guard Selectivity " + totalGuardCard);
+            System.out.println("Guard Index Scan Time Taken: " + guardLinearScan);
+            QueryResult qr1 = queryManager.runTimedQueryWithOutSorting(gh.create(querier, "user").createQueryWithUnion());
+            QueryResult qr2 = queryManager.runTimedQueryWithOutSorting(gh.create(querier, "user").createQueryWithUnionAll());
+            System.out.println("Time taken for guard rewrite (Union): " + qr1.getTimeTaken() + " Number of tuples " + qr1.getResultCount());
+            System.out.println("Time taken for guard rewrite (Union all): " + qr2.getTimeTaken() + " Number of tuples " + qr2.getResultCount());
+        }
+
+    }
+}

@@ -124,10 +124,10 @@ public class GuardExp {
 
     /**
      * Creates the complete guarded query string
-     * SELECT * FROM PRESENCE where G1 AND (P1)
-     * UNION SELECT * FROM PRESENCE where G2 AND (P2)
+     * SELECT * FROM TABLE_NAME where G1 AND (P1)
+     * UNION SELECT * FROM TABLE_NAME where G2 AND (P2)
      * ...........
-     * UNION SELECT * FROM PRESENCE where GN AND (PN)
+     * UNION SELECT * FROM TABLE_NAME where GN AND (PN)
      * @return
      */
     public String createQueryWithUnion(){
@@ -140,6 +140,20 @@ public class GuardExp {
             queryExp.append(PolicyConstants.CONJUNCTION);
             queryExp.append(gp.getGuardPartition().createQueryFromPolices());
             delim = PolicyConstants.UNION;
+        }
+        return  queryExp.toString();
+    }
+
+    public String createQueryWithUnionAll(){
+        StringBuilder queryExp = new StringBuilder();
+        String delim = "";
+        for (GuardPart gp: this.guardParts) {
+            queryExp.append(delim);
+            queryExp.append(PolicyConstants.SELECT_ALL_WHERE)
+                    .append(gp.getGuard().print());
+            queryExp.append(PolicyConstants.CONJUNCTION);
+            queryExp.append(gp.getGuardPartition().createQueryFromPolices());
+            delim = PolicyConstants.UNION_ALL;
         }
         return  queryExp.toString();
     }
