@@ -131,8 +131,7 @@ public class GenerateCandidate {
             }
             i += eqObjs.size();
         }
-        System.out.println("Attribute: " + attribute
-                + " Merge Count " + mergeCount + " Identical Count " + identicalCount);
+//        System.out.println("Attribute: " + attribute + " Merge Count " + mergeCount + " Identical Count " + identicalCount);
     }
 
     /**

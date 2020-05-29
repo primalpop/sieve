@@ -41,7 +41,6 @@ public class SelectGuard {
             pm.extend();
         }
         this.canFactors = collectAllFactors(this.input.getRemainder());
-        System.out.println(this.canFactors.size());
         selectGuards();
     }
 
@@ -194,10 +193,10 @@ public class SelectGuard {
     }
 
     /**
-     * (Select * from Presence where G1 and Partition1
-     *  UNION Select * from Presence where G2 and Partition2
+     * (Select * from TABLE_NAME where G1 and Partition1
+     *  UNION Select * from TABLE_NAME where G2 and Partition2
      *  ....
-     *  Select * from Presence where GN and PartitionN)
+     *  Select * from TABLE_NAME where GN and PartitionN)
      * @param noDuplicates
      * @return
      */
