@@ -65,7 +65,7 @@ public class SynOrderPolicy {
         List<BEPolicy> synPolicies = new ArrayList<>();
         List<Integer> allCustomers = tpg.getAllCustomerKeys();
         List<String> allClerks = tpg.getAllClerks();
-        List<Integer> some_customers = allCustomers.subList(0, 21);
+        List<Integer> some_customers = allCustomers.subList(42, 63);
         Integer[] policyNum = {150, 150, 150, 175, 175, 175,  200, 200, 200, 225, 225, 225, 250, 250, 250, 275, 275, 275, 300, 300, 300, 300};
 
         for (int i = 0; i < some_customers.size(); i++) {
@@ -116,6 +116,6 @@ public class SynOrderPolicy {
     public static void main(String [] args) {
         PolicyConstants.initialize();
         SynOrderPolicy sop = new SynOrderPolicy();
-        sop.generatePolicies(0.005);
+        sop.generatePolicies(0.001);
     }
 }
