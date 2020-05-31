@@ -20,25 +20,38 @@ import java.util.List;
 
 public class Test2 {
 
+    private static PolicyPersistor polper;
+    private static QueryManager queryManager;
+    private static QueryExplainer queryExplainer;
+    private static TPolicyGen tpg;
 
-    public void overlapSelExperiment(){
+    public Test2(){
+        PolicyConstants.initialize();
+        polper = new PolicyPersistor();
+        queryManager = new QueryManager();
+        queryExplainer = new QueryExplainer();
+        tpg  = new TPolicyGen();
+    }
 
+    public static void overlapSelExperiment(List<Integer> queriers){
+        double overlap = 0.005;
+        for (int i = 0; i < queriers.size(); i++) {
+            BEExpression beExpression = new BEExpression(polper.retrievePolicies(String.valueOf(queriers.get(i)),
+                    PolicyConstants.USER_INDIVIDUAL, PolicyConstants.ACTION_ALLOW));
+            if(beExpression == null) continue;
+            System.out.println(beExpression.getPolicies().size() + "," + overlap + ","
+                    +  (double) queryManager.runTimedQueryWithOutSorting(beExpression.createQueryFromPolices(), true).getResultCount()/PolicyConstants.getNumberOfTuples());
+        }
     }
 
 
     public static void main(String args[]) {
-        PolicyConstants.initialize();
-        QueryManager queryManager = new QueryManager();
-        QueryExplainer queryExplainer = new QueryExplainer();
-        TPolicyGen tpg  = new TPolicyGen();
-
-        List<Integer> allQueriers = tpg.getAllCustomerKeys().subList(0, 21);
+        Test2 t2 = new Test2();
+        List<Integer> allQueriers = tpg.getAllCustomerKeys().subList(21, 42);
 
         System.out.println("Number of tuples: " + PolicyConstants.getNumberOfTuples());
-
-        for (int q : allQueriers) {
-            String querier = String.valueOf(q);
-            PolicyPersistor polper = new PolicyPersistor();
+        for (int i = 0; i < allQueriers.size(); i=i+3) {
+            String querier = String.valueOf(allQueriers.get(i));
             List<BEPolicy> bePolicyList = polper.retrievePolicies(querier, PolicyConstants.USER_INDIVIDUAL, PolicyConstants.ACTION_ALLOW);
             if(bePolicyList == null) continue;
             BEExpression beExpression = new BEExpression(bePolicyList);
@@ -49,10 +62,10 @@ public class Test2 {
                 numPreds += bp.countNumberOfPredicates();
             }
             System.out.println("Number of policies: " + bePolicyList.size());
-            System.out.println("Number of total predicates: " + numPreds);
-            System.out.println("Estimated Table Scan Cost (D.|P|.α.Ccpu): " + ben);
+//            System.out.println("Number of total predicates: " + numPreds);
+//            System.out.println("Estimated Table Scan Cost (D.|P|.α.Ccpu): " + ben);
             System.out.println("Time taken for vanilla rewrite: " + queryManager.runTimedQueryWithOutSorting(beExpression.createQueryFromPolices(), true).getTimeTaken());
-            System.out.println(beExpression.createQueryFromPolices());
+//            System.out.println(beExpression.createQueryFromPolices());
 
 
             Duration guardGen = Duration.ofMillis(0);
@@ -60,23 +73,24 @@ public class Test2 {
             SelectGuard gh = new SelectGuard(beExpression, true);
             Instant fsEnd = Instant.now();
             guardGen = guardGen.plus(Duration.between(fsStart, fsEnd));
-            System.out.println("Guard Generated and took " + guardGen);
+//            System.out.println("Guard Generated and took " + guardGen);
             GuardExp guardExp = gh.create(querier, "user");
             double totalGuardCard = 0.0;
-            Duration guardLinearScan = Duration.ofMillis(0);
+            Duration guardIndexScan = Duration.ofMillis(0);
             for (int j = 0; j < guardExp.getGuardParts().size(); j++) {
                 GuardPart gp = guardExp.getGuardParts().get(j);
                 Instant gs = Instant.now();
                 totalGuardCard += queryManager.checkSelectivity(gp.getGuard().print());
                 Instant ge = Instant.now();
-                guardLinearScan = guardLinearScan.plus(Duration.between(gs, ge));
+                guardIndexScan = guardIndexScan.plus(Duration.between(gs, ge));
             }
-            System.out.println("Number of Guards: " + gh.numberOfGuards());
-            System.out.println("Total Guard Selectivity " + totalGuardCard);
-            System.out.println("Guard Index Scan Time Taken: " + guardLinearScan);
-            QueryResult qr1 = queryManager.runTimedQueryWithOutSorting(gh.create(querier, "user").createQueryWithUnion());
+//            System.out.println("Number of Guards: " + gh.numberOfGuards());
+//            System.out.println("Total Guard Selectivity " + totalGuardCard);
+            System.out.println("Average Guard Selectivity " + totalGuardCard/gh.numberOfGuards());
+//            System.out.println("Guard Index Scan Time Taken: " + guardIndexScan);
+//            QueryResult qr1 = queryManager.runTimedQueryWithOutSorting(gh.create(querier, "user").createQueryWithUnion());
             QueryResult qr2 = queryManager.runTimedQueryWithOutSorting(gh.create(querier, "user").createQueryWithUnionAll());
-            System.out.println("Time taken for guard rewrite (Union): " + qr1.getTimeTaken() + " Number of tuples " + qr1.getResultCount());
+//            System.out.println("Time taken for guard rewrite (Union): " + qr1.getTimeTaken() + " Number of tuples " + qr1.getResultCount());
             System.out.println("Time taken for guard rewrite (Union all): " + qr2.getTimeTaken() + " Number of tuples " + qr2.getResultCount());
         }
 
