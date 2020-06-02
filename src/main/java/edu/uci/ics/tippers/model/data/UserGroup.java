@@ -1,7 +1,6 @@
 package edu.uci.ics.tippers.model.data;
 
 import edu.uci.ics.tippers.db.MySQLConnectionManager;
-import edu.uci.ics.tippers.generation.data.GroupGeneration;
 
 import java.sql.*;
 import java.util.List;

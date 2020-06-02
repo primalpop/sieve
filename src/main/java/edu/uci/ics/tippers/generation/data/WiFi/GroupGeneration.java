@@ -1,4 +1,4 @@
-package edu.uci.ics.tippers.generation.data;
+package edu.uci.ics.tippers.generation.data.WiFi;
 
 import edu.uci.ics.tippers.db.MySQLConnectionManager;
 import edu.uci.ics.tippers.generation.policy.WiFiDataSet.PolicyGen;

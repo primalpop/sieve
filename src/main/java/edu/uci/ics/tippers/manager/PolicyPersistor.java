@@ -13,7 +13,7 @@ import java.util.List;
 public class PolicyPersistor {
 
     private static PolicyPersistor _instance = new PolicyPersistor();
-
+    //TODO: Generalize this database connection
     private static Connection connection = MySQLConnectionManager.getInstance().getConnection();
 
     public static PolicyPersistor getInstance() {
