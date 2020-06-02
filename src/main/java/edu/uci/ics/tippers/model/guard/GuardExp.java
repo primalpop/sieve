@@ -160,10 +160,10 @@ public class GuardExp {
 
 
     /**
-     * (Select * from Presence where G1
-     * UNION Select * from Presence where G2
+     * (Select * from TABLE_NAME where G1
+     * UNION Select * from TABLE_NAME where G2
      * ....
-     * Select * from Presence where GN)
+     * Select * from TABLE_NAME where GN)
      * @return
      */
     public String createGuardOnlyQuery(){

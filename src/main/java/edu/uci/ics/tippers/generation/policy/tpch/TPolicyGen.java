@@ -17,7 +17,6 @@ public class TPolicyGen {
     private List<String> customer_clerks;
     private List<String> customer_profiles;
     private double startTotPrice, endTotPrice;
-    private List<String> clerks;
     private Timestamp startOrderDate = null, endOrderDate = null;
 
     public TPolicyGen(){

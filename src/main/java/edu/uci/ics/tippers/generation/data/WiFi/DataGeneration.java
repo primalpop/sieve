@@ -1,4 +1,4 @@
-package edu.uci.ics.tippers.generation.data;
+package edu.uci.ics.tippers.generation.data.WiFi;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;

@@ -15,7 +15,7 @@ import edu.uci.ics.tippers.model.policy.QuerierCondition;
 import edu.uci.ics.tippers.model.query.RangeQuery;
 import edu.uci.ics.tippers.model.tippers.dontuse.Infrastructure;
 import edu.uci.ics.tippers.model.tippers.dontuse.User;
-import edu.uci.ics.tippers.generation.data.DataGeneration;
+import edu.uci.ics.tippers.generation.data.WiFi.DataGeneration;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;

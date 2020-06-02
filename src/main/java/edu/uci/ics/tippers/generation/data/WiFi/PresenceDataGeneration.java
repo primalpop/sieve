@@ -1,4 +1,4 @@
-package edu.uci.ics.tippers.generation.data;
+package edu.uci.ics.tippers.generation.data.WiFi;
 
 import com.opencsv.CSVReader;
 import edu.uci.ics.tippers.common.PolicyConstants;

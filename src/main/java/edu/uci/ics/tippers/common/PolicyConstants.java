@@ -158,4 +158,11 @@ public class PolicyConstants {
     public static final String ORDER_CLERK = "O_CLERK";
     public static final String ORDER_PROFILE = "O_PROFILE";
 
+    //Mall observation table attributes
+    public static final String M_OBSERVATION_NO = "id";
+    public static final String M_WIFI_AP = "wifi_ap";
+    public static final String M_DATE = "obs_date";
+    public static final String M_TIME = "obs_time";
+    public static final String M_DEVICE = "device_id";
+
 }

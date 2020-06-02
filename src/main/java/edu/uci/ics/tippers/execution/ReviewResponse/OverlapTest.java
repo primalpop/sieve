@@ -1,4 +1,4 @@
-package edu.uci.ics.tippers.execution;
+package edu.uci.ics.tippers.execution.ReviewResponse;
 
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.db.QueryManager;
@@ -18,14 +18,14 @@ import java.util.List;
 
 /** Meeting on May 27 **/
 
-public class Test2 {
+public class OverlapTest {
 
     private static PolicyPersistor polper;
     private static QueryManager queryManager;
     private static QueryExplainer queryExplainer;
     private static TPolicyGen tpg;
 
-    public Test2(){
+    public OverlapTest(){
         PolicyConstants.initialize();
         polper = new PolicyPersistor();
         queryManager = new QueryManager();
@@ -46,7 +46,7 @@ public class Test2 {
 
 
     public static void main(String args[]) {
-        Test2 t2 = new Test2();
+        OverlapTest t2 = new OverlapTest();
         List<Integer> allQueriers = tpg.getAllCustomerKeys().subList(21, 42);
 
         System.out.println("Number of tuples: " + PolicyConstants.getNumberOfTuples());
