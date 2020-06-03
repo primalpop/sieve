@@ -66,7 +66,12 @@ public class SelectGuard {
         for (ObjectCondition pf: pFactors) {
             boolean match = false;
             for (ObjectCondition cf: pGuards) {
-                if(pf.equalsWithoutId(cf)) match = true;
+                if(pf.getAttribute().equalsIgnoreCase(cf.getAttribute())){
+                    if(pf.equalsWithoutId(cf)){
+                        match = true;
+                        break;
+                    }
+                }
             }
             if(!match) pGuards.add(pf);
         }
@@ -94,7 +99,6 @@ public class SelectGuard {
      * Populating costMap, benefitMap, ptMap and allTerms
      */
     private void populating(){
-//        System.out.println("Number of candidates: " + this.canFactors.size());
         for (ObjectCondition tempFactor : this.canFactors) {
             BEExpression tempQuotient = new BEExpression(this.input.getRemainder());
             tempQuotient.checkAgainstPolices(tempFactor);

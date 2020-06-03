@@ -11,6 +11,7 @@ import edu.uci.ics.tippers.model.guard.GuardExp;
 import edu.uci.ics.tippers.model.guard.GuardPart;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
+import org.omg.CORBA.PolicyOperations;
 
 import java.text.SimpleDateFormat;
 import java.time.Duration;
@@ -31,7 +32,7 @@ public class ExperimentGuards {
     private static String RESULTS_FILE;
 
     public ExperimentGuards() {
-        polper = new PolicyPersistor();
+        polper = PolicyPersistor.getInstance();
         queryExplainer = new QueryExplainer();
         queryManager = new QueryManager();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -85,7 +86,7 @@ public class ExperimentGuards {
 //        users.addAll(hl);
 //        users.addAll(lh);
 //        users.addAll(hh);
-        PolicyPersistor polper = new PolicyPersistor();
+        PolicyPersistor polper = PolicyPersistor.getInstance();
         String file_header = "Querier,Number_Of_Policies,Number_of_Guards,Total_Guard_Cardinality, Sieve\n";
         Writer writer = new Writer();
         writer.writeString(file_header, PolicyConstants.BE_POLICY_DIR, RESULTS_FILE);

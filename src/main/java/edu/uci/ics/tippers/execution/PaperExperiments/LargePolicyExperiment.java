@@ -4,7 +4,7 @@ import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.db.QueryManager;
 import edu.uci.ics.tippers.db.QueryResult;
 import edu.uci.ics.tippers.fileop.Writer;
-import edu.uci.ics.tippers.generation.policy.WiFiDataSet.PolicyGen;
+import edu.uci.ics.tippers.generation.policy.WiFiDataSet.PolicyUtil;
 import edu.uci.ics.tippers.manager.PolicyPersistor;
 import edu.uci.ics.tippers.model.guard.GuardExp;
 import edu.uci.ics.tippers.model.guard.GuardPart;
@@ -24,10 +24,10 @@ public class LargePolicyExperiment {
 
 
     public static void main(String[] args) {
-        PolicyGen pg = new PolicyGen();
-        String RESULTS_FILE = "large_results.csv";
+        PolicyUtil pg = new PolicyUtil();
+        String RESULTS_FILE = "mysql_large_results.csv";
         List<Integer> users = pg.getAllUsers(true);
-        PolicyPersistor polper = new PolicyPersistor();
+        PolicyPersistor polper = PolicyPersistor.getInstance();
         String file_header = "Number_Of_Policies,Baseline_Policies,Guard_Generation,Number_of_Guards,Total_Guard_Cardinality,Sieve\n";
         Writer writer = new Writer();
         writer.writeString(file_header, PolicyConstants.BE_POLICY_DIR, RESULTS_FILE);

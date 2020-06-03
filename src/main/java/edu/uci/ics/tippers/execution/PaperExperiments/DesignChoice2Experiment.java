@@ -4,7 +4,7 @@ import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.db.QueryManager;
 import edu.uci.ics.tippers.db.QueryResult;
 import edu.uci.ics.tippers.fileop.Writer;
-import edu.uci.ics.tippers.generation.policy.WiFiDataSet.PolicyGen;
+import edu.uci.ics.tippers.generation.policy.WiFiDataSet.PolicyUtil;
 import edu.uci.ics.tippers.manager.GuardPersistor;
 import edu.uci.ics.tippers.manager.PolicyPersistor;
 import edu.uci.ics.tippers.model.guard.GuardExp;
@@ -49,7 +49,7 @@ public class DesignChoice2Experiment {
     }
 
     private String runGuardExpt(String query, List<Integer> queriers){
-        PolicyPersistor polper = new PolicyPersistor();
+        PolicyPersistor polper = PolicyPersistor.getInstance();
         double querySel = queryManager.checkSelectivity(query);
         StringBuilder finalString = new StringBuilder();
         for (int i = 0; i < queriers.size(); i++) {
@@ -77,7 +77,7 @@ public class DesignChoice2Experiment {
     }
 
     private String runQueryExpt(String querier, List<String> queries){
-        PolicyPersistor polper = new PolicyPersistor();
+        PolicyPersistor polper = PolicyPersistor.getInstance();
         List<BEPolicy> allowPolicies = polper.retrievePolicies(querier,
                 PolicyConstants.USER_INDIVIDUAL, PolicyConstants.ACTION_ALLOW);
         GuardPersistor guardPersistor = new GuardPersistor();
@@ -112,7 +112,7 @@ public class DesignChoice2Experiment {
      */
     private List<String> generateQueries(){
         List<String> queries = new ArrayList<>();
-        PolicyGen pg = new PolicyGen();
+        PolicyUtil pg = new PolicyUtil();
         for (int j =0; j < 24; j++) {
             TimeStampPredicate tsPred = new TimeStampPredicate(pg.getDate("MIN"), 0, "00:00", 60*j);
             String query = String.format("start_time >= \"%s\" AND start_time <= \"%s\" ", tsPred.getStartTime().toString(),

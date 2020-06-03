@@ -70,7 +70,7 @@ public class FlatPolicyPersistor {
 
 
     public static void main(String [] args){
-        PolicyPersistor polper = new PolicyPersistor();
+        PolicyPersistor polper = PolicyPersistor.getInstance();
         FlatPolicyPersistor flapolper = new FlatPolicyPersistor();
         List<BEPolicy> allowPolicies = polper.retrievePolicies(null,
                 PolicyConstants.USER_INDIVIDUAL, PolicyConstants.ACTION_ALLOW);

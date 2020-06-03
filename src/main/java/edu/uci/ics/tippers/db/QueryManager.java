@@ -18,14 +18,12 @@ public class QueryManager {
     private final QueryExecutor queryExecutor;
 
     public QueryManager(){
-        if(PolicyConstants.DBMS_CHOICE.equalsIgnoreCase(PolicyConstants.MYSQL_DBMS))
-            connection = MySQLConnectionManager.getInstance().getConnection();
-        else if(PolicyConstants.DBMS_CHOICE.equalsIgnoreCase(PolicyConstants.PGSQL_DBMS))
-            connection = PGSQLConnectionManager.getInstance().getConnection();
-        else
-            System.out.println("DBMS choice not set or unknown DBMS");
+        connection = PolicyConstants.getDBMSConnection();
         queryExecutor = new QueryExecutor(connection, PolicyConstants.MAX_DURATION.getSeconds());
+    }
 
+    public Connection getConnection(){
+        return connection;
     }
 
     public float checkSelectivity(String queryPredicates) {

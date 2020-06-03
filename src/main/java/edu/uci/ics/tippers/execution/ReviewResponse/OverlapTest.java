@@ -27,7 +27,7 @@ public class OverlapTest {
 
     public OverlapTest(){
         PolicyConstants.initialize();
-        polper = new PolicyPersistor();
+        polper = PolicyPersistor.getInstance();
         queryManager = new QueryManager();
         queryExplainer = new QueryExplainer();
         tpg  = new TPolicyGen();
@@ -88,8 +88,8 @@ public class OverlapTest {
 //            System.out.println("Total Guard Selectivity " + totalGuardCard);
             System.out.println("Average Guard Selectivity " + totalGuardCard/gh.numberOfGuards());
 //            System.out.println("Guard Index Scan Time Taken: " + guardIndexScan);
-//            QueryResult qr1 = queryManager.runTimedQueryWithOutSorting(gh.create(querier, "user").createQueryWithUnion());
-            QueryResult qr2 = queryManager.runTimedQueryWithOutSorting(gh.create(querier, "user").createQueryWithUnionAll());
+//            QueryResult qr1 = queryManager.runTimedQueryWithOutSorting(gh.create(querier, "user").createQueryWithUnion(true));
+            QueryResult qr2 = queryManager.runTimedQueryWithOutSorting(gh.create(querier, "user").createQueryWithUnion(false));
 //            System.out.println("Time taken for guard rewrite (Union): " + qr1.getTimeTaken() + " Number of tuples " + qr1.getResultCount());
             System.out.println("Time taken for guard rewrite (Union all): " + qr2.getTimeTaken() + " Number of tuples " + qr2.getResultCount());
         }

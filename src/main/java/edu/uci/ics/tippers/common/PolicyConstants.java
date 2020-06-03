@@ -1,6 +1,8 @@
 package edu.uci.ics.tippers.common;
 
 import com.google.common.collect.ImmutableList;
+import edu.uci.ics.tippers.db.MySQLConnectionManager;
+import edu.uci.ics.tippers.db.PGSQLConnectionManager;
 import edu.uci.ics.tippers.db.QueryManager;
 import edu.uci.ics.tippers.model.policy.Operation;
 import edu.uci.ics.tippers.model.policy.QuerierCondition;
@@ -13,6 +15,7 @@ import org.apache.commons.configuration2.convert.DefaultListDelimiterHandler;
 import org.apache.commons.configuration2.ex.ConfigurationException;
 
 import java.io.File;
+import java.sql.Connection;
 import java.time.Duration;
 import java.util.*;
 
@@ -48,6 +51,7 @@ public class PolicyConstants {
     public static List<String> RANGED_ATTRIBUTES;
     public static Map<String, String> ATTRIBUTE_INDEXES;
 
+    private static Connection connection;
     private static long NUMBER_OF_TUPLES = 0;
 
     private PolicyConstants(){
@@ -102,6 +106,18 @@ public class PolicyConstants {
         }
     }
 
+
+    public static Connection getDBMSConnection(){
+        if (connection == null) {
+            if(PolicyConstants.DBMS_CHOICE.equalsIgnoreCase(PolicyConstants.MYSQL_DBMS))
+                connection = MySQLConnectionManager.getInstance().getConnection();
+            else if(PolicyConstants.DBMS_CHOICE.equalsIgnoreCase(PolicyConstants.PGSQL_DBMS))
+                connection = PGSQLConnectionManager.getInstance().getConnection();
+            else
+                System.out.println("DBMS choice not set or unknown DBMS");
+        }
+        return connection;
+    }
 
     public static long getNumberOfTuples(){
         if(NUMBER_OF_TUPLES == 0){

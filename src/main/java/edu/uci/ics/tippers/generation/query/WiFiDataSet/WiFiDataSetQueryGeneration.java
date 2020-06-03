@@ -1,6 +1,6 @@
 package edu.uci.ics.tippers.generation.query.WiFiDataSet;
 
-import edu.uci.ics.tippers.generation.policy.WiFiDataSet.PolicyGen;
+import edu.uci.ics.tippers.generation.policy.WiFiDataSet.PolicyUtil;
 import edu.uci.ics.tippers.generation.query.QueryGen;
 import edu.uci.ics.tippers.model.policy.TimeStampPredicate;
 import edu.uci.ics.tippers.model.query.QueryStatement;
@@ -22,10 +22,10 @@ public class WiFiDataSetQueryGeneration extends QueryGen {
     private List<Integer> numUsers;
     private List<Integer> numLocs;
 
-    private PolicyGen pg; //helper methods defined in this class
+    private PolicyUtil pg; //helper methods defined in this class
 
     public WiFiDataSetQueryGeneration() {
-        pg = new PolicyGen();
+        pg = new PolicyUtil();
         this.user_ids = pg.getAllUsers(false);
         this.locations = pg.getAllLocations();
         this.start_beg = pg.getDate("MIN");

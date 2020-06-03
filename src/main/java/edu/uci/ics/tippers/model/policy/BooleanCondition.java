@@ -208,11 +208,12 @@ public class BooleanCondition  implements Comparable<BooleanCondition>  {
     @Override
     public boolean equals(Object obj) {
         BooleanCondition bc = (BooleanCondition) obj;
-        return bc.policy_id == (policy_id) && bc.attribute.equals(attribute) && bc.type.equals(type) && bc.booleanPredicates.equals(booleanPredicates);
+        return bc.policy_id.equals(policy_id) && bc.attribute.equals(attribute) && bc.type.equals(type)
+                && new HashSet<>(bc.booleanPredicates).equals(new HashSet<>(booleanPredicates));
     }
 
 
     public boolean equalsWithoutId(BooleanCondition bc){
-        return bc.attribute.equals(attribute) && bc.type.equals(type) && bc.booleanPredicates.equals(booleanPredicates);
+        return bc.attribute.equals(attribute) && bc.type.equals(type) && new HashSet<>(bc.booleanPredicates).equals(new HashSet<>(booleanPredicates));
     }
 }

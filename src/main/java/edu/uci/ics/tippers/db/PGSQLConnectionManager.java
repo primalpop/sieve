@@ -47,14 +47,14 @@ public class PGSQLConnectionManager {
 
 
     public Connection getConnection() throws PolicyEngineException {
+        if(connection != null)
+            return  connection;
         try {
             Class.forName("org.postgresql.Driver");
         } catch (ClassNotFoundException e) {
             System.out.println("Driver not found");
             e.printStackTrace();
         }
-
-        Connection connection;
         try {
             connection = DriverManager.getConnection(
                     String.format("jdbc:postgresql://%s:%s/%s", SERVER, PORT, DATABASE), USER, PASSWORD);

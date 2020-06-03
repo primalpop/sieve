@@ -2,7 +2,7 @@ package edu.uci.ics.tippers.execution.PaperExperiments;
 
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.fileop.Writer;
-import edu.uci.ics.tippers.generation.policy.WiFiDataSet.PolicyGen;
+import edu.uci.ics.tippers.generation.policy.WiFiDataSet.PolicyUtil;
 import edu.uci.ics.tippers.manager.GuardPersistor;
 import edu.uci.ics.tippers.manager.PolicyPersistor;
 import edu.uci.ics.tippers.model.guard.GuardExp;
@@ -19,14 +19,14 @@ public class GuardSelectivityExperiment {
 
     public static void main(String[] args){
         String fileName = "helloGuard.csv";
-        PolicyGen pg = new PolicyGen();
+        PolicyUtil pg = new PolicyUtil();
         List <Integer> users = pg.getAllUsers(true);;
         Writer writer = new Writer();
         writer.writeString("Querier, Number of Policies, Number of Guards, Guard cardinality \n", PolicyConstants.BE_POLICY_DIR, fileName);
         for (int i = 1; i <= users.size(); i++) {
             StringBuilder result = new StringBuilder();
             String querier = String.valueOf(users.get(i));
-            PolicyPersistor polper = new PolicyPersistor();
+            PolicyPersistor polper = PolicyPersistor.getInstance();
             List<BEPolicy> allowPolicies = polper.retrievePolicies(querier,
                     PolicyConstants.USER_INDIVIDUAL, PolicyConstants.ACTION_ALLOW);
             GuardPersistor guardPersistor = new GuardPersistor();
