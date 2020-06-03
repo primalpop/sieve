@@ -1,7 +1,7 @@
 package edu.uci.ics.tippers.generation.data.WiFi;
 
 import edu.uci.ics.tippers.db.MySQLConnectionManager;
-import edu.uci.ics.tippers.generation.policy.WiFiDataSet.PolicyGen;
+import edu.uci.ics.tippers.generation.policy.WiFiDataSet.PolicyUtil;
 import edu.uci.ics.tippers.model.data.*;
 
 import java.sql.*;
@@ -26,7 +26,7 @@ public class GroupGeneration {
     private static final int MAX_GROUP_MEMBERSHIP = 1;
     private HashMap<User, List<Affinity>> colocations;
     private Connection connection;
-    private PolicyGen pg;
+    private PolicyUtil pg;
 
     private final double GRADUATE_TIME = 90 * 0.7 * 8 * 60 * 60 * 1000; //1814400
     private final double FACULTY_TIME = 90 * 0.6 * 8 * 60 * 60 * 1000; //1555200
@@ -36,7 +36,7 @@ public class GroupGeneration {
     public GroupGeneration(){
         this.colocations = new HashMap<User, List<Affinity>>();
         this.connection = MySQLConnectionManager.getInstance().getConnection();
-        this.pg = new PolicyGen();
+        this.pg = new PolicyUtil();
     }
 
     /**

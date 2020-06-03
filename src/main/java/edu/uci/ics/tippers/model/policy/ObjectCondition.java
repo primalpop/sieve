@@ -258,7 +258,6 @@ public class ObjectCondition extends BooleanCondition {
 
 
     public double computeL(){
-        List mBuckets = null;
         if (Stream.of(PolicyConstants.LOCATIONID_ATTR, PolicyConstants.GROUP_ATTR, PolicyConstants.PROFILE_ATTR,
                 PolicyConstants.ORDER_PRIORITY, PolicyConstants.ORDER_CLERK, PolicyConstants.ORDER_PROFILE)
                 .anyMatch(this.getAttribute()::equalsIgnoreCase)){

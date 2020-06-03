@@ -2,6 +2,8 @@ package edu.uci.ics.tippers.generation.policy.WiFiDataSet;
 
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.db.MySQLConnectionManager;
+import edu.uci.ics.tippers.db.PGSQLConnectionManager;
+import edu.uci.ics.tippers.db.QueryManager;
 import edu.uci.ics.tippers.manager.PolicyPersistor;
 import edu.uci.ics.tippers.model.data.UserProfile;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
@@ -22,7 +24,7 @@ public class PolicyGroupGen {
     private Connection connection;
     Random r;
     PolicyPersistor polper;
-    PolicyGen pg;
+    PolicyUtil pg;
 
     private HashMap<Integer, List<String>> user_groups;
     private HashMap<Integer, String> user_profiles;
@@ -51,12 +53,17 @@ public class PolicyGroupGen {
 
     private List<String> USER_PROFILES;
 
-
+    //TODO: Merge PolicyUtil class into this class?
     public PolicyGroupGen(){
-        this.connection = MySQLConnectionManager.getInstance().getConnection();
+        if(PolicyConstants.DBMS_CHOICE.equalsIgnoreCase(PolicyConstants.MYSQL_DBMS))
+            connection = MySQLConnectionManager.getInstance().getConnection();
+        else if(PolicyConstants.DBMS_CHOICE.equalsIgnoreCase(PolicyConstants.PGSQL_DBMS))
+            connection = PGSQLConnectionManager.getInstance().getConnection();
+        else
+            System.out.println("DBMS choice not set or unknown DBMS");
         r = new Random();
         polper = PolicyPersistor.getInstance();
-        pg = new PolicyGen();
+        pg = new PolicyUtil();
         user_groups = new HashMap<>();
         group_members = new HashMap<>();
         user_profiles = new HashMap<>();

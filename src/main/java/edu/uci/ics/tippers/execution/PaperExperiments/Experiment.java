@@ -4,7 +4,7 @@ import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.db.QueryManager;
 import edu.uci.ics.tippers.db.QueryResult;
 import edu.uci.ics.tippers.fileop.Writer;
-import edu.uci.ics.tippers.generation.policy.WiFiDataSet.PolicyGen;
+import edu.uci.ics.tippers.generation.policy.WiFiDataSet.PolicyUtil;
 import edu.uci.ics.tippers.generation.query.QueryExplainer;
 import edu.uci.ics.tippers.generation.query.WiFiDataSet.WiFiDataSetQueryGeneration;
 import edu.uci.ics.tippers.manager.GuardPersistor;
@@ -52,7 +52,7 @@ public class Experiment {
     private static String RESULTS_FILE;
 
     public Experiment() {
-        polper = new PolicyPersistor();
+        polper = PolicyPersistor.getInstance();
         queryExplainer = new QueryExplainer();
         queryManager = new QueryManager();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -276,7 +276,7 @@ public class Experiment {
 
     public static void main(String[] args) {
         Experiment e = new Experiment();
-        PolicyGen pg = new PolicyGen();
+        PolicyUtil pg = new PolicyUtil();
 //        List<Integer> users = pg.getAllUsers(true);
         //users with increasing number of guards
 //        List <Integer> users = new ArrayList<>(Arrays.asList(26389, 15230, 30769, 12445, 36430, 21951,
@@ -294,7 +294,7 @@ public class Experiment {
         users.addAll(undergrad);
         users.addAll(grad);
         users.addAll(staff);
-        PolicyPersistor polper = new PolicyPersistor();
+        PolicyPersistor polper = PolicyPersistor.getInstance();
         String file_header = "Querier,Querier_Profile,Query_Type,Query_Cardinality,Number_Of_Policies,Estimated_QPS,Query_Alone," +
                 "Baseline_Policies, Baseline_UDF,Number_of_Guards,Total_Guard_Cardinality,With_Guard_Index,With_Query_Index,Sieve_Parameters, Sieve\n";
         Writer writer = new Writer();

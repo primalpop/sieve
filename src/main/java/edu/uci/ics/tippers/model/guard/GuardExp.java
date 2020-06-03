@@ -1,6 +1,7 @@
 package edu.uci.ics.tippers.model.guard;
 
 import edu.uci.ics.tippers.common.PolicyConstants;
+import edu.uci.ics.tippers.common.PolicyEngineException;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -112,52 +113,52 @@ public class GuardExp {
     public String createQueryWithOR(){
         StringBuilder queryExp = new StringBuilder();
         String delim = "";
+        queryExp.append(PolicyConstants.SELECT_ALL_WHERE);
         for (GuardPart gp: this.guardParts) {
             queryExp.append(delim);
             queryExp.append(gp.getGuard().print());
             queryExp.append(PolicyConstants.CONJUNCTION);
-            queryExp.append(gp.getGuardPartition().createQueryFromPolices());
+            queryExp.append("(" + gp.getGuardPartition().createQueryFromPolices() + ")");
             delim = PolicyConstants.DISJUNCTION;
         }
         return queryExp.toString();
     }
 
     /**
-     * Creates the complete guarded query string
-     * SELECT * FROM TABLE_NAME where G1 AND (P1)
-     * UNION SELECT * FROM TABLE_NAME where G2 AND (P2)
-     * ...........
-     * UNION SELECT * FROM TABLE_NAME where GN AND (PN)
-     * @return
+     * Creates the complete guarded query string with or without depending on DBMS_CHOICE value
+     * @return query string
      */
-    public String createQueryWithUnion(){
+    public String createQueryWithUnion(boolean remove_duplicate){
         StringBuilder queryExp = new StringBuilder();
         String delim = "";
-        for (GuardPart gp: this.guardParts) {
-            queryExp.append(delim);
-            queryExp.append(PolicyConstants.SELECT_ALL_WHERE)
-                    .append(gp.getGuard().print());
-            queryExp.append(PolicyConstants.CONJUNCTION);
-            queryExp.append(gp.getGuardPartition().createQueryFromPolices());
-            delim = PolicyConstants.UNION;
+        if (PolicyConstants.DBMS_CHOICE.equalsIgnoreCase(PolicyConstants.MYSQL_DBMS)) { //adding force index hints
+            for (GuardPart gp : this.guardParts) {
+                queryExp.append(delim);
+                queryExp.append(PolicyConstants.SELECT_ALL)
+                        .append(" force index (")
+                        .append(PolicyConstants.ATTRIBUTE_INDEXES.get(gp.getGuard().getAttribute()))
+                        .append(" ) Where")
+                        .append(gp.getGuard().print())
+                        .append(PolicyConstants.CONJUNCTION);
+                queryExp.append(gp.getGuardPartition().createQueryFromPolices());
+                delim = remove_duplicate? PolicyConstants.UNION: PolicyConstants.UNION_ALL;
+            }
+        }
+        else if (PolicyConstants.DBMS_CHOICE.equalsIgnoreCase(PolicyConstants.PGSQL_DBMS)) { //no hints added
+            for (GuardPart gp: this.guardParts) {
+                queryExp.append(delim);
+                queryExp.append(PolicyConstants.SELECT_ALL_WHERE)
+                        .append(gp.getGuard().print());
+                queryExp.append(PolicyConstants.CONJUNCTION);
+                queryExp.append(gp.getGuardPartition().createQueryFromPolices());
+                delim = remove_duplicate? PolicyConstants.UNION: PolicyConstants.UNION_ALL;
+            }
+        }
+        else {
+            throw new PolicyEngineException("Unknown DBMS");
         }
         return  queryExp.toString();
     }
-
-    public String createQueryWithUnionAll(){
-        StringBuilder queryExp = new StringBuilder();
-        String delim = "";
-        for (GuardPart gp: this.guardParts) {
-            queryExp.append(delim);
-            queryExp.append(PolicyConstants.SELECT_ALL_WHERE)
-                    .append(gp.getGuard().print());
-            queryExp.append(PolicyConstants.CONJUNCTION);
-            queryExp.append(gp.getGuardPartition().createQueryFromPolices());
-            delim = PolicyConstants.UNION_ALL;
-        }
-        return  queryExp.toString();
-    }
-
 
     /**
      * (Select * from TABLE_NAME where G1
@@ -233,6 +234,24 @@ public class GuardExp {
         }
         queryExp.append(")");
         return queryExp.toString();
+    }
+
+    /**
+     * Sieve rewrite which only uses the guards and not the UDF.
+     * Choices between using CTE versus no cte, Union versus OR
+     * @param cte
+     * @param union
+     * @return
+     */
+    public String queryRewrite(boolean cte, boolean union) {
+        String query = null;
+        if (cte) query = "WITH polEval as (";
+        if (union)
+            query += createQueryWithUnion(true); //Change it to false to have UNION ALL
+        else
+            query += createQueryWithOR();
+        if(cte) query += ") SELECT * from polEval";
+        return query;
     }
 
     public String udfRewrite(boolean union) {

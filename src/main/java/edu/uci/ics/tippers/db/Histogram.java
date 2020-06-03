@@ -12,6 +12,7 @@ import edu.uci.ics.tippers.model.guard.Bucket;
 
 import java.io.*;
 import java.nio.file.Paths;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,7 +20,7 @@ import java.util.*;
 
 public class Histogram {
 
-    private static java.sql.Connection conn = MySQLConnectionManager.getInstance().getConnection();
+    private static Connection conn;
 
     private static Writer writer = new Writer();
 
@@ -30,6 +31,7 @@ public class Histogram {
     private static File histDirectory;
 
     private Histogram() {
+        conn = PolicyConstants.getDBMSConnection();
         histDirectory = new File(String.valueOf(Paths.get(PolicyConstants.HISTOGRAM_DIR.toLowerCase(),
                 PolicyConstants.TABLE_NAME.toLowerCase())));
         if (histDirectory.isDirectory() && Objects.requireNonNull(histDirectory.list()).length == 0)

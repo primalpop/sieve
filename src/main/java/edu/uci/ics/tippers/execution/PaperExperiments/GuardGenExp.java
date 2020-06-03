@@ -2,7 +2,7 @@ package edu.uci.ics.tippers.execution.PaperExperiments;
 
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.db.MySQLConnectionManager;
-import edu.uci.ics.tippers.generation.policy.WiFiDataSet.PolicyGen;
+import edu.uci.ics.tippers.generation.policy.WiFiDataSet.PolicyUtil;
 import edu.uci.ics.tippers.manager.GuardPersistor;
 import edu.uci.ics.tippers.manager.PolicyPersistor;
 import edu.uci.ics.tippers.model.guard.SelectGuard;
@@ -29,7 +29,7 @@ public class GuardGenExp {
     Connection connection;
 
     public GuardGenExp(){
-        this.polper = new PolicyPersistor();
+        this.polper = PolicyPersistor.getInstance();
         this.guardPersistor = new GuardPersistor();
         this.connection = MySQLConnectionManager.getInstance().getConnection();
     }
@@ -70,7 +70,7 @@ public class GuardGenExp {
 
     public static void main(String [] args){
         GuardGenExp ge = new GuardGenExp();
-        PolicyGen pg = new PolicyGen();
+        PolicyUtil pg = new PolicyUtil();
         List<Integer> users = pg.getAllUsers(true);
         ge.generateGuards(users);
     }

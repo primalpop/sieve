@@ -3,13 +3,15 @@ package edu.uci.ics.tippers.generation.policy.WiFiDataSet;
 import edu.uci.ics.tippers.common.AttributeType;
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.db.MySQLConnectionManager;
+import edu.uci.ics.tippers.db.PGSQLConnectionManager;
+import edu.uci.ics.tippers.db.QueryManager;
 import edu.uci.ics.tippers.model.data.UserProfile;
 import edu.uci.ics.tippers.model.policy.*;
 
 import java.sql.*;
 import java.util.*;
 
-public class PolicyGen {
+public class PolicyUtil {
 
     /**
      * 1. Read all distinct user ids from database and store them in USER TABLE if it doesn't already exist
@@ -23,9 +25,14 @@ public class PolicyGen {
     private List<String> location_ids;
     private Timestamp startDate = null, endDate = null;
 
-    public PolicyGen(){
-       r = new Random();
-       connection = MySQLConnectionManager.getInstance().getConnection();
+    public PolicyUtil() {
+        r = new Random();
+        if (PolicyConstants.DBMS_CHOICE.equalsIgnoreCase(PolicyConstants.MYSQL_DBMS))
+            connection = MySQLConnectionManager.getInstance().getConnection();
+        else if (PolicyConstants.DBMS_CHOICE.equalsIgnoreCase(PolicyConstants.PGSQL_DBMS))
+            connection = PGSQLConnectionManager.getInstance().getConnection();
+        else
+            System.out.println("DBMS choice not set or unknown DBMS");
     }
 
 
@@ -33,14 +40,14 @@ public class PolicyGen {
         PreparedStatement queryStm = null;
         user_ids = new ArrayList<>();
         try {
-            if(!non_visitor)
+            if (!non_visitor)
                 queryStm = connection.prepareStatement("SELECT ID as id " +
-                        "FROM USER");
+                        "FROM APP_USER ORDER BY id");
             else
-                queryStm = connection.prepareStatement("SELECT ID as id FROM USER where USER_PROFILE in ( \'"
-                        + UserProfile.FACULTY.getValue()  + "\', \'" + UserProfile.GRADUATE.getValue()
+                queryStm = connection.prepareStatement("SELECT ID as id FROM APP_USER where USER_PROFILE in ( \'"
+                        + UserProfile.FACULTY.getValue() + "\', \'" + UserProfile.GRADUATE.getValue()
                         + "\', \'" + UserProfile.UNDERGRAD.getValue() + "\', \'" + UserProfile.STAFF.getValue()
-                        + "\')");
+                        + "\') ORDER BY id");
             ResultSet rs = queryStm.executeQuery();
             while (rs.next()) user_ids.add(rs.getInt("id"));
         } catch (SQLException e) {
@@ -63,25 +70,25 @@ public class PolicyGen {
         return location_ids;
     }
 
-    public Timestamp retrieveDate(String valType){
+    public Timestamp retrieveDate(String valType) {
         PreparedStatement queryStm = null;
         Timestamp ts = null;
-        try{
+        try {
             queryStm = connection.prepareStatement("SELECT " + valType + "(" + PolicyConstants.START_DATE + ") AS value from PRESENCE");
             ResultSet rs = queryStm.executeQuery();
             while (rs.next()) ts = rs.getTimestamp("value");
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return ts;
     }
 
-    public Timestamp getDate(String valType){
+    public Timestamp getDate(String valType) {
         if (valType.equalsIgnoreCase("MIN")) {
-            if(startDate == null) startDate = retrieveDate(valType);
+            if (startDate == null) startDate = retrieveDate(valType);
             return startDate;
         } else {
-            if(endDate == null) endDate = retrieveDate(valType);
+            if (endDate == null) endDate = retrieveDate(valType);
             return endDate;
         }
     }
@@ -89,14 +96,14 @@ public class PolicyGen {
 
     /**
      * @param owner_id - id of the owner of the tuple
-     * @param  querier - id of the querier to whom policy applies
-     * @param tsPred - time period captured using date and time
+     * @param querier  - id of the querier to whom policy applies
+     * @param tsPred   - time period captured using date and time
      * @param location - location value
      * @param action   - allow or deny
      * @return
      */
-    public BEPolicy generatePolicies(int querier, int owner_id,  String owner_group, String owner_profile,
-                                           TimeStampPredicate tsPred, String location, String action) {
+    public BEPolicy generatePolicies(int querier, int owner_id, String owner_group, String owner_profile,
+                                     TimeStampPredicate tsPred, String location, String action) {
         String policyID = UUID.randomUUID().toString();
         List<QuerierCondition> querierConditions = new ArrayList<>(Arrays.asList(
                 new QuerierCondition(policyID, "policy_type", AttributeType.STRING, Operation.EQ, "user"),
@@ -107,7 +114,7 @@ public class PolicyGen {
                     String.valueOf(owner_id), Operation.EQ);
             objectConditions.add(owner);
         }
-        if (owner_group != null){
+        if (owner_group != null) {
             ObjectCondition ownerGroup = new ObjectCondition(policyID, PolicyConstants.GROUP_ATTR, AttributeType.STRING,
                     owner_group, Operation.EQ);
             objectConditions.add(ownerGroup);
@@ -130,7 +137,7 @@ public class PolicyGen {
                     location, Operation.EQ);
             objectConditions.add(locationPred);
         }
-        if(objectConditions.isEmpty()){
+        if (objectConditions.isEmpty()) {
             System.out.println("Empty Object Conditions");
         }
         return new BEPolicy(policyID, objectConditions, querierConditions, "analysis",

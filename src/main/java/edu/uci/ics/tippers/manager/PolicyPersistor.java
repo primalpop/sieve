@@ -1,7 +1,9 @@
 package edu.uci.ics.tippers.manager;
 
 import edu.uci.ics.tippers.common.AttributeType;
+import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.db.MySQLConnectionManager;
+import edu.uci.ics.tippers.db.PGSQLConnectionManager;
 import edu.uci.ics.tippers.model.policy.*;
 
 import java.sql.*;
@@ -12,11 +14,16 @@ import java.util.List;
 
 public class PolicyPersistor {
 
-    private static PolicyPersistor _instance = new PolicyPersistor();
+    private static final PolicyPersistor _instance = new PolicyPersistor();
     //TODO: Generalize this database connection
-    private static Connection connection = MySQLConnectionManager.getInstance().getConnection();
+    private static Connection connection;
+
+    private PolicyPersistor(){
+
+    }
 
     public static PolicyPersistor getInstance() {
+        connection = PolicyConstants.getDBMSConnection();
         return _instance;
     }
 
@@ -122,13 +129,22 @@ public class PolicyPersistor {
         PreparedStatement queryStm = null;
         try {
             if (querier != null) {
-                queryStm = connection.prepareStatement("SELECT " + policy_table + ".id, " + policy_table + ".querier, " + policy_table + ".purpose, " +
-                        policy_table + ".enforcement_action," + policy_table + ".inserted_at," + oc_table + ".id, " + oc_table + " .policy_id," + oc_table + ".attribute, " +
-                        oc_table + ".attribute_type, " + oc_table + ".operator," + oc_table + ".comp_value " +
+                queryStm = connection.prepareStatement("SELECT " + policy_table + ".id as \"" + policy_table + ".id\"," +
+                        policy_table + ".querier as \"" + policy_table + ".querier\"," +
+                        policy_table + ".purpose as \"" + policy_table + ".purpose\", " +
+                        policy_table + ".enforcement_action as \"" + policy_table + ".enforcement_action\"," +
+                        policy_table + ".inserted_at as \"" + policy_table + ".inserted_at\"," +
+                        oc_table + ".id as \"" + oc_table + ".id\", " +
+                        oc_table + ".policy_id as \"" + oc_table + ".policy_id\"," +
+                        oc_table + ".attribute as \"" + oc_table + ".attribute\", " +
+                        oc_table + ".attribute_type as \"" + oc_table + ".attribute_type\", " +
+                        oc_table + ".operator as \"" + oc_table + ".operator\"," +
+                        oc_table + ".comp_value as \"" + oc_table + ".comp_value\" " +
                         "FROM " + policy_table + ", " + oc_table +
                         " WHERE " + policy_table + ".querier=? AND " + policy_table + ".id = " + oc_table + ".policy_id " +
-                        "AND " + policy_table + ".enforcement_action=? order by " + policy_table + ".id, " + oc_table + ".attribute");
-                queryStm.setInt(1, Integer.parseInt(querier));
+                        "AND " + policy_table + ".enforcement_action=? " +
+                        " order by " + policy_table + ".id, " + oc_table + ".attribute, " + oc_table + ".comp_value");
+                queryStm.setString(1, querier);
                 queryStm.setString(2, enforcement_action);
             } else {
                 queryStm = connection.prepareStatement("SELECT " + policy_table + ".id, " + policy_table + ".querier, " + policy_table + ".purpose, " +
@@ -136,7 +152,8 @@ public class PolicyPersistor {
                         oc_table + ".attribute_type, " + oc_table + ".operator," + oc_table + ".comp_value " +
                         "FROM " + policy_table + ", " + oc_table +
                         " WHERE " + policy_table + ".id = " + oc_table + ".policy_id " +
-                        "AND " + policy_table + ".enforcement_action=? order by " + policy_table + ".id");
+                        "AND " + policy_table + ".enforcement_action=? " +
+                        "order by " + policy_table + ".id, " + oc_table + ".attribute, " + oc_table + ".comp_value");
                 queryStm.setString(1, enforcement_action);
             }
             ResultSet rs = queryStm.executeQuery();
