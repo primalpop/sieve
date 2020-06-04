@@ -13,17 +13,11 @@ public class QueryExecutor {
 
     private long timeout = 0;
 
-    private final long QUERY_EXECUTION_TIMEOUT = 30000; //30 seconds
-
-    private Connection connection;
+    private final Connection connection;
 
     public QueryExecutor(Connection connection, long timeout){
         this.connection = connection;
-        this.timeout = timeout + QUERY_EXECUTION_TIMEOUT;
-    }
-
-    public QueryExecutor(){
-        this.timeout = QUERY_EXECUTION_TIMEOUT;
+        this.timeout = timeout + PolicyConstants.MAX_DURATION.toMillis();
     }
 
     public QueryResult runWithThread(String query, QueryResult queryResult) {
