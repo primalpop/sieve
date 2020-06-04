@@ -15,17 +15,19 @@ import edu.uci.ics.tippers.model.policy.BEPolicy;
 import java.time.Duration;
 import java.util.*;
 
-public class PgTest {
+public class DBMS_Test {
 
     private static final int MAX_POLICY_NUMBER = 2000;
     private static final int CHUNK_SIZE = 100;
-    private static final int EXP_REPETITIONS = 5;
+    private static final int EXP_REPETITIONS = 4;
 
     public static void main(String[] args) {
         PolicyConstants.initialize();
+        System.out.println("Running on " + PolicyConstants.DBMS_CHOICE + " at " + PolicyConstants.DBMS_LOCATION + " with "
+                +  PolicyConstants.TABLE_NAME + " and " + PolicyConstants.getNumberOfTuples() + " tuples");
         QueryManager queryManager = new QueryManager();
         PolicyUtil pg = new PolicyUtil();
-        String RESULTS_FILE = "postgres_large_results.csv";
+        String RESULTS_FILE = PolicyConstants.DBMS_CHOICE + "_results.csv";
         List<Integer> users = pg.getAllUsers(true);
         Collections.sort(users);
         PolicyPersistor polper = PolicyPersistor.getInstance();
@@ -59,11 +61,15 @@ public class PgTest {
                     rString.append(runTime.toMillis()).append(",");
                     System.out.println("Baseline inlining policies: No of Policies: " + beExpression.getPolicies().size() + " , Time: " + runTime.toMillis());
                 }
-                else rString.append(PolicyConstants.MAX_DURATION.toMillis()).append(",");
+                else {
+                    rString.append(PolicyConstants.INFINTIY).append(",");
+                    rString.append(PolicyConstants.MAX_DURATION.toMillis()).append(",");
+                }
 
                 //Guard Generation
                 SelectGuard gh = new SelectGuard(beExpression, true);
                 System.out.println("Number of policies: " + beExpression.getPolicies().size() + " Number of Guards: " + gh.numberOfGuards());
+                rString.append(gh.numberOfGuards()).append(",");
                 //Computing Total Guard Cardinality
                 GuardExp guardExp = gh.create();
                 double guardTotalCard = 0.0;
@@ -75,7 +81,7 @@ public class PgTest {
                 String guard_query_union = guardExp.queryRewrite(true, true);
                 QueryResult execResultUnion = queryManager.runTimedQueryExp(guard_query_union, EXP_REPETITIONS);
                 String guard_query_or = guardExp.queryRewrite(true, false);
-                QueryResult execResultOr = queryManager.runTimedQueryExp(guard_query_union, EXP_REPETITIONS);
+                QueryResult execResultOr = queryManager.runTimedQueryExp(guard_query_or, EXP_REPETITIONS);
                 rString.append(execResultUnion.getTimeTaken().toMillis()).append(",");
                 rString.append(execResultOr.getTimeTaken().toMillis()).append("\n");
                 System.out.println("Guard Query execution (with Union): "  + " Time: " + execResultUnion.getTimeTaken().toMillis());
@@ -86,7 +92,6 @@ public class PgTest {
                 writer.writeString(rString.toString(), PolicyConstants.BE_POLICY_DIR, RESULTS_FILE);
             }
             else chunkPolicies.add(bePolicy);
-
         }
     }
 }

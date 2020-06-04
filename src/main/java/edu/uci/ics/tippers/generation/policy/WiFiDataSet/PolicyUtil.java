@@ -61,7 +61,7 @@ public class PolicyUtil {
         location_ids = new ArrayList<>();
         try {
             queryStm = connection.prepareStatement("SELECT NAME as room " +
-                    "FROM LOCATION");
+                    "FROM DBH_LOCATION");
             ResultSet rs = queryStm.executeQuery();
             while (rs.next()) location_ids.add(rs.getString("room"));
         } catch (SQLException e) {
