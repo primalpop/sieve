@@ -15,11 +15,11 @@ import edu.uci.ics.tippers.model.policy.BEPolicy;
 import java.time.Duration;
 import java.util.*;
 
-public class DBMS_Test {
+public class DBMSTest {
 
-    private static final int MAX_POLICY_NUMBER = 2000;
-    private static final int CHUNK_SIZE = 100;
-    private static final int EXP_REPETITIONS = 4;
+    private static final int MAX_POLICY_NUMBER = 10;
+    private static final int CHUNK_SIZE = 5;
+    private static final int EXP_REPETITIONS = 1;
 
     public static void main(String[] args) {
         PolicyConstants.initialize();
@@ -50,21 +50,21 @@ public class DBMS_Test {
                 rString.append(chunkPolicies.size()).append(",");
                 BEExpression beExpression = new BEExpression(chunkPolicies);
                 //Baseline Policies
-                if(!QUERY_EXEC_TIMEOUT) {
-                    String polEvalQuery = "With polEval as ( Select * from PRESENCE where " + beExpression.createQueryFromPolices() + "  )" ;
-                    QueryResult tradResult = queryManager.runTimedQueryExp(polEvalQuery + "SELECT * from polEval ", EXP_REPETITIONS);
-                    System.out.println("Vanilla rewrite Result count: " + tradResult.getResultCount());
-                    Duration runTime = Duration.ofMillis(0);
-                    runTime = runTime.plus(tradResult.getTimeTaken());
-                    if(runTime.equals(PolicyConstants.MAX_DURATION)) QUERY_EXEC_TIMEOUT = true;
-                    rString.append(tradResult.getResultCount()).append(",");
-                    rString.append(runTime.toMillis()).append(",");
-                    System.out.println("Baseline inlining policies: No of Policies: " + beExpression.getPolicies().size() + " , Time: " + runTime.toMillis());
-                }
-                else {
-                    rString.append(PolicyConstants.INFINTIY).append(",");
-                    rString.append(PolicyConstants.MAX_DURATION.toMillis()).append(",");
-                }
+//                if(!QUERY_EXEC_TIMEOUT) {
+//                    String polEvalQuery = "With polEval as ( Select * from PRESENCE where " + beExpression.createQueryFromPolices() + "  )" ;
+//                    QueryResult tradResult = queryManager.runTimedQueryExp(polEvalQuery + "SELECT * from polEval ", EXP_REPETITIONS);
+//                    System.out.println("Vanilla rewrite Result count: " + tradResult.getResultCount());
+//                    Duration runTime = Duration.ofMillis(0);
+//                    runTime = runTime.plus(tradResult.getTimeTaken());
+//                    if(runTime.equals(PolicyConstants.MAX_DURATION)) QUERY_EXEC_TIMEOUT = true;
+//                    rString.append(tradResult.getResultCount()).append(",");
+//                    rString.append(runTime.toMillis()).append(",");
+//                    System.out.println("Baseline inlining policies: No of Policies: " + beExpression.getPolicies().size() + " , Time: " + runTime.toMillis());
+//                }
+//                else {
+//                    rString.append(PolicyConstants.INFINTIY).append(",");
+//                    rString.append(PolicyConstants.MAX_DURATION.toMillis()).append(",");
+//                }
 
                 //Guard Generation
                 SelectGuard gh = new SelectGuard(beExpression, true);
@@ -77,17 +77,21 @@ public class DBMS_Test {
                     guardTotalCard += queryManager.checkSelectivity(gp.getGuard().print());
                 }
                 rString.append(guardTotalCard).append(",");
+                //Guard only selectivity
+                QueryResult guardOnlyQuery = queryManager.runTimedQueryExp(guardExp.createGuardOnlyQuery(), 1);
+                System.out.println(guardOnlyQuery.getTimeTaken());
+                rString.append(guardOnlyQuery.getTimeTaken()).append("\n");
                 //Sieve approach
                 String guard_query_union = guardExp.queryRewrite(true, true);
-                QueryResult execResultUnion = queryManager.runTimedQueryExp(guard_query_union, EXP_REPETITIONS);
-                String guard_query_or = guardExp.queryRewrite(true, false);
-                QueryResult execResultOr = queryManager.runTimedQueryExp(guard_query_or, EXP_REPETITIONS);
-                rString.append(execResultUnion.getTimeTaken().toMillis()).append(",");
-                rString.append(execResultOr.getTimeTaken().toMillis()).append("\n");
-                System.out.println("Guard Query execution (with Union): "  + " Time: " + execResultUnion.getTimeTaken().toMillis());
-                System.out.println("Guard Query result count (with Union): "  + " Time: " + execResultUnion.getResultCount());
-                System.out.println("Guard Query execution (with OR): "  + execResultOr.getTimeTaken().toMillis());
-                System.out.println("Guard Query result count (with OR): "  + " Time: " + execResultUnion.getResultCount());
+//                QueryResult execResultUnion = queryManager.runTimedQueryExp(guard_query_union, EXP_REPETITIONS);
+//                String guard_query_or = guardExp.queryRewrite(true, false);
+//                QueryResult execResultOr = queryManager.runTimedQueryExp(guard_query_or, EXP_REPETITIONS);
+//                rString.append(execResultUnion.getTimeTaken().toMillis()).append(",");
+//                rString.append(execResultOr.getTimeTaken().toMillis()).append("\n");
+//                System.out.println("Guard Query execution (with Union): "  + " Time: " + execResultUnion.getTimeTaken().toMillis());
+//                System.out.println("Guard Query result count (with Union): "  + " Time: " + execResultUnion.getResultCount());
+//                System.out.println("Guard Query execution (with OR): "  + execResultOr.getTimeTaken().toMillis());
+//                System.out.println("Guard Query result count (with OR): "  + " Time: " + execResultUnion.getResultCount());
                 //Print the csv line
                 writer.writeString(rString.toString(), PolicyConstants.BE_POLICY_DIR, RESULTS_FILE);
             }
