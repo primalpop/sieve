@@ -161,20 +161,16 @@ public class GuardExp {
     }
 
     /**
-     * (Select * from TABLE_NAME where G1
-     * UNION Select * from TABLE_NAME where G2
-     * ....
-     * Select * from TABLE_NAME where GN)
+     * (Select * from TABLE_NAME where G1 OR G2 .... or GN)
      * @return
      */
     public String createGuardOnlyQuery(){
         StringBuilder queryExp = new StringBuilder();
+        queryExp.append(PolicyConstants.SELECT_ALL_WHERE);
         String delim = "";
         for (GuardPart gp: this.guardParts) {
-            queryExp.append(delim);
-            queryExp.append(PolicyConstants.SELECT_ALL_WHERE)
-                    .append(gp.getGuard().print());
-            delim = PolicyConstants.UNION;
+            queryExp.append(delim).append(gp.getGuard().print());
+            delim = PolicyConstants.DISJUNCTION;
         }
         return  queryExp.toString();
     }

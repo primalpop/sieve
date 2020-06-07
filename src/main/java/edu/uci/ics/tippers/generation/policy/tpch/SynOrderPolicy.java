@@ -116,6 +116,7 @@ public class SynOrderPolicy {
     public static void main(String [] args) {
         PolicyConstants.initialize();
         SynOrderPolicy sop = new SynOrderPolicy();
+        Double[] overlapValues = new Double[]{0.0005, 0.001, 0.005, 0.01, 0.05};
         sop.generatePolicies(0.001);
     }
 }
