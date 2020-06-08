@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.davidmoten.guavamini.Lists;
 import com.google.common.collect.Sets;
 import edu.uci.ics.tippers.common.PolicyConstants;
-import edu.uci.ics.tippers.db.QueryManager;
 
 import java.io.IOException;
 import java.sql.Timestamp;
@@ -67,8 +66,6 @@ public class BEPolicy {
     @JsonProperty("inserted_at")
     @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss", locale = "America/Phoenix")
     private Timestamp inserted_at;
-
-    private QueryManager queryManager = new QueryManager();
 
     public BEPolicy(){
         this.object_conditions = new ArrayList<ObjectCondition>();
@@ -340,6 +337,16 @@ public class BEPolicy {
         return PolicyConstants.getNumberOfTuples() * (
                     PolicyConstants.ROW_EVALUATE_COST * PolicyConstants.NUMBER_OF_PREDICATES_EVALUATED *
                             countNumberOfPredicates());
+    }
+
+
+    public ObjectCondition getIndexScanPredicate(){
+        ObjectCondition selected = this.getObject_conditions().get(0);
+        for (ObjectCondition oc : this.getObject_conditions()) {
+            if (oc.computeL() < selected.computeL())
+                selected = oc;
+        }
+        return selected;
     }
 
     /**

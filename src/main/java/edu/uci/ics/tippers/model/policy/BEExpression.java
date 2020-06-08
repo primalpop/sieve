@@ -175,6 +175,32 @@ public class BEExpression{
         }
     }
 
+    /**
+     * Creates a query of the form:
+     * Select * from force index(oc1)  where oc1 AND (P1)
+     * UNION
+     * Select * from force index(oc2) where oc2 and (P2)
+     * UNION .....
+     * @return
+     */
+    public String createIndexQuery(){
+        StringBuilder queryExp = new StringBuilder();
+        String delim = "";
+        for(BEPolicy bp: this.getPolicies()){
+            ObjectCondition  ind = bp.getIndexScanPredicate();
+            queryExp.append(delim);
+            queryExp.append(PolicyConstants.SELECT_ALL)
+                    .append(" force index (")
+                    .append(PolicyConstants.ATTRIBUTE_INDEXES.get(ind.getAttribute()))
+                    .append(" ) Where ")
+                    .append(ind.print())
+                    .append(PolicyConstants.CONJUNCTION);
+            queryExp.append(bp.createQueryFromObjectConditions());
+            delim = PolicyConstants.UNION;
+        }
+        return queryExp.toString();
+    }
+
 
     /**
      * Given a list of policies, it creates a query by
