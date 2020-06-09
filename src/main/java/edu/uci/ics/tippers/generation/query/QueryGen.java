@@ -1,5 +1,6 @@
 package edu.uci.ics.tippers.generation.query;
 
+import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.db.MySQLConnectionManager;
 import edu.uci.ics.tippers.db.QueryManager;
 import edu.uci.ics.tippers.model.query.QueryStatement;
@@ -13,7 +14,7 @@ public abstract class QueryGen {
 
 
     public QueryManager queryManager;
-    public Connection connection = MySQLConnectionManager.getInstance().getConnection();
+    public Connection connection;
     Random r;
     double lowSelDown, lowSelUp;
     double medSelDown, medSelUp;
@@ -21,6 +22,9 @@ public abstract class QueryGen {
 
 
     public QueryGen() {
+        PolicyConstants.initialize();
+        connection = PolicyConstants.getDBMSConnection();
+
         lowSelDown = 0.00001;
         lowSelUp = 0.001;
         medSelDown = 0.001;

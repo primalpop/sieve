@@ -353,7 +353,7 @@ public class WiFiDataSetQueryGeneration extends QueryGen {
 
     public static void main(String[] args) {
         WiFiDataSetQueryGeneration qg = new WiFiDataSetQueryGeneration();
-        boolean[] templates = {false, false, true, false};
+        boolean[] templates = {true, false, false, false};
         int numOfQueries = 3;
         qg.constructWorkload(templates, numOfQueries);
     }

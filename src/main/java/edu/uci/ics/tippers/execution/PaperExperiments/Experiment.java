@@ -37,6 +37,7 @@ public class Experiment {
     private static boolean QUERY_EXEC;
     private static boolean BASE_LINE_POLICIES;
     private static boolean BASELINE_UDF;
+    private static boolean BASELINE_INDEX;
     private static boolean GUARD_POLICY_INLINE;
     private static boolean GUARD_UDF;
     private static boolean GUARD_INDEX;
@@ -52,6 +53,7 @@ public class Experiment {
     private static String RESULTS_FILE;
 
     public Experiment() {
+        PolicyConstants.initialize();
         polper = PolicyPersistor.getInstance();
         queryExplainer = new QueryExplainer();
         queryManager = new QueryManager();
@@ -66,6 +68,7 @@ public class Experiment {
                 BASE_LINE_POLICIES = Boolean.parseBoolean(props.getProperty("baseline_policies"));
                 GUARD_POLICY_INLINE = Boolean.parseBoolean(props.getProperty("guard_policies"));
                 BASELINE_UDF = Boolean.parseBoolean(props.getProperty("baseline_udf"));
+                BASELINE_INDEX = Boolean.parseBoolean(props.getProperty("baseline_index"));
                 GUARD_UDF = Boolean.parseBoolean(props.getProperty("guard_udf"));
                 GUARD_INDEX = Boolean.parseBoolean(props.getProperty("guard_index"));
                 QUERY_INDEX = Boolean.parseBoolean(props.getProperty("query_index"));
@@ -115,10 +118,10 @@ public class Experiment {
                 String polEvalQuery = "With polEval as ( Select * from PRESENCE where "
                         + beExpression.createQueryFromPolices() + "  )" ;
                 if(queryStatement.getTemplate() == 3)
-                    tradResult = queryManager.runTimedQueryExp(polEvalQuery + queryStatement.getQuery(), 1);
+                    tradResult = queryManager.runTimedQueryExp(polEvalQuery + queryStatement.getQuery(), NUM_OF_REPS);
                 else
                     tradResult = queryManager.runTimedQueryExp(polEvalQuery + "SELECT * from polEval where "
-                            + queryStatement.getQuery(), 1);
+                            + queryStatement.getQuery(), NUM_OF_REPS);
                 Duration runTime = Duration.ofMillis(0);
                 runTime = runTime.plus(tradResult.getTimeTaken());
                 resultString.append(runTime.toMillis()).append(",");
@@ -130,12 +133,20 @@ public class Experiment {
                 String udf_query = " and pcheck( " + querier + ", PRESENCE.user_id, PRESENCE.location_id, " +
                         "PRESENCE.start_date, PRESENCE.start_time, PRESENCE.user_profile, PRESENCE.user_group) = 1";
                 if(queryStatement.getTemplate() == 3)
-                    execResult = queryManager.runTimedQueryExp(queryStatement.getQuery() + udf_query, 1);
+                    execResult = queryManager.runTimedQueryExp(queryStatement.getQuery() + udf_query, NUM_OF_REPS);
                 else
                     execResult = queryManager.runTimedQueryExp("SELECT * from PRESENCE where "
-                            + queryStatement.getQuery() + udf_query, 1);
+                            + queryStatement.getQuery() + udf_query, NUM_OF_REPS);
                 resultString.append(execResult.getTimeTaken().toMillis()).append(",");
                 System.out.println("Baseline UDF: " + " , Time: " + execResult.getTimeTaken().toMillis());
+            }
+
+            if(BASELINE_INDEX){ //TODO: doesn't work for template 3
+                String polIndexQuery = "With polEval as ( " + beExpression.createIndexQuery()  + " ) " ;
+                QueryResult indResult = queryManager.runTimedQueryExp(polIndexQuery
+                        + "SELECT * from polEval where " + queryStatement.getQuery(), NUM_OF_REPS);
+                resultString.append(indResult.getTimeTaken().toMillis()).append(",");
+                System.out.println("Baseline Index: " + " , Time: " + indResult.getTimeTaken().toMillis());
             }
 
             GuardPersistor guardPersistor = new GuardPersistor();
@@ -299,8 +310,7 @@ public class Experiment {
                 "Baseline_Policies, Baseline_UDF,Number_of_Guards,Total_Guard_Cardinality,With_Guard_Index,With_Query_Index,Sieve_Parameters, Sieve\n";
         Writer writer = new Writer();
         writer.writeString(file_header, PolicyConstants.BE_POLICY_DIR, RESULTS_FILE);
-        List<QueryStatement> queries = e.getQueries(2, 10);
-        queries.addAll(e.getQueries(3, 10));
+        List<QueryStatement> queries = e.getQueries(1, 9);
         for (int j = 0; j < queries.size(); j++) {
             System.out.println("Total Query Selectivity " + queries.get(j).getSelectivity());
             for (int i = 0; i < users.size(); i++) {
