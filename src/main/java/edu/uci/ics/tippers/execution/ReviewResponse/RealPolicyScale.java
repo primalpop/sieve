@@ -99,9 +99,8 @@ public class RealPolicyScale {
             OptionalDouble sieveR = resultMap.get(x).stream().mapToLong(ExpResult::getSieveR).average();
             OptionalDouble numOfGuards = resultMap.get(x).stream().mapToInt(ExpResult::getNumberOfGuards).average();
             rString.append(x).append(",").append(String.format("%.2f", baselineR.getAsDouble())).append(",").append(String.format("%.2f", sieveR.getAsDouble())).append(",")
-                    .append(Math.ceil(numOfGuards.getAsDouble())).append("\n");
+                    .append(Math.round(numOfGuards.getAsDouble())).append("\n");
             writer.writeString(rString.toString(), PolicyConstants.BE_POLICY_DIR, RESULTS_FILE);
         }
     }
-
 }
