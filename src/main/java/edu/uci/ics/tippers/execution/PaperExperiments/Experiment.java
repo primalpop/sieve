@@ -138,7 +138,7 @@ public class Experiment {
                     execResult = queryManager.runTimedQueryExp("SELECT * from PRESENCE where "
                             + queryStatement.getQuery() + udf_query, NUM_OF_REPS);
                 resultString.append(execResult.getTimeTaken().toMillis()).append(",");
-                System.out.println("Baseline UDF: " + " , Time: " + execResult.getTimeTaken().toMillis());
+                System.out.println("Baseline UDF: Time: " + execResult.getTimeTaken().toMillis());
             }
 
             if(BASELINE_INDEX){ //TODO: doesn't work for template 3
@@ -146,7 +146,7 @@ public class Experiment {
                 QueryResult indResult = queryManager.runTimedQueryExp(polIndexQuery
                         + "SELECT * from polEval where " + queryStatement.getQuery(), NUM_OF_REPS);
                 resultString.append(indResult.getTimeTaken().toMillis()).append(",");
-                System.out.println("Baseline Index: " + " , Time: " + indResult.getTimeTaken().toMillis());
+                System.out.println("Baseline Index: Time: " + indResult.getTimeTaken().toMillis());
             }
 
             GuardPersistor guardPersistor = new GuardPersistor();
@@ -306,8 +306,10 @@ public class Experiment {
         users.addAll(grad);
         users.addAll(staff);
         PolicyPersistor polper = PolicyPersistor.getInstance();
+//        String file_header = "Querier,Querier_Profile,Query_Type,Query_Cardinality,Number_Of_Policies,Estimated_QPS,Query_Alone," +
+//                "Baseline_Policies, Baseline_UDF,Number_of_Guards,Total_Guard_Cardinality,With_Guard_Index,With_Query_Index,Sieve_Parameters, Sieve\n";
         String file_header = "Querier,Querier_Profile,Query_Type,Query_Cardinality,Number_Of_Policies,Estimated_QPS,Query_Alone," +
-                "Baseline_Policies, Baseline_UDF,Number_of_Guards,Total_Guard_Cardinality,With_Guard_Index,With_Query_Index,Sieve_Parameters, Sieve\n";
+                "Baseline_Policies, Baseline_UDF,Baseline_Index,Number_of_Guards,Sieve_Parameters, Sieve\n";
         Writer writer = new Writer();
         writer.writeString(file_header, PolicyConstants.BE_POLICY_DIR, RESULTS_FILE);
         List<QueryStatement> queries = e.getQueries(1, 9);
