@@ -113,7 +113,6 @@ public class GuardExp {
     public String createQueryWithOR(){
         StringBuilder queryExp = new StringBuilder();
         String delim = "";
-        queryExp.append(PolicyConstants.SELECT_ALL_WHERE);
         for (GuardPart gp: this.guardParts) {
             queryExp.append(delim);
             queryExp.append(gp.getGuard().print());
@@ -245,7 +244,7 @@ public class GuardExp {
         if (union)
             query += createQueryWithUnion(true); //Change it to false to have UNION ALL
         else
-            query += createQueryWithOR();
+            query += PolicyConstants.SELECT_ALL_WHERE + createQueryWithOR();
         if(cte) query += ") SELECT * from polEval";
         return query;
     }
