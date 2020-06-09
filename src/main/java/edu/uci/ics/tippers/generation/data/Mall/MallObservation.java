@@ -6,23 +6,23 @@ import java.time.LocalTime;
 public class MallObservation {
     String observation_number;
 
-    int wifi_ap;
+    String shop_name;
 
     LocalDate obs_date;
 
     LocalTime obs_time;
 
-    int shop_type;
+    String user_interest;
 
     int device;
 
-    public MallObservation(String observation_number, int wifi_ap, LocalDate obs_date, LocalTime obs_time, int device) {
+    public MallObservation(String observation_number, String shop_name, LocalDate obs_date, LocalTime obs_time, String user_interest, int device) {
         this.observation_number = observation_number;
-        this.wifi_ap = wifi_ap;
+        this.shop_name = shop_name;
         this.obs_date = obs_date;
         this.obs_time = obs_time;
-        this.shop_type = shop_type;
         this.device = device;
+        this.user_interest = user_interest;
     }
 
     public LocalDate getObs_date() {
@@ -41,12 +41,12 @@ public class MallObservation {
         this.obs_time = obs_time;
     }
 
-    public Integer getShop_type() {
-        return shop_type;
+    public String getUser_interest() {
+        return user_interest;
     }
 
-    public void setShop_type(Integer shop_type) {
-        this.shop_type = shop_type;
+    public void setUser_interest(String user_interest) {
+        this.user_interest = user_interest;
     }
 
 
@@ -58,12 +58,12 @@ public class MallObservation {
         this.observation_number = observation_number;
     }
 
-    public int getWifi_ap() {
-        return wifi_ap;
+    public String getShop_name() {
+        return shop_name;
     }
 
-    public void setWifi_ap(int wifi_ap) {
-        this.wifi_ap = wifi_ap;
+    public void setShop_name(String shop_name) {
+        this.shop_name = shop_name;
     }
 
     public int getDevice() {
