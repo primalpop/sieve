@@ -13,20 +13,30 @@ import java.io.InputStreamReader;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.*;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class MallDataGeneration {
 
-    //TODO: Update Mall data generation code based on discussion yesterday and new schema
+    Map<Integer, List<MallShop>> wifiToShop;
+    Random r;
+
+    static int MULTIPLIER = 4; //For number of customers
+    static int MAX_DEVICE_ID = 268;
+
+    public MallDataGeneration(){
+        wifiToShop = new HashMap<>();
+        r = new Random();
+    }
+
+
     public List<MallObservation> read(Path path) {
         List<MallObservation> list = new ArrayList<>();
         try {
-            // Read CSV file. For each row, instantiate and collect `Observation`.
             InputStream is = Reader.class.getResourceAsStream(path.toString());
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
             Iterable<CSVRecord> records = CSVFormat.RFC4180.withFirstRecordAsHeader().parse(br);
@@ -37,8 +47,10 @@ public class MallDataGeneration {
                 LocalDate obs_date = ldt.toLocalDate();
                 LocalTime obs_time = ldt.toLocalTime();
                 int device = Integer.parseInt(record.get("device_id"));
-                // Instantiate `Person` object, and collect it.
-                MallObservation mallObservation = new MallObservation(obs_no, ap, obs_date, obs_time, device);
+                MallShop ms = wifiToShop.get(ap).get(r.nextInt(wifiToShop.get(ap).size())); //TODO: ignore hallways and misc?
+                String shop_name = ms.shop_name;
+                String user_interest = Math.random() > 0.8? ms.type: null;
+                MallObservation mallObservation = new MallObservation(obs_no, shop_name, obs_date, obs_time, user_interest, device);
                 list.add(mallObservation);
             }
         } catch (IOException e) {
@@ -47,30 +59,28 @@ public class MallDataGeneration {
         return list;
     }
 
-
     public void writeToDB(List<MallObservation> mallObservations) {
 
         Connection connection = MySQLConnectionManager.getInstance().getConnection();
-
         String moInsert = "INSERT INTO MALL_OBSERVATION " +
-                "(id, wifi_ap, obs_date, obs_time, device_id) " +
-                "VALUES (?, ?, ?, ?, ?)";
+                "(id, shop_name, obs_date, obs_time, user_interest, device_id) " +
+                "VALUES (?, ?, ?, ?, ?, ?)";
 
         int i = 0;
         try {
             PreparedStatement moStmt = connection.prepareStatement(moInsert);
             for (MallObservation mo: mallObservations) {
                 moStmt.setString(1, mo.getObservation_number());
-                moStmt.setInt(2, mo.getWifi_ap());
+                moStmt.setString(2, mo.getShop_name());
                 moStmt.setDate(3, Date.valueOf(mo.getObs_date()));
                 moStmt.setTime(4, Time.valueOf(mo.getObs_time()));
-                moStmt.setInt(5, mo.getDevice());
+                moStmt.setString(5, mo.getUser_interest());
+                moStmt.setInt(6, mo.getDevice());
                 moStmt.addBatch();
                 i++;
-                if (i % 10 == 0) { //TODO: Update this to BATCH_SIZE
+                if (i % PolicyConstants.BATCH_SIZE_INSERTION == 0) { //TODO: Update this to BATCH_SIZE
                     moStmt.executeBatch();
                     System.out.println("# " + i + " inserted");
-                    break;
                 }
             }
             moStmt.executeBatch();
@@ -80,14 +90,62 @@ public class MallDataGeneration {
         }
     }
 
+    public List<MallShop> readCoverage(){
+        Path coverageInput = Paths.get("/data/mall_coverage.csv");
+        List<MallShop> mallShops = new ArrayList<>();
+        try {
+            InputStream is = Reader.class.getResourceAsStream(coverageInput.toString());
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+            Iterable<CSVRecord> records = CSVFormat.RFC4180.withFirstRecordAsHeader().withIgnoreSurroundingSpaces().
+                    withNullString("").parse(br);
+            for (CSVRecord record : records) {
+                String name = record.get("name");
+                int id = Integer.parseInt(record.get("id"));
+                String type = record.get("type");
+                int capacity = Integer.parseInt(record.get("capacity"));
+                int wifiAp1 =  record.get("Wifi-ap-1") != null? Integer.parseInt(record.get("Wifi-ap-1")): 0;
+                int wifiAp2 = record.get("Wifi-ap-2") != null? Integer.parseInt(record.get("Wifi-ap-2")): 0;
+                int wifiAp3 = record.get("Wifi-ap-3") != null? Integer.parseInt(record.get("Wifi-ap-3")): 0;
+                int wifiAp4 = record.get("Wifi-ap-4") != null? Integer.parseInt(record.get("Wifi-ap-4")): 0;
+                List<Integer> wifiaps = new ArrayList<>();
+                if (wifiAp1 != 0) wifiaps.add(wifiAp1);
+                if (wifiAp2 != 0) wifiaps.add(wifiAp2);
+                if (wifiAp3 != 0) wifiaps.add(wifiAp3);
+                if (wifiAp4 != 0) wifiaps.add(wifiAp4);
+                MallShop mallShop = new MallShop(name, id, type, capacity, wifiaps);
+                mallShops.add(mallShop);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return mallShops;
+    }
+
 
     public static void main(final String[] args) {
         PolicyConstants.initialize();
         MallDataGeneration mdg = new MallDataGeneration();
+        List<MallShop> mallShops = mdg.readCoverage();
+        for (MallShop ms: mallShops) {
+            for (int i = 0; i < ms.wifiaps.size(); i++) {
+                int wifiap = ms.wifiaps.get(i);
+                if (!mdg.wifiToShop.containsKey(wifiap)){
+                    List<MallShop> wifiMallShops = new ArrayList<>();
+                    wifiMallShops.add(ms);
+                    mdg.wifiToShop.put(wifiap, wifiMallShops);
+                }
+                else mdg.wifiToShop.get(wifiap).add(ms);
+            }
+        }
         Path pathInput = Paths.get("/data/mallObservations.csv");
-        List<MallObservation> observations = mdg.read(pathInput);
-        System.out.println(observations.size());
-        mdg.writeToDB(observations);
+        List<MallObservation> mallObservations = mdg.read(pathInput);
+        int window_size = mallObservations.size()/ MULTIPLIER;
+        for (int i = window_size; i < mallObservations.size(); i++) {
+            mallObservations.get(i).setDevice(mallObservations.get(i - window_size).getDevice() + MAX_DEVICE_ID + 1);
+            mallObservations.get(i).setObs_date(mallObservations.get(i - window_size).getObs_date());
+            mallObservations.get(i).setObs_time(mallObservations.get(i - window_size).getObs_time());
+        }
+        mdg.writeToDB(mallObservations);
     }
 
 }
