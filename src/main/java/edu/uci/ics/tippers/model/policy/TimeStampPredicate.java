@@ -22,8 +22,24 @@ public class TimeStampPredicate {
         this.endTime = this.startTime.plus(duration, ChronoUnit.MINUTES);
     }
 
+    public TimeStampPredicate(LocalDate origin, LocalDate termination, String start, int duration) {
+        this.startDate = origin;
+        this.endDate = termination;
+        this.startTime = LocalTime.parse(start);
+        this.endTime = this.startTime.plus(duration, ChronoUnit.MINUTES);
+    }
+
     public TimeStampPredicate(Timestamp origin, int week, String start, int offset, int duration) {
         this.startDate = origin.toLocalDateTime().toLocalDate();
+        this.startDate = this.startDate.plus(week, ChronoUnit.WEEKS);
+        this.endDate = this.startDate.plus(1, ChronoUnit.WEEKS);
+        this.startTime = LocalTime.parse(start);
+        this.startTime = this.getStartTime().plus(offset, ChronoUnit.MINUTES);
+        this.endTime = this.startTime.plus(duration, ChronoUnit.MINUTES);
+    }
+
+    public TimeStampPredicate(LocalDate origin, int week, String start, int offset, int duration) {
+        this.startDate = origin;
         this.startDate = this.startDate.plus(week, ChronoUnit.WEEKS);
         this.endDate = this.startDate.plus(1, ChronoUnit.WEEKS);
         this.startTime = LocalTime.parse(start);

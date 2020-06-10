@@ -51,7 +51,7 @@ public class SynOrderPolicy {
 
         tpg = new TPolicyGen();
         polper = PolicyPersistor.getInstance();
-        connection = MySQLConnectionManager.getInstance().getConnection();
+        connection =PolicyConstants.getDBMSConnection();
         r = new Random();
 
         MAX_TOTAL_PRICE = tpg.getTotalPrice("MAX");

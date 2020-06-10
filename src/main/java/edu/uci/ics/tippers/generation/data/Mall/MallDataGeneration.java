@@ -1,7 +1,6 @@
 package edu.uci.ics.tippers.generation.data.Mall;
 
 import edu.uci.ics.tippers.common.PolicyConstants;
-import edu.uci.ics.tippers.db.MySQLConnectionManager;
 import edu.uci.ics.tippers.fileop.Reader;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
@@ -23,14 +22,17 @@ import java.util.*;
 public class MallDataGeneration {
 
     Map<Integer, List<MallShop>> wifiToShop;
-    Random r;
+    static Random r;
 
-    static int MULTIPLIER = 4; //For number of customers
+    static int MULTIPLIER = 10; //For number of customers
     static int MAX_DEVICE_ID = 268;
+    static Map<Integer, String> userToInterest;
+    static final List<String> interest = Arrays.asList("clothes", "shoes", "cosmetics", "arcade", "movies", "restaurant");
 
     public MallDataGeneration(){
         wifiToShop = new HashMap<>();
         r = new Random();
+        userToInterest = new HashMap<>();
     }
 
 
@@ -47,10 +49,13 @@ public class MallDataGeneration {
                 LocalDate obs_date = ldt.toLocalDate();
                 LocalTime obs_time = ldt.toLocalTime();
                 int device = Integer.parseInt(record.get("device_id"));
-                MallShop ms = wifiToShop.get(ap).get(r.nextInt(wifiToShop.get(ap).size())); //TODO: ignore hallways and misc?
+                MallShop ms = wifiToShop.get(ap).get(r.nextInt(wifiToShop.get(ap).size()));
                 String shop_name = ms.shop_name;
-                String user_interest = Math.random() > 0.8? ms.type: null;
-                MallObservation mallObservation = new MallObservation(obs_no, shop_name, obs_date, obs_time, user_interest, device);
+                if(!userToInterest.containsKey(device)) {
+                    String user_interest = Math.random() > 0.7? interest.get(r.nextInt(interest.size())): null;
+                    userToInterest.put(device, user_interest);
+                }
+                MallObservation mallObservation = new MallObservation(obs_no, shop_name, obs_date, obs_time, userToInterest.get(device), device);
                 list.add(mallObservation);
             }
         } catch (IOException e) {
@@ -60,8 +65,7 @@ public class MallDataGeneration {
     }
 
     public void writeToDB(List<MallObservation> mallObservations) {
-
-        Connection connection = MySQLConnectionManager.getInstance().getConnection();
+        Connection connection = PolicyConstants.getDBMSConnection();
         String moInsert = "INSERT INTO MALL_OBSERVATION " +
                 "(id, shop_name, obs_date, obs_time, user_interest, device_id) " +
                 "VALUES (?, ?, ?, ?, ?, ?)";
@@ -139,9 +143,22 @@ public class MallDataGeneration {
         }
         Path pathInput = Paths.get("/data/mallObservations.csv");
         List<MallObservation> mallObservations = mdg.read(pathInput);
+        Comparator<MallObservation> dateComparator = new Comparator<MallObservation>() {
+            @Override
+            public int compare(MallObservation o1, MallObservation o2) {
+                return o1.getObs_date().compareTo(o2.getObs_date());
+            }
+        };
+        mallObservations.sort(dateComparator);
         int window_size = mallObservations.size()/ MULTIPLIER;
         for (int i = window_size; i < mallObservations.size(); i++) {
-            mallObservations.get(i).setDevice(mallObservations.get(i - window_size).getDevice() + MAX_DEVICE_ID + 1);
+            int extDevId = mallObservations.get(i - window_size).getDevice() + MAX_DEVICE_ID + 1;
+            mallObservations.get(i).setDevice(extDevId);
+            if(!userToInterest.containsKey(extDevId)){
+                String user_interest = Math.random() > 0.7? interest.get(r.nextInt(interest.size())): null;
+                userToInterest.put(extDevId, user_interest);
+            }
+            mallObservations.get(i).setUser_interest(userToInterest.get(extDevId));
             mallObservations.get(i).setObs_date(mallObservations.get(i - window_size).getObs_date());
             mallObservations.get(i).setObs_time(mallObservations.get(i - window_size).getObs_time());
         }

@@ -58,6 +58,10 @@ public class PolicyConstants {
 
     }
 
+    /**
+     * TODO: Call this function  first always
+     * https://stackoverflow.com/questions/31121513/is-there-an-elegant-way-to-make-every-method-in-a-class-start-with-a-certain-blo
+     */
     public static void initialize(){
 
         Configurations configs = new Configurations();
@@ -176,9 +180,10 @@ public class PolicyConstants {
 
     //Mall observation table attributes
     public static final String M_OBSERVATION_NO = "id";
-    public static final String M_WIFI_AP = "wifi_ap";
+    public static final String M_SHOP_NAME = "shop_name";
     public static final String M_DATE = "obs_date";
     public static final String M_TIME = "obs_time";
     public static final String M_DEVICE = "device_id";
+    public static final String M_INTEREST = "user_interest";
 
 }
