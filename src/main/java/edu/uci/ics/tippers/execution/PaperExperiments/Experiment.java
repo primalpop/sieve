@@ -109,9 +109,8 @@ public class Experiment {
                 QUERY_EXECUTION_TIME = runTime.toMillis();
                 resultString.append(QUERY_EXECUTION_TIME).append(",");
 //                mySQLQueryManager.increaseTimeout(runTime.toMillis()); //Updating timeout to query exec time + constant
-
             }
-            else resultString.append(QUERY_EXECUTION_TIME).append(",");
+            else resultString.append("NA").append(",");
 
             if (BASE_LINE_POLICIES) {
                 QueryResult tradResult = new QueryResult();
@@ -127,6 +126,8 @@ public class Experiment {
                 resultString.append(runTime.toMillis()).append(",");
                 System.out.println("Baseline inlining policies: No of Policies: " + beExpression.getPolicies().size() + " , Time: " + runTime.toMillis());
             }
+            else resultString.append("NA").append(",");
+
 
             if(BASELINE_UDF){
                 QueryResult execResult;
@@ -140,6 +141,8 @@ public class Experiment {
                 resultString.append(execResult.getTimeTaken().toMillis()).append(",");
                 System.out.println("Baseline UDF: Time: " + execResult.getTimeTaken().toMillis());
             }
+            else resultString.append("NA").append(",");
+
 
             if(BASELINE_INDEX){ //TODO: doesn't work for template 3
                 String polIndexQuery = "With polEval as ( " + beExpression.createIndexQuery()  + " ) " ;
@@ -148,6 +151,8 @@ public class Experiment {
                 resultString.append(indResult.getTimeTaken().toMillis()).append(",");
                 System.out.println("Baseline Index: Time: " + indResult.getTimeTaken().toMillis());
             }
+            else resultString.append("NA").append(",");
+
 
             GuardPersistor guardPersistor = new GuardPersistor();
             GuardExp guardExp = guardPersistor.retrieveGuardExpression(querier, "user", bePolicies);
@@ -309,10 +314,10 @@ public class Experiment {
 //        String file_header = "Querier,Querier_Profile,Query_Type,Query_Cardinality,Number_Of_Policies,Estimated_QPS,Query_Alone," +
 //                "Baseline_Policies, Baseline_UDF,Number_of_Guards,Total_Guard_Cardinality,With_Guard_Index,With_Query_Index,Sieve_Parameters, Sieve\n";
         String file_header = "Querier,Querier_Profile,Query_Type,Query_Cardinality,Number_Of_Policies,Estimated_QPS,Query_Alone," +
-                "Baseline_Policies, Baseline_UDF,Baseline_Index,Number_of_Guards,Sieve_Parameters, Sieve\n";
+                "Baseline_Policies, Baseline_UDF,Baseline_Index,Number_of_Guards,Total_Guard_Cardinality,Sieve_Parameters, Sieve\n";
         Writer writer = new Writer();
         writer.writeString(file_header, PolicyConstants.BE_POLICY_DIR, RESULTS_FILE);
-        List<QueryStatement> queries = e.getQueries(1, 9);
+        List<QueryStatement> queries = e.getQueries(2, 9);
         for (int j = 0; j < queries.size(); j++) {
             System.out.println("Total Query Selectivity " + queries.get(j).getSelectivity());
             for (int i = 0; i < users.size(); i++) {

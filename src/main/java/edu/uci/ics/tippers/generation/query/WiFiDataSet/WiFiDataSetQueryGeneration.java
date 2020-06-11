@@ -175,7 +175,7 @@ public class WiFiDataSetQueryGeneration extends QueryGen {
      @Override
      public List<QueryStatement> createQuery2(List<String> selTypes, int queryCount) {
         List<QueryStatement> queries = new ArrayList<>();
-        int i = 0, j = 0;
+        int i = 0;
         for (int k = 0; k < selTypes.size(); k++) {
             int numQ = 0;
             int userCount = numUsers.get(i);
@@ -242,7 +242,8 @@ public class WiFiDataSetQueryGeneration extends QueryGen {
                     if (querySelType.equalsIgnoreCase("medium")
                             || querySelType.equalsIgnoreCase("high")){
                         duration = duration - 200;
-                        i--;
+                        if(i> 0)
+                            i--;
                     }
                 }
                 else if (selType.equalsIgnoreCase("medium")) {
@@ -353,7 +354,7 @@ public class WiFiDataSetQueryGeneration extends QueryGen {
 
     public static void main(String[] args) {
         WiFiDataSetQueryGeneration qg = new WiFiDataSetQueryGeneration();
-        boolean[] templates = {true, false, false, false};
+        boolean[] templates = {false, true, false, false};
         int numOfQueries = 3;
         qg.constructWorkload(templates, numOfQueries);
     }
