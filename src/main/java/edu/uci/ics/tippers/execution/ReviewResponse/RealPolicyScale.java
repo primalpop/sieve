@@ -11,7 +11,6 @@ import edu.uci.ics.tippers.model.guard.SelectGuard;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
 
-import javax.sql.PooledConnection;
 import java.util.*;
 
 
@@ -75,11 +74,8 @@ public class RealPolicyScale {
             xpoints = new ArrayList<>(Arrays.asList(75, 100, 125, 150, 175, 200, 225, 250, 275, 300));
         }
         else  if(PolicyConstants.TABLE_NAME.equalsIgnoreCase(PolicyConstants.MALL_TABLE)) {
-//            users = new ArrayList<>(Arrays.asList(8, 7, 29, 23, 28));
-            users = new ArrayList<>(Arrays.asList(8));
-//            xpoints = new ArrayList<>(Arrays.asList(100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200));
-            xpoints = new ArrayList<>(Arrays.asList(100, 200, 300));
-
+            users = new ArrayList<>(Arrays.asList(8, 7, 29, 23, 28));
+            xpoints = new ArrayList<>(Arrays.asList(100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200));
         }
 
         PolicyPersistor polper = PolicyPersistor.getInstance();
