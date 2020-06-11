@@ -1,7 +1,6 @@
 package edu.uci.ics.tippers.generation.query;
 
 import edu.uci.ics.tippers.common.PolicyConstants;
-import edu.uci.ics.tippers.db.MySQLConnectionManager;
 import edu.uci.ics.tippers.db.QueryManager;
 import edu.uci.ics.tippers.model.query.QueryStatement;
 
@@ -69,7 +68,7 @@ public abstract class QueryGen {
         } else if (templateNum == 1) {
             return createQuery2(selTypes, numOfQueries);
         } else if (templateNum == 2) {
-            return createQuery3();
+            return createQuery3(selTypes, numOfQueries);
         } else if (templateNum == 3) {
             return createQuery4();
         }
@@ -80,7 +79,7 @@ public abstract class QueryGen {
 
     public abstract List<QueryStatement> createQuery2(List<String> selTypes, int numOfQueries);
 
-    public abstract List<QueryStatement> createQuery3();
+    public abstract List<QueryStatement> createQuery3(List<String> selTypes, int numOfQueries);
 
     public abstract List<QueryStatement> createQuery4();
 
