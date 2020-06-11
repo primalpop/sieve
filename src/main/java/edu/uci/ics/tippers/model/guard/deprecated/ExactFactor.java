@@ -1,6 +1,5 @@
 package edu.uci.ics.tippers.model.guard.deprecated;
 
-import com.github.davidmoten.guavamini.Lists;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
 import edu.uci.ics.tippers.model.policy.ObjectCondition;
@@ -40,7 +39,7 @@ public class ExactFactor {
             temp.checkAgainstPolices(objSet);
             if (temp.getPolicies().size() > 1) {
                 Factorino factorino = new Factorino();
-                factorino.setMultiplier(Lists.newArrayList(objSet));
+                factorino.setMultiplier(new ArrayList<>(objSet));
                 factorino.setQuotient(temp);
                 factorino.setCost();
                 possibleFactz.add(factorino);

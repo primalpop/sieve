@@ -2,7 +2,6 @@ package edu.uci.ics.tippers.model.policy;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.davidmoten.guavamini.Lists;
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.db.QueryManager;
 
@@ -55,7 +54,7 @@ public class BEExpression{
         for(BEPolicy bp: policies) {
             attrs.addAll(bp.retrieveObjCondAttributes());
         }
-        return Lists.newArrayList(attrs);
+        return new ArrayList<>(attrs);
     }
 
 
@@ -72,7 +71,7 @@ public class BEExpression{
 
             }
         }
-        return Lists.newArrayList(distinctObjCond);
+        return new ArrayList<>(distinctObjCond);
     }
 
     /**

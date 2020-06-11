@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.davidmoten.guavamini.Lists;
 import com.google.common.collect.Sets;
 import edu.uci.ics.tippers.common.PolicyConstants;
 
@@ -185,7 +184,7 @@ public class BEPolicy {
         for(ObjectCondition oc: object_conditions) {
             attrs.add(oc.getAttribute());
         }
-        return Lists.newArrayList(attrs);
+        return new ArrayList<>(attrs);
     }
 
 
