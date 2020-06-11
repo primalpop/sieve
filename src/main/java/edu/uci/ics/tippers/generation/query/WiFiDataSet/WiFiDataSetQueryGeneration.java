@@ -288,27 +288,30 @@ public class WiFiDataSetQueryGeneration extends QueryGen {
      * @return
      */
     @Override
-    public List<QueryStatement> createQuery3() {
+    public List<QueryStatement> createQuery3(List<String> selTypes, int queryNum) {
         List<QueryStatement> queries = new ArrayList<>();
-        for (int k = 0; k < user_groups.size(); k++) {
-            for (int i = 5; i < 90 ; i=i+10) {
-                String query = String.format("Select PRESENCE.user_id, PRESENCE.location_id, PRESENCE.start_date, " +
-                        "PRESENCE.start_time, PRESENCE.user_group, PRESENCE.user_profile  " +
-                        "from PRESENCE, USER_GROUP_MEMBERSHIP " +
-                        "where USER_GROUP_MEMBERSHIP.user_group_id = \"%s\" AND PRESENCE.user_id = USER_GROUP_MEMBERSHIP.user_id " +
-                        "AND ", user_groups.get(k));
-                TimeStampPredicate tsPred = new TimeStampPredicate(pg.getDate("MIN"), i, "00:00", 1439);
-                query += String.format("start_date >= \"%s\" AND start_date <= \"%s\" ", tsPred.getStartDate().toString(),
-                        tsPred.getEndDate().toString());
-                float selQuery = queryManager.checkSelectivityFullQuery(query);
-                String querySelType = checkStaticRangeSelectivity(selQuery);
-                if (querySelType == null) continue;
-                queries.add(new QueryStatement(query, 3, selQuery, querySelType,
-                        new Timestamp(System.currentTimeMillis())));
+        for (int k = 0; k < selTypes.size(); k++) {
+            for (int j = 0; j < user_groups.size(); j++) {
+                for (int i = 5; i < 90; i = i + 10) {
+                    String query = String.format("Select PRESENCE.user_id, PRESENCE.location_id, PRESENCE.start_date, " +
+                            "PRESENCE.start_time, PRESENCE.user_group, PRESENCE.user_profile  " +
+                            "from PRESENCE, USER_GROUP_MEMBERSHIP " +
+                            "where USER_GROUP_MEMBERSHIP.user_group_id = \"%s\" AND PRESENCE.user_id = USER_GROUP_MEMBERSHIP.user_id " +
+                            "AND ", user_groups.get(j));
+                    TimeStampPredicate tsPred = new TimeStampPredicate(pg.getDate("MIN"), i, "00:00", 1439);
+                    query += String.format("start_date >= \"%s\" AND start_date <= \"%s\" ", tsPred.getStartDate().toString(),
+                            tsPred.getEndDate().toString());
+                    float selQuery = queryManager.checkSelectivityFullQuery(query);
+                    String querySelType = checkStaticRangeSelectivity(selQuery);
+                    if (querySelType == null ||  !querySelType.equalsIgnoreCase(selTypes.get(k))) continue;
+                    System.out.println("Given selectivity: " + selTypes.get(k) + " Query Generated: " + selQuery + "Type:  " + querySelType);
+                    queries.add(new QueryStatement(query, 3, selQuery, querySelType,
+                            new Timestamp(System.currentTimeMillis())));
+                    if(queries.size() > queryNum) return queries;
+                }
             }
         }
         return queries;
-
     }
 
 
@@ -354,8 +357,8 @@ public class WiFiDataSetQueryGeneration extends QueryGen {
 
     public static void main(String[] args) {
         WiFiDataSetQueryGeneration qg = new WiFiDataSetQueryGeneration();
-        boolean[] templates = {false, true, false, false};
-        int numOfQueries = 3;
+        boolean[] templates = {false, false, true, false};
+        int numOfQueries = 5;
         qg.constructWorkload(templates, numOfQueries);
     }
 

@@ -143,7 +143,7 @@ public class TPCHQueryGeneration extends QueryGen {
     }
 
     @Override
-    public List<QueryStatement> createQuery3() {
+    public List<QueryStatement> createQuery3(List<String> selTypes, int numOfQueries) {
         return null;
     }
 

@@ -31,6 +31,11 @@ public class QueryManager {
         return (float) queryResult.getResultCount() / (float) PolicyConstants.getNumberOfTuples();
     }
 
+    /**
+     * for join queries
+     * @param query
+     * @return
+     */
     public float checkSelectivityFullQuery(String query) {
         QueryResult queryResult = runTimedQueryWithOutSorting(query);
         return (float) queryResult.getResultCount() / (float) PolicyConstants.getNumberOfTuples();
