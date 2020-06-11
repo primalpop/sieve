@@ -121,12 +121,12 @@ public class MPolicyGen {
      * @param action - allow or deny
      * @return
      */
-    public BEPolicy generatePolicies(String querier, int device_id, String shop_name, TimeStampPredicate tsPred,
+    public BEPolicy generatePolicies(int querier, int device_id, String shop_name, TimeStampPredicate tsPred,
                                      String user_interest, String action) {
         String policyID = UUID.randomUUID().toString();
         List<QuerierCondition> querierConditions = new ArrayList<>(Arrays.asList(
                 new QuerierCondition(policyID, "policy_type", AttributeType.STRING, Operation.EQ, "user"),
-                new QuerierCondition(policyID, "querier", AttributeType.STRING, Operation.EQ, querier)));
+                new QuerierCondition(policyID, "querier", AttributeType.STRING, Operation.EQ, String.valueOf(querier))));
         List<ObjectCondition> objectConditions = new ArrayList<>();
         if (device_id != 0) {
             ObjectCondition owner = new ObjectCondition(policyID, PolicyConstants.M_DEVICE, AttributeType.STRING,
@@ -148,7 +148,7 @@ public class MPolicyGen {
         }
         if(user_interest != null){
             ObjectCondition interest = new ObjectCondition(policyID, PolicyConstants.M_INTEREST, AttributeType.STRING,
-                    shop_name, Operation.EQ);
+                    user_interest, Operation.EQ);
             objectConditions.add(interest);
         }
         if(objectConditions.isEmpty()){

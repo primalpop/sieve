@@ -11,7 +11,13 @@ import edu.uci.ics.tippers.model.guard.SelectGuard;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
 
+import javax.sql.PooledConnection;
 import java.util.*;
+
+
+/**
+ * Experiments on WiFi Dataset for testing baselines against Sieve on MySQL and PostgreSQL
+ */
 
 /**
  * Number of policies: Users
@@ -30,10 +36,7 @@ import java.util.*;
 public class RealPolicyScale {
 
     private static final int EXP_REPETITIONS = 5;
-    private static final int RANDOM_SAMPLING =  3;
-
-    private static final List<Integer> users = new ArrayList<>(Arrays.asList(22636, 22995, 32467, 15007, 18575, 23422, 26801, 11815, 18094, 2039));
-    private static final List<Integer> xpoints = new ArrayList<>(Arrays.asList(75, 100, 125, 150, 175, 200, 225, 250, 275, 300));
+    private static final int RANDOM_SAMPLING =  5;
 
     private static QueryManager queryManager;
 
@@ -46,7 +49,7 @@ public class RealPolicyScale {
             baseline += indResult.getTimeTaken().toMillis();
         }
         else {
-            String polEvalQuery = "With polEval as ( Select * from PRESENCE where " + beExpression.createQueryFromPolices() + "  )" ;
+            String polEvalQuery = "With polEval as ( Select * from " + PolicyConstants.TABLE_NAME + " where " + beExpression.createQueryFromPolices() + "  )" ;
             QueryResult tradResult = queryManager.runTimedQueryExp(polEvalQuery + "SELECT * from polEval ", EXP_REPETITIONS);
             System.out.println("Vanilla rewrite Result count: " + tradResult.getResultCount());
             baseline += tradResult.getTimeTaken().toMillis();
@@ -58,12 +61,26 @@ public class RealPolicyScale {
         PolicyConstants.initialize();
         queryManager = new QueryManager();
         System.out.println("Running on " + PolicyConstants.DBMS_CHOICE + " at " + PolicyConstants.DBMS_LOCATION + " with "
-                +  PolicyConstants.TABLE_NAME + " and " + PolicyConstants.getNumberOfTuples() + " tuples");
+                +  PolicyConstants.TABLE_NAME.toLowerCase() + " and " + PolicyConstants.getNumberOfTuples() + " tuples");
         Map<Integer, List<ExpResult>> resultMap = new TreeMap<>();
-        String RESULTS_FILE = PolicyConstants.DBMS_CHOICE + "_results.csv";
+        String RESULTS_FILE = PolicyConstants.TABLE_NAME.toLowerCase() + "_" + PolicyConstants.DBMS_CHOICE + "_results.csv";
         String file_header = "Number Of Policies,Number of Guards,Baseline,Sieve\n";
         Writer writer = new Writer();
         writer.writeString(file_header, PolicyConstants.BE_POLICY_DIR, RESULTS_FILE);
+
+        List<Integer> users = new ArrayList<>();
+        List<Integer> xpoints = new ArrayList<>();
+        if(PolicyConstants.TABLE_NAME.equalsIgnoreCase(PolicyConstants.WIFI_TABLE)){
+            users = new ArrayList<>(Arrays.asList(22636, 22995, 32467, 15007, 18575, 23422, 26801, 11815, 18094, 2039));
+            xpoints = new ArrayList<>(Arrays.asList(75, 100, 125, 150, 175, 200, 225, 250, 275, 300));
+        }
+        else  if(PolicyConstants.TABLE_NAME.equalsIgnoreCase(PolicyConstants.MALL_TABLE)) {
+//            users = new ArrayList<>(Arrays.asList(8, 7, 29, 23, 28));
+            users = new ArrayList<>(Arrays.asList(8));
+//            xpoints = new ArrayList<>(Arrays.asList(100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200));
+            xpoints = new ArrayList<>(Arrays.asList(100, 200, 300));
+
+        }
 
         PolicyPersistor polper = PolicyPersistor.getInstance();
         for (Integer user : users) {
@@ -98,8 +115,10 @@ public class RealPolicyScale {
             OptionalDouble baselineR = resultMap.get(x).stream().mapToLong(ExpResult::getBaselineR).average();
             OptionalDouble sieveR = resultMap.get(x).stream().mapToLong(ExpResult::getSieveR).average();
             OptionalDouble numOfGuards = resultMap.get(x).stream().mapToInt(ExpResult::getNumberOfGuards).average();
-            rString.append(x).append(",").append(String.format("%.2f", baselineR.getAsDouble())).append(",").append(String.format("%.2f", sieveR.getAsDouble())).append(",")
-                    .append(Math.round(numOfGuards.getAsDouble())).append("\n");
+            rString.append(x).append(",")
+                    .append(Math.round(numOfGuards.getAsDouble())).append(",")
+                    .append(String.format("%.2f", baselineR.getAsDouble())).append(",")
+                    .append(String.format("%.2f", sieveR.getAsDouble())).append("\n");
             writer.writeString(rString.toString(), PolicyConstants.BE_POLICY_DIR, RESULTS_FILE);
         }
     }

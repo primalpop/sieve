@@ -146,6 +146,8 @@ public class PolicyConstants {
     public static final String PGSQL_DBMS = "postgres";
     public static final String ORDERS_TABLE = "orders";
     public static final String WIFI_TABLE = "presence";
+    public static final String MALL_TABLE = "mall_observation";
+
 
     //DIRECTORY PATHS
     public static final String BE_POLICY_DIR = "results/be_policies/";

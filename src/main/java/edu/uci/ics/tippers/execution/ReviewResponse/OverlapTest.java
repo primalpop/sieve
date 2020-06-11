@@ -85,7 +85,7 @@ public class OverlapTest {
             }
 //            System.out.println("Number of Guards: " + gh.numberOfGuards());
 //            System.out.println("Total Guard Selectivity " + totalGuardCard);
-            System.out.println("Avetsrage Guard Selectivity " + totalGuardCard/gh.numberOfGuards());
+            System.out.println("Average Guard Selectivity " + totalGuardCard/gh.numberOfGuards());
 //            System.out.println("Guard Index Scan Time Taken: " + guardIndexScan);
 //            QueryResult qr1 = queryManager.runTimedQueryWithOutSorting(gh.create(querier, "user").createQueryWithUnion(true));
             QueryResult qr2 = queryManager.runTimedQueryWithOutSorting(gh.create(querier, "user").createQueryWithUnion(false));

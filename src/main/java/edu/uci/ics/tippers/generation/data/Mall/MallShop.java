@@ -25,6 +25,14 @@ public class MallShop {
     }
 
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getShop_name() {
         return shop_name;
     }

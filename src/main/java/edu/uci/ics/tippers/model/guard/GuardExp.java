@@ -124,7 +124,7 @@ public class GuardExp {
     }
 
     /**
-     * Creates the complete guarded query string with or without depending on DBMS_CHOICE value
+     * Creates the complete guarded query string with or without hints depending on DBMS_CHOICE value
      * @return query string
      */
     public String createQueryWithUnion(boolean remove_duplicate){
