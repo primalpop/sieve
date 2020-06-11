@@ -18,9 +18,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
+/**
+ * Generate and write histograms to JSON files
+ * Histogram Generation specific to MySQL
+ */
 public class Histogram {
 
-    private static Connection conn;
 
     private static Writer writer = new Writer();
 
@@ -31,7 +34,6 @@ public class Histogram {
     private static File histDirectory;
 
     private Histogram() {
-        conn = PolicyConstants.getDBMSConnection();
         histDirectory = new File(String.valueOf(Paths.get(PolicyConstants.HISTOGRAM_DIR.toLowerCase(),
                 PolicyConstants.TABLE_NAME.toLowerCase())));
         if (histDirectory.isDirectory() && Objects.requireNonNull(histDirectory.list()).length == 0)
@@ -46,16 +48,30 @@ public class Histogram {
     }
 
     private static List<Bucket> getHistogram(String attribute, String attribute_type, String histogram_type) {
+        if(PolicyConstants.DBMS_CHOICE.equalsIgnoreCase(PolicyConstants.PGSQL_DBMS)) {
+            throw new PolicyEngineException("Histogram generation only supported on MySQL");
+        }
+        Connection conn = MySQLConnectionManager.getInstance().getConnection();
         List<Bucket> hBuckets = new ArrayList<>();
         PreparedStatement ps = null;
         if (attribute_type.equalsIgnoreCase("String") && histogram_type.equalsIgnoreCase("singleton")) {
             try {
-                ps = conn.prepareStatement(
-                        "SELECT FROM_BASE64(SUBSTRING_INDEX(v, ':', -1)) value, concat(round(c*100,1),'%') cumulfreq, " +
-                                "CONCAT(round((c - LAG(c, 1, 0) over()) * 100,1), '%') freq " +
-                                "FROM information_schema.column_statistics, JSON_TABLE(histogram->'$.buckets', " +
-                                "'$[*]' COLUMNS(v VARCHAR(60) PATH '$[0]', c double PATH '$[1]')) hist  " +
-                                "where column_name = ?;");
+                if(PolicyConstants.TABLE_NAME.equalsIgnoreCase(PolicyConstants.WIFI_TABLE)) {
+                    ps = conn.prepareStatement(
+                            "SELECT FROM_BASE64(SUBSTRING_INDEX(v, ':', -1)) value, concat(round(c*100,1),'%') cumulfreq, " +
+                                    "CONCAT(round((c - LAG(c, 1, 0) over()) * 100,1), '%') freq " +
+                                    "FROM information_schema.column_statistics, JSON_TABLE(histogram->'$.buckets', " +
+                                    "'$[*]' COLUMNS(v VARCHAR(60) PATH '$[0]', c double PATH '$[1]')) hist  " +
+                                    "where column_name = ?;");
+                }
+                else { //Remove FROM_BASE64 conversion
+                    ps = conn.prepareStatement(
+                            "SELECT v as value, concat(round(c*100,1),'%') cumulfreq, " +
+                                    "CONCAT(round((c - LAG(c, 1, 0) over()) * 100,1), '%') freq " +
+                                    "FROM information_schema.column_statistics, JSON_TABLE(histogram->'$.buckets', " +
+                                    "'$[*]' COLUMNS(v VARCHAR(60) PATH '$[0]', c double PATH '$[1]')) hist  " +
+                                    "where column_name = ?;");
+                }
 
                 ps.setString(1, attribute);
                 ResultSet rs = ps.executeQuery();
@@ -247,33 +263,46 @@ public class Histogram {
     }
 
     public void writeBuckets(String table_name) {
+        String filePath = new File(String.valueOf(Paths.get(PolicyConstants.HISTOGRAM_DIR.toLowerCase(), table_name.toLowerCase()))).getPath();
         if(table_name.equalsIgnoreCase(PolicyConstants.WIFI_TABLE)) {
             writer.writeJSONToFile(getHistogram(PolicyConstants.START_DATE, "Date", "singleton"),
-                    PolicyConstants.HISTOGRAM_DIR, PolicyConstants.START_DATE);
+                    filePath, PolicyConstants.START_DATE);
             writer.writeJSONToFile(getHistogram(PolicyConstants.START_TIME, "Time", "equiheight"),
-                    PolicyConstants.HISTOGRAM_DIR, PolicyConstants.START_TIME);
+                    filePath, PolicyConstants.START_TIME);
             writer.writeJSONToFile(getHistogram(PolicyConstants.USERID_ATTR, "Integer", "equiheight"),
-                    PolicyConstants.HISTOGRAM_DIR, PolicyConstants.USERID_ATTR);
+                    filePath, PolicyConstants.USERID_ATTR);
             writer.writeJSONToFile(getHistogram(PolicyConstants.LOCATIONID_ATTR, "String", "singleton"),
-                    PolicyConstants.HISTOGRAM_DIR, PolicyConstants.LOCATIONID_ATTR);
+                    filePath, PolicyConstants.LOCATIONID_ATTR);
             writer.writeJSONToFile(getHistogram(PolicyConstants.GROUP_ATTR, "String", "singleton"),
-                    PolicyConstants.HISTOGRAM_DIR, PolicyConstants.GROUP_ATTR);
+                    filePath, PolicyConstants.GROUP_ATTR);
             writer.writeJSONToFile(getHistogram(PolicyConstants.PROFILE_ATTR, "String", "singleton"),
-                    PolicyConstants.HISTOGRAM_DIR, PolicyConstants.PROFILE_ATTR);
+                    filePath, PolicyConstants.PROFILE_ATTR);
         }
         else if(table_name.equalsIgnoreCase(PolicyConstants.ORDERS_TABLE)) {
             writer.writeJSONToFile(getHistogram(PolicyConstants.ORDER_CUSTOMER_KEY, "Integer", "equiheight"),
-                    PolicyConstants.HISTOGRAM_DIR, PolicyConstants.ORDER_CUSTOMER_KEY);
+                    filePath, PolicyConstants.ORDER_CUSTOMER_KEY);
             writer.writeJSONToFile(getHistogram(PolicyConstants.ORDER_PRIORITY, "String", "singleton"),
-                    PolicyConstants.HISTOGRAM_DIR, PolicyConstants.ORDER_PRIORITY);
+                    filePath, PolicyConstants.ORDER_PRIORITY);
             writer.writeJSONToFile(getHistogram(PolicyConstants.ORDER_CLERK, "String", "singleton"),
-                    PolicyConstants.HISTOGRAM_DIR, PolicyConstants.ORDER_CLERK);
+                    filePath, PolicyConstants.ORDER_CLERK);
             writer.writeJSONToFile(getHistogram(PolicyConstants.ORDER_PROFILE, "String", "singleton"),
-                    PolicyConstants.HISTOGRAM_DIR, PolicyConstants.ORDER_PROFILE);
+                    filePath, PolicyConstants.ORDER_PROFILE);
             writer.writeJSONToFile(getHistogram(PolicyConstants.ORDER_DATE, "Date", "equiheight"),
-                    PolicyConstants.HISTOGRAM_DIR, PolicyConstants.ORDER_DATE);
+                    filePath, PolicyConstants.ORDER_DATE);
             writer.writeJSONToFile(getHistogram(PolicyConstants.ORDER_TOTAL_PRICE, "Double", "equiheight"),
-                    PolicyConstants.HISTOGRAM_DIR, PolicyConstants.ORDER_TOTAL_PRICE);
+                    filePath, PolicyConstants.ORDER_TOTAL_PRICE);
+        }
+        else if(table_name.equalsIgnoreCase(PolicyConstants.MALL_TABLE)){
+            writer.writeJSONToFile(getHistogram(PolicyConstants.M_SHOP_NAME, "String", "singleton"),
+                    filePath, PolicyConstants.M_SHOP_NAME);
+            writer.writeJSONToFile(getHistogram(PolicyConstants.M_DATE, "Date", "singleton"),
+                    filePath, PolicyConstants.M_DATE);
+            writer.writeJSONToFile(getHistogram(PolicyConstants.M_TIME, "Time", "equiheight"),
+                    filePath, PolicyConstants.M_TIME);
+            writer.writeJSONToFile(getHistogram(PolicyConstants.M_INTEREST, "String", "singleton"),
+                    filePath, PolicyConstants.M_INTEREST);
+            writer.writeJSONToFile(getHistogram(PolicyConstants.M_DEVICE, "Integer", "equiheight"),
+                    filePath, PolicyConstants.M_DEVICE);
         }
     }
 

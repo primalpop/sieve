@@ -23,13 +23,14 @@ public class SynMallPolicy {
     List<String> interests;
     Map<Integer, String> userToInterest;
     Map<Integer, List<String>> userToShop;
-    Map<String, List<String>> interestToShops;
 
     private LocalDate startDate = null, endDate = null;
 
-    private final String SHOP_OPEN = "08:00";
-    private final double TIMESTAMP_CHANCE = 0.8;
+    private static final String SHOP_OPEN = "08:00";
+    private static final double DEFAULT_CHANCE = 0.4;
+    private static final double TIMESTAMP_CHANCE = 0.8;
     private static final double LOCATION_CHANCE = 0.5;
+    private static final int REGULAR_USER_SHOPS = 6;
 
 
     public SynMallPolicy(){
@@ -42,6 +43,7 @@ public class SynMallPolicy {
         devices = mpg.retrieveAllDevices();
         interests = mpg.retrieveAllInterests();
         userToShop = mpg.retrieveUserShops();
+        userToInterest = mpg.retrieveUserInterest();
         mallShops = mdg.readCoverage();
     }
 
@@ -59,15 +61,17 @@ public class SynMallPolicy {
         List<BEPolicy> regularPolicies = new ArrayList<>();
         List<String> regularShops = userToShop.get(device_id);
         if(!regularShops.isEmpty()) {
-            int shopNum = Math.min(regularShops.size(), 4);
+            int shopNum = Math.min(regularShops.size(), REGULAR_USER_SHOPS);
             for (int i = 0; i < shopNum; i++) {
-                int duration = 0;
+                TimeStampPredicate tsPred = null;
                 if (TIMESTAMP_CHANCE > Math.random()) {
-                    duration = r.nextInt(9) + 1;
+                    int duration = r.nextInt(9) + 1;
                     duration = duration * 60;
+                    tsPred = new TimeStampPredicate(getObsDate("MIN"), getObsDate("MAX"), SHOP_OPEN, duration);
                 }
-                TimeStampPredicate tsPred = new TimeStampPredicate(getObsDate("MIN"), getObsDate("MAX"), SHOP_OPEN, duration);
-                regularPolicies.add(mpg.generatePolicies(regularShops.get(i), device_id, regularShops.get(i), tsPred,
+                String shop_name = regularShops.get(i);
+                int querier = Objects.requireNonNull(mallShops.stream().filter(m -> m.getShop_name().equalsIgnoreCase(shop_name)).findAny().orElse(null)).getId();
+                regularPolicies.add(mpg.generatePolicies(querier, device_id, regularShops.get(i), tsPred,
                         null, PolicyConstants.ACTION_ALLOW));
             }
         }
@@ -84,20 +88,21 @@ public class SynMallPolicy {
                 int LUNCH_HOURS = 240; //in minutes
                 TimeStampPredicate lunchHours = new TimeStampPredicate(getObsDate("MIN"), getObsDate("MAX"),
                         LUNCH_START, LUNCH_HOURS);
-                irregularPolicies.add(mpg.generatePolicies(ums.getShop_name(), device_id, ums.getShop_name(), lunchHours,
+                irregularPolicies.add(mpg.generatePolicies(ums.getId(), device_id, ums.getShop_name(), lunchHours,
                         null, PolicyConstants.ACTION_ALLOW));
             }
             else {
-                int offset = 0, duration = 0, week = 0;
+                int offset = 0, duration = 0, day = 0;
+                TimeStampPredicate tsPred = null;
                 if (TIMESTAMP_CHANCE > Math.random()) {
                     offset = r.nextInt(8) + 1;
                     offset = offset * 60; //converting to minutes
                     duration = r.nextInt(3) + 1;
                     duration = duration * 60;
-                    week = r.nextInt(12);
+//                    day = r.nextInt(10);
+                    tsPred = new TimeStampPredicate(getObsDate("MIN"), day, SHOP_OPEN, offset,  duration);
                 }
-                TimeStampPredicate tsPred = new TimeStampPredicate(getObsDate("MIN"), week, SHOP_OPEN, offset, duration);
-                irregularPolicies.add(mpg.generatePolicies(ums.getShop_name(), device_id, ums.getShop_name(), tsPred,
+                irregularPolicies.add(mpg.generatePolicies(ums.getId(), device_id, ums.getShop_name(), tsPred,
                         null, PolicyConstants.ACTION_ALLOW));
             }
         }
@@ -114,22 +119,23 @@ public class SynMallPolicy {
                 int LUNCH_HOURS = 240; //in minutes
                 TimeStampPredicate lunchHours = new TimeStampPredicate(getObsDate("MIN"), getObsDate("MAX"),
                         LUNCH_START, LUNCH_HOURS);
-                interestPolicies.add(mpg.generatePolicies(ums.getShop_name(), 0, null, lunchHours,
-                        null, PolicyConstants.ACTION_ALLOW));
+                interestPolicies.add(mpg.generatePolicies(ums.getId(), 0, null, lunchHours,
+                        user_interest, PolicyConstants.ACTION_ALLOW));
             }
             else {
-                int offset = 0, duration = 0, week = 0;
-                if (TIMESTAMP_CHANCE > Math.random()) {
-                    offset = r.nextInt(8) + 1;
-                    offset = offset * 60; //converting to minutes
-                    duration = r.nextInt(3) + 1;
-                    duration = duration * 60;
-                    week = r.nextInt(12);
-                }
-                TimeStampPredicate tsPred = new TimeStampPredicate(getObsDate("MIN"), week, SHOP_OPEN, offset, duration);
+                int offset = r.nextInt(8) + 1;
+                offset = offset * 60; //converting to minutes
+                int duration = r.nextInt(3) + 1;
+                duration = duration * 60;
+                int day = 0;
+//              int day = r.nextInt(10);
+                TimeStampPredicate tsPred = TIMESTAMP_CHANCE > Math.random()?
+                        new TimeStampPredicate(getObsDate("MIN"), day, SHOP_OPEN, offset, duration): null;
                 String shopPred = LOCATION_CHANCE > Math.random()? ums.getShop_name(): null;
-                interestPolicies.add(mpg.generatePolicies(ums.getShop_name(), 0, shopPred, tsPred,
-                        null, PolicyConstants.ACTION_ALLOW));
+                if(tsPred == null && shopPred == null)
+                    tsPred = new TimeStampPredicate(getObsDate("MIN"), day, SHOP_OPEN, offset, duration);
+                interestPolicies.add(mpg.generatePolicies(ums.getId(), 0, shopPred, tsPred,
+                        user_interest, PolicyConstants.ACTION_ALLOW));
             }
         }
         polper.insertPolicy(interestPolicies);
@@ -147,11 +153,13 @@ public class SynMallPolicy {
      * write policy to database
      */
     private void generatePolicies(){
-        for (int dev: devices) {
-            if(Math.random() > 0.5) generateRegularPolicy(dev);
+        for (int i = 0; i < devices.size(); i++) {
+            int dev = devices.get(i);
+            if(Math.random() > DEFAULT_CHANCE) generateRegularPolicy(dev);
             else generateIrregularPolicy(dev);
             String user_interest = userToInterest.get(dev);
             if(user_interest != null) generateInterestPolicy(dev, user_interest);
+            if (i%100 == 0) System.out.println("Devices completed " + i);
         }
     }
 

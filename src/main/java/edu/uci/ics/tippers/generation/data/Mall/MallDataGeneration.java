@@ -82,7 +82,7 @@ public class MallDataGeneration {
                 moStmt.setInt(6, mo.getDevice());
                 moStmt.addBatch();
                 i++;
-                if (i % PolicyConstants.BATCH_SIZE_INSERTION == 0) { //TODO: Update this to BATCH_SIZE
+                if (i % PolicyConstants.BATCH_SIZE_INSERTION == 0) {
                     moStmt.executeBatch();
                     System.out.println("# " + i + " inserted");
                 }

@@ -38,10 +38,10 @@ public class TimeStampPredicate {
         this.endTime = this.startTime.plus(duration, ChronoUnit.MINUTES);
     }
 
-    public TimeStampPredicate(LocalDate origin, int week, String start, int offset, int duration) {
+    public TimeStampPredicate(LocalDate origin, int day, String start, int offset, int duration) {
         this.startDate = origin;
-        this.startDate = this.startDate.plus(week, ChronoUnit.WEEKS);
-        this.endDate = this.startDate.plus(1, ChronoUnit.WEEKS);
+        this.startDate = this.startDate.plus(day, ChronoUnit.DAYS);
+        this.endDate = this.startDate.plus(1, ChronoUnit.DAYS);
         this.startTime = LocalTime.parse(start);
         this.startTime = this.getStartTime().plus(offset, ChronoUnit.MINUTES);
         this.endTime = this.startTime.plus(duration, ChronoUnit.MINUTES);

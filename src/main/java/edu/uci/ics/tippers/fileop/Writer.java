@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import edu.uci.ics.tippers.common.PolicyConstants;
 
 import java.io.*;
+import java.nio.file.Paths;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
@@ -45,10 +46,10 @@ public class Writer {
         File f = null;
         try {
             if (filename == null) {
-                f = new File(dir + "policy" + items.size() + ".json");
+                f = new File(String.valueOf(Paths.get(dir, "policy" + items.size() + ".json")));
                 if (f.exists()) f = new File(dir + "policy" + items.size() + "-af.json");
             } else {
-                f = new File(dir + filename + ".json");
+                f = new File(String.valueOf(Paths.get(dir, filename + ".json")));
             }
             writer.writeValue(f, items);
         } catch (IOException e) {

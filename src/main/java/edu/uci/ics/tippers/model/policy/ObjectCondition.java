@@ -259,18 +259,22 @@ public class ObjectCondition extends BooleanCondition {
 
     public double computeL(){
         if (Stream.of(PolicyConstants.LOCATIONID_ATTR, PolicyConstants.GROUP_ATTR, PolicyConstants.PROFILE_ATTR,
-                PolicyConstants.ORDER_PRIORITY, PolicyConstants.ORDER_CLERK, PolicyConstants.ORDER_PROFILE)
+                PolicyConstants.ORDER_PRIORITY, PolicyConstants.ORDER_CLERK, PolicyConstants.ORDER_PROFILE,
+                PolicyConstants.M_SHOP_NAME, PolicyConstants.M_INTEREST)
                 .anyMatch(this.getAttribute()::equalsIgnoreCase)){
             return singletonEquality();
         }
-        else if (this.getAttribute().equalsIgnoreCase(PolicyConstants.START_DATE)) {
+        else if (this.getAttribute().equalsIgnoreCase(PolicyConstants.START_DATE)||
+                this.getAttribute().equalsIgnoreCase(PolicyConstants.M_DATE)) {
             return singletonRange();
         }
         else if (this.getAttribute().equalsIgnoreCase(PolicyConstants.USERID_ATTR) ||
-                this.getAttribute().equalsIgnoreCase(PolicyConstants.ORDER_CUSTOMER_KEY)){
+                this.getAttribute().equalsIgnoreCase(PolicyConstants.ORDER_CUSTOMER_KEY) ||
+                this.getAttribute().equalsIgnoreCase(PolicyConstants.M_DEVICE)){
            return equiheightEquality();
         }
-        else if (this.getAttribute().equalsIgnoreCase(PolicyConstants.START_TIME)){
+        else if (this.getAttribute().equalsIgnoreCase(PolicyConstants.START_TIME) ||
+                this.getAttribute().equalsIgnoreCase(PolicyConstants.M_TIME)){
            return timeEquiheightRange();
         }
         else if (this.getAttribute().equalsIgnoreCase(PolicyConstants.ORDER_TOTAL_PRICE)) {
