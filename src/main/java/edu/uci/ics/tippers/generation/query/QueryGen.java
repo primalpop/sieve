@@ -27,7 +27,7 @@ public abstract class QueryGen {
         lowSelDown = 0.00001;
         lowSelUp = 0.001;
         medSelDown = 0.001;
-        medSelUp = 0.2;
+        medSelUp = 0.01;
         highSelDown = 0.3;
         highSelUp = 0.5;
 
@@ -55,6 +55,15 @@ public abstract class QueryGen {
     }
 
     public String checkSelectivityType(double chosenSel, double selectivity) {
+        String selType = null;
+        if (chosenSel/10 < selectivity && selectivity < chosenSel) selType = "low";
+        if (chosenSel/5 < selectivity && selectivity < chosenSel * 5) selType = "medium";
+        if (chosenSel/2 < selectivity) selType = "high";
+        return selType;
+    }
+
+
+    public String checkSelectivityType(String chosenSelType, double chosenSel, double selectivity) {
         String selType = null;
         if (chosenSel/10 < selectivity && selectivity < chosenSel) selType = "low";
         if (chosenSel/5 < selectivity && selectivity < chosenSel * 5) selType = "medium";
@@ -144,8 +153,8 @@ public abstract class QueryGen {
 
     public void constructWorkload(boolean[] templates, int numOfQueries) {
         List<String> selTypes = new ArrayList<>();
-        selTypes.add("low");
-        selTypes.add("medium");
+//        selTypes.add("low");
+//        selTypes.add("medium");
         selTypes.add("high");
         List<QueryStatement> queries = new ArrayList<>();
         for (int i = 0; i < templates.length; i++) {
