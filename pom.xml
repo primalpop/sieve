@@ -101,9 +101,8 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>22.0</version> <!-- or 22.0-android for the Android flavor -->
+            <version>[24.1.1,)</version>
         </dependency>
-
 
         <!-- Script runner for SQL -->
         <dependency>
@@ -121,11 +120,10 @@
         </dependency>
 
 
-        <!-- https://mvnrepository.com/artifact/commons-beanutils/commons-beanutils -->
         <dependency>
             <groupId>commons-beanutils</groupId>
             <artifactId>commons-beanutils</artifactId>
-            <version>1.9.3</version>
+            <version>[1.9.4,)</version>
         </dependency>
 
         <!-- Deep cloning library https://github.com/kostaskougios/cloning-->
