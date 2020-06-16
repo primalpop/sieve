@@ -61,7 +61,7 @@ public class Experiment {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
         try {
-            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("config/execution/experiment3.properties");
+            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("config/execution/experiment3.prop");
             Properties props = new Properties();
             if (inputStream != null) {
                 props.load(inputStream);
