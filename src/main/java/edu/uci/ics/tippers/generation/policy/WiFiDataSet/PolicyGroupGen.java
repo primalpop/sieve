@@ -1,10 +1,9 @@
 package edu.uci.ics.tippers.generation.policy.WiFiDataSet;
 
 import edu.uci.ics.tippers.common.PolicyConstants;
-import edu.uci.ics.tippers.db.MySQLConnectionManager;
-import edu.uci.ics.tippers.db.PGSQLConnectionManager;
-import edu.uci.ics.tippers.db.QueryManager;
-import edu.uci.ics.tippers.manager.PolicyPersistor;
+import edu.uci.ics.tippers.dbms.mysql.MySQLConnectionManager;
+import edu.uci.ics.tippers.dbms.postgresql.PGSQLConnectionManager;
+import edu.uci.ics.tippers.persistor.PolicyPersistor;
 import edu.uci.ics.tippers.model.data.UserProfile;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
 import edu.uci.ics.tippers.model.policy.TimeStampPredicate;

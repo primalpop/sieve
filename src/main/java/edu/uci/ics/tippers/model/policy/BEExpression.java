@@ -3,7 +3,7 @@ package edu.uci.ics.tippers.model.policy;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.uci.ics.tippers.common.PolicyConstants;
-import edu.uci.ics.tippers.db.QueryManager;
+import edu.uci.ics.tippers.dbms.QueryManager;
 
 import java.io.IOException;
 import java.util.*;

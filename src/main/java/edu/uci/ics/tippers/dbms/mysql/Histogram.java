@@ -1,4 +1,4 @@
-package edu.uci.ics.tippers.db;
+package edu.uci.ics.tippers.dbms.mysql;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 

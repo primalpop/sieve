@@ -2,7 +2,7 @@ package edu.uci.ics.tippers.generation.data.WiFi;
 
 import com.opencsv.CSVReader;
 import edu.uci.ics.tippers.common.PolicyConstants;
-import edu.uci.ics.tippers.db.MySQLConnectionManager;
+import edu.uci.ics.tippers.dbms.mysql.MySQLConnectionManager;
 import org.json.JSONObject;
 
 import java.io.*;

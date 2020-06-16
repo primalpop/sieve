@@ -1,7 +1,7 @@
 package edu.uci.ics.tippers.generation.query;
 
 import edu.uci.ics.tippers.common.PolicyConstants;
-import edu.uci.ics.tippers.db.QueryManager;
+import edu.uci.ics.tippers.dbms.QueryManager;
 import edu.uci.ics.tippers.model.query.QueryStatement;
 
 import java.sql.*;

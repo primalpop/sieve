@@ -1,11 +1,11 @@
-package edu.uci.ics.tippers.execution.ReviewResponse;
+package edu.uci.ics.tippers.execution.PaperExperiments;
 
 import edu.uci.ics.tippers.common.PolicyConstants;
-import edu.uci.ics.tippers.db.QueryManager;
-import edu.uci.ics.tippers.db.QueryResult;
+import edu.uci.ics.tippers.dbms.QueryManager;
+import edu.uci.ics.tippers.dbms.QueryResult;
 import edu.uci.ics.tippers.execution.ExpResult;
 import edu.uci.ics.tippers.fileop.Writer;
-import edu.uci.ics.tippers.manager.PolicyPersistor;
+import edu.uci.ics.tippers.persistor.PolicyPersistor;
 import edu.uci.ics.tippers.model.guard.GuardExp;
 import edu.uci.ics.tippers.model.guard.SelectGuard;
 import edu.uci.ics.tippers.model.policy.BEExpression;
@@ -15,7 +15,8 @@ import java.util.*;
 
 
 /**
- * Experiments on WiFi Dataset for testing baselines against Sieve on MySQL and PostgreSQL
+ * Experiments on WiFi Dataset and Mall Dataset for testing baselines against Sieve on MySQL and PostgreSQL
+ * Experiments 4 and 5 in the paper
  */
 
 /**
@@ -65,7 +66,7 @@ public class RealPolicyScale {
         String RESULTS_FILE = PolicyConstants.TABLE_NAME.toLowerCase() + "_" + PolicyConstants.DBMS_CHOICE + "_results.csv";
         String file_header = "Number Of Policies,Number of Guards,Baseline,Sieve\n";
         Writer writer = new Writer();
-        writer.writeString(file_header, PolicyConstants.BE_POLICY_DIR, RESULTS_FILE);
+        writer.writeString(file_header, PolicyConstants.EXP_RESULTS_DIR, RESULTS_FILE);
 
         List<Integer> users = new ArrayList<>();
         List<Integer> xpoints = new ArrayList<>();
@@ -115,7 +116,7 @@ public class RealPolicyScale {
                     .append(Math.round(numOfGuards.getAsDouble())).append(",")
                     .append(String.format("%.2f", baselineR.getAsDouble())).append(",")
                     .append(String.format("%.2f", sieveR.getAsDouble())).append("\n");
-            writer.writeString(rString.toString(), PolicyConstants.BE_POLICY_DIR, RESULTS_FILE);
+            writer.writeString(rString.toString(), PolicyConstants.EXP_RESULTS_DIR, RESULTS_FILE);
         }
     }
 }

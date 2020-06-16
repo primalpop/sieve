@@ -2,7 +2,7 @@ package edu.uci.ics.tippers.generation.policy.tpch;
 
 import edu.uci.ics.tippers.common.AttributeType;
 import edu.uci.ics.tippers.common.PolicyConstants;
-import edu.uci.ics.tippers.db.MySQLConnectionManager;
+import edu.uci.ics.tippers.dbms.mysql.MySQLConnectionManager;
 import edu.uci.ics.tippers.model.policy.*;
 
 import java.sql.*;

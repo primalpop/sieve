@@ -1,4 +1,4 @@
-package edu.uci.ics.tippers.db;
+package edu.uci.ics.tippers.dbms;
 
 import edu.uci.ics.tippers.fileop.Writer;
 import edu.uci.ics.tippers.model.data.LongPresence;

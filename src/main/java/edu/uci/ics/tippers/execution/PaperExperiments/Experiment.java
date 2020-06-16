@@ -1,14 +1,14 @@
 package edu.uci.ics.tippers.execution.PaperExperiments;
 
 import edu.uci.ics.tippers.common.PolicyConstants;
-import edu.uci.ics.tippers.db.QueryManager;
-import edu.uci.ics.tippers.db.QueryResult;
+import edu.uci.ics.tippers.dbms.QueryManager;
+import edu.uci.ics.tippers.dbms.QueryResult;
 import edu.uci.ics.tippers.fileop.Writer;
 import edu.uci.ics.tippers.generation.policy.WiFiDataSet.PolicyUtil;
 import edu.uci.ics.tippers.generation.query.QueryExplainer;
 import edu.uci.ics.tippers.generation.query.WiFiDataSet.WiFiDataSetQueryGeneration;
-import edu.uci.ics.tippers.manager.GuardPersistor;
-import edu.uci.ics.tippers.manager.PolicyPersistor;
+import edu.uci.ics.tippers.persistor.GuardPersistor;
+import edu.uci.ics.tippers.persistor.PolicyPersistor;
 import edu.uci.ics.tippers.model.guard.GuardExp;
 import edu.uci.ics.tippers.model.guard.GuardPart;
 import edu.uci.ics.tippers.model.policy.BEExpression;
@@ -25,7 +25,8 @@ import java.util.List;
 import java.util.Properties;
 
 /**
- * Experiments in MySQL
+ * Experiment 3 in the paper
+ * Testing Sieve against baselines on MySQL
  */
 public class Experiment {
 
@@ -320,7 +321,7 @@ public class Experiment {
         String file_header = "Querier,Querier_Profile,Query_Type,Query_Cardinality,Number_Of_Policies,Estimated_QPS,Query_Alone," +
                 "Baseline_Policies, Baseline_UDF,Baseline_Index,Number_of_Guards,Total_Guard_Cardinality,Sieve_Parameters, Sieve\n";
         Writer writer = new Writer();
-        writer.writeString(file_header, PolicyConstants.BE_POLICY_DIR, RESULTS_FILE);
+        writer.writeString(file_header, PolicyConstants.EXP_RESULTS_DIR, RESULTS_FILE);
         List<QueryStatement> queries = e.getQueries(3, 9);
         for (int j = 0; j < queries.size(); j++) {
             System.out.println("Total Query Selectivity " + queries.get(j).getSelectivity());
@@ -331,7 +332,7 @@ public class Experiment {
                 if (allowPolicies == null) continue;
                 System.out.println("Querier " + querier);
                 writer.writeString(e.runBEPolicies(querier, queries.get(j),
-                        allowPolicies), PolicyConstants.BE_POLICY_DIR, RESULTS_FILE);
+                        allowPolicies), PolicyConstants.EXP_RESULTS_DIR, RESULTS_FILE);
                 QUERY_EXEC = false;
             }
             QUERY_EXEC = true;

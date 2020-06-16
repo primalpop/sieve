@@ -11,9 +11,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 
-/**
- * Created by cygnus on 12/8/17.
- */
 public class BigJsonReader<T> {
 
     private Class<?> claaz;

@@ -4,9 +4,9 @@ import com.google.common.collect.ImmutableList;
 import edu.uci.ics.tippers.common.AttributeType;
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.common.PolicyEngineException;
-import edu.uci.ics.tippers.db.QueryManager;
+import edu.uci.ics.tippers.dbms.QueryManager;
 import edu.uci.ics.tippers.fileop.Writer;
-import edu.uci.ics.tippers.manager.FlatPolicyPersistor;
+import edu.uci.ics.tippers.persistor.FlatPolicyPersistor;
 import edu.uci.ics.tippers.model.data.UserProfile;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
 import edu.uci.ics.tippers.model.policy.ObjectCondition;
@@ -178,7 +178,7 @@ public class SyntheticPolicy {
             BEPolicy bePolicy = new BEPolicy(String.valueOf(i), "Generated Policy " + i , objectConditions, PolicyConstants.DEFAULT_QC.asList(), "", "");
             bePolicies.add(bePolicy);
         }
-        writer.writeJSONToFile(bePolicies, PolicyConstants.BE_POLICY_DIR, null);
+        writer.writeJSONToFile(bePolicies, PolicyConstants.EXP_RESULTS_DIR, null);
     }
 
     /**
@@ -221,7 +221,7 @@ public class SyntheticPolicy {
             else overlap = false;
 
         }
-        writer.writeJSONToFile(bePolicies, PolicyConstants.BE_POLICY_DIR, null);
+        writer.writeJSONToFile(bePolicies, PolicyConstants.EXP_RESULTS_DIR, null);
         return bePolicies;
     }
 
@@ -400,7 +400,7 @@ public class SyntheticPolicy {
             BEPolicy bePolicy = new BEPolicy(String.valueOf(i), "Generated Policy " + i, objectConditions, PolicyConstants.DEFAULT_QC.asList(), "", "");
             bePolicies.add(bePolicy);
         }
-        writer.writeJSONToFile(bePolicies, PolicyConstants.BE_POLICY_DIR, null);
+        writer.writeJSONToFile(bePolicies, PolicyConstants.EXP_RESULTS_DIR, null);
         return bePolicies;
     }
 

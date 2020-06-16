@@ -1,4 +1,4 @@
-package edu.uci.ics.tippers.execution.deprecated;
+package edu.uci.ics.tippers.execution.regen;
 
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.fileop.Reader;
@@ -15,11 +15,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 
-public class OldGuardRegenExpt {
+public class GuardRegenExpt {
 
     List<BEPolicy> bePolicyList;
 
-    public OldGuardRegenExpt() {
+    public GuardRegenExpt() {
         bePolicyList = new ArrayList<>();
     }
 
@@ -83,7 +83,7 @@ public class OldGuardRegenExpt {
 
         TreeMap<String, Duration> runTimes = new TreeMap<>();
 
-        readPolicies(PolicyConstants.BE_POLICY_DIR + fileName);
+        readPolicies(PolicyConstants.EXP_RESULTS_DIR + fileName);
 
         int i = start_policies;
         BEExpression current = new BEExpression(this.bePolicyList.subList(0,i));
@@ -134,7 +134,7 @@ public class OldGuardRegenExpt {
     public List<Duration> runExpt(int start_policies, int k, int rqp, int epochs, String fileName){
 
         System.out.println("============= Starting new k = " + k + " =================");
-        readPolicies(PolicyConstants.BE_POLICY_DIR + fileName);
+        readPolicies(PolicyConstants.EXP_RESULTS_DIR + fileName);
 
         int i = start_policies;
         BEExpression current = new BEExpression(this.bePolicyList.subList(0,i));
@@ -186,13 +186,13 @@ public class OldGuardRegenExpt {
         String[] fileNames = {"policy200.json"};
         List<Duration> times = new ArrayList<>();
         TreeMap<String, String> runTimes = new TreeMap<>();
-        OldGuardRegenExpt re = new OldGuardRegenExpt();
+        GuardRegenExpt re = new GuardRegenExpt();
         Writer writer = new Writer();
         for (int kValue : kValues) {
             times = re.runExpt(start_policies, kValue, rpq, epochs, fileNames[0]);
             runTimes.put( kValue + " generation", String.valueOf(times.get(0).toMillis()));
             runTimes.put( kValue + " evaluation", String.valueOf(times.get(1).toMillis()));
-            writer.appendToCSVReport(runTimes, PolicyConstants.BE_POLICY_DIR, "result" + ".csv");
+            writer.appendToCSVReport(runTimes, PolicyConstants.EXP_RESULTS_DIR, "result" + ".csv");
             runTimes.clear();
         }
     }

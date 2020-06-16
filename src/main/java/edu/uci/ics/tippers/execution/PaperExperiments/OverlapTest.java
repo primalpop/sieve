@@ -1,11 +1,11 @@
-package edu.uci.ics.tippers.execution.ReviewResponse;
+package edu.uci.ics.tippers.execution.PaperExperiments;
 
 import edu.uci.ics.tippers.common.PolicyConstants;
-import edu.uci.ics.tippers.db.QueryManager;
-import edu.uci.ics.tippers.db.QueryResult;
+import edu.uci.ics.tippers.dbms.QueryManager;
+import edu.uci.ics.tippers.dbms.QueryResult;
 import edu.uci.ics.tippers.generation.policy.tpch.TPolicyGen;
 import edu.uci.ics.tippers.generation.query.QueryExplainer;
-import edu.uci.ics.tippers.manager.PolicyPersistor;
+import edu.uci.ics.tippers.persistor.PolicyPersistor;
 import edu.uci.ics.tippers.model.guard.GuardExp;
 import edu.uci.ics.tippers.model.guard.GuardPart;
 import edu.uci.ics.tippers.model.guard.SelectGuard;
@@ -16,7 +16,10 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 
-/** Meeting on May 27 **/
+/**
+ * Extra experiment not included in the paper
+ * Scalability Testing based on ORDERS table from TPCH table which evaluates sieve performance against overlap
+ **/
 
 public class OverlapTest {
 

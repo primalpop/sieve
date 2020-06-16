@@ -1,12 +1,12 @@
 package edu.uci.ics.tippers.execution.PaperExperiments;
 
 import edu.uci.ics.tippers.common.PolicyConstants;
-import edu.uci.ics.tippers.db.QueryManager;
-import edu.uci.ics.tippers.db.QueryResult;
+import edu.uci.ics.tippers.dbms.QueryManager;
+import edu.uci.ics.tippers.dbms.QueryResult;
 import edu.uci.ics.tippers.fileop.Writer;
 import edu.uci.ics.tippers.generation.policy.WiFiDataSet.PolicyUtil;
-import edu.uci.ics.tippers.manager.GuardPersistor;
-import edu.uci.ics.tippers.manager.PolicyPersistor;
+import edu.uci.ics.tippers.persistor.GuardPersistor;
+import edu.uci.ics.tippers.persistor.PolicyPersistor;
 import edu.uci.ics.tippers.model.guard.GuardExp;
 import edu.uci.ics.tippers.model.guard.GuardPart;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
@@ -146,7 +146,7 @@ public class DesignChoice2Experiment {
         String filename = "expts2_calibration.csv";
         String file_header = "Guard Cardinality,Query Cardinality,With Guard Hint Inline,With Query Hint \n";
         Writer writer = new Writer();
-        writer.writeString(file_header, PolicyConstants.BE_POLICY_DIR, filename);
+        writer.writeString(file_header, PolicyConstants.EXP_RESULTS_DIR, filename);
         List<String> queries = dc2e.generateQueries();
         //Queriers with <low, medium, high> guard cardinalities
         //From Sheet: Copy of guard analysis
@@ -159,7 +159,7 @@ public class DesignChoice2Experiment {
         List<Integer> rep_queriers = new ArrayList<>(queriers);
         //Running Query Experiment with three guard cardinalities
         for (int i = 0; i < rep_queriers.size(); i++) {
-            writer.writeString(dc2e.runQueryExpt(String.valueOf(rep_queriers.get(i)), queries), PolicyConstants.BE_POLICY_DIR,
+            writer.writeString(dc2e.runQueryExpt(String.valueOf(rep_queriers.get(i)), queries), PolicyConstants.EXP_RESULTS_DIR,
                     filename);
             dc2e.resetFlags();
         }

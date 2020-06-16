@@ -1,4 +1,4 @@
-package edu.uci.ics.tippers.db;
+package edu.uci.ics.tippers.dbms;
 
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.common.PolicyEngineException;
