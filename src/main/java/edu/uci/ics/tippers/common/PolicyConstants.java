@@ -150,7 +150,7 @@ public class PolicyConstants {
 
 
     //DIRECTORY PATHS
-    public static final String EXP_RESULTS_DIR = "results";
+    public static final String EXP_RESULTS_DIR = "results/";
     public static final String HISTOGRAM_DIR = "histogram/";
     public static final String CRED_HQ = "credentials/";
 
