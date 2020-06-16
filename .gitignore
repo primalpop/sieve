@@ -16,7 +16,9 @@ log/
 target/
 
 *.json
+!histogram/*.json
 *results/
 *.csv
+*.swp
 
 *credentials/
