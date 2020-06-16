@@ -1,8 +1,8 @@
 package edu.uci.ics.tippers.model.guard;
 
 import edu.uci.ics.tippers.common.PolicyConstants;
-import edu.uci.ics.tippers.db.QueryManager;
-import edu.uci.ics.tippers.db.QueryResult;
+import edu.uci.ics.tippers.dbms.QueryManager;
+import edu.uci.ics.tippers.dbms.QueryResult;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
 import edu.uci.ics.tippers.model.policy.ObjectCondition;

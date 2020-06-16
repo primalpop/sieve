@@ -5,9 +5,6 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 
-/**
- * Created by cygnus on 12/8/17.
- */
 public class Converter {
 
     private static class JSONStringSerializer<T> implements JsonSerializer<T> {

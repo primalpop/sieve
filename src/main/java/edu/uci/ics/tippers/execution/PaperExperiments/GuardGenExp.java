@@ -1,10 +1,10 @@
 package edu.uci.ics.tippers.execution.PaperExperiments;
 
 import edu.uci.ics.tippers.common.PolicyConstants;
-import edu.uci.ics.tippers.db.MySQLConnectionManager;
+import edu.uci.ics.tippers.dbms.mysql.MySQLConnectionManager;
 import edu.uci.ics.tippers.generation.policy.WiFiDataSet.PolicyUtil;
-import edu.uci.ics.tippers.manager.GuardPersistor;
-import edu.uci.ics.tippers.manager.PolicyPersistor;
+import edu.uci.ics.tippers.persistor.GuardPersistor;
+import edu.uci.ics.tippers.persistor.PolicyPersistor;
 import edu.uci.ics.tippers.model.guard.SelectGuard;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.policy.BEPolicy;

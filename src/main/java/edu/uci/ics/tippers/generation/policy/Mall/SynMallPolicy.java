@@ -3,7 +3,7 @@ package edu.uci.ics.tippers.generation.policy.Mall;
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.generation.data.Mall.MallDataGeneration;
 import edu.uci.ics.tippers.generation.data.Mall.MallShop;
-import edu.uci.ics.tippers.manager.PolicyPersistor;
+import edu.uci.ics.tippers.persistor.PolicyPersistor;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
 import edu.uci.ics.tippers.model.policy.TimeStampPredicate;
 

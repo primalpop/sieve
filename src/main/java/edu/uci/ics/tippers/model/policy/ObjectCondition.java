@@ -4,9 +4,8 @@ import edu.uci.ics.tippers.common.AttributeType;
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.common.PolicyEngineException;
 import edu.uci.ics.tippers.model.guard.Bucket;
-import edu.uci.ics.tippers.db.Histogram;
+import edu.uci.ics.tippers.dbms.mysql.Histogram;
 
-import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

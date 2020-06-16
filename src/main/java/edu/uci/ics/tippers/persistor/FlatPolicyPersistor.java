@@ -1,7 +1,7 @@
-package edu.uci.ics.tippers.manager;
+package edu.uci.ics.tippers.persistor;
 
 import edu.uci.ics.tippers.common.PolicyConstants;
-import edu.uci.ics.tippers.db.MySQLConnectionManager;
+import edu.uci.ics.tippers.dbms.mysql.MySQLConnectionManager;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
 
 import java.sql.*;

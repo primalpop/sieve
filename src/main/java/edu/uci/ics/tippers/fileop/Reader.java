@@ -7,9 +7,6 @@ import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-/**
- * Created by cygnus on 11/1/17.
- */
 public class Reader {
 
     public static String readFile(String filename) {

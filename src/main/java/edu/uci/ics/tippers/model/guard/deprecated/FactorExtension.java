@@ -2,7 +2,7 @@ package edu.uci.ics.tippers.model.guard.deprecated;
 
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.common.PolicyEngineException;
-import edu.uci.ics.tippers.db.Histogram;
+import edu.uci.ics.tippers.dbms.mysql.Histogram;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
 import edu.uci.ics.tippers.model.policy.ObjectCondition;

@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ibatis.common.jdbc.ScriptRunner;
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.common.PolicyEngineException;
-import edu.uci.ics.tippers.db.MySQLConnectionManager;
+import edu.uci.ics.tippers.dbms.mysql.MySQLConnectionManager;
 import edu.uci.ics.tippers.fileop.BigJsonReader;
 import edu.uci.ics.tippers.model.tippers.dontuse.Infrastructure;
 import edu.uci.ics.tippers.model.tippers.dontuse.SemanticObservation;

@@ -1,22 +1,24 @@
-package edu.uci.ics.tippers.db;
+package edu.uci.ics.tippers.dbms.mysql;
 
+import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.common.PolicyEngineException;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
 /**
- * Created by cygnus on 12/15/17.
+ * Created by cygnus on 10/29/17.
  */
-public class DB2ConnectionManager {
+public class MySQLConnectionManager {
 
-    private static final Logger LOGGER = Logger.getLogger(DB2ConnectionManager.class);
-    private static DB2ConnectionManager _instance = new DB2ConnectionManager();
+    private static final Logger LOGGER = Logger.getLogger(MySQLConnectionManager.class);
+    private static MySQLConnectionManager _instance = new MySQLConnectionManager();
     private Properties props;
     private static String SERVER;
     private static String PORT;
@@ -25,9 +27,11 @@ public class DB2ConnectionManager {
     private static String PASSWORD;
     private static Connection connection;
 
-    private DB2ConnectionManager() {
+    private MySQLConnectionManager() {
         try {
-            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("db2/db2.properties");
+            InputStream inputStream = getClass().getClassLoader().getResourceAsStream(String.valueOf
+                    (Paths.get(PolicyConstants.DBMS_LOCATION.toLowerCase(),
+                            PolicyConstants.DBMS_CREDENTIALS.toLowerCase())) + ".properties");
             props = new Properties();
             props.load(inputStream);
 
@@ -42,7 +46,7 @@ public class DB2ConnectionManager {
         }
     }
 
-    public static DB2ConnectionManager getInstance() {
+    public static MySQLConnectionManager getInstance() {
         return _instance;
     }
 
@@ -52,13 +56,13 @@ public class DB2ConnectionManager {
             return connection;
         try {
             connection = DriverManager.getConnection(
-                    String.format("jdbc:db2://%s:%s/%s", SERVER, PORT, DATABASE), USER, PASSWORD);
-
+                    String.format("jdbc:mysql://%s:%s/%s?useLegacyDatetimeCode=false&serverTimezone=America/Los_Angeles&rewriteBatchedStatements=true",
+                            SERVER, PORT, DATABASE), USER, PASSWORD);
+            System.out.println("--- Connected to " + DATABASE + " on server " + SERVER + "---");
             return connection;
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new PolicyEngineException("Error Connecting to DB2");
+            throw new PolicyEngineException("Error Connecting to MySQL");
         }
     }
-
 }

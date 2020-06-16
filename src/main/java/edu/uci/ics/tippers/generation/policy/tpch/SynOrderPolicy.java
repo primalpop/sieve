@@ -1,8 +1,7 @@
 package edu.uci.ics.tippers.generation.policy.tpch;
 
 import edu.uci.ics.tippers.common.PolicyConstants;
-import edu.uci.ics.tippers.db.MySQLConnectionManager;
-import edu.uci.ics.tippers.manager.PolicyPersistor;
+import edu.uci.ics.tippers.persistor.PolicyPersistor;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
 import edu.uci.ics.tippers.model.tpch.OrderProfile;
 

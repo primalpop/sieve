@@ -14,12 +14,9 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.List;
-import java.util.Map;
 import java.util.TreeMap;
 
-/**
- * Created by cygnus on 10/29/17.
- */
+
 public class Writer {
 
     DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

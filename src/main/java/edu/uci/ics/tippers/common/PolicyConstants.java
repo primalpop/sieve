@@ -1,9 +1,9 @@
 package edu.uci.ics.tippers.common;
 
 import com.google.common.collect.ImmutableList;
-import edu.uci.ics.tippers.db.MySQLConnectionManager;
-import edu.uci.ics.tippers.db.PGSQLConnectionManager;
-import edu.uci.ics.tippers.db.QueryManager;
+import edu.uci.ics.tippers.dbms.mysql.MySQLConnectionManager;
+import edu.uci.ics.tippers.dbms.postgresql.PGSQLConnectionManager;
+import edu.uci.ics.tippers.dbms.QueryManager;
 import edu.uci.ics.tippers.model.policy.Operation;
 import edu.uci.ics.tippers.model.policy.QuerierCondition;
 import org.apache.commons.configuration2.Configuration;
@@ -150,7 +150,7 @@ public class PolicyConstants {
 
 
     //DIRECTORY PATHS
-    public static final String BE_POLICY_DIR = "results/be_policies/";
+    public static final String EXP_RESULTS_DIR = "results";
     public static final String HISTOGRAM_DIR = "histogram/";
 
     //Sample Querier Conditions

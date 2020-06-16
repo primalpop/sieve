@@ -1,17 +1,16 @@
 package edu.uci.ics.tippers.execution.PaperExperiments;
 
 import edu.uci.ics.tippers.common.PolicyConstants;
-import edu.uci.ics.tippers.db.QueryManager;
-import edu.uci.ics.tippers.db.QueryResult;
+import edu.uci.ics.tippers.dbms.QueryManager;
+import edu.uci.ics.tippers.dbms.QueryResult;
 import edu.uci.ics.tippers.fileop.Writer;
 import edu.uci.ics.tippers.generation.query.QueryExplainer;
-import edu.uci.ics.tippers.manager.GuardPersistor;
-import edu.uci.ics.tippers.manager.PolicyPersistor;
+import edu.uci.ics.tippers.persistor.GuardPersistor;
+import edu.uci.ics.tippers.persistor.PolicyPersistor;
 import edu.uci.ics.tippers.model.guard.GuardExp;
 import edu.uci.ics.tippers.model.guard.GuardPart;
 import edu.uci.ics.tippers.model.policy.BEExpression;
 import edu.uci.ics.tippers.model.policy.BEPolicy;
-import org.omg.CORBA.PolicyOperations;
 
 import java.text.SimpleDateFormat;
 import java.time.Duration;
@@ -89,14 +88,14 @@ public class ExperimentGuards {
         PolicyPersistor polper = PolicyPersistor.getInstance();
         String file_header = "Querier,Number_Of_Policies,Number_of_Guards,Total_Guard_Cardinality, Sieve\n";
         Writer writer = new Writer();
-        writer.writeString(file_header, PolicyConstants.BE_POLICY_DIR, RESULTS_FILE);
+        writer.writeString(file_header, PolicyConstants.EXP_RESULTS_DIR, RESULTS_FILE);
         for (int i = 0; i < users.size(); i++) {
             String querier = String.valueOf(users.get(i));
             List<BEPolicy> allowPolicies = polper.retrievePolicies(querier,
                     PolicyConstants.USER_INDIVIDUAL, PolicyConstants.ACTION_ALLOW);
             if (allowPolicies == null) continue;
             System.out.println("Querier " + querier);
-            writer.writeString(eg.runBEPolicies(querier, allowPolicies), PolicyConstants.BE_POLICY_DIR, RESULTS_FILE);
+            writer.writeString(eg.runBEPolicies(querier, allowPolicies), PolicyConstants.EXP_RESULTS_DIR, RESULTS_FILE);
         }
     }
 }

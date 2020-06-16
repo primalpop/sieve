@@ -1,6 +1,6 @@
 package edu.uci.ics.tippers.model.data;
 
-import edu.uci.ics.tippers.db.MySQLConnectionManager;
+import edu.uci.ics.tippers.dbms.mysql.MySQLConnectionManager;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
