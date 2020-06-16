@@ -66,7 +66,7 @@ public class PolicyConstants {
 
         Configurations configs = new Configurations();
         try {
-            Configuration datasetConfig = configs.properties("experiment/dataset.properties");
+            Configuration datasetConfig = configs.properties("config/general.properties");
             DBMS_LOCATION = datasetConfig.getString("location");
             DBMS_CREDENTIALS = datasetConfig.getString("credentials");
             DBMS_CHOICE = datasetConfig.getString("dbms");
@@ -78,7 +78,7 @@ public class PolicyConstants {
             SELECT_ALL = "Select * from " + PolicyConstants.TABLE_NAME + " ";
             SELECT_ALL_WHERE = "Select * from " + PolicyConstants.TABLE_NAME + " where ";
 
-            Configuration dbmsConfig = configs.properties("experiment/" + DBMS_CHOICE + ".properties");
+            Configuration dbmsConfig = configs.properties("config/dbms/" + DBMS_CHOICE + ".properties");
             INFINTIY = dbmsConfig.getLong("infinity");
             BATCH_SIZE_INSERTION = dbmsConfig.getInt("batch_size");
             MAX_DURATION = Duration.ofMillis(dbmsConfig.getLong("timeout"));
@@ -94,7 +94,7 @@ public class PolicyConstants {
                     new FileBasedConfigurationBuilder<PropertiesConfiguration>(
                             PropertiesConfiguration.class).configure(params.fileBased()
                             .setListDelimiterHandler(new DefaultListDelimiterHandler(','))
-                            .setFile(new File("src/main/resources/experiment/" + TABLE_NAME.toLowerCase() + ".properties")));
+                            .setFile(new File("src/main/resources/config/dataset/" + TABLE_NAME.toLowerCase() + ".properties")));
             PropertiesConfiguration tableConfig = builder.getConfiguration();
 
             ATTRIBUTES = tableConfig.getList(String.class, "attrs");
