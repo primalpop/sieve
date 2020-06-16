@@ -292,82 +292,16 @@ public class WiFiDataSetQueryGeneration extends QueryGen {
     public List<QueryStatement> createQuery3(List<String> selTypes, int queryNum) {
         List<QueryStatement> queries = new ArrayList<>();
         Random r = new Random();
-        String user_group = user_groups.get(r.nextInt(user_groups.size()));
+        String user_group = "visitor";
         String full_query = String.format("Select PRESENCE.user_id, PRESENCE.location_id, PRESENCE.start_date, " +
                 "PRESENCE.start_time, PRESENCE.user_group, PRESENCE.user_profile  " +
                 "from PRESENCE, USER_GROUP_MEMBERSHIP " +
                 "where USER_GROUP_MEMBERSHIP.user_group_id = \"%s\" AND PRESENCE.user_id = USER_GROUP_MEMBERSHIP.user_id " +
                 "AND ", user_group);
-        for (int k = 0; k < selTypes.size(); k++) {
-            int duration = 50; // in minutes
-            int days = 0;
-            String selType = selTypes.get(k);
-            double chosenSel = getSelectivity(selType);
-            System.out.println("Chosen Selectivity " + chosenSel);
-            int numQ = 0;
-            boolean seedDate = false;
-            Timestamp startDate = pg.getDate("MIN");
-            do {
-                duration = Math.min(duration, 1439); //maximum of a day
-                if(!seedDate) {
-                    startDate = Timestamp.valueOf(pg.getDate("MIN").toLocalDateTime().toLocalDate().plus(r.nextInt(10), ChronoUnit.DAYS).atStartOfDay());
-                    seedDate = true;
-                }
-                TimeStampPredicate tsPred = new TimeStampPredicate(startDate, days, "00:00", duration);
-                String query = String.format("start_date >= \"%s\" AND start_date <= \"%s\" ", tsPred.getStartDate().toString(),
-                        tsPred.getEndDate().toString());
-                query += String.format("and start_time >= \"%s\" AND start_time <= \"%s\" ", tsPred.getStartTime().toString(),
-                        tsPred.getEndTime().toString());
-                float selQuery = queryManager.checkSelectivity(query);
-                String querySelType = checkSelectivityType(chosenSel, selQuery);
-                if(querySelType == null){
-                    if(selType.equalsIgnoreCase("low") || selType.equalsIgnoreCase("medium")) {
-                        if (duration < 1439) duration += 50;
-                        else if (days < 90) days += 1;
-                    }
-                    else {
-                        if (duration < 1439) duration += 100;
-                        else if ( days < 90) days += 2;
-                    }
-                    continue;
-                }
-                if(selType.equalsIgnoreCase(querySelType)) {
-                    System.out.println("Adding query with " + querySelType + " selectivity");
-                    queries.add(new QueryStatement(full_query + query, 3, selQuery, querySelType,
-                            new Timestamp(System.currentTimeMillis())));
-                    numQ++;
-                    seedDate = false;
-                    chosenSel = getSelectivity(selType);
-                    System.out.println("Chosen Selectivity " + chosenSel);
-                    continue;
-                }
-                if (selType.equalsIgnoreCase("low")){
-                    if (querySelType.equalsIgnoreCase("medium")
-                            || querySelType.equalsIgnoreCase("high")){
-                        duration = duration - 100;
-                    }
-                }
-                else if (selType.equalsIgnoreCase("medium")) {
-                    if(querySelType.equalsIgnoreCase("low")) {
-                        if (duration < 1439) duration += 100;
-                        else if (days < 90)
-                            days += 1;
-                    }
-                    else if(querySelType.equalsIgnoreCase("high")){
-                        duration = duration - 100;
-                        if(days > 1)  days -= 1;
-                    }
-                }
-                else {
-                    if (querySelType.equalsIgnoreCase("low")
-                            || querySelType.equalsIgnoreCase("medium")){
-                        if (duration < 1439) duration += 200;
-                        else if (days < 90) {
-                            days += 1;
-                        }
-                    }
-                }
-            } while (numQ < queryNum);
+        List<QueryStatement> select_queries = createQuery1(selTypes, queryNum);
+        for (QueryStatement qs: select_queries) {
+            queries.add(new QueryStatement(full_query + qs.getQuery(), 3, qs.getSelectivity(),
+                    qs.getSelectivity_type(), new Timestamp(System.currentTimeMillis())));
         }
         return queries;
     }
@@ -416,7 +350,7 @@ public class WiFiDataSetQueryGeneration extends QueryGen {
     public static void main(String[] args) {
         WiFiDataSetQueryGeneration qg = new WiFiDataSetQueryGeneration();
         boolean[] templates = {false, false, true, false};
-        int numOfQueries = 1;
+        int numOfQueries = 3;
         qg.constructWorkload(templates, numOfQueries);
     }
 
