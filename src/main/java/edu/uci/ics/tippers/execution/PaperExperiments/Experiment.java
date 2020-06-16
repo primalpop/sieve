@@ -305,16 +305,15 @@ public class Experiment {
 //        List <Integer> users = new ArrayList<>(Arrays.asList(14215, 56, 2050, 2819, 37, 625, 23519, 8817, 6215, 387,
 //                945, 8962, 23416, 34035));
         //users with increasing number of policies
-//        List <Integer> faculty = new ArrayList<>(Arrays.asList(5352));
         List <Integer> faculty = new ArrayList<>(Arrays.asList(1023, 5352, 11043, 13353, 18575));
-//        List <Integer> undergrad = new ArrayList<>(Arrays.asList(4686, 7632, 12555, 15936, 15007));
-//        List<Integer> grad = new ArrayList<>(Arrays.asList(100, 532, 5990, 11815, 32467));
-//        List<Integer> staff = new ArrayList<>(Arrays.asList(888, 2550, 5293, 9733, 20021));
+        List <Integer> undergrad = new ArrayList<>(Arrays.asList(4686, 7632, 12555, 15936, 15007));
+        List<Integer> grad = new ArrayList<>(Arrays.asList(100, 532, 5990, 11815, 32467));
+        List<Integer> staff = new ArrayList<>(Arrays.asList(888, 2550, 5293, 9733, 20021));
         List<Integer> users = new ArrayList<>();
         users.addAll(faculty);
-//        users.addAll(undergrad);
-//        users.addAll(grad);
-//        users.addAll(staff);
+        users.addAll(undergrad);
+        users.addAll(grad);
+        users.addAll(staff);
         PolicyPersistor polper = PolicyPersistor.getInstance();
 //        String file_header = "Querier,Querier_Profile,Query_Type,Query_Cardinality,Number_Of_Policies,Estimated_QPS,Query_Alone," +
 //                "Baseline_Policies, Baseline_UDF,Number_of_Guards,Total_Guard_Cardinality,With_Guard_Index,With_Query_Index,Sieve_Parameters, Sieve\n";

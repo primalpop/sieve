@@ -27,7 +27,7 @@ public abstract class QueryGen {
         lowSelDown = 0.00001;
         lowSelUp = 0.001;
         medSelDown = 0.001;
-        medSelUp = 0.01;
+        medSelUp = 0.2;
         highSelDown = 0.3;
         highSelUp = 0.5;
 
@@ -153,8 +153,8 @@ public abstract class QueryGen {
 
     public void constructWorkload(boolean[] templates, int numOfQueries) {
         List<String> selTypes = new ArrayList<>();
-//        selTypes.add("low");
-//        selTypes.add("medium");
+        selTypes.add("low");
+        selTypes.add("medium");
         selTypes.add("high");
         List<QueryStatement> queries = new ArrayList<>();
         for (int i = 0; i < templates.length; i++) {
