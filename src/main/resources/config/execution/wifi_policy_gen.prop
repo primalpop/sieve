@@ -1,0 +1,37 @@
+#Default or Active
+default = 0.6
+active = 0.4
+
+#working hours
+w_start = 08:00
+w_plus = 540
+
+#night hours start
+n_dusk_start = 17:00
+n_dusk_plus = 419
+n_dawn_start = 00:00
+n_dawn_plus = 479
+
+
+#all hours
+a_start = 00:01
+a_plus = 1438
+
+#Allow or deny for active people
+allow = 0.8
+deny = 0.2
+
+#Chance of selecting timestamp in active policy
+timestamp_chance = 0.9
+
+#Number of policy templates for active people
+active_choices = 40
+
+#Threshold for large size groups
+group_size_limit = 50
+
+
+
+
+
+

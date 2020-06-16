@@ -1,0 +1,30 @@
+#dataset
+location = home
+credentials = wifi_full
+dbms = mysql
+table_name = PRESENCE
+
+# For tpch dataset of scale 1
+#credentials = tpch_scale0.1
+#dbms = mysql
+#table_name = ORDERS
+
+#credentials = .properties
+#dbms = postgres
+
+# For wifi dataset
+#table_name = PRESENCE
+
+#credentials = tpch_scale1
+#credentials = pg_wifi_bigtest
+
+
+
+#formats
+date_format = yyyy-MM-dd
+time_format = HH:mm:ss
+timestamp_format = yyyy-MM-dd HH:mm:ss
+
+
+
+

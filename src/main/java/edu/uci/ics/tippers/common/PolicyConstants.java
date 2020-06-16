@@ -66,7 +66,7 @@ public class PolicyConstants {
 
         Configurations configs = new Configurations();
         try {
-            Configuration datasetConfig = configs.properties("config/general.properties");
+            Configuration datasetConfig = configs.properties("config/general.prop");
             DBMS_LOCATION = datasetConfig.getString("location");
             DBMS_CREDENTIALS = datasetConfig.getString("credentials");
             DBMS_CHOICE = datasetConfig.getString("dbms");

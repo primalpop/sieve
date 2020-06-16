@@ -1,0 +1,11 @@
+#attribute_names
+attrs = shop_name, obs_date, obs_time, user_interest, device_id
+indexed_attrs = shop_name, obs_date, obs_time, user_interest, device_id
+range_attrs = obs_date, obs_time
+
+#index_names
+shop_name = shop_hash
+obs_date = obs_date_tree
+obs_time = obs_time_tree
+user_interest = interest_hash
+device_id = device_hash
