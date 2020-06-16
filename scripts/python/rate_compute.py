@@ -7,14 +7,11 @@ import scipy.stats as stats
 
 from UserRate import UserRate
 
-connection = pymysql.connect(host='sensoria-2.ics.uci.edu', port=3306, user='tippersUser', passwd='tippers2018', db='mysql')
+connection = pymysql.connect(host='', port=3306, user='', passwd='', db='')
 
-""" Get the email ids from tippersdb_restored DB and create a dictionary with
-email as key and UserRate as the value
-"""
 def get_distinct_users():
     ur_list = {}
-    d_users_sql = "SELECT distinct(email) from tippersdb_restored.USER"
+    d_users_sql = "SELECT distinct(email) from USER"
     try: 
         with connection.cursor() as cursor:
             cursor.execute(d_users_sql)
@@ -25,10 +22,6 @@ def get_distinct_users():
         print('Got error {!r}, errno is {}'.format(e, e.args[0]))
         return ur_list
 
-"""
-TODO: Improve this to read start and end timestamps and return the share for the person based on
-time duration, where longer time period means larger share for the members involved.
-"""
 def parse_payload(jsonstr):
     payload = json.loads(jsonstr)
     if 'subject_id' in payload:
@@ -69,7 +62,7 @@ def main():
     user_dict = get_distinct_users()
     apis_to_look_for = ["/analytics/occupancy/area/get", "/analytics/occupancy/rooms/get", "/observation/get", "/semanticobservation/getLast", "/semanticobservation/get/usersWOPolicy"]
     
-    apis_query = "SELECT payload from tippersdb_logs.API_LOG where api IN ("
+    apis_query = "SELECT payload from API_LOG where api IN ("
 
     for api in apis_to_look_for:
         apis_query+="\'" + api + "\'"
