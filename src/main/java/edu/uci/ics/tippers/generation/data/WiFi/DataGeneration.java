@@ -21,16 +21,14 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Stream;
 
-/**
- * Created by cygnus on 12/7/17.
- */
+
 public class DataGeneration {
     
     private Connection connection;
 
     private JSONParser parser;
 
-    private static String dataDir = "/data/";
+    private static String dataDir = "/metadata/";
 
     public DataGeneration(){
         this.connection = MySQLConnectionManager.getInstance().getConnection();

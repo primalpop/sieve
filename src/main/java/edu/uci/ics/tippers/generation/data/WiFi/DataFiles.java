@@ -1,8 +1,6 @@
 package edu.uci.ics.tippers.generation.data.WiFi;
 
-/**
- * Created by cygnus on 12/8/17.
- */
+
 public enum DataFiles {
 
     INFRA ("infrastructure.json") ,

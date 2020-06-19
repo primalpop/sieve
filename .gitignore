@@ -22,3 +22,6 @@ target/
 *.swp
 
 *credentials/
+!*/credentials/
+*credentials/*
+!*/credentials/sample/

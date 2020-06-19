@@ -1,7 +1,6 @@
 package edu.uci.ics.tippers.dbms.db2;
 
 import edu.uci.ics.tippers.common.PolicyEngineException;
-import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,7 +14,6 @@ import java.util.Properties;
  */
 public class DB2ConnectionManager {
 
-    private static final Logger LOGGER = Logger.getLogger(DB2ConnectionManager.class);
     private static DB2ConnectionManager _instance = new DB2ConnectionManager();
     private Properties props;
     private static String SERVER;
@@ -38,7 +36,7 @@ public class DB2ConnectionManager {
             PASSWORD = props.getProperty("password");
 
         } catch (IOException ie) {
-            LOGGER.error(ie);
+            ie.printStackTrace();
         }
     }
 

@@ -59,14 +59,14 @@ public class PolicyConstants {
     }
 
     /**
-     * TODO: Call this function  first always
+     * TODO: Check if this function is called first always
      * https://stackoverflow.com/questions/31121513/is-there-an-elegant-way-to-make-every-method-in-a-class-start-with-a-certain-blo
      */
     public static void initialize(){
 
         Configurations configs = new Configurations();
         try {
-            Configuration datasetConfig = configs.properties("config/general.prop");
+            Configuration datasetConfig = configs.properties("config/general.properties");
             DBMS_LOCATION = datasetConfig.getString("location");
             DBMS_CREDENTIALS = datasetConfig.getString("credentials");
             DBMS_CHOICE = datasetConfig.getString("dbms");

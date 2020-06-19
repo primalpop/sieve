@@ -15,7 +15,7 @@ import java.util.Date;
 
 public class PresenceDataGeneration {
 
-    private static final String dataDir = "/data/";
+    private static final String dataDir = "/metadata/";
     private Connection connection;
     private HashMap<String, Integer> user_id_map;
 

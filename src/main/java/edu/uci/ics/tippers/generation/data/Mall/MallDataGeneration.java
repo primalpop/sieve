@@ -95,7 +95,7 @@ public class MallDataGeneration {
     }
 
     public List<MallShop> readCoverage(){
-        Path coverageInput = Paths.get("/data/mall_coverage.csv");
+        Path coverageInput = Paths.get("/metadata/mall_coverage.csv");
         List<MallShop> mallShops = new ArrayList<>();
         try {
             InputStream is = Reader.class.getResourceAsStream(coverageInput.toString());
@@ -141,7 +141,7 @@ public class MallDataGeneration {
                 else mdg.wifiToShop.get(wifiap).add(ms);
             }
         }
-        Path pathInput = Paths.get("/data/mallObservations.csv");
+        Path pathInput = Paths.get("/metadata/mallObservations.csv");
         List<MallObservation> mallObservations = mdg.read(pathInput);
         Comparator<MallObservation> dateComparator = new Comparator<MallObservation>() {
             @Override

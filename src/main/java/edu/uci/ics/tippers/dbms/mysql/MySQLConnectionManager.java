@@ -2,7 +2,6 @@ package edu.uci.ics.tippers.dbms.mysql;
 
 import edu.uci.ics.tippers.common.PolicyConstants;
 import edu.uci.ics.tippers.common.PolicyEngineException;
-import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,7 +16,6 @@ import java.util.Properties;
  */
 public class MySQLConnectionManager {
 
-    private static final Logger LOGGER = Logger.getLogger(MySQLConnectionManager.class);
     private static MySQLConnectionManager _instance = new MySQLConnectionManager();
     private Properties props;
     private static String SERVER;
@@ -42,7 +40,7 @@ public class MySQLConnectionManager {
             PASSWORD = props.getProperty("password");
 
         } catch (IOException ie) {
-            LOGGER.error(ie);
+            ie.printStackTrace();
         }
     }
 

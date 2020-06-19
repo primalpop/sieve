@@ -25,7 +25,7 @@ public class PGSQLConnectionManager {
     private PGSQLConnectionManager() {
         try {
             InputStream inputStream = getClass().getClassLoader().getResourceAsStream(String.valueOf
-                    (Paths.get(PolicyConstants.DBMS_LOCATION.toLowerCase(),
+                    (Paths.get(PolicyConstants.CRED_HQ + PolicyConstants.DBMS_LOCATION.toLowerCase(),
                             PolicyConstants.DBMS_CREDENTIALS.toLowerCase())) + ".properties");
             props = new Properties();
             props.load(inputStream);

@@ -93,7 +93,7 @@ public abstract class QueryGen {
     public abstract List<QueryStatement> createQuery4();
 
     public void insertQuery(List<QueryStatement> queryStatements) {
-        String soInsert = "INSERT INTO queries " +
+        String soInsert = "INSERT INTO QUERIES " +
                 "(query_statement, template, selectivity, selectivity_type, inserted_at) " +
                 "VALUES (?, ?, ?, ?, ?)";
         try {
@@ -125,12 +125,12 @@ public abstract class QueryGen {
         PreparedStatement queryStm = null;
         try {
             if (selectivity_type.equalsIgnoreCase("all")) {
-                queryStm = connection.prepareStatement("SELECT id, query_statement, selectivity FROM queries as q " +
+                queryStm = connection.prepareStatement("SELECT id, query_statement, selectivity FROM QUERIES as q " +
                         "WHERE q.template = ? order by selectivity limit " + query_count);
                 queryStm.setInt(1, template);
             }
             else {
-                queryStm = connection.prepareStatement("SELECT id, query_statement, selectivity FROM queries as q " +
+                queryStm = connection.prepareStatement("SELECT id, query_statement, selectivity FROM QUERIES as q " +
                         "WHERE q.selectivity_type = ? AND q.template = ? order by selectivity limit " + query_count);
                 queryStm.setString(1, selectivity_type);
                 queryStm.setInt(2, template);

@@ -81,7 +81,7 @@ public class PolicyGroupGen {
         USER_PROFILES = Stream.of(UserProfile.values()).map(UserProfile::getValue).collect(Collectors.toList());
 
         try {
-            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("config/execution/wifi_policy_gen.prop");
+            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("config/execution/wifi_policy_gen.properties");
             Properties props = new Properties();
             if (inputStream != null) {
                 props.load(inputStream);
