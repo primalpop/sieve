@@ -1,0 +1,8193 @@
+[ {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "877.3",
+  "upper" : "1297.23",
+  "cumulfreq" : 0.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "1298.41",
+  "upper" : "1661.73",
+  "cumulfreq" : 0.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "1665.64",
+  "upper" : "1946.53",
+  "cumulfreq" : 0.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "1949.27",
+  "upper" : "2511.92",
+  "cumulfreq" : 0.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "2521.4",
+  "upper" : "2972.04",
+  "cumulfreq" : 0.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "2977.87",
+  "upper" : "3473.11",
+  "cumulfreq" : 0.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "3473.77",
+  "upper" : "3797.27",
+  "cumulfreq" : 0.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "3800.23",
+  "upper" : "4196.15",
+  "cumulfreq" : 0.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "4196.49",
+  "upper" : "4771.49",
+  "cumulfreq" : 0.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "4783.37",
+  "upper" : "5219.78",
+  "cumulfreq" : 1.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "5220.86",
+  "upper" : "5663.47",
+  "cumulfreq" : 1.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "5667.92",
+  "upper" : "6123.6",
+  "cumulfreq" : 1.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "6127.11",
+  "upper" : "6581.81",
+  "cumulfreq" : 1.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1210
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "6583.45",
+  "upper" : "7004.15",
+  "cumulfreq" : 1.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "7009.03",
+  "upper" : "7425.07",
+  "cumulfreq" : 1.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "7430.34",
+  "upper" : "7832.41",
+  "cumulfreq" : 1.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "7836.16",
+  "upper" : "8254.65",
+  "cumulfreq" : 1.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "8256.42",
+  "upper" : "8713.17",
+  "cumulfreq" : 1.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "8713.18",
+  "upper" : "9102.55",
+  "cumulfreq" : 1.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "9102.73",
+  "upper" : "9603.35",
+  "cumulfreq" : 2.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "9605.83",
+  "upper" : "9993.84",
+  "cumulfreq" : 2.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "10000.5",
+  "upper" : "10391.04",
+  "cumulfreq" : 2.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "10393.89",
+  "upper" : "10833.92",
+  "cumulfreq" : 2.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "10837.78",
+  "upper" : "11367.49",
+  "cumulfreq" : 2.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "11368.74",
+  "upper" : "11791.1",
+  "cumulfreq" : 2.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "11800.3",
+  "upper" : "12197.91",
+  "cumulfreq" : 2.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "12201.27",
+  "upper" : "12607.3",
+  "cumulfreq" : 2.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "12609.79",
+  "upper" : "13027.8",
+  "cumulfreq" : 2.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "13029.52",
+  "upper" : "13458.9",
+  "cumulfreq" : 2.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "13462.04",
+  "upper" : "13826.91",
+  "cumulfreq" : 2.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "13826.98",
+  "upper" : "14256.74",
+  "cumulfreq" : 3.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "14258.3",
+  "upper" : "14669.67",
+  "cumulfreq" : 3.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "14671.59",
+  "upper" : "15048.25",
+  "cumulfreq" : 3.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "15057.3",
+  "upper" : "15436.14",
+  "cumulfreq" : 3.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "15440.75",
+  "upper" : "15825.08",
+  "cumulfreq" : 3.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "15827.91",
+  "upper" : "16195.09",
+  "cumulfreq" : 3.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "16198.51",
+  "upper" : "16591.61",
+  "cumulfreq" : 3.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "16594.4",
+  "upper" : "17009.49",
+  "cumulfreq" : 3.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "17010.53",
+  "upper" : "17332.48",
+  "cumulfreq" : 3.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "17334.95",
+  "upper" : "17660.72",
+  "cumulfreq" : 3.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "17665.0",
+  "upper" : "18024.41",
+  "cumulfreq" : 4.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "18024.56",
+  "upper" : "18405.15",
+  "cumulfreq" : 4.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "18407.37",
+  "upper" : "18777.99",
+  "cumulfreq" : 4.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "18780.44",
+  "upper" : "19176.28",
+  "cumulfreq" : 4.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "19178.23",
+  "upper" : "19577.63",
+  "cumulfreq" : 4.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "19579.17",
+  "upper" : "20017.1",
+  "cumulfreq" : 4.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "20018.5",
+  "upper" : "20375.99",
+  "cumulfreq" : 4.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "20379.68",
+  "upper" : "20734.58",
+  "cumulfreq" : 4.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "20744.41",
+  "upper" : "21084.4",
+  "cumulfreq" : 4.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "21087.52",
+  "upper" : "21444.63",
+  "cumulfreq" : 4.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "21446.11",
+  "upper" : "21758.85",
+  "cumulfreq" : 5.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "21761.21",
+  "upper" : "22092.85",
+  "cumulfreq" : 5.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "22095.43",
+  "upper" : "22460.75",
+  "cumulfreq" : 5.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "22461.55",
+  "upper" : "22835.2",
+  "cumulfreq" : 5.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "22835.26",
+  "upper" : "23169.28",
+  "cumulfreq" : 5.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "23172.12",
+  "upper" : "23531.93",
+  "cumulfreq" : 5.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "23536.22",
+  "upper" : "23959.77",
+  "cumulfreq" : 5.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "23962.24",
+  "upper" : "24331.7",
+  "cumulfreq" : 5.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "24337.26",
+  "upper" : "24676.03",
+  "cumulfreq" : 5.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "24680.57",
+  "upper" : "25033.05",
+  "cumulfreq" : 5.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "25038.38",
+  "upper" : "25345.63",
+  "cumulfreq" : 6.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1210
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "25347.06",
+  "upper" : "25739.32",
+  "cumulfreq" : 6.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "25740.65",
+  "upper" : "26058.45",
+  "cumulfreq" : 6.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "26067.78",
+  "upper" : "26399.34",
+  "cumulfreq" : 6.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "26400.67",
+  "upper" : "26709.62",
+  "cumulfreq" : 6.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "26709.84",
+  "upper" : "27043.6",
+  "cumulfreq" : 6.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "27045.71",
+  "upper" : "27369.62",
+  "cumulfreq" : 6.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "27376.43",
+  "upper" : "27756.36",
+  "cumulfreq" : 6.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "27757.95",
+  "upper" : "28144.3",
+  "cumulfreq" : 6.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "28148.2",
+  "upper" : "28481.63",
+  "cumulfreq" : 6.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "28487.22",
+  "upper" : "28851.81",
+  "cumulfreq" : 6.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "28852.16",
+  "upper" : "29215.83",
+  "cumulfreq" : 7.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "29220.1",
+  "upper" : "29556.57",
+  "cumulfreq" : 7.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "29557.22",
+  "upper" : "29918.5",
+  "cumulfreq" : 7.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "29922.0",
+  "upper" : "30236.85",
+  "cumulfreq" : 7.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "30237.81",
+  "upper" : "30552.13",
+  "cumulfreq" : 7.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "30554.21",
+  "upper" : "30880.42",
+  "cumulfreq" : 7.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "30882.12",
+  "upper" : "31174.9",
+  "cumulfreq" : 7.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "31182.44",
+  "upper" : "31526.84",
+  "cumulfreq" : 7.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "31529.72",
+  "upper" : "31850.09",
+  "cumulfreq" : 7.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "31851.38",
+  "upper" : "32146.0",
+  "cumulfreq" : 7.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "32148.16",
+  "upper" : "32450.26",
+  "cumulfreq" : 8.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "32457.46",
+  "upper" : "32784.22",
+  "cumulfreq" : 8.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "32784.69",
+  "upper" : "33055.41",
+  "cumulfreq" : 8.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "33058.35",
+  "upper" : "33346.85",
+  "cumulfreq" : 8.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "33351.97",
+  "upper" : "33628.02",
+  "cumulfreq" : 8.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "33630.68",
+  "upper" : "33940.27",
+  "cumulfreq" : 8.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "33940.97",
+  "upper" : "34248.12",
+  "cumulfreq" : 8.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "34248.99",
+  "upper" : "34520.47",
+  "cumulfreq" : 8.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "34521.92",
+  "upper" : "34769.75",
+  "cumulfreq" : 8.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "34777.08",
+  "upper" : "35102.57",
+  "cumulfreq" : 8.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "35103.57",
+  "upper" : "35402.24",
+  "cumulfreq" : 9.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "35406.8",
+  "upper" : "35689.36",
+  "cumulfreq" : 9.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "35691.76",
+  "upper" : "35978.0",
+  "cumulfreq" : 9.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "35978.79",
+  "upper" : "36284.59",
+  "cumulfreq" : 9.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "36287.51",
+  "upper" : "36574.1",
+  "cumulfreq" : 9.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "36574.76",
+  "upper" : "36900.55",
+  "cumulfreq" : 9.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "36903.96",
+  "upper" : "37217.96",
+  "cumulfreq" : 9.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "37223.18",
+  "upper" : "37485.04",
+  "cumulfreq" : 9.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "37486.24",
+  "upper" : "37751.94",
+  "cumulfreq" : 9.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "37753.74",
+  "upper" : "38048.64",
+  "cumulfreq" : 9.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "38051.13",
+  "upper" : "38309.96",
+  "cumulfreq" : 10.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "38313.53",
+  "upper" : "38610.88",
+  "cumulfreq" : 10.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "38611.1",
+  "upper" : "38957.05",
+  "cumulfreq" : 10.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "38962.42",
+  "upper" : "39239.69",
+  "cumulfreq" : 10.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "39241.77",
+  "upper" : "39532.11",
+  "cumulfreq" : 10.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "39532.2",
+  "upper" : "39856.56",
+  "cumulfreq" : 10.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "39856.93",
+  "upper" : "40128.82",
+  "cumulfreq" : 10.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "40135.37",
+  "upper" : "40456.63",
+  "cumulfreq" : 10.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "40457.93",
+  "upper" : "40746.44",
+  "cumulfreq" : 10.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "40746.86",
+  "upper" : "40988.59",
+  "cumulfreq" : 10.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "40988.81",
+  "upper" : "41279.64",
+  "cumulfreq" : 10.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "41280.91",
+  "upper" : "41589.74",
+  "cumulfreq" : 11.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "41593.63",
+  "upper" : "41933.35",
+  "cumulfreq" : 11.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "41943.22",
+  "upper" : "42215.37",
+  "cumulfreq" : 11.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1019
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "42221.06",
+  "upper" : "42507.4",
+  "cumulfreq" : 11.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "42510.61",
+  "upper" : "42769.38",
+  "cumulfreq" : 11.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "42772.75",
+  "upper" : "42997.17",
+  "cumulfreq" : 11.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "42998.69",
+  "upper" : "43236.03",
+  "cumulfreq" : 11.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "43236.5",
+  "upper" : "43480.59",
+  "cumulfreq" : 11.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "43481.02",
+  "upper" : "43790.08",
+  "cumulfreq" : 11.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "43791.58",
+  "upper" : "44040.08",
+  "cumulfreq" : 11.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "44043.73",
+  "upper" : "44285.03",
+  "cumulfreq" : 12.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "44288.05",
+  "upper" : "44521.6",
+  "cumulfreq" : 12.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "44522.45",
+  "upper" : "44770.2",
+  "cumulfreq" : 12.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "44770.61",
+  "upper" : "45076.84",
+  "cumulfreq" : 12.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "45077.63",
+  "upper" : "45306.48",
+  "cumulfreq" : 12.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "45307.27",
+  "upper" : "45587.92",
+  "cumulfreq" : 12.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "45592.33",
+  "upper" : "45852.3",
+  "cumulfreq" : 12.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "45852.77",
+  "upper" : "46133.19",
+  "cumulfreq" : 12.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "46134.23",
+  "upper" : "46391.8",
+  "cumulfreq" : 12.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "46395.69",
+  "upper" : "46661.42",
+  "cumulfreq" : 12.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "46662.04",
+  "upper" : "46943.4",
+  "cumulfreq" : 13.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "46945.5",
+  "upper" : "47209.8",
+  "cumulfreq" : 13.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "47209.91",
+  "upper" : "47535.46",
+  "cumulfreq" : 13.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "47535.51",
+  "upper" : "47741.91",
+  "cumulfreq" : 13.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "47742.32",
+  "upper" : "47975.11",
+  "cumulfreq" : 13.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "47975.36",
+  "upper" : "48205.05",
+  "cumulfreq" : 13.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "48210.83",
+  "upper" : "48440.88",
+  "cumulfreq" : 13.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "48441.91",
+  "upper" : "48677.54",
+  "cumulfreq" : 13.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "48679.74",
+  "upper" : "48939.54",
+  "cumulfreq" : 13.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "48946.75",
+  "upper" : "49187.85",
+  "cumulfreq" : 13.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1210
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "49189.71",
+  "upper" : "49390.25",
+  "cumulfreq" : 14.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "49392.61",
+  "upper" : "49658.09",
+  "cumulfreq" : 14.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "49666.22",
+  "upper" : "49910.16",
+  "cumulfreq" : 14.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "49912.25",
+  "upper" : "50165.98",
+  "cumulfreq" : 14.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "50169.54",
+  "upper" : "50430.49",
+  "cumulfreq" : 14.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "50433.85",
+  "upper" : "50704.95",
+  "cumulfreq" : 14.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "50709.15",
+  "upper" : "50911.44",
+  "cumulfreq" : 14.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "50913.05",
+  "upper" : "51170.61",
+  "cumulfreq" : 14.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1030
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "51172.48",
+  "upper" : "51433.12",
+  "cumulfreq" : 14.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "51434.17",
+  "upper" : "51637.17",
+  "cumulfreq" : 14.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "51640.4",
+  "upper" : "51880.54",
+  "cumulfreq" : 14.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "51882.63",
+  "upper" : "52142.13",
+  "cumulfreq" : 15.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "52142.72",
+  "upper" : "52342.07",
+  "cumulfreq" : 15.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "52342.85",
+  "upper" : "52578.46",
+  "cumulfreq" : 15.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "52579.43",
+  "upper" : "52821.75",
+  "cumulfreq" : 15.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "52824.13",
+  "upper" : "53047.24",
+  "cumulfreq" : 15.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1210
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "53047.46",
+  "upper" : "53240.76",
+  "cumulfreq" : 15.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "53243.24",
+  "upper" : "53522.1",
+  "cumulfreq" : 15.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "53522.49",
+  "upper" : "53799.71",
+  "cumulfreq" : 15.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "53800.02",
+  "upper" : "54045.5",
+  "cumulfreq" : 15.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "54046.0",
+  "upper" : "54309.96",
+  "cumulfreq" : 15.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "54312.02",
+  "upper" : "54579.05",
+  "cumulfreq" : 16.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "54585.15",
+  "upper" : "54849.09",
+  "cumulfreq" : 16.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "54850.49",
+  "upper" : "55131.95",
+  "cumulfreq" : 16.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "55134.21",
+  "upper" : "55407.27",
+  "cumulfreq" : 16.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "55407.84",
+  "upper" : "55656.79",
+  "cumulfreq" : 16.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "55657.46",
+  "upper" : "55899.54",
+  "cumulfreq" : 16.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "55902.82",
+  "upper" : "56159.04",
+  "cumulfreq" : 16.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "56159.2",
+  "upper" : "56442.01",
+  "cumulfreq" : 16.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "56443.68",
+  "upper" : "56658.05",
+  "cumulfreq" : 16.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1019
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "56658.33",
+  "upper" : "56924.25",
+  "cumulfreq" : 16.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "56930.36",
+  "upper" : "57153.42",
+  "cumulfreq" : 17.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "57157.53",
+  "upper" : "57362.14",
+  "cumulfreq" : 17.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "57367.01",
+  "upper" : "57614.82",
+  "cumulfreq" : 17.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "57615.71",
+  "upper" : "57841.38",
+  "cumulfreq" : 17.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "57843.65",
+  "upper" : "58079.05",
+  "cumulfreq" : 17.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "58079.81",
+  "upper" : "58304.52",
+  "cumulfreq" : 17.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "58305.91",
+  "upper" : "58569.42",
+  "cumulfreq" : 17.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "58569.89",
+  "upper" : "58792.01",
+  "cumulfreq" : 17.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "58792.11",
+  "upper" : "59036.9",
+  "cumulfreq" : 17.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "59037.31",
+  "upper" : "59271.47",
+  "cumulfreq" : 17.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "59272.64",
+  "upper" : "59529.44",
+  "cumulfreq" : 18.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "59530.98",
+  "upper" : "59773.99",
+  "cumulfreq" : 18.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "59776.64",
+  "upper" : "59989.45",
+  "cumulfreq" : 18.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "59994.48",
+  "upper" : "60244.9",
+  "cumulfreq" : 18.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "60244.92",
+  "upper" : "60467.59",
+  "cumulfreq" : 18.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "60470.36",
+  "upper" : "60721.95",
+  "cumulfreq" : 18.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "60723.07",
+  "upper" : "60983.91",
+  "cumulfreq" : 18.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "60985.12",
+  "upper" : "61203.24",
+  "cumulfreq" : 18.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "61210.8",
+  "upper" : "61453.84",
+  "cumulfreq" : 18.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "61454.57",
+  "upper" : "61688.39",
+  "cumulfreq" : 18.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "61698.07",
+  "upper" : "61937.43",
+  "cumulfreq" : 18.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "61938.26",
+  "upper" : "62182.07",
+  "cumulfreq" : 19.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "62182.3",
+  "upper" : "62457.97",
+  "cumulfreq" : 19.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "62460.32",
+  "upper" : "62686.11",
+  "cumulfreq" : 19.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "62686.97",
+  "upper" : "62947.53",
+  "cumulfreq" : 19.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1030
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "62948.83",
+  "upper" : "63221.37",
+  "cumulfreq" : 19.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "63221.88",
+  "upper" : "63464.58",
+  "cumulfreq" : 19.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "63466.23",
+  "upper" : "63712.78",
+  "cumulfreq" : 19.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "63714.82",
+  "upper" : "63949.1",
+  "cumulfreq" : 19.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "63949.17",
+  "upper" : "64177.55",
+  "cumulfreq" : 19.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "64187.28",
+  "upper" : "64489.11",
+  "cumulfreq" : 19.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "64491.05",
+  "upper" : "64739.18",
+  "cumulfreq" : 20.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1019
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "64740.73",
+  "upper" : "64982.86",
+  "cumulfreq" : 20.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "64987.63",
+  "upper" : "65232.38",
+  "cumulfreq" : 20.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "65241.94",
+  "upper" : "65436.23",
+  "cumulfreq" : 20.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "65437.89",
+  "upper" : "65667.02",
+  "cumulfreq" : 20.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "65668.91",
+  "upper" : "65932.11",
+  "cumulfreq" : 20.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "65932.75",
+  "upper" : "66173.64",
+  "cumulfreq" : 20.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "66174.32",
+  "upper" : "66423.77",
+  "cumulfreq" : 20.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "66424.84",
+  "upper" : "66637.75",
+  "cumulfreq" : 20.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1019
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "66638.71",
+  "upper" : "66846.25",
+  "cumulfreq" : 20.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "66849.2",
+  "upper" : "67134.64",
+  "cumulfreq" : 21.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "67135.98",
+  "upper" : "67400.29",
+  "cumulfreq" : 21.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "67405.07",
+  "upper" : "67698.18",
+  "cumulfreq" : 21.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "67703.47",
+  "upper" : "67917.99",
+  "cumulfreq" : 21.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "67918.53",
+  "upper" : "68124.52",
+  "cumulfreq" : 21.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "68129.24",
+  "upper" : "68372.55",
+  "cumulfreq" : 21.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "68376.36",
+  "upper" : "68605.81",
+  "cumulfreq" : 21.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "68609.11",
+  "upper" : "68830.1",
+  "cumulfreq" : 21.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "68834.0",
+  "upper" : "69072.23",
+  "cumulfreq" : 21.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "69072.52",
+  "upper" : "69306.87",
+  "cumulfreq" : 21.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "69313.96",
+  "upper" : "69569.82",
+  "cumulfreq" : 22.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "69570.8",
+  "upper" : "69829.8",
+  "cumulfreq" : 22.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "69831.84",
+  "upper" : "70054.8",
+  "cumulfreq" : 22.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "70057.85",
+  "upper" : "70292.56",
+  "cumulfreq" : 22.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "70296.37",
+  "upper" : "70533.55",
+  "cumulfreq" : 22.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "70535.39",
+  "upper" : "70778.36",
+  "cumulfreq" : 22.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "70781.28",
+  "upper" : "71035.42",
+  "cumulfreq" : 22.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "71047.57",
+  "upper" : "71287.63",
+  "cumulfreq" : 22.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "71289.8",
+  "upper" : "71501.19",
+  "cumulfreq" : 22.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "71501.62",
+  "upper" : "71735.68",
+  "cumulfreq" : 22.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "71740.77",
+  "upper" : "71981.6",
+  "cumulfreq" : 22.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1019
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "71982.98",
+  "upper" : "72254.25",
+  "cumulfreq" : 23.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "72255.61",
+  "upper" : "72492.33",
+  "cumulfreq" : 23.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "72492.92",
+  "upper" : "72775.26",
+  "cumulfreq" : 23.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "72778.85",
+  "upper" : "73024.4",
+  "cumulfreq" : 23.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "73024.45",
+  "upper" : "73256.6",
+  "cumulfreq" : 23.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "73256.94",
+  "upper" : "73536.21",
+  "cumulfreq" : 23.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "73541.86",
+  "upper" : "73784.57",
+  "cumulfreq" : 23.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "73785.78",
+  "upper" : "74029.81",
+  "cumulfreq" : 23.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "74034.72",
+  "upper" : "74289.67",
+  "cumulfreq" : 23.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "74292.37",
+  "upper" : "74534.6",
+  "cumulfreq" : 23.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "74534.89",
+  "upper" : "74831.21",
+  "cumulfreq" : 24.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "74832.36",
+  "upper" : "75064.55",
+  "cumulfreq" : 24.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "75065.27",
+  "upper" : "75321.66",
+  "cumulfreq" : 24.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "75322.77",
+  "upper" : "75560.23",
+  "cumulfreq" : 24.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "75563.1",
+  "upper" : "75761.68",
+  "cumulfreq" : 24.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "75762.22",
+  "upper" : "75997.02",
+  "cumulfreq" : 24.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "76005.79",
+  "upper" : "76255.31",
+  "cumulfreq" : 24.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "76257.87",
+  "upper" : "76495.55",
+  "cumulfreq" : 24.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "76495.69",
+  "upper" : "76748.59",
+  "cumulfreq" : 24.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "76749.94",
+  "upper" : "77038.33",
+  "cumulfreq" : 24.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "77038.44",
+  "upper" : "77302.0",
+  "cumulfreq" : 25.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "77305.07",
+  "upper" : "77562.88",
+  "cumulfreq" : 25.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "77563.54",
+  "upper" : "77800.39",
+  "cumulfreq" : 25.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "77804.44",
+  "upper" : "78031.43",
+  "cumulfreq" : 25.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "78031.59",
+  "upper" : "78274.6",
+  "cumulfreq" : 25.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "78275.71",
+  "upper" : "78537.99",
+  "cumulfreq" : 25.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "78541.48",
+  "upper" : "78803.25",
+  "cumulfreq" : 25.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "78809.46",
+  "upper" : "79066.13",
+  "cumulfreq" : 25.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "79070.18",
+  "upper" : "79298.62",
+  "cumulfreq" : 25.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "79303.86",
+  "upper" : "79540.02",
+  "cumulfreq" : 25.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "79541.93",
+  "upper" : "79789.87",
+  "cumulfreq" : 26.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "79790.01",
+  "upper" : "80067.15",
+  "cumulfreq" : 26.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "80068.15",
+  "upper" : "80345.97",
+  "cumulfreq" : 26.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "80346.42",
+  "upper" : "80569.13",
+  "cumulfreq" : 26.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "80571.42",
+  "upper" : "80792.06",
+  "cumulfreq" : 26.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "80793.06",
+  "upper" : "81084.29",
+  "cumulfreq" : 26.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "81085.42",
+  "upper" : "81303.17",
+  "cumulfreq" : 26.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "81303.3",
+  "upper" : "81526.27",
+  "cumulfreq" : 26.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "81527.32",
+  "upper" : "81782.4",
+  "cumulfreq" : 26.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "81783.24",
+  "upper" : "82061.04",
+  "cumulfreq" : 26.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "82061.53",
+  "upper" : "82329.54",
+  "cumulfreq" : 27.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "82330.55",
+  "upper" : "82546.28",
+  "cumulfreq" : 27.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "82551.13",
+  "upper" : "82785.72",
+  "cumulfreq" : 27.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "82788.94",
+  "upper" : "83071.06",
+  "cumulfreq" : 27.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "83071.73",
+  "upper" : "83285.65",
+  "cumulfreq" : 27.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "83287.1",
+  "upper" : "83538.48",
+  "cumulfreq" : 27.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "83540.45",
+  "upper" : "83771.94",
+  "cumulfreq" : 27.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "83772.41",
+  "upper" : "84025.81",
+  "cumulfreq" : 27.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "84027.25",
+  "upper" : "84287.56",
+  "cumulfreq" : 27.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "84289.37",
+  "upper" : "84537.09",
+  "cumulfreq" : 27.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "84539.17",
+  "upper" : "84783.01",
+  "cumulfreq" : 27.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "84786.38",
+  "upper" : "85061.86",
+  "cumulfreq" : 28.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "85063.0",
+  "upper" : "85314.35",
+  "cumulfreq" : 28.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "85316.55",
+  "upper" : "85579.34",
+  "cumulfreq" : 28.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "85580.08",
+  "upper" : "85825.49",
+  "cumulfreq" : 28.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "85825.64",
+  "upper" : "86071.39",
+  "cumulfreq" : 28.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "86077.58",
+  "upper" : "86349.97",
+  "cumulfreq" : 28.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "86358.03",
+  "upper" : "86611.5",
+  "cumulfreq" : 28.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "86612.23",
+  "upper" : "86916.0",
+  "cumulfreq" : 28.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "86918.12",
+  "upper" : "87140.02",
+  "cumulfreq" : 28.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "87141.28",
+  "upper" : "87414.92",
+  "cumulfreq" : 28.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "87418.8",
+  "upper" : "87681.94",
+  "cumulfreq" : 29.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "87683.56",
+  "upper" : "87919.83",
+  "cumulfreq" : 29.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "87921.13",
+  "upper" : "88198.31",
+  "cumulfreq" : 29.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "88201.06",
+  "upper" : "88419.63",
+  "cumulfreq" : 29.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "88419.64",
+  "upper" : "88676.5",
+  "cumulfreq" : 29.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "88680.82",
+  "upper" : "88912.91",
+  "cumulfreq" : 29.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "88913.41",
+  "upper" : "89179.65",
+  "cumulfreq" : 29.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "89182.8",
+  "upper" : "89460.06",
+  "cumulfreq" : 29.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "89464.1",
+  "upper" : "89739.15",
+  "cumulfreq" : 29.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "89741.69",
+  "upper" : "89979.54",
+  "cumulfreq" : 29.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "89983.11",
+  "upper" : "90234.5",
+  "cumulfreq" : 30.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "90243.42",
+  "upper" : "90482.51",
+  "cumulfreq" : 30.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "90486.72",
+  "upper" : "90745.04",
+  "cumulfreq" : 30.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "90745.19",
+  "upper" : "90986.29",
+  "cumulfreq" : 30.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "90987.06",
+  "upper" : "91231.39",
+  "cumulfreq" : 30.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "91236.08",
+  "upper" : "91487.94",
+  "cumulfreq" : 30.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "91489.51",
+  "upper" : "91781.09",
+  "cumulfreq" : 30.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "91782.4",
+  "upper" : "92075.78",
+  "cumulfreq" : 30.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "92075.99",
+  "upper" : "92336.33",
+  "cumulfreq" : 30.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "92340.36",
+  "upper" : "92563.33",
+  "cumulfreq" : 30.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "92564.19",
+  "upper" : "92847.75",
+  "cumulfreq" : 31.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "92849.28",
+  "upper" : "93123.66",
+  "cumulfreq" : 31.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "93123.83",
+  "upper" : "93370.34",
+  "cumulfreq" : 31.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "93371.63",
+  "upper" : "93661.62",
+  "cumulfreq" : 31.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "93665.11",
+  "upper" : "93933.73",
+  "cumulfreq" : 31.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "93934.29",
+  "upper" : "94158.19",
+  "cumulfreq" : 31.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "94160.6",
+  "upper" : "94434.91",
+  "cumulfreq" : 31.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "94435.47",
+  "upper" : "94755.12",
+  "cumulfreq" : 31.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "94756.08",
+  "upper" : "95037.95",
+  "cumulfreq" : 31.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "95038.03",
+  "upper" : "95300.98",
+  "cumulfreq" : 31.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "95302.23",
+  "upper" : "95549.05",
+  "cumulfreq" : 31.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "95549.24",
+  "upper" : "95766.91",
+  "cumulfreq" : 32.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "95767.29",
+  "upper" : "95981.52",
+  "cumulfreq" : 32.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "95988.08",
+  "upper" : "96213.15",
+  "cumulfreq" : 32.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "96216.46",
+  "upper" : "96482.8",
+  "cumulfreq" : 32.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "96483.09",
+  "upper" : "96733.79",
+  "cumulfreq" : 32.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "96735.31",
+  "upper" : "97014.02",
+  "cumulfreq" : 32.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1019
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "97017.6",
+  "upper" : "97250.16",
+  "cumulfreq" : 32.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "97250.82",
+  "upper" : "97526.0",
+  "cumulfreq" : 32.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "97527.35",
+  "upper" : "97794.8",
+  "cumulfreq" : 32.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "97796.33",
+  "upper" : "98037.84",
+  "cumulfreq" : 32.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "98042.73",
+  "upper" : "98298.73",
+  "cumulfreq" : 33.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "98303.08",
+  "upper" : "98558.24",
+  "cumulfreq" : 33.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "98560.65",
+  "upper" : "98821.7",
+  "cumulfreq" : 33.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "98821.79",
+  "upper" : "99134.93",
+  "cumulfreq" : 33.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "99137.2",
+  "upper" : "99358.15",
+  "cumulfreq" : 33.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "99364.51",
+  "upper" : "99644.94",
+  "cumulfreq" : 33.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "99646.88",
+  "upper" : "99937.61",
+  "cumulfreq" : 33.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "99937.81",
+  "upper" : "100230.22",
+  "cumulfreq" : 33.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "100231.61",
+  "upper" : "100535.6",
+  "cumulfreq" : 33.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "100536.08",
+  "upper" : "100783.06",
+  "cumulfreq" : 33.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "100783.1",
+  "upper" : "101049.41",
+  "cumulfreq" : 34.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "101056.61",
+  "upper" : "101334.24",
+  "cumulfreq" : 34.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "101339.84",
+  "upper" : "101618.93",
+  "cumulfreq" : 34.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "101625.6",
+  "upper" : "101882.28",
+  "cumulfreq" : 34.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "101883.35",
+  "upper" : "102147.97",
+  "cumulfreq" : 34.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "102148.0",
+  "upper" : "102389.58",
+  "cumulfreq" : 34.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "102390.23",
+  "upper" : "102642.19",
+  "cumulfreq" : 34.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "102643.39",
+  "upper" : "102909.93",
+  "cumulfreq" : 34.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "102914.03",
+  "upper" : "103174.18",
+  "cumulfreq" : 34.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "103178.05",
+  "upper" : "103417.14",
+  "cumulfreq" : 34.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "103422.28",
+  "upper" : "103662.65",
+  "cumulfreq" : 35.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "103666.58",
+  "upper" : "103930.22",
+  "cumulfreq" : 35.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "103932.72",
+  "upper" : "104238.03",
+  "cumulfreq" : 35.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "104238.55",
+  "upper" : "104477.59",
+  "cumulfreq" : 35.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "104477.79",
+  "upper" : "104770.31",
+  "cumulfreq" : 35.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "104770.58",
+  "upper" : "105083.34",
+  "cumulfreq" : 35.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "105087.71",
+  "upper" : "105359.52",
+  "cumulfreq" : 35.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "105363.18",
+  "upper" : "105591.62",
+  "cumulfreq" : 35.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "105592.13",
+  "upper" : "105818.49",
+  "cumulfreq" : 35.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "105819.37",
+  "upper" : "106074.87",
+  "cumulfreq" : 35.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1210
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "106075.39",
+  "upper" : "106343.29",
+  "cumulfreq" : 35.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "106343.52",
+  "upper" : "106606.3",
+  "cumulfreq" : 36.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "106608.36",
+  "upper" : "106875.35",
+  "cumulfreq" : 36.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "106877.83",
+  "upper" : "107128.3",
+  "cumulfreq" : 36.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "107128.42",
+  "upper" : "107364.26",
+  "cumulfreq" : 36.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "107366.34",
+  "upper" : "107614.13",
+  "cumulfreq" : 36.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "107615.57",
+  "upper" : "107836.28",
+  "cumulfreq" : 36.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "107839.8",
+  "upper" : "108062.55",
+  "cumulfreq" : 36.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "108063.06",
+  "upper" : "108366.29",
+  "cumulfreq" : 36.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "108369.82",
+  "upper" : "108601.08",
+  "cumulfreq" : 36.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "108602.05",
+  "upper" : "108895.91",
+  "cumulfreq" : 36.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "108898.18",
+  "upper" : "109123.5",
+  "cumulfreq" : 37.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "109128.63",
+  "upper" : "109373.44",
+  "cumulfreq" : 37.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "109373.53",
+  "upper" : "109661.28",
+  "cumulfreq" : 37.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "109663.05",
+  "upper" : "109875.66",
+  "cumulfreq" : 37.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "109879.32",
+  "upper" : "110088.22",
+  "cumulfreq" : 37.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "110091.56",
+  "upper" : "110422.54",
+  "cumulfreq" : 37.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "110430.35",
+  "upper" : "110683.08",
+  "cumulfreq" : 37.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "110684.16",
+  "upper" : "110877.81",
+  "cumulfreq" : 37.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "110879.85",
+  "upper" : "111150.29",
+  "cumulfreq" : 37.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "111151.57",
+  "upper" : "111415.75",
+  "cumulfreq" : 37.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "111416.75",
+  "upper" : "111657.95",
+  "cumulfreq" : 38.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "111658.76",
+  "upper" : "111929.07",
+  "cumulfreq" : 38.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "111931.24",
+  "upper" : "112184.57",
+  "cumulfreq" : 38.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "112185.94",
+  "upper" : "112468.0",
+  "cumulfreq" : 38.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "112470.56",
+  "upper" : "112779.99",
+  "cumulfreq" : 38.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "112780.38",
+  "upper" : "113034.77",
+  "cumulfreq" : 38.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "113035.13",
+  "upper" : "113276.29",
+  "cumulfreq" : 38.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "113279.19",
+  "upper" : "113565.06",
+  "cumulfreq" : 38.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "113567.41",
+  "upper" : "113859.06",
+  "cumulfreq" : 38.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "113859.85",
+  "upper" : "114138.59",
+  "cumulfreq" : 38.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "114144.69",
+  "upper" : "114386.88",
+  "cumulfreq" : 39.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "114394.45",
+  "upper" : "114674.72",
+  "cumulfreq" : 39.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "114676.64",
+  "upper" : "114979.93",
+  "cumulfreq" : 39.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "114981.57",
+  "upper" : "115245.83",
+  "cumulfreq" : 39.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "115250.91",
+  "upper" : "115535.12",
+  "cumulfreq" : 39.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "115535.18",
+  "upper" : "115759.19",
+  "cumulfreq" : 39.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "115759.94",
+  "upper" : "116018.51",
+  "cumulfreq" : 39.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "116018.73",
+  "upper" : "116254.16",
+  "cumulfreq" : 39.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "116254.97",
+  "upper" : "116507.38",
+  "cumulfreq" : 39.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "116508.31",
+  "upper" : "116727.04",
+  "cumulfreq" : 39.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "116731.57",
+  "upper" : "116978.25",
+  "cumulfreq" : 39.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "116978.84",
+  "upper" : "117207.82",
+  "cumulfreq" : 40.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "117207.91",
+  "upper" : "117485.62",
+  "cumulfreq" : 40.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "117490.57",
+  "upper" : "117746.39",
+  "cumulfreq" : 40.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "117746.49",
+  "upper" : "118003.87",
+  "cumulfreq" : 40.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "118004.96",
+  "upper" : "118293.52",
+  "cumulfreq" : 40.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "118295.44",
+  "upper" : "118517.55",
+  "cumulfreq" : 40.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "118519.74",
+  "upper" : "118782.92",
+  "cumulfreq" : 40.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "118783.48",
+  "upper" : "119053.64",
+  "cumulfreq" : 40.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "119053.84",
+  "upper" : "119332.93",
+  "cumulfreq" : 40.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "119333.8",
+  "upper" : "119628.57",
+  "cumulfreq" : 40.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "119629.55",
+  "upper" : "119838.0",
+  "cumulfreq" : 41.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "119839.47",
+  "upper" : "120086.27",
+  "cumulfreq" : 41.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "120087.41",
+  "upper" : "120337.72",
+  "cumulfreq" : 41.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "120339.38",
+  "upper" : "120571.42",
+  "cumulfreq" : 41.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "120574.55",
+  "upper" : "120777.67",
+  "cumulfreq" : 41.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1210
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "120781.99",
+  "upper" : "121044.2",
+  "cumulfreq" : 41.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "121045.24",
+  "upper" : "121323.0",
+  "cumulfreq" : 41.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "121326.64",
+  "upper" : "121589.73",
+  "cumulfreq" : 41.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "121591.8",
+  "upper" : "121857.89",
+  "cumulfreq" : 41.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "121859.85",
+  "upper" : "122091.04",
+  "cumulfreq" : 41.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "122093.74",
+  "upper" : "122359.89",
+  "cumulfreq" : 42.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "122362.83",
+  "upper" : "122615.45",
+  "cumulfreq" : 42.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "122619.3",
+  "upper" : "122896.77",
+  "cumulfreq" : 42.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "122898.19",
+  "upper" : "123170.3",
+  "cumulfreq" : 42.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "123172.36",
+  "upper" : "123426.37",
+  "cumulfreq" : 42.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "123434.23",
+  "upper" : "123689.25",
+  "cumulfreq" : 42.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "123698.25",
+  "upper" : "124004.13",
+  "cumulfreq" : 42.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "124005.98",
+  "upper" : "124230.35",
+  "cumulfreq" : 42.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "124232.34",
+  "upper" : "124487.73",
+  "cumulfreq" : 42.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "124488.05",
+  "upper" : "124766.63",
+  "cumulfreq" : 42.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "124767.69",
+  "upper" : "125041.42",
+  "cumulfreq" : 43.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "125047.23",
+  "upper" : "125326.28",
+  "cumulfreq" : 43.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "125326.58",
+  "upper" : "125547.93",
+  "cumulfreq" : 43.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "125550.62",
+  "upper" : "125804.36",
+  "cumulfreq" : 43.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "125809.23",
+  "upper" : "126051.92",
+  "cumulfreq" : 43.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "126057.68",
+  "upper" : "126295.39",
+  "cumulfreq" : 43.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "126297.26",
+  "upper" : "126569.69",
+  "cumulfreq" : 43.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "126572.63",
+  "upper" : "126855.06",
+  "cumulfreq" : 43.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "126855.97",
+  "upper" : "127123.69",
+  "cumulfreq" : 43.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "127123.77",
+  "upper" : "127351.01",
+  "cumulfreq" : 43.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "127351.82",
+  "upper" : "127607.28",
+  "cumulfreq" : 43.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "127607.49",
+  "upper" : "127857.07",
+  "cumulfreq" : 44.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "127857.11",
+  "upper" : "128124.43",
+  "cumulfreq" : 44.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "128129.34",
+  "upper" : "128416.03",
+  "cumulfreq" : 44.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "128420.38",
+  "upper" : "128643.77",
+  "cumulfreq" : 44.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "128644.5",
+  "upper" : "128889.07",
+  "cumulfreq" : 44.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "128889.86",
+  "upper" : "129178.78",
+  "cumulfreq" : 44.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "129179.23",
+  "upper" : "129396.27",
+  "cumulfreq" : 44.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "129397.8",
+  "upper" : "129634.43",
+  "cumulfreq" : 44.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "129635.31",
+  "upper" : "129854.28",
+  "cumulfreq" : 44.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "129859.1",
+  "upper" : "130105.48",
+  "cumulfreq" : 44.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "130107.36",
+  "upper" : "130361.58",
+  "cumulfreq" : 45.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "130362.01",
+  "upper" : "130628.26",
+  "cumulfreq" : 45.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "130629.01",
+  "upper" : "130898.09",
+  "cumulfreq" : 45.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "130900.73",
+  "upper" : "131152.34",
+  "cumulfreq" : 45.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1210
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "131155.45",
+  "upper" : "131421.73",
+  "cumulfreq" : 45.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "131422.49",
+  "upper" : "131675.39",
+  "cumulfreq" : 45.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "131677.54",
+  "upper" : "131933.45",
+  "cumulfreq" : 45.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "131934.33",
+  "upper" : "132179.04",
+  "cumulfreq" : 45.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "132184.11",
+  "upper" : "132468.66",
+  "cumulfreq" : 45.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "132468.74",
+  "upper" : "132717.24",
+  "cumulfreq" : 45.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "132723.36",
+  "upper" : "132968.37",
+  "cumulfreq" : 46.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "132971.63",
+  "upper" : "133262.78",
+  "cumulfreq" : 46.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "133269.8",
+  "upper" : "133512.83",
+  "cumulfreq" : 46.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "133516.76",
+  "upper" : "133798.6",
+  "cumulfreq" : 46.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "133801.44",
+  "upper" : "134065.91",
+  "cumulfreq" : 46.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "134065.96",
+  "upper" : "134307.97",
+  "cumulfreq" : 46.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "134317.33",
+  "upper" : "134557.57",
+  "cumulfreq" : 46.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "134562.74",
+  "upper" : "134793.56",
+  "cumulfreq" : 46.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "134794.92",
+  "upper" : "135077.3",
+  "cumulfreq" : 46.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "135078.43",
+  "upper" : "135362.61",
+  "cumulfreq" : 46.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "135376.62",
+  "upper" : "135662.56",
+  "cumulfreq" : 47.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "135669.82",
+  "upper" : "135921.7",
+  "cumulfreq" : 47.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "135927.39",
+  "upper" : "136169.9",
+  "cumulfreq" : 47.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "136171.27",
+  "upper" : "136409.32",
+  "cumulfreq" : 47.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "136409.9",
+  "upper" : "136656.19",
+  "cumulfreq" : 47.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "136656.67",
+  "upper" : "136939.81",
+  "cumulfreq" : 47.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "136940.79",
+  "upper" : "137202.29",
+  "cumulfreq" : 47.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "137206.75",
+  "upper" : "137489.19",
+  "cumulfreq" : 47.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "137491.06",
+  "upper" : "137729.18",
+  "cumulfreq" : 47.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "137730.14",
+  "upper" : "137996.63",
+  "cumulfreq" : 47.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "137999.37",
+  "upper" : "138260.99",
+  "cumulfreq" : 47.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "138262.14",
+  "upper" : "138499.51",
+  "cumulfreq" : 48.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "138501.18",
+  "upper" : "138754.89",
+  "cumulfreq" : 48.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "138754.96",
+  "upper" : "139058.75",
+  "cumulfreq" : 48.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "139059.83",
+  "upper" : "139340.18",
+  "cumulfreq" : 48.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "139342.79",
+  "upper" : "139562.39",
+  "cumulfreq" : 48.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "139565.55",
+  "upper" : "139815.06",
+  "cumulfreq" : 48.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "139817.53",
+  "upper" : "140054.12",
+  "cumulfreq" : 48.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "140057.33",
+  "upper" : "140323.69",
+  "cumulfreq" : 48.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "140325.16",
+  "upper" : "140557.91",
+  "cumulfreq" : 48.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "140561.57",
+  "upper" : "140860.07",
+  "cumulfreq" : 48.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "140861.03",
+  "upper" : "141143.43",
+  "cumulfreq" : 49.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "141149.34",
+  "upper" : "141398.72",
+  "cumulfreq" : 49.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "141401.97",
+  "upper" : "141620.62",
+  "cumulfreq" : 49.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1210
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "141622.07",
+  "upper" : "141886.67",
+  "cumulfreq" : 49.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "141889.22",
+  "upper" : "142130.05",
+  "cumulfreq" : 49.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "142134.5",
+  "upper" : "142409.34",
+  "cumulfreq" : 49.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "142410.11",
+  "upper" : "142636.37",
+  "cumulfreq" : 49.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "142646.94",
+  "upper" : "142988.95",
+  "cumulfreq" : 49.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1019
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "142989.24",
+  "upper" : "143300.14",
+  "cumulfreq" : 49.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "143303.75",
+  "upper" : "143594.5",
+  "cumulfreq" : 49.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "143596.13",
+  "upper" : "143858.76",
+  "cumulfreq" : 50.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "143860.44",
+  "upper" : "144113.82",
+  "cumulfreq" : 50.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "144115.25",
+  "upper" : "144397.49",
+  "cumulfreq" : 50.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "144400.7",
+  "upper" : "144605.82",
+  "cumulfreq" : 50.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "144606.09",
+  "upper" : "144872.14",
+  "cumulfreq" : 50.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "144874.05",
+  "upper" : "145154.94",
+  "cumulfreq" : 50.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "145157.01",
+  "upper" : "145451.39",
+  "cumulfreq" : 50.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "145452.2",
+  "upper" : "145692.29",
+  "cumulfreq" : 50.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "145693.22",
+  "upper" : "145947.48",
+  "cumulfreq" : 50.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "145951.27",
+  "upper" : "146217.79",
+  "cumulfreq" : 50.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1210
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "146221.24",
+  "upper" : "146463.36",
+  "cumulfreq" : 51.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "146463.89",
+  "upper" : "146742.41",
+  "cumulfreq" : 51.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "146743.34",
+  "upper" : "146993.8",
+  "cumulfreq" : 51.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "146999.62",
+  "upper" : "147235.01",
+  "cumulfreq" : 51.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "147238.39",
+  "upper" : "147542.46",
+  "cumulfreq" : 51.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "147543.3",
+  "upper" : "147802.27",
+  "cumulfreq" : 51.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "147804.22",
+  "upper" : "148129.02",
+  "cumulfreq" : 51.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "148129.52",
+  "upper" : "148380.79",
+  "cumulfreq" : 51.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "148382.23",
+  "upper" : "148596.86",
+  "cumulfreq" : 51.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "148597.62",
+  "upper" : "148872.4",
+  "cumulfreq" : 51.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "148874.51",
+  "upper" : "149161.79",
+  "cumulfreq" : 52.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "149162.03",
+  "upper" : "149385.65",
+  "cumulfreq" : 52.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "149391.46",
+  "upper" : "149653.48",
+  "cumulfreq" : 52.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "149655.66",
+  "upper" : "149915.49",
+  "cumulfreq" : 52.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "149920.93",
+  "upper" : "150175.76",
+  "cumulfreq" : 52.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "150180.49",
+  "upper" : "150437.01",
+  "cumulfreq" : 52.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "150437.91",
+  "upper" : "150740.92",
+  "cumulfreq" : 52.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "150742.52",
+  "upper" : "151010.8",
+  "cumulfreq" : 52.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "151016.5",
+  "upper" : "151329.48",
+  "cumulfreq" : 52.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "151331.56",
+  "upper" : "151574.72",
+  "cumulfreq" : 52.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "151575.03",
+  "upper" : "151826.66",
+  "cumulfreq" : 52.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "151827.69",
+  "upper" : "152048.25",
+  "cumulfreq" : 53.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "152051.75",
+  "upper" : "152306.73",
+  "cumulfreq" : 53.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "152307.64",
+  "upper" : "152577.76",
+  "cumulfreq" : 53.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "152578.93",
+  "upper" : "152842.79",
+  "cumulfreq" : 53.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "152845.13",
+  "upper" : "153075.69",
+  "cumulfreq" : 53.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "153078.28",
+  "upper" : "153315.28",
+  "cumulfreq" : 53.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "153318.55",
+  "upper" : "153574.8",
+  "cumulfreq" : 53.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "153579.45",
+  "upper" : "153815.61",
+  "cumulfreq" : 53.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "153816.14",
+  "upper" : "154100.98",
+  "cumulfreq" : 53.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "154110.16",
+  "upper" : "154371.96",
+  "cumulfreq" : 53.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "154373.34",
+  "upper" : "154658.26",
+  "cumulfreq" : 54.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1210
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "154658.73",
+  "upper" : "154935.84",
+  "cumulfreq" : 54.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "154939.27",
+  "upper" : "155197.64",
+  "cumulfreq" : 54.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "155198.98",
+  "upper" : "155439.86",
+  "cumulfreq" : 54.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "155441.88",
+  "upper" : "155651.92",
+  "cumulfreq" : 54.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "155656.53",
+  "upper" : "155886.97",
+  "cumulfreq" : 54.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "155890.82",
+  "upper" : "156155.68",
+  "cumulfreq" : 54.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "156156.55",
+  "upper" : "156414.28",
+  "cumulfreq" : 54.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "156414.45",
+  "upper" : "156693.87",
+  "cumulfreq" : 54.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "156696.08",
+  "upper" : "156984.06",
+  "cumulfreq" : 54.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "156985.26",
+  "upper" : "157256.81",
+  "cumulfreq" : 55.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "157257.85",
+  "upper" : "157524.64",
+  "cumulfreq" : 55.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "157526.96",
+  "upper" : "157803.06",
+  "cumulfreq" : 55.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "157803.23",
+  "upper" : "158051.6",
+  "cumulfreq" : 55.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "158052.91",
+  "upper" : "158306.18",
+  "cumulfreq" : 55.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "158306.57",
+  "upper" : "158550.06",
+  "cumulfreq" : 55.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "158550.6",
+  "upper" : "158796.64",
+  "cumulfreq" : 55.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "158798.36",
+  "upper" : "159055.59",
+  "cumulfreq" : 55.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "159059.63",
+  "upper" : "159329.68",
+  "cumulfreq" : 55.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "159330.65",
+  "upper" : "159545.05",
+  "cumulfreq" : 55.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "159545.28",
+  "upper" : "159838.88",
+  "cumulfreq" : 56.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "159842.58",
+  "upper" : "160066.54",
+  "cumulfreq" : 56.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1019
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "160067.23",
+  "upper" : "160325.91",
+  "cumulfreq" : 56.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "160334.74",
+  "upper" : "160609.83",
+  "cumulfreq" : 56.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "160610.49",
+  "upper" : "160871.83",
+  "cumulfreq" : 56.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "160874.11",
+  "upper" : "161096.05",
+  "cumulfreq" : 56.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "161096.06",
+  "upper" : "161355.78",
+  "cumulfreq" : 56.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "161358.85",
+  "upper" : "161595.56",
+  "cumulfreq" : 56.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "161596.31",
+  "upper" : "161851.26",
+  "cumulfreq" : 56.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "161855.12",
+  "upper" : "162103.51",
+  "cumulfreq" : 56.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "162103.99",
+  "upper" : "162345.62",
+  "cumulfreq" : 56.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "162347.92",
+  "upper" : "162589.85",
+  "cumulfreq" : 57.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "162590.31",
+  "upper" : "162857.14",
+  "cumulfreq" : 57.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "162858.92",
+  "upper" : "163112.29",
+  "cumulfreq" : 57.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "163112.68",
+  "upper" : "163394.79",
+  "cumulfreq" : 57.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "163394.94",
+  "upper" : "163640.03",
+  "cumulfreq" : 57.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "163642.71",
+  "upper" : "163899.96",
+  "cumulfreq" : 57.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "163901.45",
+  "upper" : "164140.31",
+  "cumulfreq" : 57.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "164142.52",
+  "upper" : "164418.65",
+  "cumulfreq" : 57.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "164424.41",
+  "upper" : "164719.26",
+  "cumulfreq" : 57.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "164721.6",
+  "upper" : "164963.55",
+  "cumulfreq" : 57.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1210
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "164964.64",
+  "upper" : "165223.84",
+  "cumulfreq" : 58.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1019
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "165224.4",
+  "upper" : "165478.46",
+  "cumulfreq" : 58.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "165480.4",
+  "upper" : "165742.95",
+  "cumulfreq" : 58.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "165743.34",
+  "upper" : "166001.06",
+  "cumulfreq" : 58.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "166010.03",
+  "upper" : "166282.48",
+  "cumulfreq" : 58.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "166283.62",
+  "upper" : "166570.27",
+  "cumulfreq" : 58.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "166571.85",
+  "upper" : "166815.35",
+  "cumulfreq" : 58.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "166816.69",
+  "upper" : "167087.65",
+  "cumulfreq" : 58.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1210
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "167087.95",
+  "upper" : "167370.09",
+  "cumulfreq" : 58.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "167371.97",
+  "upper" : "167629.86",
+  "cumulfreq" : 58.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "167638.78",
+  "upper" : "167885.73",
+  "cumulfreq" : 59.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "167887.86",
+  "upper" : "168149.78",
+  "cumulfreq" : 59.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "168153.94",
+  "upper" : "168392.11",
+  "cumulfreq" : 59.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "168398.08",
+  "upper" : "168661.23",
+  "cumulfreq" : 59.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "168661.82",
+  "upper" : "168889.66",
+  "cumulfreq" : 59.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "168897.23",
+  "upper" : "169205.54",
+  "cumulfreq" : 59.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "169205.61",
+  "upper" : "169448.11",
+  "cumulfreq" : 59.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "169452.21",
+  "upper" : "169720.28",
+  "cumulfreq" : 59.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "169721.62",
+  "upper" : "170030.21",
+  "cumulfreq" : 59.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "170032.41",
+  "upper" : "170257.77",
+  "cumulfreq" : 59.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "170261.4",
+  "upper" : "170551.05",
+  "cumulfreq" : 60.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "170555.1",
+  "upper" : "170854.57",
+  "cumulfreq" : 60.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "170855.9",
+  "upper" : "171156.67",
+  "cumulfreq" : 60.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "171163.78",
+  "upper" : "171449.29",
+  "cumulfreq" : 60.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "171450.78",
+  "upper" : "171743.42",
+  "cumulfreq" : 60.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "171748.61",
+  "upper" : "172003.15",
+  "cumulfreq" : 60.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "172003.86",
+  "upper" : "172285.59",
+  "cumulfreq" : 60.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "172287.16",
+  "upper" : "172533.61",
+  "cumulfreq" : 60.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "172533.8",
+  "upper" : "172807.64",
+  "cumulfreq" : 60.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "172813.9",
+  "upper" : "173077.94",
+  "cumulfreq" : 60.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "173082.92",
+  "upper" : "173329.31",
+  "cumulfreq" : 60.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "173329.76",
+  "upper" : "173554.04",
+  "cumulfreq" : 61.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1210
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "173554.88",
+  "upper" : "173836.23",
+  "cumulfreq" : 61.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "173838.34",
+  "upper" : "174101.13",
+  "cumulfreq" : 61.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "174102.27",
+  "upper" : "174338.39",
+  "cumulfreq" : 61.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "174342.24",
+  "upper" : "174639.24",
+  "cumulfreq" : 61.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "174639.36",
+  "upper" : "174933.09",
+  "cumulfreq" : 61.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "174935.43",
+  "upper" : "175247.86",
+  "cumulfreq" : 61.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "175249.11",
+  "upper" : "175522.77",
+  "cumulfreq" : 61.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "175524.47",
+  "upper" : "175834.83",
+  "cumulfreq" : 61.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1210
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "175836.98",
+  "upper" : "176112.21",
+  "cumulfreq" : 61.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "176114.55",
+  "upper" : "176415.85",
+  "cumulfreq" : 62.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "176417.18",
+  "upper" : "176682.63",
+  "cumulfreq" : 62.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "176683.12",
+  "upper" : "176952.95",
+  "cumulfreq" : 62.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "176956.55",
+  "upper" : "177213.68",
+  "cumulfreq" : 62.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "177217.06",
+  "upper" : "177487.84",
+  "cumulfreq" : 62.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "177489.44",
+  "upper" : "177768.04",
+  "cumulfreq" : 62.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "177768.87",
+  "upper" : "178020.33",
+  "cumulfreq" : 62.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "178021.0",
+  "upper" : "178271.42",
+  "cumulfreq" : 62.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "178274.15",
+  "upper" : "178567.99",
+  "cumulfreq" : 62.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "178568.08",
+  "upper" : "178815.45",
+  "cumulfreq" : 62.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "178816.46",
+  "upper" : "179072.13",
+  "cumulfreq" : 63.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "179077.4",
+  "upper" : "179328.44",
+  "cumulfreq" : 63.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "179329.97",
+  "upper" : "179542.73",
+  "cumulfreq" : 63.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "179543.17",
+  "upper" : "179865.94",
+  "cumulfreq" : 63.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "179868.36",
+  "upper" : "180158.24",
+  "cumulfreq" : 63.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "180159.96",
+  "upper" : "180439.38",
+  "cumulfreq" : 63.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "180440.56",
+  "upper" : "180735.25",
+  "cumulfreq" : 63.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "180738.01",
+  "upper" : "180977.58",
+  "cumulfreq" : 63.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "180981.05",
+  "upper" : "181243.98",
+  "cumulfreq" : 63.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "181251.11",
+  "upper" : "181547.52",
+  "cumulfreq" : 63.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "181549.04",
+  "upper" : "181844.72",
+  "cumulfreq" : 64.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "181847.14",
+  "upper" : "182159.99",
+  "cumulfreq" : 64.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "182169.58",
+  "upper" : "182454.59",
+  "cumulfreq" : 64.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "182455.68",
+  "upper" : "182719.81",
+  "cumulfreq" : 64.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "182722.01",
+  "upper" : "182975.06",
+  "cumulfreq" : 64.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "182979.35",
+  "upper" : "183274.43",
+  "cumulfreq" : 64.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "183278.05",
+  "upper" : "183542.14",
+  "cumulfreq" : 64.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "183543.55",
+  "upper" : "183773.17",
+  "cumulfreq" : 64.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "183775.93",
+  "upper" : "184042.74",
+  "cumulfreq" : 64.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "184044.04",
+  "upper" : "184303.62",
+  "cumulfreq" : 64.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "184306.01",
+  "upper" : "184572.81",
+  "cumulfreq" : 64.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "184577.78",
+  "upper" : "184871.82",
+  "cumulfreq" : 65.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "184871.92",
+  "upper" : "185147.92",
+  "cumulfreq" : 65.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "185148.58",
+  "upper" : "185445.93",
+  "cumulfreq" : 65.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "185447.55",
+  "upper" : "185700.53",
+  "cumulfreq" : 65.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "185702.38",
+  "upper" : "185988.41",
+  "cumulfreq" : 65.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "185995.74",
+  "upper" : "186277.86",
+  "cumulfreq" : 65.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "186278.46",
+  "upper" : "186580.97",
+  "cumulfreq" : 65.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "186584.48",
+  "upper" : "186853.69",
+  "cumulfreq" : 65.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "186855.19",
+  "upper" : "187116.57",
+  "cumulfreq" : 65.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "187119.99",
+  "upper" : "187397.71",
+  "cumulfreq" : 65.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "187400.6",
+  "upper" : "187677.2",
+  "cumulfreq" : 66.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "187677.66",
+  "upper" : "187959.74",
+  "cumulfreq" : 66.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "187960.19",
+  "upper" : "188239.99",
+  "cumulfreq" : 66.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "188240.47",
+  "upper" : "188503.65",
+  "cumulfreq" : 66.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "188505.03",
+  "upper" : "188793.64",
+  "cumulfreq" : 66.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "188794.2",
+  "upper" : "189056.21",
+  "cumulfreq" : 66.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "189058.47",
+  "upper" : "189356.23",
+  "cumulfreq" : 66.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "189356.38",
+  "upper" : "189665.21",
+  "cumulfreq" : 66.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "189667.14",
+  "upper" : "190007.26",
+  "cumulfreq" : 66.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "190009.46",
+  "upper" : "190276.53",
+  "cumulfreq" : 66.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "190278.29",
+  "upper" : "190566.16",
+  "cumulfreq" : 67.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "190568.53",
+  "upper" : "190852.6",
+  "cumulfreq" : 67.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "190853.65",
+  "upper" : "191103.84",
+  "cumulfreq" : 67.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "191104.7",
+  "upper" : "191366.55",
+  "cumulfreq" : 67.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "191366.57",
+  "upper" : "191692.04",
+  "cumulfreq" : 67.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "191692.6",
+  "upper" : "191977.18",
+  "cumulfreq" : 67.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "191980.4",
+  "upper" : "192263.71",
+  "cumulfreq" : 67.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "192265.46",
+  "upper" : "192533.36",
+  "cumulfreq" : 67.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "192535.25",
+  "upper" : "192818.58",
+  "cumulfreq" : 67.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "192818.87",
+  "upper" : "193126.36",
+  "cumulfreq" : 67.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "193127.05",
+  "upper" : "193375.94",
+  "cumulfreq" : 68.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "193377.26",
+  "upper" : "193706.09",
+  "cumulfreq" : 68.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "193712.63",
+  "upper" : "194000.59",
+  "cumulfreq" : 68.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "194000.62",
+  "upper" : "194313.1",
+  "cumulfreq" : 68.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "194314.66",
+  "upper" : "194577.53",
+  "cumulfreq" : 68.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "194579.8",
+  "upper" : "194849.19",
+  "cumulfreq" : 68.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "194849.3",
+  "upper" : "195156.31",
+  "cumulfreq" : 68.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "195162.98",
+  "upper" : "195494.37",
+  "cumulfreq" : 68.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "195494.94",
+  "upper" : "195756.33",
+  "cumulfreq" : 68.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "195756.51",
+  "upper" : "196067.9",
+  "cumulfreq" : 68.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "196068.05",
+  "upper" : "196373.04",
+  "cumulfreq" : 68.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "196377.05",
+  "upper" : "196643.0",
+  "cumulfreq" : 69.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "196644.79",
+  "upper" : "196876.48",
+  "cumulfreq" : 69.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "196878.79",
+  "upper" : "197170.96",
+  "cumulfreq" : 69.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "197171.08",
+  "upper" : "197486.5",
+  "cumulfreq" : 69.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "197487.16",
+  "upper" : "197768.67",
+  "cumulfreq" : 69.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "197769.3",
+  "upper" : "197986.24",
+  "cumulfreq" : 69.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "197986.45",
+  "upper" : "198249.37",
+  "cumulfreq" : 69.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "198251.1",
+  "upper" : "198502.62",
+  "cumulfreq" : 69.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "198505.2",
+  "upper" : "198770.47",
+  "cumulfreq" : 69.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "198771.73",
+  "upper" : "199097.54",
+  "cumulfreq" : 69.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "199102.68",
+  "upper" : "199407.39",
+  "cumulfreq" : 70.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "199407.54",
+  "upper" : "199712.37",
+  "cumulfreq" : 70.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "199721.17",
+  "upper" : "200007.29",
+  "cumulfreq" : 70.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "200011.46",
+  "upper" : "200308.49",
+  "cumulfreq" : 70.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "200310.28",
+  "upper" : "200592.9",
+  "cumulfreq" : 70.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "200594.02",
+  "upper" : "200882.26",
+  "cumulfreq" : 70.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "200882.85",
+  "upper" : "201146.18",
+  "cumulfreq" : 70.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "201146.86",
+  "upper" : "201446.91",
+  "cumulfreq" : 70.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "201452.34",
+  "upper" : "201764.87",
+  "cumulfreq" : 70.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "201765.39",
+  "upper" : "202038.25",
+  "cumulfreq" : 70.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "202038.57",
+  "upper" : "202308.52",
+  "cumulfreq" : 71.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "202309.03",
+  "upper" : "202614.44",
+  "cumulfreq" : 71.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "202614.63",
+  "upper" : "202887.64",
+  "cumulfreq" : 71.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "202891.52",
+  "upper" : "203180.16",
+  "cumulfreq" : 71.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1210
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "203181.78",
+  "upper" : "203482.46",
+  "cumulfreq" : 71.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "203485.93",
+  "upper" : "203750.24",
+  "cumulfreq" : 71.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "203752.23",
+  "upper" : "204052.09",
+  "cumulfreq" : 71.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "204059.95",
+  "upper" : "204351.64",
+  "cumulfreq" : 71.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "204358.21",
+  "upper" : "204633.83",
+  "cumulfreq" : 71.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "204636.0",
+  "upper" : "204951.97",
+  "cumulfreq" : 71.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "204965.0",
+  "upper" : "205248.63",
+  "cumulfreq" : 72.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "205249.73",
+  "upper" : "205538.59",
+  "cumulfreq" : 72.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1210
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "205539.01",
+  "upper" : "205853.28",
+  "cumulfreq" : 72.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "205853.76",
+  "upper" : "206164.09",
+  "cumulfreq" : 72.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "206172.83",
+  "upper" : "206508.84",
+  "cumulfreq" : 72.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "206509.62",
+  "upper" : "206872.53",
+  "cumulfreq" : 72.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "206873.28",
+  "upper" : "207116.91",
+  "cumulfreq" : 72.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "207118.42",
+  "upper" : "207434.14",
+  "cumulfreq" : 72.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "207435.33",
+  "upper" : "207743.92",
+  "cumulfreq" : 72.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "207749.9",
+  "upper" : "208051.21",
+  "cumulfreq" : 72.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1030
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "208052.43",
+  "upper" : "208368.91",
+  "cumulfreq" : 72.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "208370.35",
+  "upper" : "208626.96",
+  "cumulfreq" : 73.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "208630.65",
+  "upper" : "208991.06",
+  "cumulfreq" : 73.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "208993.8",
+  "upper" : "209314.01",
+  "cumulfreq" : 73.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "209318.18",
+  "upper" : "209621.6",
+  "cumulfreq" : 73.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "209623.26",
+  "upper" : "209933.45",
+  "cumulfreq" : 73.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "209937.09",
+  "upper" : "210231.37",
+  "cumulfreq" : 73.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "210238.7",
+  "upper" : "210512.98",
+  "cumulfreq" : 73.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "210516.18",
+  "upper" : "210856.93",
+  "cumulfreq" : 73.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "210857.01",
+  "upper" : "211120.16",
+  "cumulfreq" : 73.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "211120.48",
+  "upper" : "211469.52",
+  "cumulfreq" : 73.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "211476.76",
+  "upper" : "211760.74",
+  "cumulfreq" : 74.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "211766.5",
+  "upper" : "212102.03",
+  "cumulfreq" : 74.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "212102.1",
+  "upper" : "212409.46",
+  "cumulfreq" : 74.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "212410.88",
+  "upper" : "212738.81",
+  "cumulfreq" : 74.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "212740.23",
+  "upper" : "213039.68",
+  "cumulfreq" : 74.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "213044.15",
+  "upper" : "213358.41",
+  "cumulfreq" : 74.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "213361.93",
+  "upper" : "213638.57",
+  "cumulfreq" : 74.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "213642.04",
+  "upper" : "213903.79",
+  "cumulfreq" : 74.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1019
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "213904.0",
+  "upper" : "214256.07",
+  "cumulfreq" : 74.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "214257.55",
+  "upper" : "214534.82",
+  "cumulfreq" : 74.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "214538.35",
+  "upper" : "214820.28",
+  "cumulfreq" : 75.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "214820.35",
+  "upper" : "215148.34",
+  "cumulfreq" : 75.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "215151.08",
+  "upper" : "215484.12",
+  "cumulfreq" : 75.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "215487.91",
+  "upper" : "215762.38",
+  "cumulfreq" : 75.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "215763.4",
+  "upper" : "216056.35",
+  "cumulfreq" : 75.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "216059.72",
+  "upper" : "216368.13",
+  "cumulfreq" : 75.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "216368.52",
+  "upper" : "216695.46",
+  "cumulfreq" : 75.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "216698.77",
+  "upper" : "216968.57",
+  "cumulfreq" : 75.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "216973.09",
+  "upper" : "217282.11",
+  "cumulfreq" : 75.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "217283.65",
+  "upper" : "217598.51",
+  "cumulfreq" : 75.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "217599.56",
+  "upper" : "217886.35",
+  "cumulfreq" : 76.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "217893.34",
+  "upper" : "218203.46",
+  "cumulfreq" : 76.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "218204.7",
+  "upper" : "218547.9",
+  "cumulfreq" : 76.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "218563.16",
+  "upper" : "218918.76",
+  "cumulfreq" : 76.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "218918.92",
+  "upper" : "219227.87",
+  "cumulfreq" : 76.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "219229.42",
+  "upper" : "219549.17",
+  "cumulfreq" : 76.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "219552.39",
+  "upper" : "219974.61",
+  "cumulfreq" : 76.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "219983.15",
+  "upper" : "220308.46",
+  "cumulfreq" : 76.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "220308.98",
+  "upper" : "220611.19",
+  "cumulfreq" : 76.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "220613.29",
+  "upper" : "220916.98",
+  "cumulfreq" : 76.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "220917.19",
+  "upper" : "221235.33",
+  "cumulfreq" : 77.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "221236.68",
+  "upper" : "221539.14",
+  "cumulfreq" : 77.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "221542.4",
+  "upper" : "221896.09",
+  "cumulfreq" : 77.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "221896.7",
+  "upper" : "222249.84",
+  "cumulfreq" : 77.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "222257.03",
+  "upper" : "222547.66",
+  "cumulfreq" : 77.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "222549.88",
+  "upper" : "222869.0",
+  "cumulfreq" : 77.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "222870.24",
+  "upper" : "223232.79",
+  "cumulfreq" : 77.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "223236.87",
+  "upper" : "223600.34",
+  "cumulfreq" : 77.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "223600.94",
+  "upper" : "223937.01",
+  "cumulfreq" : 77.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "223939.8",
+  "upper" : "224320.4",
+  "cumulfreq" : 77.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "224321.12",
+  "upper" : "224702.0",
+  "cumulfreq" : 77.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "224702.71",
+  "upper" : "225057.97",
+  "cumulfreq" : 78.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "225059.91",
+  "upper" : "225385.61",
+  "cumulfreq" : 78.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "225389.29",
+  "upper" : "225738.86",
+  "cumulfreq" : 78.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "225739.03",
+  "upper" : "226062.05",
+  "cumulfreq" : 78.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "226072.6",
+  "upper" : "226382.03",
+  "cumulfreq" : 78.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "226384.26",
+  "upper" : "226697.47",
+  "cumulfreq" : 78.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "226698.4",
+  "upper" : "227014.01",
+  "cumulfreq" : 78.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "227016.66",
+  "upper" : "227288.83",
+  "cumulfreq" : 78.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "227291.21",
+  "upper" : "227618.56",
+  "cumulfreq" : 78.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "227619.14",
+  "upper" : "228013.82",
+  "cumulfreq" : 78.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "228016.05",
+  "upper" : "228343.15",
+  "cumulfreq" : 79.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "228348.15",
+  "upper" : "228664.11",
+  "cumulfreq" : 79.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "228668.14",
+  "upper" : "229013.66",
+  "cumulfreq" : 79.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "229014.04",
+  "upper" : "229318.72",
+  "cumulfreq" : 79.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "229320.8",
+  "upper" : "229699.64",
+  "cumulfreq" : 79.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "229700.39",
+  "upper" : "230001.83",
+  "cumulfreq" : 79.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "230007.07",
+  "upper" : "230331.69",
+  "cumulfreq" : 79.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "230333.57",
+  "upper" : "230667.16",
+  "cumulfreq" : 79.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "230668.76",
+  "upper" : "230994.19",
+  "cumulfreq" : 79.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "230995.57",
+  "upper" : "231341.05",
+  "cumulfreq" : 79.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "231350.36",
+  "upper" : "231678.36",
+  "cumulfreq" : 80.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "231679.21",
+  "upper" : "231968.4",
+  "cumulfreq" : 80.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "231968.82",
+  "upper" : "232337.77",
+  "cumulfreq" : 80.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "232339.21",
+  "upper" : "232696.63",
+  "cumulfreq" : 80.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "232697.25",
+  "upper" : "233021.86",
+  "cumulfreq" : 80.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "233027.36",
+  "upper" : "233281.42",
+  "cumulfreq" : 80.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "233283.41",
+  "upper" : "233632.3",
+  "cumulfreq" : 80.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "233637.34",
+  "upper" : "233981.24",
+  "cumulfreq" : 80.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "233982.72",
+  "upper" : "234310.1",
+  "cumulfreq" : 80.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "234310.3",
+  "upper" : "234643.7",
+  "cumulfreq" : 80.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "234646.94",
+  "upper" : "235007.37",
+  "cumulfreq" : 81.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "235007.69",
+  "upper" : "235363.2",
+  "cumulfreq" : 81.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "235363.96",
+  "upper" : "235678.49",
+  "cumulfreq" : 81.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "235678.88",
+  "upper" : "236039.73",
+  "cumulfreq" : 81.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "236044.14",
+  "upper" : "236337.19",
+  "cumulfreq" : 81.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "236340.17",
+  "upper" : "236689.78",
+  "cumulfreq" : 81.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "236692.96",
+  "upper" : "237036.86",
+  "cumulfreq" : 81.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "237040.34",
+  "upper" : "237378.82",
+  "cumulfreq" : 81.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "237380.42",
+  "upper" : "237722.2",
+  "cumulfreq" : 81.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "237724.36",
+  "upper" : "238117.52",
+  "cumulfreq" : 81.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "238120.01",
+  "upper" : "238448.49",
+  "cumulfreq" : 81.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "238448.54",
+  "upper" : "238733.11",
+  "cumulfreq" : 82.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "238733.48",
+  "upper" : "239049.74",
+  "cumulfreq" : 82.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "239054.44",
+  "upper" : "239437.99",
+  "cumulfreq" : 82.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "239438.37",
+  "upper" : "239822.15",
+  "cumulfreq" : 82.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "239826.49",
+  "upper" : "240203.5",
+  "cumulfreq" : 82.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "240204.46",
+  "upper" : "240598.72",
+  "cumulfreq" : 82.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "240599.07",
+  "upper" : "240962.18",
+  "cumulfreq" : 82.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "240962.42",
+  "upper" : "241382.65",
+  "cumulfreq" : 82.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "241388.59",
+  "upper" : "241780.23",
+  "cumulfreq" : 82.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "241782.55",
+  "upper" : "242156.74",
+  "cumulfreq" : 82.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "242165.13",
+  "upper" : "242524.28",
+  "cumulfreq" : 83.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "242526.98",
+  "upper" : "242890.35",
+  "cumulfreq" : 83.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1210
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "242894.93",
+  "upper" : "243263.21",
+  "cumulfreq" : 83.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "243263.63",
+  "upper" : "243612.27",
+  "cumulfreq" : 83.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "243618.09",
+  "upper" : "243968.13",
+  "cumulfreq" : 83.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "243969.17",
+  "upper" : "244325.38",
+  "cumulfreq" : 83.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "244325.96",
+  "upper" : "244740.53",
+  "cumulfreq" : 83.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "244746.54",
+  "upper" : "245124.47",
+  "cumulfreq" : 83.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "245127.16",
+  "upper" : "245473.75",
+  "cumulfreq" : 83.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "245476.55",
+  "upper" : "245893.49",
+  "cumulfreq" : 83.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "245895.07",
+  "upper" : "246279.61",
+  "cumulfreq" : 84.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "246279.66",
+  "upper" : "246600.4",
+  "cumulfreq" : 84.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "246605.88",
+  "upper" : "246951.88",
+  "cumulfreq" : 84.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "246952.4",
+  "upper" : "247290.23",
+  "cumulfreq" : 84.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "247293.22",
+  "upper" : "247666.66",
+  "cumulfreq" : 84.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "247667.97",
+  "upper" : "248048.63",
+  "cumulfreq" : 84.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "248049.28",
+  "upper" : "248452.6",
+  "cumulfreq" : 84.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "248454.88",
+  "upper" : "248855.23",
+  "cumulfreq" : 84.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "248855.83",
+  "upper" : "249206.95",
+  "cumulfreq" : 84.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "249214.82",
+  "upper" : "249621.11",
+  "cumulfreq" : 84.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "249623.68",
+  "upper" : "249965.94",
+  "cumulfreq" : 85.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "249973.03",
+  "upper" : "250336.98",
+  "cumulfreq" : 85.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "250340.13",
+  "upper" : "250761.29",
+  "cumulfreq" : 85.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "250768.59",
+  "upper" : "251272.04",
+  "cumulfreq" : 85.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "251272.9",
+  "upper" : "251642.91",
+  "cumulfreq" : 85.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "251647.48",
+  "upper" : "252043.64",
+  "cumulfreq" : 85.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1210
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "252046.66",
+  "upper" : "252422.35",
+  "cumulfreq" : 85.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "252432.46",
+  "upper" : "252823.45",
+  "cumulfreq" : 85.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "252824.09",
+  "upper" : "253249.86",
+  "cumulfreq" : 85.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "253253.99",
+  "upper" : "253630.66",
+  "cumulfreq" : 85.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "253630.8",
+  "upper" : "254016.14",
+  "cumulfreq" : 85.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "254019.39",
+  "upper" : "254412.9",
+  "cumulfreq" : 86.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "254415.65",
+  "upper" : "254803.65",
+  "cumulfreq" : 86.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "254808.74",
+  "upper" : "255169.6",
+  "cumulfreq" : 86.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "255173.34",
+  "upper" : "255583.76",
+  "cumulfreq" : 86.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1019
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "255585.2",
+  "upper" : "255948.82",
+  "cumulfreq" : 86.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "255949.51",
+  "upper" : "256316.5",
+  "cumulfreq" : 86.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "256316.92",
+  "upper" : "256727.43",
+  "cumulfreq" : 86.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "256729.25",
+  "upper" : "257236.35",
+  "cumulfreq" : 86.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "257237.67",
+  "upper" : "257630.95",
+  "cumulfreq" : 86.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "257638.88",
+  "upper" : "258002.18",
+  "cumulfreq" : 86.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "258013.33",
+  "upper" : "258475.36",
+  "cumulfreq" : 87.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1210
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "258477.65",
+  "upper" : "258810.58",
+  "cumulfreq" : 87.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "258811.08",
+  "upper" : "259231.32",
+  "cumulfreq" : 87.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "259240.35",
+  "upper" : "259674.54",
+  "cumulfreq" : 87.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "259675.25",
+  "upper" : "260169.73",
+  "cumulfreq" : 87.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "260178.36",
+  "upper" : "260661.82",
+  "cumulfreq" : 87.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "260662.0",
+  "upper" : "261131.93",
+  "cumulfreq" : 87.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "261139.24",
+  "upper" : "261575.64",
+  "cumulfreq" : 87.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "261576.55",
+  "upper" : "261992.3",
+  "cumulfreq" : 87.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "261992.69",
+  "upper" : "262374.0",
+  "cumulfreq" : 87.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "262384.11",
+  "upper" : "262785.7",
+  "cumulfreq" : 88.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "262791.72",
+  "upper" : "263262.94",
+  "cumulfreq" : 88.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "263263.48",
+  "upper" : "263706.67",
+  "cumulfreq" : 88.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "263712.64",
+  "upper" : "264156.11",
+  "cumulfreq" : 88.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "264158.26",
+  "upper" : "264572.89",
+  "cumulfreq" : 88.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "264574.73",
+  "upper" : "265010.82",
+  "cumulfreq" : 88.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "265012.48",
+  "upper" : "265461.94",
+  "cumulfreq" : 88.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "265469.29",
+  "upper" : "265896.31",
+  "cumulfreq" : 88.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "265896.59",
+  "upper" : "266395.26",
+  "cumulfreq" : 88.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "266400.06",
+  "upper" : "266924.29",
+  "cumulfreq" : 88.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "266934.0",
+  "upper" : "267413.83",
+  "cumulfreq" : 89.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "267416.55",
+  "upper" : "267871.31",
+  "cumulfreq" : 89.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "267873.08",
+  "upper" : "268373.1",
+  "cumulfreq" : 89.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "268375.18",
+  "upper" : "268773.82",
+  "cumulfreq" : 89.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "268777.37",
+  "upper" : "269285.76",
+  "cumulfreq" : 89.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "269286.54",
+  "upper" : "269744.13",
+  "cumulfreq" : 89.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "269749.71",
+  "upper" : "270283.84",
+  "cumulfreq" : 89.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "270283.88",
+  "upper" : "270791.29",
+  "cumulfreq" : 89.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "270815.76",
+  "upper" : "271296.62",
+  "cumulfreq" : 89.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "271297.87",
+  "upper" : "271886.88",
+  "cumulfreq" : 89.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "271888.8",
+  "upper" : "272442.32",
+  "cumulfreq" : 89.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "272444.32",
+  "upper" : "272974.19",
+  "cumulfreq" : 90.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "272976.16",
+  "upper" : "273475.18",
+  "cumulfreq" : 90.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "273487.22",
+  "upper" : "273939.6",
+  "cumulfreq" : 90.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "273945.14",
+  "upper" : "274441.5",
+  "cumulfreq" : 90.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "274449.14",
+  "upper" : "274941.93",
+  "cumulfreq" : 90.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "274945.17",
+  "upper" : "275494.27",
+  "cumulfreq" : 90.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "275496.82",
+  "upper" : "276022.65",
+  "cumulfreq" : 90.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "276027.53",
+  "upper" : "276550.27",
+  "cumulfreq" : 90.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "276551.45",
+  "upper" : "277064.46",
+  "cumulfreq" : 90.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "277065.99",
+  "upper" : "277579.46",
+  "cumulfreq" : 90.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "277582.51",
+  "upper" : "278189.85",
+  "cumulfreq" : 91.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "278198.58",
+  "upper" : "278799.21",
+  "cumulfreq" : 91.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "278801.51",
+  "upper" : "279361.64",
+  "cumulfreq" : 91.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "279364.88",
+  "upper" : "279870.74",
+  "cumulfreq" : 91.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "279873.18",
+  "upper" : "280428.4",
+  "cumulfreq" : 91.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "280429.4",
+  "upper" : "280973.85",
+  "cumulfreq" : 91.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "280975.09",
+  "upper" : "281564.7",
+  "cumulfreq" : 91.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "281579.53",
+  "upper" : "282131.34",
+  "cumulfreq" : 91.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "282132.0",
+  "upper" : "282686.12",
+  "cumulfreq" : 91.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "282690.53",
+  "upper" : "283259.23",
+  "cumulfreq" : 91.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "283259.78",
+  "upper" : "283741.02",
+  "cumulfreq" : 92.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "283745.31",
+  "upper" : "284334.13",
+  "cumulfreq" : 92.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "284337.39",
+  "upper" : "284914.56",
+  "cumulfreq" : 92.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "284915.37",
+  "upper" : "285526.4",
+  "cumulfreq" : 92.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "285529.68",
+  "upper" : "286079.75",
+  "cumulfreq" : 92.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "286088.53",
+  "upper" : "286736.33",
+  "cumulfreq" : 92.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "286740.23",
+  "upper" : "287349.33",
+  "cumulfreq" : 92.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "287364.63",
+  "upper" : "287982.26",
+  "cumulfreq" : 92.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "287984.34",
+  "upper" : "288758.88",
+  "cumulfreq" : 92.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "288764.85",
+  "upper" : "289411.92",
+  "cumulfreq" : 92.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "289411.99",
+  "upper" : "290177.9",
+  "cumulfreq" : 93.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "290181.94",
+  "upper" : "290769.79",
+  "cumulfreq" : 93.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "290778.83",
+  "upper" : "291401.19",
+  "cumulfreq" : 93.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "291408.37",
+  "upper" : "292040.07",
+  "cumulfreq" : 93.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "292048.36",
+  "upper" : "292727.02",
+  "cumulfreq" : 93.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "292730.59",
+  "upper" : "293429.18",
+  "cumulfreq" : 93.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "293431.98",
+  "upper" : "294096.37",
+  "cumulfreq" : 93.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "294117.6",
+  "upper" : "294879.1",
+  "cumulfreq" : 93.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "294880.12",
+  "upper" : "295560.16",
+  "cumulfreq" : 93.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "295566.98",
+  "upper" : "296208.17",
+  "cumulfreq" : 93.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "296214.59",
+  "upper" : "296913.57",
+  "cumulfreq" : 93.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "296916.32",
+  "upper" : "297653.05",
+  "cumulfreq" : 94.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "297653.92",
+  "upper" : "298364.84",
+  "cumulfreq" : 94.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "298372.61",
+  "upper" : "299076.53",
+  "cumulfreq" : 94.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "299089.82",
+  "upper" : "299889.29",
+  "cumulfreq" : 94.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "299893.84",
+  "upper" : "300594.17",
+  "cumulfreq" : 94.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "300594.73",
+  "upper" : "301203.7",
+  "cumulfreq" : 94.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "301206.34",
+  "upper" : "301961.58",
+  "cumulfreq" : 94.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "301965.55",
+  "upper" : "302795.25",
+  "cumulfreq" : 94.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "302797.13",
+  "upper" : "303559.62",
+  "cumulfreq" : 94.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "303564.08",
+  "upper" : "304244.18",
+  "cumulfreq" : 94.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "304244.97",
+  "upper" : "305027.34",
+  "cumulfreq" : 95.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "305039.36",
+  "upper" : "305774.92",
+  "cumulfreq" : 95.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "305779.35",
+  "upper" : "306408.84",
+  "cumulfreq" : 95.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "306427.55",
+  "upper" : "307288.47",
+  "cumulfreq" : 95.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "307296.17",
+  "upper" : "308262.74",
+  "cumulfreq" : 95.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "308263.16",
+  "upper" : "309110.24",
+  "cumulfreq" : 95.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "309116.87",
+  "upper" : "310042.55",
+  "cumulfreq" : 95.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "310047.88",
+  "upper" : "310929.43",
+  "cumulfreq" : 95.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "310934.59",
+  "upper" : "311867.47",
+  "cumulfreq" : 95.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "311874.24",
+  "upper" : "312870.04",
+  "cumulfreq" : 95.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "312871.46",
+  "upper" : "313845.16",
+  "cumulfreq" : 96.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "313847.93",
+  "upper" : "314901.46",
+  "cumulfreq" : 96.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "314926.85",
+  "upper" : "315841.24",
+  "cumulfreq" : 96.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "315841.97",
+  "upper" : "316869.45",
+  "cumulfreq" : 96.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "316869.81",
+  "upper" : "317849.93",
+  "cumulfreq" : 96.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "317850.83",
+  "upper" : "318638.77",
+  "cumulfreq" : 96.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "318641.42",
+  "upper" : "319775.63",
+  "cumulfreq" : 96.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1210
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "319776.08",
+  "upper" : "320867.35",
+  "cumulfreq" : 96.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "320870.21",
+  "upper" : "322151.21",
+  "cumulfreq" : 96.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "322156.79",
+  "upper" : "323335.32",
+  "cumulfreq" : 96.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "323344.73",
+  "upper" : "324550.83",
+  "cumulfreq" : 97.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "324557.84",
+  "upper" : "325706.34",
+  "cumulfreq" : 97.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "325710.91",
+  "upper" : "326870.45",
+  "cumulfreq" : 97.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "326885.37",
+  "upper" : "328250.96",
+  "cumulfreq" : 97.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "328254.48",
+  "upper" : "329553.61",
+  "cumulfreq" : 97.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1198
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "329568.06",
+  "upper" : "330856.08",
+  "cumulfreq" : 97.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "330856.3",
+  "upper" : "332176.24",
+  "cumulfreq" : 97.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "332178.05",
+  "upper" : "333509.96",
+  "cumulfreq" : 97.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "333515.59",
+  "upper" : "335155.28",
+  "cumulfreq" : 97.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "335174.91",
+  "upper" : "336806.13",
+  "cumulfreq" : 97.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "336808.87",
+  "upper" : "338309.39",
+  "cumulfreq" : 97.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "338316.89",
+  "upper" : "339751.14",
+  "cumulfreq" : 98.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "339814.96",
+  "upper" : "341671.39",
+  "cumulfreq" : 98.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "341674.4",
+  "upper" : "343399.36",
+  "cumulfreq" : 98.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "343420.68",
+  "upper" : "345237.58",
+  "cumulfreq" : 98.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "345245.61",
+  "upper" : "347042.74",
+  "cumulfreq" : 98.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "347047.54",
+  "upper" : "348981.07",
+  "cumulfreq" : 98.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "348984.75",
+  "upper" : "351173.71",
+  "cumulfreq" : 98.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "351180.26",
+  "upper" : "353512.48",
+  "cumulfreq" : 98.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "353561.02",
+  "upper" : "356192.31",
+  "cumulfreq" : 98.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "356203.14",
+  "upper" : "358592.18",
+  "cumulfreq" : 98.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "358596.74",
+  "upper" : "361089.62",
+  "cumulfreq" : 99.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "361125.14",
+  "upper" : "364427.62",
+  "cumulfreq" : 99.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "364478.13",
+  "upper" : "368104.7",
+  "cumulfreq" : 99.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "368177.0",
+  "upper" : "372061.35",
+  "cumulfreq" : 99.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "372096.12",
+  "upper" : "376696.63",
+  "cumulfreq" : 99.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "376706.59",
+  "upper" : "381134.33",
+  "cumulfreq" : 99.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "381187.0",
+  "upper" : "386201.28",
+  "cumulfreq" : 99.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1459
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "386205.78",
+  "upper" : "393839.67",
+  "cumulfreq" : 99.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "393913.04",
+  "upper" : "405608.69",
+  "cumulfreq" : 99.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "405780.26",
+  "upper" : "420889.42",
+  "cumulfreq" : 99.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+}, {
+  "attribute" : "O_TOTALPRICE",
+  "value" : null,
+  "lower" : "421082.52",
+  "upper" : "495148.48",
+  "cumulfreq" : 100.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1447
+} ]

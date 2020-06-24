@@ -1,0 +1,121 @@
+[ {
+  "attribute" : "obs_date",
+  "value" : "2017-11-08",
+  "lower" : null,
+  "upper" : null,
+  "cumulfreq" : 9.2,
+  "freq" : 9.2,
+  "numberOfItems" : 0
+}, {
+  "attribute" : "obs_date",
+  "value" : "2017-11-09",
+  "lower" : null,
+  "upper" : null,
+  "cumulfreq" : 16.4,
+  "freq" : 7.2,
+  "numberOfItems" : 0
+}, {
+  "attribute" : "obs_date",
+  "value" : "2017-11-10",
+  "lower" : null,
+  "upper" : null,
+  "cumulfreq" : 22.8,
+  "freq" : 6.4,
+  "numberOfItems" : 0
+}, {
+  "attribute" : "obs_date",
+  "value" : "2017-11-11",
+  "lower" : null,
+  "upper" : null,
+  "cumulfreq" : 29.3,
+  "freq" : 6.5,
+  "numberOfItems" : 0
+}, {
+  "attribute" : "obs_date",
+  "value" : "2017-11-12",
+  "lower" : null,
+  "upper" : null,
+  "cumulfreq" : 35.8,
+  "freq" : 6.5,
+  "numberOfItems" : 0
+}, {
+  "attribute" : "obs_date",
+  "value" : "2017-11-13",
+  "lower" : null,
+  "upper" : null,
+  "cumulfreq" : 42.2,
+  "freq" : 6.4,
+  "numberOfItems" : 0
+}, {
+  "attribute" : "obs_date",
+  "value" : "2017-11-14",
+  "lower" : null,
+  "upper" : null,
+  "cumulfreq" : 48.8,
+  "freq" : 6.6,
+  "numberOfItems" : 0
+}, {
+  "attribute" : "obs_date",
+  "value" : "2017-11-15",
+  "lower" : null,
+  "upper" : null,
+  "cumulfreq" : 55.6,
+  "freq" : 6.8,
+  "numberOfItems" : 0
+}, {
+  "attribute" : "obs_date",
+  "value" : "2017-11-16",
+  "lower" : null,
+  "upper" : null,
+  "cumulfreq" : 62.2,
+  "freq" : 6.6,
+  "numberOfItems" : 0
+}, {
+  "attribute" : "obs_date",
+  "value" : "2017-11-17",
+  "lower" : null,
+  "upper" : null,
+  "cumulfreq" : 68.8,
+  "freq" : 6.6,
+  "numberOfItems" : 0
+}, {
+  "attribute" : "obs_date",
+  "value" : "2017-11-18",
+  "lower" : null,
+  "upper" : null,
+  "cumulfreq" : 75.4,
+  "freq" : 6.5,
+  "numberOfItems" : 0
+}, {
+  "attribute" : "obs_date",
+  "value" : "2017-11-19",
+  "lower" : null,
+  "upper" : null,
+  "cumulfreq" : 82.0,
+  "freq" : 6.7,
+  "numberOfItems" : 0
+}, {
+  "attribute" : "obs_date",
+  "value" : "2017-11-20",
+  "lower" : null,
+  "upper" : null,
+  "cumulfreq" : 88.8,
+  "freq" : 6.8,
+  "numberOfItems" : 0
+}, {
+  "attribute" : "obs_date",
+  "value" : "2017-11-21",
+  "lower" : null,
+  "upper" : null,
+  "cumulfreq" : 95.8,
+  "freq" : 7.0,
+  "numberOfItems" : 0
+}, {
+  "attribute" : "obs_date",
+  "value" : "2017-11-22",
+  "lower" : null,
+  "upper" : null,
+  "cumulfreq" : 100.0,
+  "freq" : 4.2,
+  "numberOfItems" : 0
+} ]

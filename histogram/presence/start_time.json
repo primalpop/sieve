@@ -1,0 +1,8193 @@
+[ {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:00:00",
+  "upper" : "00:00:34",
+  "cumulfreq" : 0.1,
+  "freq" : 0.1,
+  "numberOfItems" : 35
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:00:35",
+  "upper" : "00:01:07",
+  "cumulfreq" : 0.2,
+  "freq" : 0.1,
+  "numberOfItems" : 33
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:01:08",
+  "upper" : "00:01:39",
+  "cumulfreq" : 0.3,
+  "freq" : 0.1,
+  "numberOfItems" : 32
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:01:40",
+  "upper" : "00:02:08",
+  "cumulfreq" : 0.4,
+  "freq" : 0.1,
+  "numberOfItems" : 29
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:02:09",
+  "upper" : "00:02:40",
+  "cumulfreq" : 0.5,
+  "freq" : 0.1,
+  "numberOfItems" : 32
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:02:41",
+  "upper" : "00:03:14",
+  "cumulfreq" : 0.6,
+  "freq" : 0.1,
+  "numberOfItems" : 34
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:03:15",
+  "upper" : "00:03:46",
+  "cumulfreq" : 0.7,
+  "freq" : 0.1,
+  "numberOfItems" : 32
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:03:47",
+  "upper" : "00:04:17",
+  "cumulfreq" : 0.8,
+  "freq" : 0.1,
+  "numberOfItems" : 31
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:04:18",
+  "upper" : "00:04:51",
+  "cumulfreq" : 0.9,
+  "freq" : 0.1,
+  "numberOfItems" : 34
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:04:52",
+  "upper" : "00:05:17",
+  "cumulfreq" : 1.0,
+  "freq" : 0.1,
+  "numberOfItems" : 26
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:05:18",
+  "upper" : "00:05:30",
+  "cumulfreq" : 1.1,
+  "freq" : 0.1,
+  "numberOfItems" : 13
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:05:31",
+  "upper" : "00:06:00",
+  "cumulfreq" : 1.2,
+  "freq" : 0.1,
+  "numberOfItems" : 30
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:06:01",
+  "upper" : "00:06:33",
+  "cumulfreq" : 1.3,
+  "freq" : 0.1,
+  "numberOfItems" : 33
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:06:34",
+  "upper" : "00:07:07",
+  "cumulfreq" : 1.4,
+  "freq" : 0.1,
+  "numberOfItems" : 34
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:07:08",
+  "upper" : "00:07:45",
+  "cumulfreq" : 1.5,
+  "freq" : 0.1,
+  "numberOfItems" : 38
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:07:46",
+  "upper" : "00:08:16",
+  "cumulfreq" : 1.6,
+  "freq" : 0.1,
+  "numberOfItems" : 31
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:08:17",
+  "upper" : "00:08:48",
+  "cumulfreq" : 1.7,
+  "freq" : 0.1,
+  "numberOfItems" : 32
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:08:49",
+  "upper" : "00:09:25",
+  "cumulfreq" : 1.8,
+  "freq" : 0.1,
+  "numberOfItems" : 37
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:09:26",
+  "upper" : "00:09:59",
+  "cumulfreq" : 1.9,
+  "freq" : 0.1,
+  "numberOfItems" : 34
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:10:00",
+  "upper" : "00:10:35",
+  "cumulfreq" : 2.0,
+  "freq" : 0.1,
+  "numberOfItems" : 36
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:10:36",
+  "upper" : "00:11:15",
+  "cumulfreq" : 2.1,
+  "freq" : 0.1,
+  "numberOfItems" : 40
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:11:16",
+  "upper" : "00:11:46",
+  "cumulfreq" : 2.1,
+  "freq" : 0.1,
+  "numberOfItems" : 31
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:11:47",
+  "upper" : "00:12:27",
+  "cumulfreq" : 2.2,
+  "freq" : 0.1,
+  "numberOfItems" : 41
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:12:28",
+  "upper" : "00:13:02",
+  "cumulfreq" : 2.3,
+  "freq" : 0.1,
+  "numberOfItems" : 35
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:13:03",
+  "upper" : "00:13:36",
+  "cumulfreq" : 2.4,
+  "freq" : 0.1,
+  "numberOfItems" : 34
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:13:37",
+  "upper" : "00:14:09",
+  "cumulfreq" : 2.5,
+  "freq" : 0.1,
+  "numberOfItems" : 33
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:14:10",
+  "upper" : "00:14:48",
+  "cumulfreq" : 2.6,
+  "freq" : 0.1,
+  "numberOfItems" : 39
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:14:49",
+  "upper" : "00:15:25",
+  "cumulfreq" : 2.7,
+  "freq" : 0.1,
+  "numberOfItems" : 37
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:15:26",
+  "upper" : "00:16:01",
+  "cumulfreq" : 2.8,
+  "freq" : 0.1,
+  "numberOfItems" : 36
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:16:02",
+  "upper" : "00:16:41",
+  "cumulfreq" : 2.9,
+  "freq" : 0.1,
+  "numberOfItems" : 40
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:16:42",
+  "upper" : "00:17:21",
+  "cumulfreq" : 3.0,
+  "freq" : 0.1,
+  "numberOfItems" : 40
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:17:22",
+  "upper" : "00:18:02",
+  "cumulfreq" : 3.1,
+  "freq" : 0.1,
+  "numberOfItems" : 41
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:18:03",
+  "upper" : "00:18:40",
+  "cumulfreq" : 3.2,
+  "freq" : 0.1,
+  "numberOfItems" : 38
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:18:41",
+  "upper" : "00:19:16",
+  "cumulfreq" : 3.3,
+  "freq" : 0.1,
+  "numberOfItems" : 36
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:19:17",
+  "upper" : "00:19:54",
+  "cumulfreq" : 3.4,
+  "freq" : 0.1,
+  "numberOfItems" : 38
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:19:55",
+  "upper" : "00:20:30",
+  "cumulfreq" : 3.5,
+  "freq" : 0.1,
+  "numberOfItems" : 36
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:20:31",
+  "upper" : "00:21:07",
+  "cumulfreq" : 3.6,
+  "freq" : 0.1,
+  "numberOfItems" : 37
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:21:08",
+  "upper" : "00:21:43",
+  "cumulfreq" : 3.7,
+  "freq" : 0.1,
+  "numberOfItems" : 36
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:21:44",
+  "upper" : "00:22:18",
+  "cumulfreq" : 3.8,
+  "freq" : 0.1,
+  "numberOfItems" : 35
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:22:19",
+  "upper" : "00:22:57",
+  "cumulfreq" : 3.9,
+  "freq" : 0.1,
+  "numberOfItems" : 39
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:22:58",
+  "upper" : "00:23:33",
+  "cumulfreq" : 4.0,
+  "freq" : 0.1,
+  "numberOfItems" : 36
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:23:34",
+  "upper" : "00:24:10",
+  "cumulfreq" : 4.1,
+  "freq" : 0.1,
+  "numberOfItems" : 37
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:24:11",
+  "upper" : "00:24:45",
+  "cumulfreq" : 4.2,
+  "freq" : 0.1,
+  "numberOfItems" : 35
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:24:46",
+  "upper" : "00:25:21",
+  "cumulfreq" : 4.3,
+  "freq" : 0.1,
+  "numberOfItems" : 36
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:25:22",
+  "upper" : "00:25:54",
+  "cumulfreq" : 4.4,
+  "freq" : 0.1,
+  "numberOfItems" : 33
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:25:55",
+  "upper" : "00:26:26",
+  "cumulfreq" : 4.5,
+  "freq" : 0.1,
+  "numberOfItems" : 32
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:26:27",
+  "upper" : "00:27:00",
+  "cumulfreq" : 4.6,
+  "freq" : 0.1,
+  "numberOfItems" : 34
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:27:01",
+  "upper" : "00:27:33",
+  "cumulfreq" : 4.7,
+  "freq" : 0.1,
+  "numberOfItems" : 33
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:27:34",
+  "upper" : "00:28:11",
+  "cumulfreq" : 4.8,
+  "freq" : 0.1,
+  "numberOfItems" : 38
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:28:12",
+  "upper" : "00:28:44",
+  "cumulfreq" : 4.9,
+  "freq" : 0.1,
+  "numberOfItems" : 33
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:28:45",
+  "upper" : "00:29:20",
+  "cumulfreq" : 5.0,
+  "freq" : 0.1,
+  "numberOfItems" : 36
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:29:21",
+  "upper" : "00:29:55",
+  "cumulfreq" : 5.1,
+  "freq" : 0.1,
+  "numberOfItems" : 35
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:29:56",
+  "upper" : "00:30:30",
+  "cumulfreq" : 5.2,
+  "freq" : 0.1,
+  "numberOfItems" : 35
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:30:31",
+  "upper" : "00:31:04",
+  "cumulfreq" : 5.3,
+  "freq" : 0.1,
+  "numberOfItems" : 34
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:31:05",
+  "upper" : "00:31:43",
+  "cumulfreq" : 5.4,
+  "freq" : 0.1,
+  "numberOfItems" : 39
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:31:44",
+  "upper" : "00:32:18",
+  "cumulfreq" : 5.5,
+  "freq" : 0.1,
+  "numberOfItems" : 35
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:32:19",
+  "upper" : "00:32:55",
+  "cumulfreq" : 5.6,
+  "freq" : 0.1,
+  "numberOfItems" : 37
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:32:56",
+  "upper" : "00:33:34",
+  "cumulfreq" : 5.7,
+  "freq" : 0.1,
+  "numberOfItems" : 39
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:33:35",
+  "upper" : "00:34:16",
+  "cumulfreq" : 5.8,
+  "freq" : 0.1,
+  "numberOfItems" : 42
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:34:17",
+  "upper" : "00:34:56",
+  "cumulfreq" : 5.9,
+  "freq" : 0.1,
+  "numberOfItems" : 40
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:34:57",
+  "upper" : "00:35:33",
+  "cumulfreq" : 6.0,
+  "freq" : 0.1,
+  "numberOfItems" : 37
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:35:34",
+  "upper" : "00:36:09",
+  "cumulfreq" : 6.1,
+  "freq" : 0.1,
+  "numberOfItems" : 36
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:36:10",
+  "upper" : "00:36:45",
+  "cumulfreq" : 6.2,
+  "freq" : 0.1,
+  "numberOfItems" : 36
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:36:46",
+  "upper" : "00:37:20",
+  "cumulfreq" : 6.2,
+  "freq" : 0.1,
+  "numberOfItems" : 35
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:37:21",
+  "upper" : "00:37:59",
+  "cumulfreq" : 6.3,
+  "freq" : 0.1,
+  "numberOfItems" : 39
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:38:00",
+  "upper" : "00:38:37",
+  "cumulfreq" : 6.4,
+  "freq" : 0.1,
+  "numberOfItems" : 38
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:38:38",
+  "upper" : "00:39:14",
+  "cumulfreq" : 6.5,
+  "freq" : 0.1,
+  "numberOfItems" : 37
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:39:15",
+  "upper" : "00:39:52",
+  "cumulfreq" : 6.6,
+  "freq" : 0.1,
+  "numberOfItems" : 38
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:39:53",
+  "upper" : "00:40:31",
+  "cumulfreq" : 6.7,
+  "freq" : 0.1,
+  "numberOfItems" : 39
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:40:32",
+  "upper" : "00:41:12",
+  "cumulfreq" : 6.8,
+  "freq" : 0.1,
+  "numberOfItems" : 41
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:41:13",
+  "upper" : "00:41:53",
+  "cumulfreq" : 6.9,
+  "freq" : 0.1,
+  "numberOfItems" : 41
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:41:54",
+  "upper" : "00:42:30",
+  "cumulfreq" : 7.0,
+  "freq" : 0.1,
+  "numberOfItems" : 37
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:42:31",
+  "upper" : "00:43:04",
+  "cumulfreq" : 7.1,
+  "freq" : 0.1,
+  "numberOfItems" : 34
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:43:05",
+  "upper" : "00:43:44",
+  "cumulfreq" : 7.2,
+  "freq" : 0.1,
+  "numberOfItems" : 40
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:43:45",
+  "upper" : "00:44:22",
+  "cumulfreq" : 7.3,
+  "freq" : 0.1,
+  "numberOfItems" : 38
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:44:23",
+  "upper" : "00:45:01",
+  "cumulfreq" : 7.4,
+  "freq" : 0.1,
+  "numberOfItems" : 39
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:45:02",
+  "upper" : "00:45:40",
+  "cumulfreq" : 7.5,
+  "freq" : 0.1,
+  "numberOfItems" : 39
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:45:41",
+  "upper" : "00:46:23",
+  "cumulfreq" : 7.6,
+  "freq" : 0.1,
+  "numberOfItems" : 43
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:46:24",
+  "upper" : "00:47:01",
+  "cumulfreq" : 7.7,
+  "freq" : 0.1,
+  "numberOfItems" : 38
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:47:02",
+  "upper" : "00:47:44",
+  "cumulfreq" : 7.8,
+  "freq" : 0.1,
+  "numberOfItems" : 43
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:47:45",
+  "upper" : "00:48:23",
+  "cumulfreq" : 7.9,
+  "freq" : 0.1,
+  "numberOfItems" : 39
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:48:24",
+  "upper" : "00:49:02",
+  "cumulfreq" : 8.0,
+  "freq" : 0.1,
+  "numberOfItems" : 39
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:49:03",
+  "upper" : "00:49:42",
+  "cumulfreq" : 8.1,
+  "freq" : 0.1,
+  "numberOfItems" : 40
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:49:43",
+  "upper" : "00:50:21",
+  "cumulfreq" : 8.2,
+  "freq" : 0.1,
+  "numberOfItems" : 39
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:50:22",
+  "upper" : "00:50:56",
+  "cumulfreq" : 8.3,
+  "freq" : 0.1,
+  "numberOfItems" : 35
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:50:57",
+  "upper" : "00:51:30",
+  "cumulfreq" : 8.4,
+  "freq" : 0.1,
+  "numberOfItems" : 34
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:51:31",
+  "upper" : "00:52:08",
+  "cumulfreq" : 8.5,
+  "freq" : 0.1,
+  "numberOfItems" : 38
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:52:09",
+  "upper" : "00:52:43",
+  "cumulfreq" : 8.6,
+  "freq" : 0.1,
+  "numberOfItems" : 35
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:52:44",
+  "upper" : "00:53:17",
+  "cumulfreq" : 8.7,
+  "freq" : 0.1,
+  "numberOfItems" : 34
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:53:18",
+  "upper" : "00:53:55",
+  "cumulfreq" : 8.8,
+  "freq" : 0.1,
+  "numberOfItems" : 38
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:53:56",
+  "upper" : "00:54:32",
+  "cumulfreq" : 8.9,
+  "freq" : 0.1,
+  "numberOfItems" : 37
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:54:33",
+  "upper" : "00:55:11",
+  "cumulfreq" : 9.0,
+  "freq" : 0.1,
+  "numberOfItems" : 39
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:55:12",
+  "upper" : "00:55:50",
+  "cumulfreq" : 9.1,
+  "freq" : 0.1,
+  "numberOfItems" : 39
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:55:51",
+  "upper" : "00:56:25",
+  "cumulfreq" : 9.2,
+  "freq" : 0.1,
+  "numberOfItems" : 35
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:56:26",
+  "upper" : "00:56:59",
+  "cumulfreq" : 9.3,
+  "freq" : 0.1,
+  "numberOfItems" : 34
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:57:00",
+  "upper" : "00:57:35",
+  "cumulfreq" : 9.4,
+  "freq" : 0.1,
+  "numberOfItems" : 36
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:57:36",
+  "upper" : "00:58:11",
+  "cumulfreq" : 9.5,
+  "freq" : 0.1,
+  "numberOfItems" : 36
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:58:12",
+  "upper" : "00:58:46",
+  "cumulfreq" : 9.6,
+  "freq" : 0.1,
+  "numberOfItems" : 35
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:58:47",
+  "upper" : "00:59:22",
+  "cumulfreq" : 9.7,
+  "freq" : 0.1,
+  "numberOfItems" : 36
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:59:23",
+  "upper" : "00:59:57",
+  "cumulfreq" : 9.8,
+  "freq" : 0.1,
+  "numberOfItems" : 35
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "00:59:58",
+  "upper" : "01:03:52",
+  "cumulfreq" : 9.9,
+  "freq" : 0.1,
+  "numberOfItems" : 244
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "01:03:53",
+  "upper" : "01:07:56",
+  "cumulfreq" : 10.0,
+  "freq" : 0.1,
+  "numberOfItems" : 229
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "01:07:57",
+  "upper" : "01:11:37",
+  "cumulfreq" : 10.1,
+  "freq" : 0.1,
+  "numberOfItems" : 217
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "01:11:38",
+  "upper" : "01:15:44",
+  "cumulfreq" : 10.2,
+  "freq" : 0.1,
+  "numberOfItems" : 248
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "01:15:45",
+  "upper" : "01:19:43",
+  "cumulfreq" : 10.3,
+  "freq" : 0.1,
+  "numberOfItems" : 233
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "01:19:44",
+  "upper" : "01:23:30",
+  "cumulfreq" : 10.4,
+  "freq" : 0.1,
+  "numberOfItems" : 220
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "01:23:31",
+  "upper" : "01:27:20",
+  "cumulfreq" : 10.4,
+  "freq" : 0.1,
+  "numberOfItems" : 224
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "01:27:21",
+  "upper" : "01:31:05",
+  "cumulfreq" : 10.5,
+  "freq" : 0.1,
+  "numberOfItems" : 201
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "01:31:07",
+  "upper" : "01:34:51",
+  "cumulfreq" : 10.6,
+  "freq" : 0.1,
+  "numberOfItems" : 221
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "01:34:52",
+  "upper" : "01:38:27",
+  "cumulfreq" : 10.7,
+  "freq" : 0.1,
+  "numberOfItems" : 205
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "01:38:31",
+  "upper" : "01:42:26",
+  "cumulfreq" : 10.8,
+  "freq" : 0.1,
+  "numberOfItems" : 214
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "01:42:27",
+  "upper" : "01:46:08",
+  "cumulfreq" : 10.9,
+  "freq" : 0.1,
+  "numberOfItems" : 222
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "01:46:09",
+  "upper" : "01:50:07",
+  "cumulfreq" : 11.0,
+  "freq" : 0.1,
+  "numberOfItems" : 223
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "01:50:09",
+  "upper" : "01:54:13",
+  "cumulfreq" : 11.1,
+  "freq" : 0.1,
+  "numberOfItems" : 238
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "01:54:14",
+  "upper" : "01:57:50",
+  "cumulfreq" : 11.2,
+  "freq" : 0.1,
+  "numberOfItems" : 206
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "01:57:51",
+  "upper" : "02:01:38",
+  "cumulfreq" : 11.3,
+  "freq" : 0.1,
+  "numberOfItems" : 229
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "02:01:39",
+  "upper" : "02:05:11",
+  "cumulfreq" : 11.4,
+  "freq" : 0.1,
+  "numberOfItems" : 203
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "02:05:12",
+  "upper" : "02:08:42",
+  "cumulfreq" : 11.5,
+  "freq" : 0.1,
+  "numberOfItems" : 184
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "02:08:43",
+  "upper" : "02:12:35",
+  "cumulfreq" : 11.6,
+  "freq" : 0.1,
+  "numberOfItems" : 220
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "02:12:36",
+  "upper" : "02:16:21",
+  "cumulfreq" : 11.7,
+  "freq" : 0.1,
+  "numberOfItems" : 227
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "02:16:22",
+  "upper" : "02:20:18",
+  "cumulfreq" : 11.8,
+  "freq" : 0.1,
+  "numberOfItems" : 236
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "02:20:19",
+  "upper" : "02:24:06",
+  "cumulfreq" : 11.9,
+  "freq" : 0.1,
+  "numberOfItems" : 224
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "02:24:09",
+  "upper" : "02:27:43",
+  "cumulfreq" : 12.0,
+  "freq" : 0.1,
+  "numberOfItems" : 202
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "02:27:44",
+  "upper" : "02:31:30",
+  "cumulfreq" : 12.1,
+  "freq" : 0.1,
+  "numberOfItems" : 209
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "02:31:31",
+  "upper" : "02:35:19",
+  "cumulfreq" : 12.2,
+  "freq" : 0.1,
+  "numberOfItems" : 219
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "02:35:20",
+  "upper" : "02:39:44",
+  "cumulfreq" : 12.3,
+  "freq" : 0.1,
+  "numberOfItems" : 265
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "02:39:45",
+  "upper" : "02:43:22",
+  "cumulfreq" : 12.4,
+  "freq" : 0.1,
+  "numberOfItems" : 214
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "02:43:23",
+  "upper" : "02:47:08",
+  "cumulfreq" : 12.5,
+  "freq" : 0.1,
+  "numberOfItems" : 213
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "02:47:09",
+  "upper" : "02:51:08",
+  "cumulfreq" : 12.6,
+  "freq" : 0.1,
+  "numberOfItems" : 234
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "02:51:09",
+  "upper" : "02:54:57",
+  "cumulfreq" : 12.7,
+  "freq" : 0.1,
+  "numberOfItems" : 221
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "02:54:58",
+  "upper" : "02:58:46",
+  "cumulfreq" : 12.8,
+  "freq" : 0.1,
+  "numberOfItems" : 221
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "02:58:47",
+  "upper" : "03:02:28",
+  "cumulfreq" : 12.9,
+  "freq" : 0.1,
+  "numberOfItems" : 221
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "03:02:29",
+  "upper" : "03:06:20",
+  "cumulfreq" : 13.0,
+  "freq" : 0.1,
+  "numberOfItems" : 217
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "03:06:21",
+  "upper" : "03:09:45",
+  "cumulfreq" : 13.1,
+  "freq" : 0.1,
+  "numberOfItems" : 194
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "03:09:46",
+  "upper" : "03:13:26",
+  "cumulfreq" : 13.2,
+  "freq" : 0.1,
+  "numberOfItems" : 203
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "03:13:27",
+  "upper" : "03:17:19",
+  "cumulfreq" : 13.3,
+  "freq" : 0.1,
+  "numberOfItems" : 220
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "03:17:20",
+  "upper" : "03:21:02",
+  "cumulfreq" : 13.4,
+  "freq" : 0.1,
+  "numberOfItems" : 216
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "03:21:03",
+  "upper" : "03:24:45",
+  "cumulfreq" : 13.5,
+  "freq" : 0.1,
+  "numberOfItems" : 226
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "03:24:46",
+  "upper" : "03:28:49",
+  "cumulfreq" : 13.6,
+  "freq" : 0.1,
+  "numberOfItems" : 227
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "03:28:50",
+  "upper" : "03:32:47",
+  "cumulfreq" : 13.7,
+  "freq" : 0.1,
+  "numberOfItems" : 218
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "03:32:48",
+  "upper" : "03:36:19",
+  "cumulfreq" : 13.8,
+  "freq" : 0.1,
+  "numberOfItems" : 208
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "03:36:20",
+  "upper" : "03:39:46",
+  "cumulfreq" : 13.9,
+  "freq" : 0.1,
+  "numberOfItems" : 203
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "03:39:48",
+  "upper" : "03:43:46",
+  "cumulfreq" : 14.0,
+  "freq" : 0.1,
+  "numberOfItems" : 224
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "03:43:47",
+  "upper" : "03:47:24",
+  "cumulfreq" : 14.1,
+  "freq" : 0.1,
+  "numberOfItems" : 206
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "03:47:25",
+  "upper" : "03:51:28",
+  "cumulfreq" : 14.2,
+  "freq" : 0.1,
+  "numberOfItems" : 237
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "03:51:29",
+  "upper" : "03:55:18",
+  "cumulfreq" : 14.3,
+  "freq" : 0.1,
+  "numberOfItems" : 230
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "03:55:19",
+  "upper" : "03:59:01",
+  "cumulfreq" : 14.4,
+  "freq" : 0.1,
+  "numberOfItems" : 209
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "03:59:02",
+  "upper" : "04:02:45",
+  "cumulfreq" : 14.5,
+  "freq" : 0.1,
+  "numberOfItems" : 216
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "04:02:46",
+  "upper" : "04:06:35",
+  "cumulfreq" : 14.6,
+  "freq" : 0.1,
+  "numberOfItems" : 225
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "04:06:36",
+  "upper" : "04:10:22",
+  "cumulfreq" : 14.6,
+  "freq" : 0.1,
+  "numberOfItems" : 218
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "04:10:23",
+  "upper" : "04:14:12",
+  "cumulfreq" : 14.7,
+  "freq" : 0.1,
+  "numberOfItems" : 226
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "04:14:13",
+  "upper" : "04:17:52",
+  "cumulfreq" : 14.8,
+  "freq" : 0.1,
+  "numberOfItems" : 212
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "04:17:53",
+  "upper" : "04:21:53",
+  "cumulfreq" : 14.9,
+  "freq" : 0.1,
+  "numberOfItems" : 238
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "04:21:54",
+  "upper" : "04:25:23",
+  "cumulfreq" : 15.0,
+  "freq" : 0.1,
+  "numberOfItems" : 207
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "04:25:24",
+  "upper" : "04:29:08",
+  "cumulfreq" : 15.1,
+  "freq" : 0.1,
+  "numberOfItems" : 216
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "04:29:09",
+  "upper" : "04:32:47",
+  "cumulfreq" : 15.2,
+  "freq" : 0.1,
+  "numberOfItems" : 213
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "04:32:48",
+  "upper" : "04:36:37",
+  "cumulfreq" : 15.3,
+  "freq" : 0.1,
+  "numberOfItems" : 210
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "04:36:38",
+  "upper" : "04:40:35",
+  "cumulfreq" : 15.4,
+  "freq" : 0.1,
+  "numberOfItems" : 224
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "04:40:36",
+  "upper" : "04:44:38",
+  "cumulfreq" : 15.5,
+  "freq" : 0.1,
+  "numberOfItems" : 207
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "04:44:39",
+  "upper" : "04:48:29",
+  "cumulfreq" : 15.6,
+  "freq" : 0.1,
+  "numberOfItems" : 213
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "04:48:31",
+  "upper" : "04:52:37",
+  "cumulfreq" : 15.7,
+  "freq" : 0.1,
+  "numberOfItems" : 223
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "04:52:38",
+  "upper" : "04:56:20",
+  "cumulfreq" : 15.8,
+  "freq" : 0.1,
+  "numberOfItems" : 207
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "04:56:22",
+  "upper" : "04:59:59",
+  "cumulfreq" : 15.9,
+  "freq" : 0.1,
+  "numberOfItems" : 219
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "05:00:00",
+  "upper" : "05:04:06",
+  "cumulfreq" : 16.0,
+  "freq" : 0.1,
+  "numberOfItems" : 239
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "05:04:07",
+  "upper" : "05:08:08",
+  "cumulfreq" : 16.1,
+  "freq" : 0.1,
+  "numberOfItems" : 221
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "05:08:09",
+  "upper" : "05:12:11",
+  "cumulfreq" : 16.2,
+  "freq" : 0.1,
+  "numberOfItems" : 234
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "05:12:12",
+  "upper" : "05:16:10",
+  "cumulfreq" : 16.3,
+  "freq" : 0.1,
+  "numberOfItems" : 222
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "05:16:11",
+  "upper" : "05:20:10",
+  "cumulfreq" : 16.4,
+  "freq" : 0.1,
+  "numberOfItems" : 216
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "05:20:11",
+  "upper" : "05:24:03",
+  "cumulfreq" : 16.5,
+  "freq" : 0.1,
+  "numberOfItems" : 228
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "05:24:04",
+  "upper" : "05:28:00",
+  "cumulfreq" : 16.6,
+  "freq" : 0.1,
+  "numberOfItems" : 223
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "05:28:01",
+  "upper" : "05:32:25",
+  "cumulfreq" : 16.7,
+  "freq" : 0.1,
+  "numberOfItems" : 241
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "05:32:26",
+  "upper" : "05:36:19",
+  "cumulfreq" : 16.8,
+  "freq" : 0.1,
+  "numberOfItems" : 244
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "05:36:20",
+  "upper" : "05:40:15",
+  "cumulfreq" : 16.9,
+  "freq" : 0.1,
+  "numberOfItems" : 233
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "05:40:16",
+  "upper" : "05:44:11",
+  "cumulfreq" : 17.0,
+  "freq" : 0.1,
+  "numberOfItems" : 233
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "05:44:12",
+  "upper" : "05:47:43",
+  "cumulfreq" : 17.1,
+  "freq" : 0.1,
+  "numberOfItems" : 219
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "05:47:44",
+  "upper" : "05:51:39",
+  "cumulfreq" : 17.2,
+  "freq" : 0.1,
+  "numberOfItems" : 233
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "05:51:40",
+  "upper" : "05:55:27",
+  "cumulfreq" : 17.3,
+  "freq" : 0.1,
+  "numberOfItems" : 224
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "05:55:28",
+  "upper" : "05:58:59",
+  "cumulfreq" : 17.4,
+  "freq" : 0.1,
+  "numberOfItems" : 204
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "05:59:00",
+  "upper" : "06:02:55",
+  "cumulfreq" : 17.5,
+  "freq" : 0.1,
+  "numberOfItems" : 223
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "06:02:56",
+  "upper" : "06:06:54",
+  "cumulfreq" : 17.6,
+  "freq" : 0.1,
+  "numberOfItems" : 212
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "06:06:55",
+  "upper" : "06:10:35",
+  "cumulfreq" : 17.7,
+  "freq" : 0.1,
+  "numberOfItems" : 206
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "06:10:37",
+  "upper" : "06:14:28",
+  "cumulfreq" : 17.8,
+  "freq" : 0.1,
+  "numberOfItems" : 226
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "06:14:29",
+  "upper" : "06:18:04",
+  "cumulfreq" : 17.9,
+  "freq" : 0.1,
+  "numberOfItems" : 217
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "06:18:06",
+  "upper" : "06:21:39",
+  "cumulfreq" : 18.0,
+  "freq" : 0.1,
+  "numberOfItems" : 213
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "06:21:40",
+  "upper" : "06:25:49",
+  "cumulfreq" : 18.1,
+  "freq" : 0.1,
+  "numberOfItems" : 253
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "06:25:50",
+  "upper" : "06:29:39",
+  "cumulfreq" : 18.2,
+  "freq" : 0.1,
+  "numberOfItems" : 229
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "06:29:40",
+  "upper" : "06:33:40",
+  "cumulfreq" : 18.3,
+  "freq" : 0.1,
+  "numberOfItems" : 236
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "06:33:41",
+  "upper" : "06:37:05",
+  "cumulfreq" : 18.4,
+  "freq" : 0.1,
+  "numberOfItems" : 190
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "06:37:07",
+  "upper" : "06:40:40",
+  "cumulfreq" : 18.5,
+  "freq" : 0.1,
+  "numberOfItems" : 204
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "06:40:41",
+  "upper" : "06:44:27",
+  "cumulfreq" : 18.6,
+  "freq" : 0.1,
+  "numberOfItems" : 222
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "06:44:28",
+  "upper" : "06:48:01",
+  "cumulfreq" : 18.7,
+  "freq" : 0.1,
+  "numberOfItems" : 194
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "06:48:02",
+  "upper" : "06:51:57",
+  "cumulfreq" : 18.8,
+  "freq" : 0.1,
+  "numberOfItems" : 221
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "06:51:58",
+  "upper" : "06:55:37",
+  "cumulfreq" : 18.8,
+  "freq" : 0.1,
+  "numberOfItems" : 204
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "06:55:38",
+  "upper" : "06:59:04",
+  "cumulfreq" : 18.9,
+  "freq" : 0.1,
+  "numberOfItems" : 188
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "06:59:06",
+  "upper" : "07:02:56",
+  "cumulfreq" : 19.0,
+  "freq" : 0.1,
+  "numberOfItems" : 219
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "07:02:57",
+  "upper" : "07:06:35",
+  "cumulfreq" : 19.1,
+  "freq" : 0.1,
+  "numberOfItems" : 196
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "07:06:36",
+  "upper" : "07:10:15",
+  "cumulfreq" : 19.2,
+  "freq" : 0.1,
+  "numberOfItems" : 214
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "07:10:16",
+  "upper" : "07:14:01",
+  "cumulfreq" : 19.3,
+  "freq" : 0.1,
+  "numberOfItems" : 232
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "07:14:02",
+  "upper" : "07:17:26",
+  "cumulfreq" : 19.4,
+  "freq" : 0.1,
+  "numberOfItems" : 205
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "07:17:27",
+  "upper" : "07:21:01",
+  "cumulfreq" : 19.5,
+  "freq" : 0.1,
+  "numberOfItems" : 181
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "07:21:03",
+  "upper" : "07:24:17",
+  "cumulfreq" : 19.6,
+  "freq" : 0.1,
+  "numberOfItems" : 190
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "07:24:18",
+  "upper" : "07:27:24",
+  "cumulfreq" : 19.7,
+  "freq" : 0.1,
+  "numberOfItems" : 172
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "07:27:25",
+  "upper" : "07:30:27",
+  "cumulfreq" : 19.8,
+  "freq" : 0.1,
+  "numberOfItems" : 181
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "07:30:29",
+  "upper" : "07:33:29",
+  "cumulfreq" : 19.9,
+  "freq" : 0.1,
+  "numberOfItems" : 186
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "07:33:30",
+  "upper" : "07:36:25",
+  "cumulfreq" : 20.0,
+  "freq" : 0.1,
+  "numberOfItems" : 177
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "07:36:26",
+  "upper" : "07:39:13",
+  "cumulfreq" : 20.1,
+  "freq" : 0.1,
+  "numberOfItems" : 163
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "07:39:14",
+  "upper" : "07:41:48",
+  "cumulfreq" : 20.2,
+  "freq" : 0.1,
+  "numberOfItems" : 157
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "07:41:49",
+  "upper" : "07:44:30",
+  "cumulfreq" : 20.3,
+  "freq" : 0.1,
+  "numberOfItems" : 158
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "07:44:31",
+  "upper" : "07:46:39",
+  "cumulfreq" : 20.4,
+  "freq" : 0.1,
+  "numberOfItems" : 128
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "07:46:41",
+  "upper" : "07:49:07",
+  "cumulfreq" : 20.5,
+  "freq" : 0.1,
+  "numberOfItems" : 149
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "07:49:08",
+  "upper" : "07:51:27",
+  "cumulfreq" : 20.6,
+  "freq" : 0.1,
+  "numberOfItems" : 138
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "07:51:28",
+  "upper" : "07:53:37",
+  "cumulfreq" : 20.7,
+  "freq" : 0.1,
+  "numberOfItems" : 129
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "07:53:38",
+  "upper" : "07:55:28",
+  "cumulfreq" : 20.8,
+  "freq" : 0.1,
+  "numberOfItems" : 112
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "07:55:30",
+  "upper" : "07:57:17",
+  "cumulfreq" : 20.9,
+  "freq" : 0.1,
+  "numberOfItems" : 108
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "07:57:18",
+  "upper" : "07:59:00",
+  "cumulfreq" : 21.0,
+  "freq" : 0.1,
+  "numberOfItems" : 98
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "07:59:01",
+  "upper" : "08:00:50",
+  "cumulfreq" : 21.1,
+  "freq" : 0.1,
+  "numberOfItems" : 111
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "08:00:51",
+  "upper" : "08:02:36",
+  "cumulfreq" : 21.2,
+  "freq" : 0.1,
+  "numberOfItems" : 105
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "08:02:37",
+  "upper" : "08:04:24",
+  "cumulfreq" : 21.3,
+  "freq" : 0.1,
+  "numberOfItems" : 105
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "08:04:25",
+  "upper" : "08:06:14",
+  "cumulfreq" : 21.4,
+  "freq" : 0.1,
+  "numberOfItems" : 106
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "08:06:15",
+  "upper" : "08:07:53",
+  "cumulfreq" : 21.5,
+  "freq" : 0.1,
+  "numberOfItems" : 99
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "08:07:54",
+  "upper" : "08:09:40",
+  "cumulfreq" : 21.6,
+  "freq" : 0.1,
+  "numberOfItems" : 104
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "08:09:41",
+  "upper" : "08:11:35",
+  "cumulfreq" : 21.7,
+  "freq" : 0.1,
+  "numberOfItems" : 113
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "08:11:36",
+  "upper" : "08:13:30",
+  "cumulfreq" : 21.8,
+  "freq" : 0.1,
+  "numberOfItems" : 117
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "08:13:31",
+  "upper" : "08:15:25",
+  "cumulfreq" : 21.9,
+  "freq" : 0.1,
+  "numberOfItems" : 113
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "08:15:26",
+  "upper" : "08:17:10",
+  "cumulfreq" : 22.0,
+  "freq" : 0.1,
+  "numberOfItems" : 105
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "08:17:11",
+  "upper" : "08:18:59",
+  "cumulfreq" : 22.1,
+  "freq" : 0.1,
+  "numberOfItems" : 109
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "08:19:00",
+  "upper" : "08:20:46",
+  "cumulfreq" : 22.2,
+  "freq" : 0.1,
+  "numberOfItems" : 108
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "08:20:47",
+  "upper" : "08:22:39",
+  "cumulfreq" : 22.3,
+  "freq" : 0.1,
+  "numberOfItems" : 111
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "08:22:40",
+  "upper" : "08:24:26",
+  "cumulfreq" : 22.4,
+  "freq" : 0.1,
+  "numberOfItems" : 107
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "08:24:27",
+  "upper" : "08:26:20",
+  "cumulfreq" : 22.5,
+  "freq" : 0.1,
+  "numberOfItems" : 118
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "08:26:21",
+  "upper" : "08:28:10",
+  "cumulfreq" : 22.6,
+  "freq" : 0.1,
+  "numberOfItems" : 108
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "08:28:11",
+  "upper" : "08:30:11",
+  "cumulfreq" : 22.7,
+  "freq" : 0.1,
+  "numberOfItems" : 117
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "08:30:12",
+  "upper" : "08:31:56",
+  "cumulfreq" : 22.8,
+  "freq" : 0.1,
+  "numberOfItems" : 103
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "08:31:57",
+  "upper" : "08:33:42",
+  "cumulfreq" : 22.9,
+  "freq" : 0.1,
+  "numberOfItems" : 108
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "08:33:43",
+  "upper" : "08:35:23",
+  "cumulfreq" : 22.9,
+  "freq" : 0.1,
+  "numberOfItems" : 103
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "08:35:24",
+  "upper" : "08:37:09",
+  "cumulfreq" : 23.0,
+  "freq" : 0.1,
+  "numberOfItems" : 107
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "08:37:10",
+  "upper" : "08:38:38",
+  "cumulfreq" : 23.1,
+  "freq" : 0.1,
+  "numberOfItems" : 89
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "08:38:39",
+  "upper" : "08:40:17",
+  "cumulfreq" : 23.2,
+  "freq" : 0.1,
+  "numberOfItems" : 100
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "08:40:18",
+  "upper" : "08:41:54",
+  "cumulfreq" : 23.3,
+  "freq" : 0.1,
+  "numberOfItems" : 98
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "08:41:55",
+  "upper" : "08:43:34",
+  "cumulfreq" : 23.4,
+  "freq" : 0.1,
+  "numberOfItems" : 101
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "08:43:35",
+  "upper" : "08:45:08",
+  "cumulfreq" : 23.5,
+  "freq" : 0.1,
+  "numberOfItems" : 95
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "08:45:09",
+  "upper" : "08:46:39",
+  "cumulfreq" : 23.6,
+  "freq" : 0.1,
+  "numberOfItems" : 91
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "08:46:40",
+  "upper" : "08:48:11",
+  "cumulfreq" : 23.7,
+  "freq" : 0.1,
+  "numberOfItems" : 91
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "08:48:12",
+  "upper" : "08:49:34",
+  "cumulfreq" : 23.8,
+  "freq" : 0.1,
+  "numberOfItems" : 82
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "08:49:35",
+  "upper" : "08:50:56",
+  "cumulfreq" : 23.9,
+  "freq" : 0.1,
+  "numberOfItems" : 83
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "08:50:57",
+  "upper" : "08:52:13",
+  "cumulfreq" : 24.0,
+  "freq" : 0.1,
+  "numberOfItems" : 78
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "08:52:14",
+  "upper" : "08:53:27",
+  "cumulfreq" : 24.1,
+  "freq" : 0.1,
+  "numberOfItems" : 74
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "08:53:28",
+  "upper" : "08:54:34",
+  "cumulfreq" : 24.2,
+  "freq" : 0.1,
+  "numberOfItems" : 67
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "08:54:35",
+  "upper" : "08:55:40",
+  "cumulfreq" : 24.3,
+  "freq" : 0.1,
+  "numberOfItems" : 65
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "08:55:41",
+  "upper" : "08:56:42",
+  "cumulfreq" : 24.4,
+  "freq" : 0.1,
+  "numberOfItems" : 62
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "08:56:43",
+  "upper" : "08:57:45",
+  "cumulfreq" : 24.5,
+  "freq" : 0.1,
+  "numberOfItems" : 63
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "08:57:46",
+  "upper" : "08:58:48",
+  "cumulfreq" : 24.6,
+  "freq" : 0.1,
+  "numberOfItems" : 63
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "08:58:49",
+  "upper" : "08:59:52",
+  "cumulfreq" : 24.7,
+  "freq" : 0.1,
+  "numberOfItems" : 63
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "08:59:53",
+  "upper" : "09:00:52",
+  "cumulfreq" : 24.8,
+  "freq" : 0.1,
+  "numberOfItems" : 60
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "09:00:53",
+  "upper" : "09:01:51",
+  "cumulfreq" : 24.9,
+  "freq" : 0.1,
+  "numberOfItems" : 59
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "09:01:52",
+  "upper" : "09:02:57",
+  "cumulfreq" : 25.0,
+  "freq" : 0.1,
+  "numberOfItems" : 66
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "09:02:58",
+  "upper" : "09:04:00",
+  "cumulfreq" : 25.1,
+  "freq" : 0.1,
+  "numberOfItems" : 63
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "09:04:01",
+  "upper" : "09:05:17",
+  "cumulfreq" : 25.2,
+  "freq" : 0.1,
+  "numberOfItems" : 78
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "09:05:18",
+  "upper" : "09:06:31",
+  "cumulfreq" : 25.3,
+  "freq" : 0.1,
+  "numberOfItems" : 74
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "09:06:32",
+  "upper" : "09:07:50",
+  "cumulfreq" : 25.4,
+  "freq" : 0.1,
+  "numberOfItems" : 80
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "09:07:51",
+  "upper" : "09:09:03",
+  "cumulfreq" : 25.5,
+  "freq" : 0.1,
+  "numberOfItems" : 73
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "09:09:04",
+  "upper" : "09:10:20",
+  "cumulfreq" : 25.6,
+  "freq" : 0.1,
+  "numberOfItems" : 78
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "09:10:21",
+  "upper" : "09:11:28",
+  "cumulfreq" : 25.7,
+  "freq" : 0.1,
+  "numberOfItems" : 68
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "09:11:29",
+  "upper" : "09:12:50",
+  "cumulfreq" : 25.8,
+  "freq" : 0.1,
+  "numberOfItems" : 82
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "09:12:51",
+  "upper" : "09:14:03",
+  "cumulfreq" : 25.9,
+  "freq" : 0.1,
+  "numberOfItems" : 72
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "09:14:04",
+  "upper" : "09:15:19",
+  "cumulfreq" : 26.0,
+  "freq" : 0.1,
+  "numberOfItems" : 75
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "09:15:20",
+  "upper" : "09:16:26",
+  "cumulfreq" : 26.1,
+  "freq" : 0.1,
+  "numberOfItems" : 67
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "09:16:27",
+  "upper" : "09:17:31",
+  "cumulfreq" : 26.2,
+  "freq" : 0.1,
+  "numberOfItems" : 65
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "09:17:32",
+  "upper" : "09:18:44",
+  "cumulfreq" : 26.3,
+  "freq" : 0.1,
+  "numberOfItems" : 73
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "09:18:45",
+  "upper" : "09:19:56",
+  "cumulfreq" : 26.4,
+  "freq" : 0.1,
+  "numberOfItems" : 71
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "09:19:57",
+  "upper" : "09:21:06",
+  "cumulfreq" : 26.5,
+  "freq" : 0.1,
+  "numberOfItems" : 70
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "09:21:07",
+  "upper" : "09:22:10",
+  "cumulfreq" : 26.6,
+  "freq" : 0.1,
+  "numberOfItems" : 64
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "09:22:11",
+  "upper" : "09:23:13",
+  "cumulfreq" : 26.7,
+  "freq" : 0.1,
+  "numberOfItems" : 63
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "09:23:14",
+  "upper" : "09:24:23",
+  "cumulfreq" : 26.8,
+  "freq" : 0.1,
+  "numberOfItems" : 70
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "09:24:24",
+  "upper" : "09:25:23",
+  "cumulfreq" : 26.9,
+  "freq" : 0.1,
+  "numberOfItems" : 60
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "09:25:24",
+  "upper" : "09:26:26",
+  "cumulfreq" : 27.0,
+  "freq" : 0.1,
+  "numberOfItems" : 63
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "09:26:27",
+  "upper" : "09:27:35",
+  "cumulfreq" : 27.1,
+  "freq" : 0.1,
+  "numberOfItems" : 69
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "09:27:36",
+  "upper" : "09:28:40",
+  "cumulfreq" : 27.1,
+  "freq" : 0.1,
+  "numberOfItems" : 65
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "09:28:41",
+  "upper" : "09:29:40",
+  "cumulfreq" : 27.2,
+  "freq" : 0.1,
+  "numberOfItems" : 59
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "09:29:41",
+  "upper" : "09:30:45",
+  "cumulfreq" : 27.3,
+  "freq" : 0.1,
+  "numberOfItems" : 65
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "09:30:46",
+  "upper" : "09:31:49",
+  "cumulfreq" : 27.4,
+  "freq" : 0.1,
+  "numberOfItems" : 64
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "09:31:50",
+  "upper" : "09:32:49",
+  "cumulfreq" : 27.5,
+  "freq" : 0.1,
+  "numberOfItems" : 60
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "09:32:50",
+  "upper" : "09:33:53",
+  "cumulfreq" : 27.6,
+  "freq" : 0.1,
+  "numberOfItems" : 65
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "09:33:54",
+  "upper" : "09:34:55",
+  "cumulfreq" : 27.7,
+  "freq" : 0.1,
+  "numberOfItems" : 62
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "09:34:56",
+  "upper" : "09:35:58",
+  "cumulfreq" : 27.8,
+  "freq" : 0.1,
+  "numberOfItems" : 63
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "09:35:59",
+  "upper" : "09:36:57",
+  "cumulfreq" : 27.9,
+  "freq" : 0.1,
+  "numberOfItems" : 59
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "09:36:58",
+  "upper" : "09:38:06",
+  "cumulfreq" : 28.0,
+  "freq" : 0.1,
+  "numberOfItems" : 69
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "09:38:07",
+  "upper" : "09:39:14",
+  "cumulfreq" : 28.1,
+  "freq" : 0.1,
+  "numberOfItems" : 68
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "09:39:15",
+  "upper" : "09:40:23",
+  "cumulfreq" : 28.2,
+  "freq" : 0.1,
+  "numberOfItems" : 69
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "09:40:24",
+  "upper" : "09:41:28",
+  "cumulfreq" : 28.3,
+  "freq" : 0.1,
+  "numberOfItems" : 65
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "09:41:29",
+  "upper" : "09:42:35",
+  "cumulfreq" : 28.4,
+  "freq" : 0.1,
+  "numberOfItems" : 67
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "09:42:36",
+  "upper" : "09:43:37",
+  "cumulfreq" : 28.5,
+  "freq" : 0.1,
+  "numberOfItems" : 62
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "09:43:38",
+  "upper" : "09:44:45",
+  "cumulfreq" : 28.6,
+  "freq" : 0.1,
+  "numberOfItems" : 68
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "09:44:46",
+  "upper" : "09:45:51",
+  "cumulfreq" : 28.7,
+  "freq" : 0.1,
+  "numberOfItems" : 66
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "09:45:52",
+  "upper" : "09:46:59",
+  "cumulfreq" : 28.8,
+  "freq" : 0.1,
+  "numberOfItems" : 68
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "09:47:00",
+  "upper" : "09:47:56",
+  "cumulfreq" : 28.9,
+  "freq" : 0.1,
+  "numberOfItems" : 57
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "09:47:57",
+  "upper" : "09:48:59",
+  "cumulfreq" : 29.0,
+  "freq" : 0.1,
+  "numberOfItems" : 63
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "09:49:00",
+  "upper" : "09:49:53",
+  "cumulfreq" : 29.1,
+  "freq" : 0.1,
+  "numberOfItems" : 54
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "09:49:54",
+  "upper" : "09:50:50",
+  "cumulfreq" : 29.2,
+  "freq" : 0.1,
+  "numberOfItems" : 57
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "09:50:51",
+  "upper" : "09:51:39",
+  "cumulfreq" : 29.3,
+  "freq" : 0.1,
+  "numberOfItems" : 49
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "09:51:40",
+  "upper" : "09:52:33",
+  "cumulfreq" : 29.4,
+  "freq" : 0.1,
+  "numberOfItems" : 54
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "09:52:34",
+  "upper" : "09:53:24",
+  "cumulfreq" : 29.5,
+  "freq" : 0.1,
+  "numberOfItems" : 51
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "09:53:25",
+  "upper" : "09:54:17",
+  "cumulfreq" : 29.6,
+  "freq" : 0.1,
+  "numberOfItems" : 53
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "09:54:18",
+  "upper" : "09:55:10",
+  "cumulfreq" : 29.7,
+  "freq" : 0.1,
+  "numberOfItems" : 53
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "09:55:11",
+  "upper" : "09:56:04",
+  "cumulfreq" : 29.8,
+  "freq" : 0.1,
+  "numberOfItems" : 54
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "09:56:05",
+  "upper" : "09:56:49",
+  "cumulfreq" : 29.9,
+  "freq" : 0.1,
+  "numberOfItems" : 45
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "09:56:50",
+  "upper" : "09:57:37",
+  "cumulfreq" : 30.0,
+  "freq" : 0.1,
+  "numberOfItems" : 48
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "09:57:38",
+  "upper" : "09:58:26",
+  "cumulfreq" : 30.1,
+  "freq" : 0.1,
+  "numberOfItems" : 49
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "09:58:27",
+  "upper" : "09:59:17",
+  "cumulfreq" : 30.2,
+  "freq" : 0.1,
+  "numberOfItems" : 51
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "09:59:18",
+  "upper" : "10:00:01",
+  "cumulfreq" : 30.3,
+  "freq" : 0.1,
+  "numberOfItems" : 44
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:00:02",
+  "upper" : "10:00:47",
+  "cumulfreq" : 30.4,
+  "freq" : 0.1,
+  "numberOfItems" : 46
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:00:48",
+  "upper" : "10:01:33",
+  "cumulfreq" : 30.5,
+  "freq" : 0.1,
+  "numberOfItems" : 46
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:01:34",
+  "upper" : "10:02:21",
+  "cumulfreq" : 30.6,
+  "freq" : 0.1,
+  "numberOfItems" : 48
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:02:22",
+  "upper" : "10:03:13",
+  "cumulfreq" : 30.7,
+  "freq" : 0.1,
+  "numberOfItems" : 52
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:03:14",
+  "upper" : "10:04:03",
+  "cumulfreq" : 30.8,
+  "freq" : 0.1,
+  "numberOfItems" : 50
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:04:04",
+  "upper" : "10:04:50",
+  "cumulfreq" : 30.9,
+  "freq" : 0.1,
+  "numberOfItems" : 47
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:04:51",
+  "upper" : "10:05:37",
+  "cumulfreq" : 31.0,
+  "freq" : 0.1,
+  "numberOfItems" : 47
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:05:38",
+  "upper" : "10:06:31",
+  "cumulfreq" : 31.1,
+  "freq" : 0.1,
+  "numberOfItems" : 53
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:06:32",
+  "upper" : "10:07:23",
+  "cumulfreq" : 31.2,
+  "freq" : 0.1,
+  "numberOfItems" : 52
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:07:24",
+  "upper" : "10:08:14",
+  "cumulfreq" : 31.2,
+  "freq" : 0.1,
+  "numberOfItems" : 51
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:08:15",
+  "upper" : "10:09:02",
+  "cumulfreq" : 31.3,
+  "freq" : 0.1,
+  "numberOfItems" : 48
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:09:03",
+  "upper" : "10:09:51",
+  "cumulfreq" : 31.4,
+  "freq" : 0.1,
+  "numberOfItems" : 49
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:09:52",
+  "upper" : "10:10:47",
+  "cumulfreq" : 31.5,
+  "freq" : 0.1,
+  "numberOfItems" : 56
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:10:48",
+  "upper" : "10:11:42",
+  "cumulfreq" : 31.6,
+  "freq" : 0.1,
+  "numberOfItems" : 55
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:11:43",
+  "upper" : "10:12:35",
+  "cumulfreq" : 31.7,
+  "freq" : 0.1,
+  "numberOfItems" : 53
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:12:36",
+  "upper" : "10:13:29",
+  "cumulfreq" : 31.8,
+  "freq" : 0.1,
+  "numberOfItems" : 54
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:13:30",
+  "upper" : "10:14:16",
+  "cumulfreq" : 31.9,
+  "freq" : 0.1,
+  "numberOfItems" : 47
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:14:17",
+  "upper" : "10:15:04",
+  "cumulfreq" : 32.0,
+  "freq" : 0.1,
+  "numberOfItems" : 48
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:15:05",
+  "upper" : "10:15:58",
+  "cumulfreq" : 32.1,
+  "freq" : 0.1,
+  "numberOfItems" : 54
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:15:59",
+  "upper" : "10:16:51",
+  "cumulfreq" : 32.2,
+  "freq" : 0.1,
+  "numberOfItems" : 53
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:16:52",
+  "upper" : "10:17:46",
+  "cumulfreq" : 32.3,
+  "freq" : 0.1,
+  "numberOfItems" : 55
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:17:47",
+  "upper" : "10:18:40",
+  "cumulfreq" : 32.4,
+  "freq" : 0.1,
+  "numberOfItems" : 54
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:18:41",
+  "upper" : "10:19:34",
+  "cumulfreq" : 32.5,
+  "freq" : 0.1,
+  "numberOfItems" : 54
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:19:35",
+  "upper" : "10:20:26",
+  "cumulfreq" : 32.6,
+  "freq" : 0.1,
+  "numberOfItems" : 52
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:20:27",
+  "upper" : "10:21:19",
+  "cumulfreq" : 32.7,
+  "freq" : 0.1,
+  "numberOfItems" : 53
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:21:20",
+  "upper" : "10:22:13",
+  "cumulfreq" : 32.8,
+  "freq" : 0.1,
+  "numberOfItems" : 54
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:22:14",
+  "upper" : "10:23:09",
+  "cumulfreq" : 32.9,
+  "freq" : 0.1,
+  "numberOfItems" : 56
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:23:10",
+  "upper" : "10:24:00",
+  "cumulfreq" : 33.0,
+  "freq" : 0.1,
+  "numberOfItems" : 51
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:24:01",
+  "upper" : "10:24:56",
+  "cumulfreq" : 33.1,
+  "freq" : 0.1,
+  "numberOfItems" : 56
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:24:57",
+  "upper" : "10:25:51",
+  "cumulfreq" : 33.2,
+  "freq" : 0.1,
+  "numberOfItems" : 55
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:25:52",
+  "upper" : "10:26:44",
+  "cumulfreq" : 33.3,
+  "freq" : 0.1,
+  "numberOfItems" : 53
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:26:45",
+  "upper" : "10:27:37",
+  "cumulfreq" : 33.4,
+  "freq" : 0.1,
+  "numberOfItems" : 53
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:27:38",
+  "upper" : "10:28:29",
+  "cumulfreq" : 33.5,
+  "freq" : 0.1,
+  "numberOfItems" : 52
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:28:30",
+  "upper" : "10:29:22",
+  "cumulfreq" : 33.6,
+  "freq" : 0.1,
+  "numberOfItems" : 53
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:29:23",
+  "upper" : "10:30:12",
+  "cumulfreq" : 33.7,
+  "freq" : 0.1,
+  "numberOfItems" : 50
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:30:13",
+  "upper" : "10:31:09",
+  "cumulfreq" : 33.8,
+  "freq" : 0.1,
+  "numberOfItems" : 57
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:31:10",
+  "upper" : "10:31:59",
+  "cumulfreq" : 33.9,
+  "freq" : 0.1,
+  "numberOfItems" : 50
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:32:00",
+  "upper" : "10:32:52",
+  "cumulfreq" : 34.0,
+  "freq" : 0.1,
+  "numberOfItems" : 53
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:32:53",
+  "upper" : "10:33:47",
+  "cumulfreq" : 34.1,
+  "freq" : 0.1,
+  "numberOfItems" : 55
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:33:48",
+  "upper" : "10:34:38",
+  "cumulfreq" : 34.2,
+  "freq" : 0.1,
+  "numberOfItems" : 51
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:34:39",
+  "upper" : "10:35:31",
+  "cumulfreq" : 34.3,
+  "freq" : 0.1,
+  "numberOfItems" : 53
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:35:32",
+  "upper" : "10:36:21",
+  "cumulfreq" : 34.4,
+  "freq" : 0.1,
+  "numberOfItems" : 50
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:36:22",
+  "upper" : "10:37:10",
+  "cumulfreq" : 34.5,
+  "freq" : 0.1,
+  "numberOfItems" : 49
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:37:11",
+  "upper" : "10:37:58",
+  "cumulfreq" : 34.6,
+  "freq" : 0.1,
+  "numberOfItems" : 48
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:37:59",
+  "upper" : "10:38:46",
+  "cumulfreq" : 34.7,
+  "freq" : 0.1,
+  "numberOfItems" : 48
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:38:47",
+  "upper" : "10:39:38",
+  "cumulfreq" : 34.8,
+  "freq" : 0.1,
+  "numberOfItems" : 52
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:39:39",
+  "upper" : "10:40:33",
+  "cumulfreq" : 34.9,
+  "freq" : 0.1,
+  "numberOfItems" : 55
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:40:34",
+  "upper" : "10:41:21",
+  "cumulfreq" : 35.0,
+  "freq" : 0.1,
+  "numberOfItems" : 48
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:41:22",
+  "upper" : "10:42:11",
+  "cumulfreq" : 35.1,
+  "freq" : 0.1,
+  "numberOfItems" : 50
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:42:12",
+  "upper" : "10:43:04",
+  "cumulfreq" : 35.2,
+  "freq" : 0.1,
+  "numberOfItems" : 53
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:43:05",
+  "upper" : "10:43:52",
+  "cumulfreq" : 35.3,
+  "freq" : 0.1,
+  "numberOfItems" : 48
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:43:53",
+  "upper" : "10:44:38",
+  "cumulfreq" : 35.4,
+  "freq" : 0.1,
+  "numberOfItems" : 46
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:44:39",
+  "upper" : "10:45:24",
+  "cumulfreq" : 35.4,
+  "freq" : 0.1,
+  "numberOfItems" : 46
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:45:25",
+  "upper" : "10:46:09",
+  "cumulfreq" : 35.5,
+  "freq" : 0.1,
+  "numberOfItems" : 45
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:46:10",
+  "upper" : "10:46:55",
+  "cumulfreq" : 35.6,
+  "freq" : 0.1,
+  "numberOfItems" : 46
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:46:56",
+  "upper" : "10:47:36",
+  "cumulfreq" : 35.7,
+  "freq" : 0.1,
+  "numberOfItems" : 41
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:47:37",
+  "upper" : "10:48:22",
+  "cumulfreq" : 35.8,
+  "freq" : 0.1,
+  "numberOfItems" : 46
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:48:23",
+  "upper" : "10:49:05",
+  "cumulfreq" : 35.9,
+  "freq" : 0.1,
+  "numberOfItems" : 43
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:49:06",
+  "upper" : "10:49:48",
+  "cumulfreq" : 36.0,
+  "freq" : 0.1,
+  "numberOfItems" : 43
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:49:49",
+  "upper" : "10:50:33",
+  "cumulfreq" : 36.1,
+  "freq" : 0.1,
+  "numberOfItems" : 45
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:50:34",
+  "upper" : "10:51:11",
+  "cumulfreq" : 36.2,
+  "freq" : 0.1,
+  "numberOfItems" : 38
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:51:12",
+  "upper" : "10:51:51",
+  "cumulfreq" : 36.3,
+  "freq" : 0.1,
+  "numberOfItems" : 40
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:51:52",
+  "upper" : "10:52:31",
+  "cumulfreq" : 36.4,
+  "freq" : 0.1,
+  "numberOfItems" : 40
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:52:32",
+  "upper" : "10:53:10",
+  "cumulfreq" : 36.5,
+  "freq" : 0.1,
+  "numberOfItems" : 39
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:53:11",
+  "upper" : "10:53:44",
+  "cumulfreq" : 36.6,
+  "freq" : 0.1,
+  "numberOfItems" : 34
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:53:45",
+  "upper" : "10:54:19",
+  "cumulfreq" : 36.7,
+  "freq" : 0.1,
+  "numberOfItems" : 35
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:54:20",
+  "upper" : "10:55:00",
+  "cumulfreq" : 36.8,
+  "freq" : 0.1,
+  "numberOfItems" : 41
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:55:01",
+  "upper" : "10:55:38",
+  "cumulfreq" : 36.9,
+  "freq" : 0.1,
+  "numberOfItems" : 38
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:55:39",
+  "upper" : "10:56:13",
+  "cumulfreq" : 37.0,
+  "freq" : 0.1,
+  "numberOfItems" : 35
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:56:14",
+  "upper" : "10:56:49",
+  "cumulfreq" : 37.1,
+  "freq" : 0.1,
+  "numberOfItems" : 36
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:56:50",
+  "upper" : "10:57:24",
+  "cumulfreq" : 37.2,
+  "freq" : 0.1,
+  "numberOfItems" : 35
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:57:25",
+  "upper" : "10:57:56",
+  "cumulfreq" : 37.3,
+  "freq" : 0.1,
+  "numberOfItems" : 32
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:57:57",
+  "upper" : "10:58:28",
+  "cumulfreq" : 37.4,
+  "freq" : 0.1,
+  "numberOfItems" : 32
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:58:29",
+  "upper" : "10:59:01",
+  "cumulfreq" : 37.5,
+  "freq" : 0.1,
+  "numberOfItems" : 33
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:59:02",
+  "upper" : "10:59:35",
+  "cumulfreq" : 37.6,
+  "freq" : 0.1,
+  "numberOfItems" : 34
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "10:59:36",
+  "upper" : "11:00:09",
+  "cumulfreq" : 37.7,
+  "freq" : 0.1,
+  "numberOfItems" : 34
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:00:10",
+  "upper" : "11:00:43",
+  "cumulfreq" : 37.8,
+  "freq" : 0.1,
+  "numberOfItems" : 34
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:00:44",
+  "upper" : "11:01:14",
+  "cumulfreq" : 37.9,
+  "freq" : 0.1,
+  "numberOfItems" : 31
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:01:15",
+  "upper" : "11:01:47",
+  "cumulfreq" : 38.0,
+  "freq" : 0.1,
+  "numberOfItems" : 33
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:01:48",
+  "upper" : "11:02:19",
+  "cumulfreq" : 38.1,
+  "freq" : 0.1,
+  "numberOfItems" : 32
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:02:20",
+  "upper" : "11:02:53",
+  "cumulfreq" : 38.2,
+  "freq" : 0.1,
+  "numberOfItems" : 34
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:02:54",
+  "upper" : "11:03:23",
+  "cumulfreq" : 38.3,
+  "freq" : 0.1,
+  "numberOfItems" : 30
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:03:24",
+  "upper" : "11:04:02",
+  "cumulfreq" : 38.4,
+  "freq" : 0.1,
+  "numberOfItems" : 39
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:04:03",
+  "upper" : "11:04:35",
+  "cumulfreq" : 38.5,
+  "freq" : 0.1,
+  "numberOfItems" : 33
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:04:36",
+  "upper" : "11:05:12",
+  "cumulfreq" : 38.6,
+  "freq" : 0.1,
+  "numberOfItems" : 37
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:05:13",
+  "upper" : "11:05:48",
+  "cumulfreq" : 38.7,
+  "freq" : 0.1,
+  "numberOfItems" : 36
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:05:49",
+  "upper" : "11:06:28",
+  "cumulfreq" : 38.8,
+  "freq" : 0.1,
+  "numberOfItems" : 40
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:06:29",
+  "upper" : "11:07:08",
+  "cumulfreq" : 38.9,
+  "freq" : 0.1,
+  "numberOfItems" : 40
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:07:09",
+  "upper" : "11:07:48",
+  "cumulfreq" : 39.0,
+  "freq" : 0.1,
+  "numberOfItems" : 40
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:07:49",
+  "upper" : "11:08:29",
+  "cumulfreq" : 39.1,
+  "freq" : 0.1,
+  "numberOfItems" : 41
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:08:30",
+  "upper" : "11:09:13",
+  "cumulfreq" : 39.2,
+  "freq" : 0.1,
+  "numberOfItems" : 44
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:09:14",
+  "upper" : "11:09:54",
+  "cumulfreq" : 39.3,
+  "freq" : 0.1,
+  "numberOfItems" : 41
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:09:55",
+  "upper" : "11:10:39",
+  "cumulfreq" : 39.4,
+  "freq" : 0.1,
+  "numberOfItems" : 45
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:10:40",
+  "upper" : "11:11:26",
+  "cumulfreq" : 39.5,
+  "freq" : 0.1,
+  "numberOfItems" : 47
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:11:27",
+  "upper" : "11:12:11",
+  "cumulfreq" : 39.6,
+  "freq" : 0.1,
+  "numberOfItems" : 45
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:12:12",
+  "upper" : "11:13:00",
+  "cumulfreq" : 39.6,
+  "freq" : 0.1,
+  "numberOfItems" : 49
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:13:01",
+  "upper" : "11:13:53",
+  "cumulfreq" : 39.7,
+  "freq" : 0.1,
+  "numberOfItems" : 53
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:13:54",
+  "upper" : "11:14:38",
+  "cumulfreq" : 39.8,
+  "freq" : 0.1,
+  "numberOfItems" : 45
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:14:39",
+  "upper" : "11:15:28",
+  "cumulfreq" : 39.9,
+  "freq" : 0.1,
+  "numberOfItems" : 50
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:15:29",
+  "upper" : "11:16:15",
+  "cumulfreq" : 40.0,
+  "freq" : 0.1,
+  "numberOfItems" : 47
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:16:16",
+  "upper" : "11:17:07",
+  "cumulfreq" : 40.1,
+  "freq" : 0.1,
+  "numberOfItems" : 52
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:17:08",
+  "upper" : "11:17:57",
+  "cumulfreq" : 40.2,
+  "freq" : 0.1,
+  "numberOfItems" : 50
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:17:58",
+  "upper" : "11:18:52",
+  "cumulfreq" : 40.3,
+  "freq" : 0.1,
+  "numberOfItems" : 55
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:18:53",
+  "upper" : "11:19:37",
+  "cumulfreq" : 40.4,
+  "freq" : 0.1,
+  "numberOfItems" : 45
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:19:38",
+  "upper" : "11:20:20",
+  "cumulfreq" : 40.5,
+  "freq" : 0.1,
+  "numberOfItems" : 43
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:20:21",
+  "upper" : "11:21:09",
+  "cumulfreq" : 40.6,
+  "freq" : 0.1,
+  "numberOfItems" : 49
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:21:10",
+  "upper" : "11:21:58",
+  "cumulfreq" : 40.7,
+  "freq" : 0.1,
+  "numberOfItems" : 49
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:21:59",
+  "upper" : "11:22:47",
+  "cumulfreq" : 40.8,
+  "freq" : 0.1,
+  "numberOfItems" : 49
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:22:48",
+  "upper" : "11:23:39",
+  "cumulfreq" : 40.9,
+  "freq" : 0.1,
+  "numberOfItems" : 52
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:23:40",
+  "upper" : "11:24:32",
+  "cumulfreq" : 41.0,
+  "freq" : 0.1,
+  "numberOfItems" : 53
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:24:33",
+  "upper" : "11:25:21",
+  "cumulfreq" : 41.1,
+  "freq" : 0.1,
+  "numberOfItems" : 49
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:25:22",
+  "upper" : "11:26:10",
+  "cumulfreq" : 41.2,
+  "freq" : 0.1,
+  "numberOfItems" : 49
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:26:11",
+  "upper" : "11:26:59",
+  "cumulfreq" : 41.3,
+  "freq" : 0.1,
+  "numberOfItems" : 49
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:27:00",
+  "upper" : "11:27:47",
+  "cumulfreq" : 41.4,
+  "freq" : 0.1,
+  "numberOfItems" : 48
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:27:48",
+  "upper" : "11:28:38",
+  "cumulfreq" : 41.5,
+  "freq" : 0.1,
+  "numberOfItems" : 50
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:28:39",
+  "upper" : "11:29:26",
+  "cumulfreq" : 41.6,
+  "freq" : 0.1,
+  "numberOfItems" : 48
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:29:27",
+  "upper" : "11:30:11",
+  "cumulfreq" : 41.7,
+  "freq" : 0.1,
+  "numberOfItems" : 45
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:30:12",
+  "upper" : "11:30:59",
+  "cumulfreq" : 41.8,
+  "freq" : 0.1,
+  "numberOfItems" : 48
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:31:00",
+  "upper" : "11:31:47",
+  "cumulfreq" : 41.9,
+  "freq" : 0.1,
+  "numberOfItems" : 48
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:31:48",
+  "upper" : "11:32:35",
+  "cumulfreq" : 42.0,
+  "freq" : 0.1,
+  "numberOfItems" : 48
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:32:36",
+  "upper" : "11:33:23",
+  "cumulfreq" : 42.1,
+  "freq" : 0.1,
+  "numberOfItems" : 48
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:33:24",
+  "upper" : "11:34:16",
+  "cumulfreq" : 42.2,
+  "freq" : 0.1,
+  "numberOfItems" : 53
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:34:17",
+  "upper" : "11:35:00",
+  "cumulfreq" : 42.3,
+  "freq" : 0.1,
+  "numberOfItems" : 44
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:35:01",
+  "upper" : "11:35:45",
+  "cumulfreq" : 42.4,
+  "freq" : 0.1,
+  "numberOfItems" : 45
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:35:46",
+  "upper" : "11:36:35",
+  "cumulfreq" : 42.5,
+  "freq" : 0.1,
+  "numberOfItems" : 50
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:36:36",
+  "upper" : "11:37:21",
+  "cumulfreq" : 42.6,
+  "freq" : 0.1,
+  "numberOfItems" : 46
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:37:22",
+  "upper" : "11:38:05",
+  "cumulfreq" : 42.7,
+  "freq" : 0.1,
+  "numberOfItems" : 44
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:38:06",
+  "upper" : "11:38:51",
+  "cumulfreq" : 42.8,
+  "freq" : 0.1,
+  "numberOfItems" : 46
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:38:52",
+  "upper" : "11:39:40",
+  "cumulfreq" : 42.9,
+  "freq" : 0.1,
+  "numberOfItems" : 49
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:39:41",
+  "upper" : "11:40:33",
+  "cumulfreq" : 43.0,
+  "freq" : 0.1,
+  "numberOfItems" : 53
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:40:34",
+  "upper" : "11:41:22",
+  "cumulfreq" : 43.1,
+  "freq" : 0.1,
+  "numberOfItems" : 49
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:41:23",
+  "upper" : "11:42:08",
+  "cumulfreq" : 43.2,
+  "freq" : 0.1,
+  "numberOfItems" : 46
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:42:09",
+  "upper" : "11:42:58",
+  "cumulfreq" : 43.3,
+  "freq" : 0.1,
+  "numberOfItems" : 50
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:42:59",
+  "upper" : "11:43:44",
+  "cumulfreq" : 43.4,
+  "freq" : 0.1,
+  "numberOfItems" : 46
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:43:45",
+  "upper" : "11:44:29",
+  "cumulfreq" : 43.5,
+  "freq" : 0.1,
+  "numberOfItems" : 45
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:44:30",
+  "upper" : "11:45:18",
+  "cumulfreq" : 43.6,
+  "freq" : 0.1,
+  "numberOfItems" : 48
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:45:19",
+  "upper" : "11:46:05",
+  "cumulfreq" : 43.7,
+  "freq" : 0.1,
+  "numberOfItems" : 47
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:46:06",
+  "upper" : "11:46:50",
+  "cumulfreq" : 43.7,
+  "freq" : 0.1,
+  "numberOfItems" : 45
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:46:51",
+  "upper" : "11:47:34",
+  "cumulfreq" : 43.8,
+  "freq" : 0.1,
+  "numberOfItems" : 44
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:47:35",
+  "upper" : "11:48:19",
+  "cumulfreq" : 43.9,
+  "freq" : 0.1,
+  "numberOfItems" : 45
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:48:20",
+  "upper" : "11:49:05",
+  "cumulfreq" : 44.0,
+  "freq" : 0.1,
+  "numberOfItems" : 46
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:49:06",
+  "upper" : "11:49:45",
+  "cumulfreq" : 44.1,
+  "freq" : 0.1,
+  "numberOfItems" : 40
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:49:46",
+  "upper" : "11:50:21",
+  "cumulfreq" : 44.2,
+  "freq" : 0.1,
+  "numberOfItems" : 36
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:50:22",
+  "upper" : "11:51:00",
+  "cumulfreq" : 44.3,
+  "freq" : 0.1,
+  "numberOfItems" : 39
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:51:01",
+  "upper" : "11:51:37",
+  "cumulfreq" : 44.4,
+  "freq" : 0.1,
+  "numberOfItems" : 37
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:51:38",
+  "upper" : "11:52:22",
+  "cumulfreq" : 44.5,
+  "freq" : 0.1,
+  "numberOfItems" : 45
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:52:23",
+  "upper" : "11:53:06",
+  "cumulfreq" : 44.6,
+  "freq" : 0.1,
+  "numberOfItems" : 44
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:53:07",
+  "upper" : "11:53:47",
+  "cumulfreq" : 44.7,
+  "freq" : 0.1,
+  "numberOfItems" : 41
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:53:48",
+  "upper" : "11:54:27",
+  "cumulfreq" : 44.8,
+  "freq" : 0.1,
+  "numberOfItems" : 40
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:54:28",
+  "upper" : "11:55:10",
+  "cumulfreq" : 44.9,
+  "freq" : 0.1,
+  "numberOfItems" : 43
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:55:11",
+  "upper" : "11:55:50",
+  "cumulfreq" : 45.0,
+  "freq" : 0.1,
+  "numberOfItems" : 40
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:55:51",
+  "upper" : "11:56:32",
+  "cumulfreq" : 45.1,
+  "freq" : 0.1,
+  "numberOfItems" : 42
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:56:33",
+  "upper" : "11:57:09",
+  "cumulfreq" : 45.2,
+  "freq" : 0.1,
+  "numberOfItems" : 37
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:57:10",
+  "upper" : "11:57:50",
+  "cumulfreq" : 45.3,
+  "freq" : 0.1,
+  "numberOfItems" : 41
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:57:51",
+  "upper" : "11:58:28",
+  "cumulfreq" : 45.4,
+  "freq" : 0.1,
+  "numberOfItems" : 38
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:58:29",
+  "upper" : "11:59:08",
+  "cumulfreq" : 45.5,
+  "freq" : 0.1,
+  "numberOfItems" : 40
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:59:09",
+  "upper" : "11:59:46",
+  "cumulfreq" : 45.6,
+  "freq" : 0.1,
+  "numberOfItems" : 38
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "11:59:47",
+  "upper" : "13:00:27",
+  "cumulfreq" : 45.7,
+  "freq" : 0.1,
+  "numberOfItems" : 41
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:00:28",
+  "upper" : "13:01:07",
+  "cumulfreq" : 45.8,
+  "freq" : 0.1,
+  "numberOfItems" : 40
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:01:08",
+  "upper" : "13:01:47",
+  "cumulfreq" : 45.9,
+  "freq" : 0.1,
+  "numberOfItems" : 40
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:01:48",
+  "upper" : "13:02:30",
+  "cumulfreq" : 46.0,
+  "freq" : 0.1,
+  "numberOfItems" : 43
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:02:31",
+  "upper" : "13:03:15",
+  "cumulfreq" : 46.1,
+  "freq" : 0.1,
+  "numberOfItems" : 45
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:03:16",
+  "upper" : "13:03:57",
+  "cumulfreq" : 46.2,
+  "freq" : 0.1,
+  "numberOfItems" : 42
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:03:58",
+  "upper" : "13:04:41",
+  "cumulfreq" : 46.3,
+  "freq" : 0.1,
+  "numberOfItems" : 44
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:04:42",
+  "upper" : "13:05:26",
+  "cumulfreq" : 46.4,
+  "freq" : 0.1,
+  "numberOfItems" : 45
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:05:27",
+  "upper" : "13:06:14",
+  "cumulfreq" : 46.5,
+  "freq" : 0.1,
+  "numberOfItems" : 48
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:06:15",
+  "upper" : "13:06:59",
+  "cumulfreq" : 46.6,
+  "freq" : 0.1,
+  "numberOfItems" : 45
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:07:00",
+  "upper" : "13:07:48",
+  "cumulfreq" : 46.7,
+  "freq" : 0.1,
+  "numberOfItems" : 49
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:07:49",
+  "upper" : "13:08:39",
+  "cumulfreq" : 46.8,
+  "freq" : 0.1,
+  "numberOfItems" : 51
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:08:40",
+  "upper" : "13:09:28",
+  "cumulfreq" : 46.9,
+  "freq" : 0.1,
+  "numberOfItems" : 49
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:09:29",
+  "upper" : "13:10:15",
+  "cumulfreq" : 47.0,
+  "freq" : 0.1,
+  "numberOfItems" : 47
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:10:16",
+  "upper" : "13:10:59",
+  "cumulfreq" : 47.1,
+  "freq" : 0.1,
+  "numberOfItems" : 44
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:11:00",
+  "upper" : "13:11:43",
+  "cumulfreq" : 47.2,
+  "freq" : 0.1,
+  "numberOfItems" : 44
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:11:44",
+  "upper" : "13:12:30",
+  "cumulfreq" : 47.3,
+  "freq" : 0.1,
+  "numberOfItems" : 47
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:12:31",
+  "upper" : "13:13:23",
+  "cumulfreq" : 47.4,
+  "freq" : 0.1,
+  "numberOfItems" : 53
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:13:24",
+  "upper" : "13:14:10",
+  "cumulfreq" : 47.5,
+  "freq" : 0.1,
+  "numberOfItems" : 47
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:14:11",
+  "upper" : "13:14:57",
+  "cumulfreq" : 47.6,
+  "freq" : 0.1,
+  "numberOfItems" : 47
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:14:58",
+  "upper" : "13:15:48",
+  "cumulfreq" : 47.7,
+  "freq" : 0.1,
+  "numberOfItems" : 51
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:15:49",
+  "upper" : "13:16:32",
+  "cumulfreq" : 47.8,
+  "freq" : 0.1,
+  "numberOfItems" : 44
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:16:33",
+  "upper" : "13:17:17",
+  "cumulfreq" : 47.9,
+  "freq" : 0.1,
+  "numberOfItems" : 45
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:17:18",
+  "upper" : "13:18:06",
+  "cumulfreq" : 47.9,
+  "freq" : 0.1,
+  "numberOfItems" : 49
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:18:07",
+  "upper" : "13:18:52",
+  "cumulfreq" : 48.0,
+  "freq" : 0.1,
+  "numberOfItems" : 46
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:18:53",
+  "upper" : "13:19:38",
+  "cumulfreq" : 48.1,
+  "freq" : 0.1,
+  "numberOfItems" : 46
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:19:39",
+  "upper" : "13:20:25",
+  "cumulfreq" : 48.2,
+  "freq" : 0.1,
+  "numberOfItems" : 47
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:20:26",
+  "upper" : "13:21:15",
+  "cumulfreq" : 48.3,
+  "freq" : 0.1,
+  "numberOfItems" : 50
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:21:16",
+  "upper" : "13:22:02",
+  "cumulfreq" : 48.4,
+  "freq" : 0.1,
+  "numberOfItems" : 47
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:22:03",
+  "upper" : "13:22:50",
+  "cumulfreq" : 48.5,
+  "freq" : 0.1,
+  "numberOfItems" : 48
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:22:51",
+  "upper" : "13:23:43",
+  "cumulfreq" : 48.6,
+  "freq" : 0.1,
+  "numberOfItems" : 53
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:23:44",
+  "upper" : "13:24:36",
+  "cumulfreq" : 48.7,
+  "freq" : 0.1,
+  "numberOfItems" : 53
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:24:37",
+  "upper" : "13:25:27",
+  "cumulfreq" : 48.8,
+  "freq" : 0.1,
+  "numberOfItems" : 51
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:25:28",
+  "upper" : "13:26:15",
+  "cumulfreq" : 48.9,
+  "freq" : 0.1,
+  "numberOfItems" : 48
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:26:16",
+  "upper" : "13:27:04",
+  "cumulfreq" : 49.0,
+  "freq" : 0.1,
+  "numberOfItems" : 49
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:27:05",
+  "upper" : "13:27:54",
+  "cumulfreq" : 49.1,
+  "freq" : 0.1,
+  "numberOfItems" : 50
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:27:55",
+  "upper" : "13:28:39",
+  "cumulfreq" : 49.2,
+  "freq" : 0.1,
+  "numberOfItems" : 45
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:28:40",
+  "upper" : "13:29:20",
+  "cumulfreq" : 49.3,
+  "freq" : 0.1,
+  "numberOfItems" : 41
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:29:21",
+  "upper" : "13:30:06",
+  "cumulfreq" : 49.4,
+  "freq" : 0.1,
+  "numberOfItems" : 46
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:30:07",
+  "upper" : "13:30:49",
+  "cumulfreq" : 49.5,
+  "freq" : 0.1,
+  "numberOfItems" : 43
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:30:50",
+  "upper" : "13:31:31",
+  "cumulfreq" : 49.6,
+  "freq" : 0.1,
+  "numberOfItems" : 42
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:31:32",
+  "upper" : "13:32:10",
+  "cumulfreq" : 49.7,
+  "freq" : 0.1,
+  "numberOfItems" : 39
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:32:11",
+  "upper" : "13:32:57",
+  "cumulfreq" : 49.8,
+  "freq" : 0.1,
+  "numberOfItems" : 47
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:32:58",
+  "upper" : "13:33:43",
+  "cumulfreq" : 49.9,
+  "freq" : 0.1,
+  "numberOfItems" : 46
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:33:44",
+  "upper" : "13:34:31",
+  "cumulfreq" : 50.0,
+  "freq" : 0.1,
+  "numberOfItems" : 48
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:34:32",
+  "upper" : "13:35:16",
+  "cumulfreq" : 50.1,
+  "freq" : 0.1,
+  "numberOfItems" : 45
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:35:17",
+  "upper" : "13:36:01",
+  "cumulfreq" : 50.2,
+  "freq" : 0.1,
+  "numberOfItems" : 45
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:36:02",
+  "upper" : "13:36:52",
+  "cumulfreq" : 50.3,
+  "freq" : 0.1,
+  "numberOfItems" : 51
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:36:53",
+  "upper" : "13:37:35",
+  "cumulfreq" : 50.4,
+  "freq" : 0.1,
+  "numberOfItems" : 43
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:37:36",
+  "upper" : "13:38:23",
+  "cumulfreq" : 50.5,
+  "freq" : 0.1,
+  "numberOfItems" : 48
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:38:24",
+  "upper" : "13:39:13",
+  "cumulfreq" : 50.6,
+  "freq" : 0.1,
+  "numberOfItems" : 50
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:39:14",
+  "upper" : "13:40:00",
+  "cumulfreq" : 50.7,
+  "freq" : 0.1,
+  "numberOfItems" : 47
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:40:01",
+  "upper" : "13:40:44",
+  "cumulfreq" : 50.8,
+  "freq" : 0.1,
+  "numberOfItems" : 44
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:40:45",
+  "upper" : "13:41:27",
+  "cumulfreq" : 50.9,
+  "freq" : 0.1,
+  "numberOfItems" : 43
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:41:28",
+  "upper" : "13:42:15",
+  "cumulfreq" : 51.0,
+  "freq" : 0.1,
+  "numberOfItems" : 48
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:42:16",
+  "upper" : "13:43:01",
+  "cumulfreq" : 51.1,
+  "freq" : 0.1,
+  "numberOfItems" : 46
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:43:02",
+  "upper" : "13:43:46",
+  "cumulfreq" : 51.2,
+  "freq" : 0.1,
+  "numberOfItems" : 45
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:43:47",
+  "upper" : "13:44:29",
+  "cumulfreq" : 51.3,
+  "freq" : 0.1,
+  "numberOfItems" : 43
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:44:30",
+  "upper" : "13:45:12",
+  "cumulfreq" : 51.4,
+  "freq" : 0.1,
+  "numberOfItems" : 43
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:45:13",
+  "upper" : "13:45:54",
+  "cumulfreq" : 51.5,
+  "freq" : 0.1,
+  "numberOfItems" : 42
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:45:55",
+  "upper" : "13:46:37",
+  "cumulfreq" : 51.6,
+  "freq" : 0.1,
+  "numberOfItems" : 43
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:46:38",
+  "upper" : "13:47:18",
+  "cumulfreq" : 51.7,
+  "freq" : 0.1,
+  "numberOfItems" : 40
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:47:19",
+  "upper" : "13:48:00",
+  "cumulfreq" : 51.8,
+  "freq" : 0.1,
+  "numberOfItems" : 42
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:48:01",
+  "upper" : "13:48:42",
+  "cumulfreq" : 51.9,
+  "freq" : 0.1,
+  "numberOfItems" : 42
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:48:43",
+  "upper" : "13:49:20",
+  "cumulfreq" : 52.0,
+  "freq" : 0.1,
+  "numberOfItems" : 38
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:49:21",
+  "upper" : "13:49:56",
+  "cumulfreq" : 52.1,
+  "freq" : 0.1,
+  "numberOfItems" : 36
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:49:57",
+  "upper" : "13:50:32",
+  "cumulfreq" : 52.1,
+  "freq" : 0.1,
+  "numberOfItems" : 36
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:50:33",
+  "upper" : "13:51:05",
+  "cumulfreq" : 52.2,
+  "freq" : 0.1,
+  "numberOfItems" : 33
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:51:06",
+  "upper" : "13:51:44",
+  "cumulfreq" : 52.3,
+  "freq" : 0.1,
+  "numberOfItems" : 39
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:51:45",
+  "upper" : "13:52:24",
+  "cumulfreq" : 52.4,
+  "freq" : 0.1,
+  "numberOfItems" : 40
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:52:25",
+  "upper" : "13:53:00",
+  "cumulfreq" : 52.5,
+  "freq" : 0.1,
+  "numberOfItems" : 36
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:53:01",
+  "upper" : "13:53:38",
+  "cumulfreq" : 52.6,
+  "freq" : 0.1,
+  "numberOfItems" : 38
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:53:39",
+  "upper" : "13:54:17",
+  "cumulfreq" : 52.7,
+  "freq" : 0.1,
+  "numberOfItems" : 39
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:54:18",
+  "upper" : "13:54:53",
+  "cumulfreq" : 52.8,
+  "freq" : 0.1,
+  "numberOfItems" : 36
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:54:54",
+  "upper" : "13:55:31",
+  "cumulfreq" : 52.9,
+  "freq" : 0.1,
+  "numberOfItems" : 38
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:55:32",
+  "upper" : "13:56:06",
+  "cumulfreq" : 53.0,
+  "freq" : 0.1,
+  "numberOfItems" : 35
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:56:07",
+  "upper" : "13:56:40",
+  "cumulfreq" : 53.1,
+  "freq" : 0.1,
+  "numberOfItems" : 34
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:56:41",
+  "upper" : "13:57:11",
+  "cumulfreq" : 53.2,
+  "freq" : 0.1,
+  "numberOfItems" : 31
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:57:12",
+  "upper" : "13:57:46",
+  "cumulfreq" : 53.3,
+  "freq" : 0.1,
+  "numberOfItems" : 35
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:57:47",
+  "upper" : "13:58:17",
+  "cumulfreq" : 53.4,
+  "freq" : 0.1,
+  "numberOfItems" : 31
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:58:18",
+  "upper" : "13:58:49",
+  "cumulfreq" : 53.5,
+  "freq" : 0.1,
+  "numberOfItems" : 32
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:58:50",
+  "upper" : "13:59:20",
+  "cumulfreq" : 53.6,
+  "freq" : 0.1,
+  "numberOfItems" : 31
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:59:21",
+  "upper" : "13:59:52",
+  "cumulfreq" : 53.7,
+  "freq" : 0.1,
+  "numberOfItems" : 32
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "13:59:53",
+  "upper" : "14:00:25",
+  "cumulfreq" : 53.8,
+  "freq" : 0.1,
+  "numberOfItems" : 33
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:00:26",
+  "upper" : "14:00:58",
+  "cumulfreq" : 53.9,
+  "freq" : 0.1,
+  "numberOfItems" : 33
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:00:59",
+  "upper" : "14:01:31",
+  "cumulfreq" : 54.0,
+  "freq" : 0.1,
+  "numberOfItems" : 33
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:01:32",
+  "upper" : "14:02:01",
+  "cumulfreq" : 54.1,
+  "freq" : 0.1,
+  "numberOfItems" : 30
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:02:02",
+  "upper" : "14:02:36",
+  "cumulfreq" : 54.2,
+  "freq" : 0.1,
+  "numberOfItems" : 35
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:02:37",
+  "upper" : "14:03:10",
+  "cumulfreq" : 54.3,
+  "freq" : 0.1,
+  "numberOfItems" : 34
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:03:11",
+  "upper" : "14:03:42",
+  "cumulfreq" : 54.4,
+  "freq" : 0.1,
+  "numberOfItems" : 32
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:03:43",
+  "upper" : "14:04:17",
+  "cumulfreq" : 54.5,
+  "freq" : 0.1,
+  "numberOfItems" : 35
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:04:18",
+  "upper" : "14:04:59",
+  "cumulfreq" : 54.6,
+  "freq" : 0.1,
+  "numberOfItems" : 42
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:05:00",
+  "upper" : "14:05:33",
+  "cumulfreq" : 54.7,
+  "freq" : 0.1,
+  "numberOfItems" : 34
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:05:34",
+  "upper" : "14:06:14",
+  "cumulfreq" : 54.8,
+  "freq" : 0.1,
+  "numberOfItems" : 41
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:06:15",
+  "upper" : "14:06:53",
+  "cumulfreq" : 54.9,
+  "freq" : 0.1,
+  "numberOfItems" : 39
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:06:54",
+  "upper" : "14:07:35",
+  "cumulfreq" : 55.0,
+  "freq" : 0.1,
+  "numberOfItems" : 42
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:07:36",
+  "upper" : "14:08:19",
+  "cumulfreq" : 55.1,
+  "freq" : 0.1,
+  "numberOfItems" : 44
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:08:20",
+  "upper" : "14:09:06",
+  "cumulfreq" : 55.2,
+  "freq" : 0.1,
+  "numberOfItems" : 47
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:09:07",
+  "upper" : "14:09:49",
+  "cumulfreq" : 55.3,
+  "freq" : 0.1,
+  "numberOfItems" : 43
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:09:50",
+  "upper" : "14:10:34",
+  "cumulfreq" : 55.4,
+  "freq" : 0.1,
+  "numberOfItems" : 45
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:10:35",
+  "upper" : "14:11:16",
+  "cumulfreq" : 55.5,
+  "freq" : 0.1,
+  "numberOfItems" : 42
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:11:17",
+  "upper" : "14:11:59",
+  "cumulfreq" : 55.6,
+  "freq" : 0.1,
+  "numberOfItems" : 43
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:12:00",
+  "upper" : "14:12:43",
+  "cumulfreq" : 55.7,
+  "freq" : 0.1,
+  "numberOfItems" : 44
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:12:44",
+  "upper" : "14:13:28",
+  "cumulfreq" : 55.8,
+  "freq" : 0.1,
+  "numberOfItems" : 45
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:13:29",
+  "upper" : "14:14:17",
+  "cumulfreq" : 55.9,
+  "freq" : 0.1,
+  "numberOfItems" : 48
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:14:18",
+  "upper" : "14:15:03",
+  "cumulfreq" : 56.0,
+  "freq" : 0.1,
+  "numberOfItems" : 46
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:15:04",
+  "upper" : "14:15:49",
+  "cumulfreq" : 56.1,
+  "freq" : 0.1,
+  "numberOfItems" : 46
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:15:50",
+  "upper" : "14:16:36",
+  "cumulfreq" : 56.2,
+  "freq" : 0.1,
+  "numberOfItems" : 47
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:16:37",
+  "upper" : "14:17:24",
+  "cumulfreq" : 56.2,
+  "freq" : 0.1,
+  "numberOfItems" : 48
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:17:25",
+  "upper" : "14:18:08",
+  "cumulfreq" : 56.3,
+  "freq" : 0.1,
+  "numberOfItems" : 44
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:18:09",
+  "upper" : "14:18:53",
+  "cumulfreq" : 56.4,
+  "freq" : 0.1,
+  "numberOfItems" : 45
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:18:54",
+  "upper" : "14:19:38",
+  "cumulfreq" : 56.5,
+  "freq" : 0.1,
+  "numberOfItems" : 45
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:19:39",
+  "upper" : "14:20:23",
+  "cumulfreq" : 56.6,
+  "freq" : 0.1,
+  "numberOfItems" : 45
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:20:24",
+  "upper" : "14:21:04",
+  "cumulfreq" : 56.7,
+  "freq" : 0.1,
+  "numberOfItems" : 41
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:21:05",
+  "upper" : "14:21:49",
+  "cumulfreq" : 56.8,
+  "freq" : 0.1,
+  "numberOfItems" : 45
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:21:50",
+  "upper" : "14:22:33",
+  "cumulfreq" : 56.9,
+  "freq" : 0.1,
+  "numberOfItems" : 44
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:22:34",
+  "upper" : "14:23:16",
+  "cumulfreq" : 57.0,
+  "freq" : 0.1,
+  "numberOfItems" : 43
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:23:17",
+  "upper" : "14:24:01",
+  "cumulfreq" : 57.1,
+  "freq" : 0.1,
+  "numberOfItems" : 45
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:24:02",
+  "upper" : "14:24:48",
+  "cumulfreq" : 57.2,
+  "freq" : 0.1,
+  "numberOfItems" : 47
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:24:49",
+  "upper" : "14:25:34",
+  "cumulfreq" : 57.3,
+  "freq" : 0.1,
+  "numberOfItems" : 46
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:25:35",
+  "upper" : "14:26:19",
+  "cumulfreq" : 57.4,
+  "freq" : 0.1,
+  "numberOfItems" : 45
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:26:20",
+  "upper" : "14:27:03",
+  "cumulfreq" : 57.5,
+  "freq" : 0.1,
+  "numberOfItems" : 44
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:27:04",
+  "upper" : "14:27:50",
+  "cumulfreq" : 57.6,
+  "freq" : 0.1,
+  "numberOfItems" : 47
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:27:51",
+  "upper" : "14:28:34",
+  "cumulfreq" : 57.7,
+  "freq" : 0.1,
+  "numberOfItems" : 44
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:28:35",
+  "upper" : "14:29:15",
+  "cumulfreq" : 57.8,
+  "freq" : 0.1,
+  "numberOfItems" : 41
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:29:16",
+  "upper" : "14:29:58",
+  "cumulfreq" : 57.9,
+  "freq" : 0.1,
+  "numberOfItems" : 43
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:29:59",
+  "upper" : "14:30:41",
+  "cumulfreq" : 58.0,
+  "freq" : 0.1,
+  "numberOfItems" : 43
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:30:42",
+  "upper" : "14:31:23",
+  "cumulfreq" : 58.1,
+  "freq" : 0.1,
+  "numberOfItems" : 42
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:31:24",
+  "upper" : "14:32:06",
+  "cumulfreq" : 58.2,
+  "freq" : 0.1,
+  "numberOfItems" : 43
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:32:07",
+  "upper" : "14:32:52",
+  "cumulfreq" : 58.3,
+  "freq" : 0.1,
+  "numberOfItems" : 46
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:32:53",
+  "upper" : "14:33:37",
+  "cumulfreq" : 58.4,
+  "freq" : 0.1,
+  "numberOfItems" : 45
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:33:38",
+  "upper" : "14:34:22",
+  "cumulfreq" : 58.5,
+  "freq" : 0.1,
+  "numberOfItems" : 45
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:34:23",
+  "upper" : "14:35:09",
+  "cumulfreq" : 58.6,
+  "freq" : 0.1,
+  "numberOfItems" : 47
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:35:10",
+  "upper" : "14:35:59",
+  "cumulfreq" : 58.7,
+  "freq" : 0.1,
+  "numberOfItems" : 50
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:36:00",
+  "upper" : "14:36:42",
+  "cumulfreq" : 58.8,
+  "freq" : 0.1,
+  "numberOfItems" : 43
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:36:43",
+  "upper" : "14:37:27",
+  "cumulfreq" : 58.9,
+  "freq" : 0.1,
+  "numberOfItems" : 45
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:37:28",
+  "upper" : "14:38:15",
+  "cumulfreq" : 59.0,
+  "freq" : 0.1,
+  "numberOfItems" : 48
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:38:16",
+  "upper" : "14:39:02",
+  "cumulfreq" : 59.1,
+  "freq" : 0.1,
+  "numberOfItems" : 47
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:39:03",
+  "upper" : "14:39:49",
+  "cumulfreq" : 59.2,
+  "freq" : 0.1,
+  "numberOfItems" : 47
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:39:50",
+  "upper" : "14:40:35",
+  "cumulfreq" : 59.3,
+  "freq" : 0.1,
+  "numberOfItems" : 46
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:40:36",
+  "upper" : "14:41:21",
+  "cumulfreq" : 59.4,
+  "freq" : 0.1,
+  "numberOfItems" : 46
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:41:22",
+  "upper" : "14:42:05",
+  "cumulfreq" : 59.5,
+  "freq" : 0.1,
+  "numberOfItems" : 44
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:42:06",
+  "upper" : "14:42:53",
+  "cumulfreq" : 59.6,
+  "freq" : 0.1,
+  "numberOfItems" : 48
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:42:54",
+  "upper" : "14:43:39",
+  "cumulfreq" : 59.7,
+  "freq" : 0.1,
+  "numberOfItems" : 46
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:43:40",
+  "upper" : "14:44:29",
+  "cumulfreq" : 59.8,
+  "freq" : 0.1,
+  "numberOfItems" : 50
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:44:30",
+  "upper" : "14:45:13",
+  "cumulfreq" : 59.9,
+  "freq" : 0.1,
+  "numberOfItems" : 44
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:45:14",
+  "upper" : "14:45:59",
+  "cumulfreq" : 60.0,
+  "freq" : 0.1,
+  "numberOfItems" : 46
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:46:00",
+  "upper" : "14:46:42",
+  "cumulfreq" : 60.1,
+  "freq" : 0.1,
+  "numberOfItems" : 43
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:46:43",
+  "upper" : "14:47:25",
+  "cumulfreq" : 60.2,
+  "freq" : 0.1,
+  "numberOfItems" : 43
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:47:26",
+  "upper" : "14:48:03",
+  "cumulfreq" : 60.3,
+  "freq" : 0.1,
+  "numberOfItems" : 38
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:48:04",
+  "upper" : "14:48:44",
+  "cumulfreq" : 60.4,
+  "freq" : 0.1,
+  "numberOfItems" : 41
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:48:45",
+  "upper" : "14:49:28",
+  "cumulfreq" : 60.4,
+  "freq" : 0.1,
+  "numberOfItems" : 44
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:49:29",
+  "upper" : "14:50:11",
+  "cumulfreq" : 60.5,
+  "freq" : 0.1,
+  "numberOfItems" : 43
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:50:12",
+  "upper" : "14:50:54",
+  "cumulfreq" : 60.6,
+  "freq" : 0.1,
+  "numberOfItems" : 43
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:50:55",
+  "upper" : "14:51:37",
+  "cumulfreq" : 60.7,
+  "freq" : 0.1,
+  "numberOfItems" : 43
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:51:38",
+  "upper" : "14:52:17",
+  "cumulfreq" : 60.8,
+  "freq" : 0.1,
+  "numberOfItems" : 40
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:52:18",
+  "upper" : "14:52:57",
+  "cumulfreq" : 60.9,
+  "freq" : 0.1,
+  "numberOfItems" : 40
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:52:58",
+  "upper" : "14:53:40",
+  "cumulfreq" : 61.0,
+  "freq" : 0.1,
+  "numberOfItems" : 43
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:53:41",
+  "upper" : "14:54:19",
+  "cumulfreq" : 61.1,
+  "freq" : 0.1,
+  "numberOfItems" : 39
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:54:20",
+  "upper" : "14:55:00",
+  "cumulfreq" : 61.2,
+  "freq" : 0.1,
+  "numberOfItems" : 41
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:55:01",
+  "upper" : "14:55:39",
+  "cumulfreq" : 61.3,
+  "freq" : 0.1,
+  "numberOfItems" : 39
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:55:40",
+  "upper" : "14:56:21",
+  "cumulfreq" : 61.4,
+  "freq" : 0.1,
+  "numberOfItems" : 42
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:56:22",
+  "upper" : "14:56:58",
+  "cumulfreq" : 61.5,
+  "freq" : 0.1,
+  "numberOfItems" : 37
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:56:59",
+  "upper" : "14:57:40",
+  "cumulfreq" : 61.6,
+  "freq" : 0.1,
+  "numberOfItems" : 42
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:57:41",
+  "upper" : "14:58:18",
+  "cumulfreq" : 61.7,
+  "freq" : 0.1,
+  "numberOfItems" : 38
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:58:19",
+  "upper" : "14:58:56",
+  "cumulfreq" : 61.8,
+  "freq" : 0.1,
+  "numberOfItems" : 38
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:58:57",
+  "upper" : "14:59:35",
+  "cumulfreq" : 61.9,
+  "freq" : 0.1,
+  "numberOfItems" : 39
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "14:59:36",
+  "upper" : "15:00:12",
+  "cumulfreq" : 62.0,
+  "freq" : 0.1,
+  "numberOfItems" : 37
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:00:13",
+  "upper" : "15:00:48",
+  "cumulfreq" : 62.1,
+  "freq" : 0.1,
+  "numberOfItems" : 36
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:00:49",
+  "upper" : "15:01:24",
+  "cumulfreq" : 62.2,
+  "freq" : 0.1,
+  "numberOfItems" : 36
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:01:25",
+  "upper" : "15:02:02",
+  "cumulfreq" : 62.3,
+  "freq" : 0.1,
+  "numberOfItems" : 38
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:02:03",
+  "upper" : "15:02:42",
+  "cumulfreq" : 62.4,
+  "freq" : 0.1,
+  "numberOfItems" : 40
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:02:43",
+  "upper" : "15:03:22",
+  "cumulfreq" : 62.5,
+  "freq" : 0.1,
+  "numberOfItems" : 40
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:03:23",
+  "upper" : "15:04:03",
+  "cumulfreq" : 62.6,
+  "freq" : 0.1,
+  "numberOfItems" : 41
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:04:04",
+  "upper" : "15:04:43",
+  "cumulfreq" : 62.7,
+  "freq" : 0.1,
+  "numberOfItems" : 40
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:04:44",
+  "upper" : "15:05:27",
+  "cumulfreq" : 62.8,
+  "freq" : 0.1,
+  "numberOfItems" : 43
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:05:28",
+  "upper" : "15:06:08",
+  "cumulfreq" : 62.9,
+  "freq" : 0.1,
+  "numberOfItems" : 41
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:06:09",
+  "upper" : "15:06:50",
+  "cumulfreq" : 63.0,
+  "freq" : 0.1,
+  "numberOfItems" : 42
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:06:51",
+  "upper" : "15:07:29",
+  "cumulfreq" : 63.1,
+  "freq" : 0.1,
+  "numberOfItems" : 39
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:07:30",
+  "upper" : "15:08:11",
+  "cumulfreq" : 63.2,
+  "freq" : 0.1,
+  "numberOfItems" : 42
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:08:12",
+  "upper" : "15:08:59",
+  "cumulfreq" : 63.3,
+  "freq" : 0.1,
+  "numberOfItems" : 48
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:09:00",
+  "upper" : "15:09:42",
+  "cumulfreq" : 63.4,
+  "freq" : 0.1,
+  "numberOfItems" : 43
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:09:43",
+  "upper" : "15:10:23",
+  "cumulfreq" : 63.5,
+  "freq" : 0.1,
+  "numberOfItems" : 41
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:10:24",
+  "upper" : "15:11:03",
+  "cumulfreq" : 63.6,
+  "freq" : 0.1,
+  "numberOfItems" : 40
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:11:04",
+  "upper" : "15:11:48",
+  "cumulfreq" : 63.7,
+  "freq" : 0.1,
+  "numberOfItems" : 45
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:11:49",
+  "upper" : "15:12:33",
+  "cumulfreq" : 63.8,
+  "freq" : 0.1,
+  "numberOfItems" : 45
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:12:34",
+  "upper" : "15:13:20",
+  "cumulfreq" : 63.9,
+  "freq" : 0.1,
+  "numberOfItems" : 47
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:13:21",
+  "upper" : "15:14:09",
+  "cumulfreq" : 64.0,
+  "freq" : 0.1,
+  "numberOfItems" : 49
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:14:10",
+  "upper" : "15:14:52",
+  "cumulfreq" : 64.1,
+  "freq" : 0.1,
+  "numberOfItems" : 43
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:14:53",
+  "upper" : "15:15:34",
+  "cumulfreq" : 64.2,
+  "freq" : 0.1,
+  "numberOfItems" : 42
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:15:35",
+  "upper" : "15:16:17",
+  "cumulfreq" : 64.3,
+  "freq" : 0.1,
+  "numberOfItems" : 43
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:16:18",
+  "upper" : "15:17:00",
+  "cumulfreq" : 64.4,
+  "freq" : 0.1,
+  "numberOfItems" : 43
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:17:01",
+  "upper" : "15:17:47",
+  "cumulfreq" : 64.5,
+  "freq" : 0.1,
+  "numberOfItems" : 47
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:17:48",
+  "upper" : "15:18:35",
+  "cumulfreq" : 64.6,
+  "freq" : 0.1,
+  "numberOfItems" : 48
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:18:36",
+  "upper" : "15:19:17",
+  "cumulfreq" : 64.6,
+  "freq" : 0.1,
+  "numberOfItems" : 42
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:19:18",
+  "upper" : "15:20:09",
+  "cumulfreq" : 64.7,
+  "freq" : 0.1,
+  "numberOfItems" : 52
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:20:10",
+  "upper" : "15:20:52",
+  "cumulfreq" : 64.8,
+  "freq" : 0.1,
+  "numberOfItems" : 43
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:20:53",
+  "upper" : "15:21:36",
+  "cumulfreq" : 64.9,
+  "freq" : 0.1,
+  "numberOfItems" : 44
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:21:37",
+  "upper" : "15:22:24",
+  "cumulfreq" : 65.0,
+  "freq" : 0.1,
+  "numberOfItems" : 48
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:22:25",
+  "upper" : "15:23:04",
+  "cumulfreq" : 65.1,
+  "freq" : 0.1,
+  "numberOfItems" : 40
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:23:05",
+  "upper" : "15:23:47",
+  "cumulfreq" : 65.2,
+  "freq" : 0.1,
+  "numberOfItems" : 43
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:23:48",
+  "upper" : "15:24:32",
+  "cumulfreq" : 65.3,
+  "freq" : 0.1,
+  "numberOfItems" : 45
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:24:33",
+  "upper" : "15:25:17",
+  "cumulfreq" : 65.4,
+  "freq" : 0.1,
+  "numberOfItems" : 45
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:25:18",
+  "upper" : "15:26:00",
+  "cumulfreq" : 65.5,
+  "freq" : 0.1,
+  "numberOfItems" : 43
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:26:01",
+  "upper" : "15:26:43",
+  "cumulfreq" : 65.6,
+  "freq" : 0.1,
+  "numberOfItems" : 43
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:26:44",
+  "upper" : "15:27:22",
+  "cumulfreq" : 65.7,
+  "freq" : 0.1,
+  "numberOfItems" : 39
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:27:23",
+  "upper" : "15:28:06",
+  "cumulfreq" : 65.8,
+  "freq" : 0.1,
+  "numberOfItems" : 44
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:28:07",
+  "upper" : "15:28:48",
+  "cumulfreq" : 65.9,
+  "freq" : 0.1,
+  "numberOfItems" : 42
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:28:49",
+  "upper" : "15:29:30",
+  "cumulfreq" : 66.0,
+  "freq" : 0.1,
+  "numberOfItems" : 42
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:29:31",
+  "upper" : "15:30:08",
+  "cumulfreq" : 66.1,
+  "freq" : 0.1,
+  "numberOfItems" : 38
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:30:09",
+  "upper" : "15:30:47",
+  "cumulfreq" : 66.2,
+  "freq" : 0.1,
+  "numberOfItems" : 39
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:30:48",
+  "upper" : "15:31:22",
+  "cumulfreq" : 66.3,
+  "freq" : 0.1,
+  "numberOfItems" : 35
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:31:23",
+  "upper" : "15:32:02",
+  "cumulfreq" : 66.4,
+  "freq" : 0.1,
+  "numberOfItems" : 40
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:32:03",
+  "upper" : "15:32:43",
+  "cumulfreq" : 66.5,
+  "freq" : 0.1,
+  "numberOfItems" : 41
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:32:44",
+  "upper" : "15:33:23",
+  "cumulfreq" : 66.6,
+  "freq" : 0.1,
+  "numberOfItems" : 40
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:33:24",
+  "upper" : "15:34:09",
+  "cumulfreq" : 66.7,
+  "freq" : 0.1,
+  "numberOfItems" : 46
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:34:10",
+  "upper" : "15:34:57",
+  "cumulfreq" : 66.8,
+  "freq" : 0.1,
+  "numberOfItems" : 48
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:34:58",
+  "upper" : "15:35:44",
+  "cumulfreq" : 66.9,
+  "freq" : 0.1,
+  "numberOfItems" : 47
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:35:45",
+  "upper" : "15:36:26",
+  "cumulfreq" : 67.0,
+  "freq" : 0.1,
+  "numberOfItems" : 42
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:36:27",
+  "upper" : "15:37:13",
+  "cumulfreq" : 67.1,
+  "freq" : 0.1,
+  "numberOfItems" : 47
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:37:14",
+  "upper" : "15:37:57",
+  "cumulfreq" : 67.2,
+  "freq" : 0.1,
+  "numberOfItems" : 44
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:37:58",
+  "upper" : "15:38:41",
+  "cumulfreq" : 67.3,
+  "freq" : 0.1,
+  "numberOfItems" : 44
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:38:42",
+  "upper" : "15:39:30",
+  "cumulfreq" : 67.4,
+  "freq" : 0.1,
+  "numberOfItems" : 49
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:39:31",
+  "upper" : "15:40:18",
+  "cumulfreq" : 67.5,
+  "freq" : 0.1,
+  "numberOfItems" : 48
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:40:19",
+  "upper" : "15:41:05",
+  "cumulfreq" : 67.6,
+  "freq" : 0.1,
+  "numberOfItems" : 47
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:41:06",
+  "upper" : "15:41:54",
+  "cumulfreq" : 67.7,
+  "freq" : 0.1,
+  "numberOfItems" : 49
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:41:55",
+  "upper" : "15:42:46",
+  "cumulfreq" : 67.8,
+  "freq" : 0.1,
+  "numberOfItems" : 52
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:42:47",
+  "upper" : "15:43:36",
+  "cumulfreq" : 67.9,
+  "freq" : 0.1,
+  "numberOfItems" : 50
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:43:37",
+  "upper" : "15:44:26",
+  "cumulfreq" : 68.0,
+  "freq" : 0.1,
+  "numberOfItems" : 50
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:44:27",
+  "upper" : "15:45:15",
+  "cumulfreq" : 68.1,
+  "freq" : 0.1,
+  "numberOfItems" : 49
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:45:16",
+  "upper" : "15:46:02",
+  "cumulfreq" : 68.2,
+  "freq" : 0.1,
+  "numberOfItems" : 47
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:46:03",
+  "upper" : "15:46:49",
+  "cumulfreq" : 68.3,
+  "freq" : 0.1,
+  "numberOfItems" : 47
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:46:50",
+  "upper" : "15:47:37",
+  "cumulfreq" : 68.4,
+  "freq" : 0.1,
+  "numberOfItems" : 48
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:47:38",
+  "upper" : "15:48:22",
+  "cumulfreq" : 68.5,
+  "freq" : 0.1,
+  "numberOfItems" : 45
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:48:23",
+  "upper" : "15:49:05",
+  "cumulfreq" : 68.6,
+  "freq" : 0.1,
+  "numberOfItems" : 43
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:49:06",
+  "upper" : "15:49:51",
+  "cumulfreq" : 68.7,
+  "freq" : 0.1,
+  "numberOfItems" : 46
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:49:52",
+  "upper" : "15:50:35",
+  "cumulfreq" : 68.8,
+  "freq" : 0.1,
+  "numberOfItems" : 44
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:50:36",
+  "upper" : "15:51:17",
+  "cumulfreq" : 68.8,
+  "freq" : 0.1,
+  "numberOfItems" : 42
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:51:18",
+  "upper" : "15:52:04",
+  "cumulfreq" : 68.9,
+  "freq" : 0.1,
+  "numberOfItems" : 47
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:52:05",
+  "upper" : "15:52:42",
+  "cumulfreq" : 69.0,
+  "freq" : 0.1,
+  "numberOfItems" : 38
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:52:43",
+  "upper" : "15:53:21",
+  "cumulfreq" : 69.1,
+  "freq" : 0.1,
+  "numberOfItems" : 39
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:53:22",
+  "upper" : "15:54:01",
+  "cumulfreq" : 69.2,
+  "freq" : 0.1,
+  "numberOfItems" : 40
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:54:02",
+  "upper" : "15:54:40",
+  "cumulfreq" : 69.3,
+  "freq" : 0.1,
+  "numberOfItems" : 39
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:54:41",
+  "upper" : "15:55:19",
+  "cumulfreq" : 69.4,
+  "freq" : 0.1,
+  "numberOfItems" : 39
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:55:20",
+  "upper" : "15:55:59",
+  "cumulfreq" : 69.5,
+  "freq" : 0.1,
+  "numberOfItems" : 40
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:56:00",
+  "upper" : "15:56:38",
+  "cumulfreq" : 69.6,
+  "freq" : 0.1,
+  "numberOfItems" : 39
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:56:39",
+  "upper" : "15:57:14",
+  "cumulfreq" : 69.7,
+  "freq" : 0.1,
+  "numberOfItems" : 36
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:57:15",
+  "upper" : "15:57:50",
+  "cumulfreq" : 69.8,
+  "freq" : 0.1,
+  "numberOfItems" : 36
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:57:51",
+  "upper" : "15:58:29",
+  "cumulfreq" : 69.9,
+  "freq" : 0.1,
+  "numberOfItems" : 39
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:58:30",
+  "upper" : "15:59:10",
+  "cumulfreq" : 70.0,
+  "freq" : 0.1,
+  "numberOfItems" : 41
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:59:11",
+  "upper" : "15:59:47",
+  "cumulfreq" : 70.1,
+  "freq" : 0.1,
+  "numberOfItems" : 37
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "15:59:48",
+  "upper" : "16:00:24",
+  "cumulfreq" : 70.2,
+  "freq" : 0.1,
+  "numberOfItems" : 37
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:00:25",
+  "upper" : "16:01:02",
+  "cumulfreq" : 70.3,
+  "freq" : 0.1,
+  "numberOfItems" : 38
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:01:03",
+  "upper" : "16:01:41",
+  "cumulfreq" : 70.4,
+  "freq" : 0.1,
+  "numberOfItems" : 39
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:01:42",
+  "upper" : "16:02:24",
+  "cumulfreq" : 70.5,
+  "freq" : 0.1,
+  "numberOfItems" : 43
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:02:25",
+  "upper" : "16:03:06",
+  "cumulfreq" : 70.6,
+  "freq" : 0.1,
+  "numberOfItems" : 42
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:03:07",
+  "upper" : "16:03:50",
+  "cumulfreq" : 70.7,
+  "freq" : 0.1,
+  "numberOfItems" : 44
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:03:51",
+  "upper" : "16:04:34",
+  "cumulfreq" : 70.8,
+  "freq" : 0.1,
+  "numberOfItems" : 44
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:04:35",
+  "upper" : "16:05:16",
+  "cumulfreq" : 70.9,
+  "freq" : 0.1,
+  "numberOfItems" : 42
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:05:17",
+  "upper" : "16:06:04",
+  "cumulfreq" : 71.0,
+  "freq" : 0.1,
+  "numberOfItems" : 48
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:06:05",
+  "upper" : "16:06:51",
+  "cumulfreq" : 71.1,
+  "freq" : 0.1,
+  "numberOfItems" : 47
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:06:52",
+  "upper" : "16:07:39",
+  "cumulfreq" : 71.2,
+  "freq" : 0.1,
+  "numberOfItems" : 48
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:07:40",
+  "upper" : "16:08:31",
+  "cumulfreq" : 71.3,
+  "freq" : 0.1,
+  "numberOfItems" : 52
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:08:32",
+  "upper" : "16:09:16",
+  "cumulfreq" : 71.4,
+  "freq" : 0.1,
+  "numberOfItems" : 45
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:09:17",
+  "upper" : "16:10:06",
+  "cumulfreq" : 71.5,
+  "freq" : 0.1,
+  "numberOfItems" : 50
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:10:07",
+  "upper" : "16:11:00",
+  "cumulfreq" : 71.6,
+  "freq" : 0.1,
+  "numberOfItems" : 54
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:11:01",
+  "upper" : "16:11:50",
+  "cumulfreq" : 71.7,
+  "freq" : 0.1,
+  "numberOfItems" : 50
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:11:51",
+  "upper" : "16:12:40",
+  "cumulfreq" : 71.8,
+  "freq" : 0.1,
+  "numberOfItems" : 50
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:12:41",
+  "upper" : "16:13:31",
+  "cumulfreq" : 71.9,
+  "freq" : 0.1,
+  "numberOfItems" : 51
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:13:32",
+  "upper" : "16:14:21",
+  "cumulfreq" : 72.0,
+  "freq" : 0.1,
+  "numberOfItems" : 50
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:14:22",
+  "upper" : "16:15:14",
+  "cumulfreq" : 72.1,
+  "freq" : 0.1,
+  "numberOfItems" : 53
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:15:15",
+  "upper" : "16:16:04",
+  "cumulfreq" : 72.2,
+  "freq" : 0.1,
+  "numberOfItems" : 50
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:16:05",
+  "upper" : "16:16:57",
+  "cumulfreq" : 72.3,
+  "freq" : 0.1,
+  "numberOfItems" : 53
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:16:58",
+  "upper" : "16:17:47",
+  "cumulfreq" : 72.4,
+  "freq" : 0.1,
+  "numberOfItems" : 50
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:17:48",
+  "upper" : "16:18:40",
+  "cumulfreq" : 72.5,
+  "freq" : 0.1,
+  "numberOfItems" : 53
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:18:41",
+  "upper" : "16:19:32",
+  "cumulfreq" : 72.6,
+  "freq" : 0.1,
+  "numberOfItems" : 52
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:19:33",
+  "upper" : "16:20:28",
+  "cumulfreq" : 72.7,
+  "freq" : 0.1,
+  "numberOfItems" : 55
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:20:29",
+  "upper" : "16:21:25",
+  "cumulfreq" : 72.8,
+  "freq" : 0.1,
+  "numberOfItems" : 57
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:21:26",
+  "upper" : "16:22:18",
+  "cumulfreq" : 72.9,
+  "freq" : 0.1,
+  "numberOfItems" : 53
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:22:19",
+  "upper" : "16:23:15",
+  "cumulfreq" : 72.9,
+  "freq" : 0.1,
+  "numberOfItems" : 56
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:23:16",
+  "upper" : "16:24:09",
+  "cumulfreq" : 73.0,
+  "freq" : 0.1,
+  "numberOfItems" : 54
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:24:10",
+  "upper" : "16:25:03",
+  "cumulfreq" : 73.1,
+  "freq" : 0.1,
+  "numberOfItems" : 54
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:25:04",
+  "upper" : "16:25:59",
+  "cumulfreq" : 73.2,
+  "freq" : 0.1,
+  "numberOfItems" : 56
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:26:00",
+  "upper" : "16:26:53",
+  "cumulfreq" : 73.3,
+  "freq" : 0.1,
+  "numberOfItems" : 54
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:26:54",
+  "upper" : "16:27:44",
+  "cumulfreq" : 73.4,
+  "freq" : 0.1,
+  "numberOfItems" : 51
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:27:45",
+  "upper" : "16:28:34",
+  "cumulfreq" : 73.5,
+  "freq" : 0.1,
+  "numberOfItems" : 50
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:28:35",
+  "upper" : "16:29:28",
+  "cumulfreq" : 73.6,
+  "freq" : 0.1,
+  "numberOfItems" : 54
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:29:29",
+  "upper" : "16:30:21",
+  "cumulfreq" : 73.7,
+  "freq" : 0.1,
+  "numberOfItems" : 52
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:30:22",
+  "upper" : "16:31:10",
+  "cumulfreq" : 73.8,
+  "freq" : 0.1,
+  "numberOfItems" : 49
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:31:11",
+  "upper" : "16:32:02",
+  "cumulfreq" : 73.9,
+  "freq" : 0.1,
+  "numberOfItems" : 52
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:32:03",
+  "upper" : "16:32:58",
+  "cumulfreq" : 74.0,
+  "freq" : 0.1,
+  "numberOfItems" : 56
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:32:59",
+  "upper" : "16:33:51",
+  "cumulfreq" : 74.1,
+  "freq" : 0.1,
+  "numberOfItems" : 53
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:33:52",
+  "upper" : "16:34:38",
+  "cumulfreq" : 74.2,
+  "freq" : 0.1,
+  "numberOfItems" : 47
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:34:39",
+  "upper" : "16:35:32",
+  "cumulfreq" : 74.3,
+  "freq" : 0.1,
+  "numberOfItems" : 54
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:35:33",
+  "upper" : "16:36:22",
+  "cumulfreq" : 74.4,
+  "freq" : 0.1,
+  "numberOfItems" : 50
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:36:23",
+  "upper" : "16:37:18",
+  "cumulfreq" : 74.5,
+  "freq" : 0.1,
+  "numberOfItems" : 56
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:37:19",
+  "upper" : "16:38:09",
+  "cumulfreq" : 74.6,
+  "freq" : 0.1,
+  "numberOfItems" : 51
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:38:10",
+  "upper" : "16:38:59",
+  "cumulfreq" : 74.7,
+  "freq" : 0.1,
+  "numberOfItems" : 50
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:39:00",
+  "upper" : "16:39:51",
+  "cumulfreq" : 74.8,
+  "freq" : 0.1,
+  "numberOfItems" : 52
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:39:52",
+  "upper" : "16:40:41",
+  "cumulfreq" : 74.9,
+  "freq" : 0.1,
+  "numberOfItems" : 50
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:40:42",
+  "upper" : "16:41:29",
+  "cumulfreq" : 75.0,
+  "freq" : 0.1,
+  "numberOfItems" : 48
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:41:30",
+  "upper" : "16:42:25",
+  "cumulfreq" : 75.1,
+  "freq" : 0.1,
+  "numberOfItems" : 56
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:42:26",
+  "upper" : "16:43:19",
+  "cumulfreq" : 75.2,
+  "freq" : 0.1,
+  "numberOfItems" : 54
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:43:20",
+  "upper" : "16:44:14",
+  "cumulfreq" : 75.3,
+  "freq" : 0.1,
+  "numberOfItems" : 55
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:44:15",
+  "upper" : "16:45:08",
+  "cumulfreq" : 75.4,
+  "freq" : 0.1,
+  "numberOfItems" : 54
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:45:09",
+  "upper" : "16:45:58",
+  "cumulfreq" : 75.5,
+  "freq" : 0.1,
+  "numberOfItems" : 50
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:45:59",
+  "upper" : "16:46:48",
+  "cumulfreq" : 75.6,
+  "freq" : 0.1,
+  "numberOfItems" : 50
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:46:49",
+  "upper" : "16:47:41",
+  "cumulfreq" : 75.7,
+  "freq" : 0.1,
+  "numberOfItems" : 53
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:47:42",
+  "upper" : "16:48:31",
+  "cumulfreq" : 75.8,
+  "freq" : 0.1,
+  "numberOfItems" : 50
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:48:32",
+  "upper" : "16:49:22",
+  "cumulfreq" : 75.9,
+  "freq" : 0.1,
+  "numberOfItems" : 51
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:49:23",
+  "upper" : "16:50:17",
+  "cumulfreq" : 76.0,
+  "freq" : 0.1,
+  "numberOfItems" : 55
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:50:18",
+  "upper" : "16:51:03",
+  "cumulfreq" : 76.1,
+  "freq" : 0.1,
+  "numberOfItems" : 46
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:51:04",
+  "upper" : "16:51:51",
+  "cumulfreq" : 76.2,
+  "freq" : 0.1,
+  "numberOfItems" : 48
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:51:52",
+  "upper" : "16:52:34",
+  "cumulfreq" : 76.3,
+  "freq" : 0.1,
+  "numberOfItems" : 43
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:52:35",
+  "upper" : "16:53:15",
+  "cumulfreq" : 76.4,
+  "freq" : 0.1,
+  "numberOfItems" : 41
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:53:16",
+  "upper" : "16:54:03",
+  "cumulfreq" : 76.5,
+  "freq" : 0.1,
+  "numberOfItems" : 48
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:54:04",
+  "upper" : "16:54:45",
+  "cumulfreq" : 76.6,
+  "freq" : 0.1,
+  "numberOfItems" : 42
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:54:46",
+  "upper" : "16:55:29",
+  "cumulfreq" : 76.7,
+  "freq" : 0.1,
+  "numberOfItems" : 44
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:55:30",
+  "upper" : "16:56:14",
+  "cumulfreq" : 76.8,
+  "freq" : 0.1,
+  "numberOfItems" : 45
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:56:15",
+  "upper" : "16:56:59",
+  "cumulfreq" : 76.9,
+  "freq" : 0.1,
+  "numberOfItems" : 45
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:57:00",
+  "upper" : "16:57:47",
+  "cumulfreq" : 77.0,
+  "freq" : 0.1,
+  "numberOfItems" : 48
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:57:48",
+  "upper" : "16:58:31",
+  "cumulfreq" : 77.1,
+  "freq" : 0.1,
+  "numberOfItems" : 44
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:58:32",
+  "upper" : "16:59:21",
+  "cumulfreq" : 77.1,
+  "freq" : 0.1,
+  "numberOfItems" : 50
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "16:59:22",
+  "upper" : "17:00:09",
+  "cumulfreq" : 77.2,
+  "freq" : 0.1,
+  "numberOfItems" : 48
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "17:00:10",
+  "upper" : "17:00:55",
+  "cumulfreq" : 77.3,
+  "freq" : 0.1,
+  "numberOfItems" : 46
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "17:00:56",
+  "upper" : "17:01:39",
+  "cumulfreq" : 77.4,
+  "freq" : 0.1,
+  "numberOfItems" : 44
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "17:01:40",
+  "upper" : "17:02:27",
+  "cumulfreq" : 77.5,
+  "freq" : 0.1,
+  "numberOfItems" : 48
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "17:02:28",
+  "upper" : "17:03:12",
+  "cumulfreq" : 77.6,
+  "freq" : 0.1,
+  "numberOfItems" : 45
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "17:03:13",
+  "upper" : "17:03:58",
+  "cumulfreq" : 77.7,
+  "freq" : 0.1,
+  "numberOfItems" : 46
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "17:03:59",
+  "upper" : "17:04:44",
+  "cumulfreq" : 77.8,
+  "freq" : 0.1,
+  "numberOfItems" : 46
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "17:04:45",
+  "upper" : "17:05:29",
+  "cumulfreq" : 77.9,
+  "freq" : 0.1,
+  "numberOfItems" : 45
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "17:05:30",
+  "upper" : "17:06:16",
+  "cumulfreq" : 78.0,
+  "freq" : 0.1,
+  "numberOfItems" : 47
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "17:06:17",
+  "upper" : "17:07:07",
+  "cumulfreq" : 78.1,
+  "freq" : 0.1,
+  "numberOfItems" : 51
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "17:07:08",
+  "upper" : "17:07:59",
+  "cumulfreq" : 78.2,
+  "freq" : 0.1,
+  "numberOfItems" : 52
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "17:08:00",
+  "upper" : "17:08:49",
+  "cumulfreq" : 78.3,
+  "freq" : 0.1,
+  "numberOfItems" : 50
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "17:08:50",
+  "upper" : "17:09:44",
+  "cumulfreq" : 78.4,
+  "freq" : 0.1,
+  "numberOfItems" : 55
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "17:09:45",
+  "upper" : "17:10:32",
+  "cumulfreq" : 78.5,
+  "freq" : 0.1,
+  "numberOfItems" : 48
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "17:10:33",
+  "upper" : "17:11:29",
+  "cumulfreq" : 78.6,
+  "freq" : 0.1,
+  "numberOfItems" : 57
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "17:11:30",
+  "upper" : "17:12:28",
+  "cumulfreq" : 78.7,
+  "freq" : 0.1,
+  "numberOfItems" : 59
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "17:12:29",
+  "upper" : "17:13:22",
+  "cumulfreq" : 78.8,
+  "freq" : 0.1,
+  "numberOfItems" : 54
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "17:13:23",
+  "upper" : "17:14:18",
+  "cumulfreq" : 78.9,
+  "freq" : 0.1,
+  "numberOfItems" : 56
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "17:14:19",
+  "upper" : "17:15:17",
+  "cumulfreq" : 79.0,
+  "freq" : 0.1,
+  "numberOfItems" : 59
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "17:15:18",
+  "upper" : "17:16:16",
+  "cumulfreq" : 79.1,
+  "freq" : 0.1,
+  "numberOfItems" : 59
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "17:16:17",
+  "upper" : "17:17:16",
+  "cumulfreq" : 79.2,
+  "freq" : 0.1,
+  "numberOfItems" : 60
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "17:17:17",
+  "upper" : "17:18:21",
+  "cumulfreq" : 79.3,
+  "freq" : 0.1,
+  "numberOfItems" : 63
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "17:18:22",
+  "upper" : "17:19:21",
+  "cumulfreq" : 79.4,
+  "freq" : 0.1,
+  "numberOfItems" : 60
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "17:19:22",
+  "upper" : "17:20:21",
+  "cumulfreq" : 79.5,
+  "freq" : 0.1,
+  "numberOfItems" : 60
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "17:20:22",
+  "upper" : "17:21:24",
+  "cumulfreq" : 79.6,
+  "freq" : 0.1,
+  "numberOfItems" : 63
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "17:21:25",
+  "upper" : "17:22:29",
+  "cumulfreq" : 79.7,
+  "freq" : 0.1,
+  "numberOfItems" : 65
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "17:22:30",
+  "upper" : "17:23:36",
+  "cumulfreq" : 79.8,
+  "freq" : 0.1,
+  "numberOfItems" : 66
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "17:23:37",
+  "upper" : "17:24:40",
+  "cumulfreq" : 79.9,
+  "freq" : 0.1,
+  "numberOfItems" : 64
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "17:24:41",
+  "upper" : "17:25:44",
+  "cumulfreq" : 80.0,
+  "freq" : 0.1,
+  "numberOfItems" : 64
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "17:25:45",
+  "upper" : "17:26:48",
+  "cumulfreq" : 80.1,
+  "freq" : 0.1,
+  "numberOfItems" : 64
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "17:26:49",
+  "upper" : "17:27:54",
+  "cumulfreq" : 80.2,
+  "freq" : 0.1,
+  "numberOfItems" : 66
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "17:27:55",
+  "upper" : "17:28:55",
+  "cumulfreq" : 80.3,
+  "freq" : 0.1,
+  "numberOfItems" : 61
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "17:28:56",
+  "upper" : "17:29:59",
+  "cumulfreq" : 80.4,
+  "freq" : 0.1,
+  "numberOfItems" : 63
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "17:30:00",
+  "upper" : "17:31:01",
+  "cumulfreq" : 80.5,
+  "freq" : 0.1,
+  "numberOfItems" : 62
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "17:31:02",
+  "upper" : "17:32:02",
+  "cumulfreq" : 80.6,
+  "freq" : 0.1,
+  "numberOfItems" : 61
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "17:32:03",
+  "upper" : "17:33:10",
+  "cumulfreq" : 80.7,
+  "freq" : 0.1,
+  "numberOfItems" : 68
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "17:33:11",
+  "upper" : "17:34:11",
+  "cumulfreq" : 80.8,
+  "freq" : 0.1,
+  "numberOfItems" : 59
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "17:34:12",
+  "upper" : "17:35:17",
+  "cumulfreq" : 80.9,
+  "freq" : 0.1,
+  "numberOfItems" : 66
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "17:35:18",
+  "upper" : "17:36:29",
+  "cumulfreq" : 81.0,
+  "freq" : 0.1,
+  "numberOfItems" : 71
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "17:36:30",
+  "upper" : "17:37:42",
+  "cumulfreq" : 81.1,
+  "freq" : 0.1,
+  "numberOfItems" : 73
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "17:37:43",
+  "upper" : "17:38:59",
+  "cumulfreq" : 81.2,
+  "freq" : 0.1,
+  "numberOfItems" : 77
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "17:39:00",
+  "upper" : "17:40:08",
+  "cumulfreq" : 81.2,
+  "freq" : 0.1,
+  "numberOfItems" : 68
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "17:40:09",
+  "upper" : "17:41:14",
+  "cumulfreq" : 81.3,
+  "freq" : 0.1,
+  "numberOfItems" : 64
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "17:41:15",
+  "upper" : "17:42:11",
+  "cumulfreq" : 81.4,
+  "freq" : 0.1,
+  "numberOfItems" : 57
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "17:42:12",
+  "upper" : "17:43:15",
+  "cumulfreq" : 81.5,
+  "freq" : 0.1,
+  "numberOfItems" : 64
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "17:43:16",
+  "upper" : "17:44:24",
+  "cumulfreq" : 81.6,
+  "freq" : 0.1,
+  "numberOfItems" : 68
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "17:44:25",
+  "upper" : "17:45:40",
+  "cumulfreq" : 81.7,
+  "freq" : 0.1,
+  "numberOfItems" : 76
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "17:45:41",
+  "upper" : "17:46:47",
+  "cumulfreq" : 81.8,
+  "freq" : 0.1,
+  "numberOfItems" : 67
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "17:46:48",
+  "upper" : "17:47:48",
+  "cumulfreq" : 81.9,
+  "freq" : 0.1,
+  "numberOfItems" : 61
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "17:47:49",
+  "upper" : "17:48:48",
+  "cumulfreq" : 82.0,
+  "freq" : 0.1,
+  "numberOfItems" : 60
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "17:48:49",
+  "upper" : "17:49:55",
+  "cumulfreq" : 82.1,
+  "freq" : 0.1,
+  "numberOfItems" : 67
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "17:49:56",
+  "upper" : "17:50:56",
+  "cumulfreq" : 82.2,
+  "freq" : 0.1,
+  "numberOfItems" : 61
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "17:50:57",
+  "upper" : "17:51:59",
+  "cumulfreq" : 82.3,
+  "freq" : 0.1,
+  "numberOfItems" : 63
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "17:52:00",
+  "upper" : "17:53:07",
+  "cumulfreq" : 82.4,
+  "freq" : 0.1,
+  "numberOfItems" : 68
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "17:53:08",
+  "upper" : "17:54:06",
+  "cumulfreq" : 82.5,
+  "freq" : 0.1,
+  "numberOfItems" : 59
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "17:54:07",
+  "upper" : "17:55:06",
+  "cumulfreq" : 82.6,
+  "freq" : 0.1,
+  "numberOfItems" : 60
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "17:55:07",
+  "upper" : "17:56:05",
+  "cumulfreq" : 82.7,
+  "freq" : 0.1,
+  "numberOfItems" : 59
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "17:56:06",
+  "upper" : "17:57:03",
+  "cumulfreq" : 82.8,
+  "freq" : 0.1,
+  "numberOfItems" : 58
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "17:57:04",
+  "upper" : "17:58:08",
+  "cumulfreq" : 82.9,
+  "freq" : 0.1,
+  "numberOfItems" : 65
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "17:58:09",
+  "upper" : "17:59:11",
+  "cumulfreq" : 83.0,
+  "freq" : 0.1,
+  "numberOfItems" : 63
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "17:59:12",
+  "upper" : "18:00:12",
+  "cumulfreq" : 83.1,
+  "freq" : 0.1,
+  "numberOfItems" : 61
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "18:00:13",
+  "upper" : "18:01:17",
+  "cumulfreq" : 83.2,
+  "freq" : 0.1,
+  "numberOfItems" : 64
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "18:01:18",
+  "upper" : "18:02:24",
+  "cumulfreq" : 83.3,
+  "freq" : 0.1,
+  "numberOfItems" : 67
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "18:02:25",
+  "upper" : "18:03:26",
+  "cumulfreq" : 83.4,
+  "freq" : 0.1,
+  "numberOfItems" : 62
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "18:03:27",
+  "upper" : "18:04:30",
+  "cumulfreq" : 83.5,
+  "freq" : 0.1,
+  "numberOfItems" : 64
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "18:04:31",
+  "upper" : "18:05:26",
+  "cumulfreq" : 83.6,
+  "freq" : 0.1,
+  "numberOfItems" : 56
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "18:05:27",
+  "upper" : "18:06:34",
+  "cumulfreq" : 83.7,
+  "freq" : 0.1,
+  "numberOfItems" : 68
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "18:06:35",
+  "upper" : "18:07:42",
+  "cumulfreq" : 83.8,
+  "freq" : 0.1,
+  "numberOfItems" : 68
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "18:07:43",
+  "upper" : "18:08:54",
+  "cumulfreq" : 83.9,
+  "freq" : 0.1,
+  "numberOfItems" : 72
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "18:08:55",
+  "upper" : "18:10:04",
+  "cumulfreq" : 84.0,
+  "freq" : 0.1,
+  "numberOfItems" : 70
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "18:10:05",
+  "upper" : "18:11:11",
+  "cumulfreq" : 84.1,
+  "freq" : 0.1,
+  "numberOfItems" : 66
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "18:11:12",
+  "upper" : "18:12:27",
+  "cumulfreq" : 84.2,
+  "freq" : 0.1,
+  "numberOfItems" : 77
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "18:12:28",
+  "upper" : "18:13:39",
+  "cumulfreq" : 84.3,
+  "freq" : 0.1,
+  "numberOfItems" : 72
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "18:13:40",
+  "upper" : "18:14:50",
+  "cumulfreq" : 84.4,
+  "freq" : 0.1,
+  "numberOfItems" : 70
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "18:14:51",
+  "upper" : "18:16:03",
+  "cumulfreq" : 84.5,
+  "freq" : 0.1,
+  "numberOfItems" : 72
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "18:16:04",
+  "upper" : "18:17:15",
+  "cumulfreq" : 84.6,
+  "freq" : 0.1,
+  "numberOfItems" : 70
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "18:17:16",
+  "upper" : "18:18:30",
+  "cumulfreq" : 84.7,
+  "freq" : 0.1,
+  "numberOfItems" : 74
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "18:18:31",
+  "upper" : "18:19:42",
+  "cumulfreq" : 84.8,
+  "freq" : 0.1,
+  "numberOfItems" : 72
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "18:19:43",
+  "upper" : "18:20:49",
+  "cumulfreq" : 84.9,
+  "freq" : 0.1,
+  "numberOfItems" : 67
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "18:20:50",
+  "upper" : "18:22:05",
+  "cumulfreq" : 85.0,
+  "freq" : 0.1,
+  "numberOfItems" : 76
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "18:22:06",
+  "upper" : "18:23:17",
+  "cumulfreq" : 85.1,
+  "freq" : 0.1,
+  "numberOfItems" : 72
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "18:23:18",
+  "upper" : "18:24:27",
+  "cumulfreq" : 85.2,
+  "freq" : 0.1,
+  "numberOfItems" : 70
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "18:24:28",
+  "upper" : "18:25:41",
+  "cumulfreq" : 85.3,
+  "freq" : 0.1,
+  "numberOfItems" : 74
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "18:25:42",
+  "upper" : "18:26:56",
+  "cumulfreq" : 85.4,
+  "freq" : 0.1,
+  "numberOfItems" : 76
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "18:26:57",
+  "upper" : "18:28:12",
+  "cumulfreq" : 85.4,
+  "freq" : 0.1,
+  "numberOfItems" : 76
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "18:28:13",
+  "upper" : "18:29:21",
+  "cumulfreq" : 85.5,
+  "freq" : 0.1,
+  "numberOfItems" : 69
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "18:29:22",
+  "upper" : "18:30:35",
+  "cumulfreq" : 85.6,
+  "freq" : 0.1,
+  "numberOfItems" : 74
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "18:30:36",
+  "upper" : "18:31:54",
+  "cumulfreq" : 85.7,
+  "freq" : 0.1,
+  "numberOfItems" : 80
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "18:31:55",
+  "upper" : "18:32:58",
+  "cumulfreq" : 85.8,
+  "freq" : 0.1,
+  "numberOfItems" : 64
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "18:32:59",
+  "upper" : "18:34:09",
+  "cumulfreq" : 85.9,
+  "freq" : 0.1,
+  "numberOfItems" : 70
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "18:34:10",
+  "upper" : "18:35:30",
+  "cumulfreq" : 86.0,
+  "freq" : 0.1,
+  "numberOfItems" : 82
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "18:35:31",
+  "upper" : "18:36:55",
+  "cumulfreq" : 86.1,
+  "freq" : 0.1,
+  "numberOfItems" : 86
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "18:36:56",
+  "upper" : "18:38:11",
+  "cumulfreq" : 86.2,
+  "freq" : 0.1,
+  "numberOfItems" : 74
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "18:38:12",
+  "upper" : "18:39:36",
+  "cumulfreq" : 86.3,
+  "freq" : 0.1,
+  "numberOfItems" : 85
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "18:39:37",
+  "upper" : "18:41:04",
+  "cumulfreq" : 86.4,
+  "freq" : 0.1,
+  "numberOfItems" : 88
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "18:41:05",
+  "upper" : "18:42:30",
+  "cumulfreq" : 86.5,
+  "freq" : 0.1,
+  "numberOfItems" : 86
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "18:42:31",
+  "upper" : "18:43:49",
+  "cumulfreq" : 86.6,
+  "freq" : 0.1,
+  "numberOfItems" : 78
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "18:43:50",
+  "upper" : "18:45:07",
+  "cumulfreq" : 86.7,
+  "freq" : 0.1,
+  "numberOfItems" : 79
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "18:45:08",
+  "upper" : "18:46:29",
+  "cumulfreq" : 86.8,
+  "freq" : 0.1,
+  "numberOfItems" : 83
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "18:46:30",
+  "upper" : "18:47:53",
+  "cumulfreq" : 86.9,
+  "freq" : 0.1,
+  "numberOfItems" : 83
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "18:47:54",
+  "upper" : "18:49:16",
+  "cumulfreq" : 87.0,
+  "freq" : 0.1,
+  "numberOfItems" : 84
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "18:49:17",
+  "upper" : "18:50:34",
+  "cumulfreq" : 87.1,
+  "freq" : 0.1,
+  "numberOfItems" : 78
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "18:50:35",
+  "upper" : "18:51:53",
+  "cumulfreq" : 87.2,
+  "freq" : 0.1,
+  "numberOfItems" : 80
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "18:51:54",
+  "upper" : "18:53:06",
+  "cumulfreq" : 87.3,
+  "freq" : 0.1,
+  "numberOfItems" : 73
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "18:53:07",
+  "upper" : "18:54:31",
+  "cumulfreq" : 87.4,
+  "freq" : 0.1,
+  "numberOfItems" : 86
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "18:54:32",
+  "upper" : "18:55:49",
+  "cumulfreq" : 87.5,
+  "freq" : 0.1,
+  "numberOfItems" : 79
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "18:55:50",
+  "upper" : "18:57:05",
+  "cumulfreq" : 87.6,
+  "freq" : 0.1,
+  "numberOfItems" : 76
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "18:57:06",
+  "upper" : "18:58:24",
+  "cumulfreq" : 87.7,
+  "freq" : 0.1,
+  "numberOfItems" : 80
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "18:58:25",
+  "upper" : "18:59:40",
+  "cumulfreq" : 87.8,
+  "freq" : 0.1,
+  "numberOfItems" : 75
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "18:59:41",
+  "upper" : "19:00:59",
+  "cumulfreq" : 87.9,
+  "freq" : 0.1,
+  "numberOfItems" : 79
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "19:01:00",
+  "upper" : "19:02:18",
+  "cumulfreq" : 88.0,
+  "freq" : 0.1,
+  "numberOfItems" : 79
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "19:02:19",
+  "upper" : "19:03:37",
+  "cumulfreq" : 88.1,
+  "freq" : 0.1,
+  "numberOfItems" : 77
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "19:03:38",
+  "upper" : "19:04:54",
+  "cumulfreq" : 88.2,
+  "freq" : 0.1,
+  "numberOfItems" : 75
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "19:04:55",
+  "upper" : "19:06:12",
+  "cumulfreq" : 88.3,
+  "freq" : 0.1,
+  "numberOfItems" : 78
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "19:06:13",
+  "upper" : "19:07:39",
+  "cumulfreq" : 88.4,
+  "freq" : 0.1,
+  "numberOfItems" : 88
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "19:07:40",
+  "upper" : "19:09:03",
+  "cumulfreq" : 88.5,
+  "freq" : 0.1,
+  "numberOfItems" : 84
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "19:09:04",
+  "upper" : "19:10:27",
+  "cumulfreq" : 88.6,
+  "freq" : 0.1,
+  "numberOfItems" : 85
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "19:10:28",
+  "upper" : "19:11:54",
+  "cumulfreq" : 88.7,
+  "freq" : 0.1,
+  "numberOfItems" : 87
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "19:11:55",
+  "upper" : "19:13:23",
+  "cumulfreq" : 88.8,
+  "freq" : 0.1,
+  "numberOfItems" : 90
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "19:13:24",
+  "upper" : "19:14:59",
+  "cumulfreq" : 88.9,
+  "freq" : 0.1,
+  "numberOfItems" : 94
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "19:15:00",
+  "upper" : "19:16:31",
+  "cumulfreq" : 89.0,
+  "freq" : 0.1,
+  "numberOfItems" : 92
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "19:16:32",
+  "upper" : "19:17:53",
+  "cumulfreq" : 89.1,
+  "freq" : 0.1,
+  "numberOfItems" : 82
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "19:17:54",
+  "upper" : "19:19:34",
+  "cumulfreq" : 89.2,
+  "freq" : 0.1,
+  "numberOfItems" : 98
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "19:19:35",
+  "upper" : "19:21:17",
+  "cumulfreq" : 89.3,
+  "freq" : 0.1,
+  "numberOfItems" : 102
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "19:21:18",
+  "upper" : "19:22:49",
+  "cumulfreq" : 89.4,
+  "freq" : 0.1,
+  "numberOfItems" : 91
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "19:22:50",
+  "upper" : "19:24:35",
+  "cumulfreq" : 89.5,
+  "freq" : 0.1,
+  "numberOfItems" : 105
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "19:24:36",
+  "upper" : "19:26:18",
+  "cumulfreq" : 89.6,
+  "freq" : 0.1,
+  "numberOfItems" : 103
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "19:26:19",
+  "upper" : "19:27:53",
+  "cumulfreq" : 89.6,
+  "freq" : 0.1,
+  "numberOfItems" : 94
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "19:27:54",
+  "upper" : "19:29:35",
+  "cumulfreq" : 89.7,
+  "freq" : 0.1,
+  "numberOfItems" : 100
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "19:29:36",
+  "upper" : "19:31:17",
+  "cumulfreq" : 89.8,
+  "freq" : 0.1,
+  "numberOfItems" : 96
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "19:31:18",
+  "upper" : "19:33:08",
+  "cumulfreq" : 89.9,
+  "freq" : 0.1,
+  "numberOfItems" : 109
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "19:33:09",
+  "upper" : "19:34:46",
+  "cumulfreq" : 90.0,
+  "freq" : 0.1,
+  "numberOfItems" : 99
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "19:34:47",
+  "upper" : "19:36:20",
+  "cumulfreq" : 90.1,
+  "freq" : 0.1,
+  "numberOfItems" : 93
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "19:36:21",
+  "upper" : "19:38:02",
+  "cumulfreq" : 90.2,
+  "freq" : 0.1,
+  "numberOfItems" : 101
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "19:38:03",
+  "upper" : "19:39:47",
+  "cumulfreq" : 90.3,
+  "freq" : 0.1,
+  "numberOfItems" : 105
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "19:39:48",
+  "upper" : "19:41:25",
+  "cumulfreq" : 90.4,
+  "freq" : 0.1,
+  "numberOfItems" : 95
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "19:41:26",
+  "upper" : "19:43:13",
+  "cumulfreq" : 90.5,
+  "freq" : 0.1,
+  "numberOfItems" : 107
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "19:43:14",
+  "upper" : "19:44:59",
+  "cumulfreq" : 90.6,
+  "freq" : 0.1,
+  "numberOfItems" : 104
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "19:45:00",
+  "upper" : "19:46:52",
+  "cumulfreq" : 90.7,
+  "freq" : 0.1,
+  "numberOfItems" : 112
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "19:46:53",
+  "upper" : "19:48:35",
+  "cumulfreq" : 90.8,
+  "freq" : 0.1,
+  "numberOfItems" : 102
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "19:48:36",
+  "upper" : "19:50:19",
+  "cumulfreq" : 90.9,
+  "freq" : 0.1,
+  "numberOfItems" : 103
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "19:50:20",
+  "upper" : "19:52:13",
+  "cumulfreq" : 91.0,
+  "freq" : 0.1,
+  "numberOfItems" : 115
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "19:52:14",
+  "upper" : "19:54:02",
+  "cumulfreq" : 91.1,
+  "freq" : 0.1,
+  "numberOfItems" : 110
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "19:54:03",
+  "upper" : "19:56:00",
+  "cumulfreq" : 91.2,
+  "freq" : 0.1,
+  "numberOfItems" : 119
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "19:56:01",
+  "upper" : "19:57:38",
+  "cumulfreq" : 91.3,
+  "freq" : 0.1,
+  "numberOfItems" : 99
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "19:57:39",
+  "upper" : "19:59:34",
+  "cumulfreq" : 91.4,
+  "freq" : 0.1,
+  "numberOfItems" : 115
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "19:59:35",
+  "upper" : "20:01:25",
+  "cumulfreq" : 91.5,
+  "freq" : 0.1,
+  "numberOfItems" : 110
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "20:01:26",
+  "upper" : "20:03:10",
+  "cumulfreq" : 91.6,
+  "freq" : 0.1,
+  "numberOfItems" : 105
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "20:03:11",
+  "upper" : "20:05:03",
+  "cumulfreq" : 91.7,
+  "freq" : 0.1,
+  "numberOfItems" : 113
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "20:05:04",
+  "upper" : "20:06:52",
+  "cumulfreq" : 91.8,
+  "freq" : 0.1,
+  "numberOfItems" : 108
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "20:06:53",
+  "upper" : "20:08:57",
+  "cumulfreq" : 91.9,
+  "freq" : 0.1,
+  "numberOfItems" : 124
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "20:08:58",
+  "upper" : "20:10:40",
+  "cumulfreq" : 92.0,
+  "freq" : 0.1,
+  "numberOfItems" : 105
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "20:10:41",
+  "upper" : "20:12:38",
+  "cumulfreq" : 92.1,
+  "freq" : 0.1,
+  "numberOfItems" : 119
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "20:12:39",
+  "upper" : "20:14:44",
+  "cumulfreq" : 92.2,
+  "freq" : 0.1,
+  "numberOfItems" : 130
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "20:14:45",
+  "upper" : "20:16:44",
+  "cumulfreq" : 92.3,
+  "freq" : 0.1,
+  "numberOfItems" : 120
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "20:16:45",
+  "upper" : "20:18:48",
+  "cumulfreq" : 92.4,
+  "freq" : 0.1,
+  "numberOfItems" : 121
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "20:18:49",
+  "upper" : "20:20:49",
+  "cumulfreq" : 92.5,
+  "freq" : 0.1,
+  "numberOfItems" : 123
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "20:20:50",
+  "upper" : "20:22:44",
+  "cumulfreq" : 92.6,
+  "freq" : 0.1,
+  "numberOfItems" : 111
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "20:22:45",
+  "upper" : "20:24:54",
+  "cumulfreq" : 92.7,
+  "freq" : 0.1,
+  "numberOfItems" : 137
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "20:24:55",
+  "upper" : "20:27:02",
+  "cumulfreq" : 92.8,
+  "freq" : 0.1,
+  "numberOfItems" : 124
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "20:27:03",
+  "upper" : "20:29:14",
+  "cumulfreq" : 92.9,
+  "freq" : 0.1,
+  "numberOfItems" : 129
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "20:29:15",
+  "upper" : "20:31:31",
+  "cumulfreq" : 93.0,
+  "freq" : 0.1,
+  "numberOfItems" : 137
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "20:31:32",
+  "upper" : "20:33:42",
+  "cumulfreq" : 93.1,
+  "freq" : 0.1,
+  "numberOfItems" : 128
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "20:33:43",
+  "upper" : "20:35:49",
+  "cumulfreq" : 93.2,
+  "freq" : 0.1,
+  "numberOfItems" : 124
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "20:35:50",
+  "upper" : "20:38:04",
+  "cumulfreq" : 93.3,
+  "freq" : 0.1,
+  "numberOfItems" : 138
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "20:38:06",
+  "upper" : "20:40:24",
+  "cumulfreq" : 93.4,
+  "freq" : 0.1,
+  "numberOfItems" : 139
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "20:40:25",
+  "upper" : "20:42:38",
+  "cumulfreq" : 93.5,
+  "freq" : 0.1,
+  "numberOfItems" : 135
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "20:42:39",
+  "upper" : "20:45:04",
+  "cumulfreq" : 93.6,
+  "freq" : 0.1,
+  "numberOfItems" : 148
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "20:45:05",
+  "upper" : "20:47:38",
+  "cumulfreq" : 93.7,
+  "freq" : 0.1,
+  "numberOfItems" : 149
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "20:47:39",
+  "upper" : "20:49:54",
+  "cumulfreq" : 93.8,
+  "freq" : 0.1,
+  "numberOfItems" : 132
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "20:49:55",
+  "upper" : "20:52:14",
+  "cumulfreq" : 93.8,
+  "freq" : 0.1,
+  "numberOfItems" : 135
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "20:52:15",
+  "upper" : "20:54:31",
+  "cumulfreq" : 93.9,
+  "freq" : 0.1,
+  "numberOfItems" : 137
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "20:54:32",
+  "upper" : "20:56:44",
+  "cumulfreq" : 94.0,
+  "freq" : 0.1,
+  "numberOfItems" : 136
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "20:56:45",
+  "upper" : "20:59:16",
+  "cumulfreq" : 94.1,
+  "freq" : 0.1,
+  "numberOfItems" : 154
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "20:59:17",
+  "upper" : "21:01:43",
+  "cumulfreq" : 94.2,
+  "freq" : 0.1,
+  "numberOfItems" : 146
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "21:01:44",
+  "upper" : "21:04:19",
+  "cumulfreq" : 94.3,
+  "freq" : 0.1,
+  "numberOfItems" : 154
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "21:04:20",
+  "upper" : "21:06:57",
+  "cumulfreq" : 94.4,
+  "freq" : 0.1,
+  "numberOfItems" : 159
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "21:06:58",
+  "upper" : "21:09:18",
+  "cumulfreq" : 94.5,
+  "freq" : 0.1,
+  "numberOfItems" : 137
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "21:09:19",
+  "upper" : "21:11:36",
+  "cumulfreq" : 94.6,
+  "freq" : 0.1,
+  "numberOfItems" : 139
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "21:11:37",
+  "upper" : "21:13:58",
+  "cumulfreq" : 94.7,
+  "freq" : 0.1,
+  "numberOfItems" : 140
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "21:13:59",
+  "upper" : "21:16:35",
+  "cumulfreq" : 94.8,
+  "freq" : 0.1,
+  "numberOfItems" : 152
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "21:16:36",
+  "upper" : "21:19:22",
+  "cumulfreq" : 94.9,
+  "freq" : 0.1,
+  "numberOfItems" : 167
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "21:19:23",
+  "upper" : "21:21:52",
+  "cumulfreq" : 95.0,
+  "freq" : 0.1,
+  "numberOfItems" : 149
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "21:21:53",
+  "upper" : "21:24:35",
+  "cumulfreq" : 95.1,
+  "freq" : 0.1,
+  "numberOfItems" : 156
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "21:24:37",
+  "upper" : "21:27:22",
+  "cumulfreq" : 95.2,
+  "freq" : 0.1,
+  "numberOfItems" : 164
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "21:27:23",
+  "upper" : "21:30:01",
+  "cumulfreq" : 95.3,
+  "freq" : 0.1,
+  "numberOfItems" : 160
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "21:30:02",
+  "upper" : "21:33:07",
+  "cumulfreq" : 95.4,
+  "freq" : 0.1,
+  "numberOfItems" : 177
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "21:33:08",
+  "upper" : "21:35:51",
+  "cumulfreq" : 95.5,
+  "freq" : 0.1,
+  "numberOfItems" : 161
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "21:35:53",
+  "upper" : "21:38:54",
+  "cumulfreq" : 95.6,
+  "freq" : 0.1,
+  "numberOfItems" : 174
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "21:38:55",
+  "upper" : "21:41:35",
+  "cumulfreq" : 95.7,
+  "freq" : 0.1,
+  "numberOfItems" : 150
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "21:41:36",
+  "upper" : "21:44:29",
+  "cumulfreq" : 95.8,
+  "freq" : 0.1,
+  "numberOfItems" : 178
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "21:44:30",
+  "upper" : "21:47:26",
+  "cumulfreq" : 95.9,
+  "freq" : 0.1,
+  "numberOfItems" : 175
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "21:47:27",
+  "upper" : "21:50:17",
+  "cumulfreq" : 96.0,
+  "freq" : 0.1,
+  "numberOfItems" : 174
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "21:50:18",
+  "upper" : "21:53:23",
+  "cumulfreq" : 96.1,
+  "freq" : 0.1,
+  "numberOfItems" : 185
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "21:53:24",
+  "upper" : "21:56:01",
+  "cumulfreq" : 96.2,
+  "freq" : 0.1,
+  "numberOfItems" : 153
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "21:56:02",
+  "upper" : "21:58:55",
+  "cumulfreq" : 96.3,
+  "freq" : 0.1,
+  "numberOfItems" : 167
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "21:58:56",
+  "upper" : "22:01:39",
+  "cumulfreq" : 96.4,
+  "freq" : 0.1,
+  "numberOfItems" : 161
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "22:01:40",
+  "upper" : "22:04:47",
+  "cumulfreq" : 96.5,
+  "freq" : 0.1,
+  "numberOfItems" : 179
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "22:04:49",
+  "upper" : "22:07:55",
+  "cumulfreq" : 96.6,
+  "freq" : 0.1,
+  "numberOfItems" : 170
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "22:07:56",
+  "upper" : "22:10:45",
+  "cumulfreq" : 96.7,
+  "freq" : 0.1,
+  "numberOfItems" : 157
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "22:10:46",
+  "upper" : "22:13:36",
+  "cumulfreq" : 96.8,
+  "freq" : 0.1,
+  "numberOfItems" : 161
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "22:13:37",
+  "upper" : "22:16:45",
+  "cumulfreq" : 96.9,
+  "freq" : 0.1,
+  "numberOfItems" : 175
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "22:16:46",
+  "upper" : "22:19:50",
+  "cumulfreq" : 97.0,
+  "freq" : 0.1,
+  "numberOfItems" : 181
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "22:19:51",
+  "upper" : "22:23:04",
+  "cumulfreq" : 97.1,
+  "freq" : 0.1,
+  "numberOfItems" : 193
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "22:23:06",
+  "upper" : "22:26:22",
+  "cumulfreq" : 97.2,
+  "freq" : 0.1,
+  "numberOfItems" : 186
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "22:26:23",
+  "upper" : "22:29:39",
+  "cumulfreq" : 97.3,
+  "freq" : 0.1,
+  "numberOfItems" : 196
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "22:29:40",
+  "upper" : "22:32:47",
+  "cumulfreq" : 97.4,
+  "freq" : 0.1,
+  "numberOfItems" : 180
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "22:32:48",
+  "upper" : "22:36:01",
+  "cumulfreq" : 97.5,
+  "freq" : 0.1,
+  "numberOfItems" : 195
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "22:36:02",
+  "upper" : "22:39:05",
+  "cumulfreq" : 97.6,
+  "freq" : 0.1,
+  "numberOfItems" : 179
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "22:39:06",
+  "upper" : "22:42:05",
+  "cumulfreq" : 97.7,
+  "freq" : 0.1,
+  "numberOfItems" : 184
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "22:42:06",
+  "upper" : "22:45:20",
+  "cumulfreq" : 97.8,
+  "freq" : 0.1,
+  "numberOfItems" : 189
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "22:45:22",
+  "upper" : "22:48:14",
+  "cumulfreq" : 97.9,
+  "freq" : 0.1,
+  "numberOfItems" : 169
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "22:48:15",
+  "upper" : "22:51:13",
+  "cumulfreq" : 97.9,
+  "freq" : 0.1,
+  "numberOfItems" : 169
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "22:51:14",
+  "upper" : "22:54:30",
+  "cumulfreq" : 98.0,
+  "freq" : 0.1,
+  "numberOfItems" : 195
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "22:54:31",
+  "upper" : "22:57:31",
+  "cumulfreq" : 98.1,
+  "freq" : 0.1,
+  "numberOfItems" : 171
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "22:57:32",
+  "upper" : "23:00:32",
+  "cumulfreq" : 98.2,
+  "freq" : 0.1,
+  "numberOfItems" : 190
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "23:00:33",
+  "upper" : "23:03:43",
+  "cumulfreq" : 98.3,
+  "freq" : 0.1,
+  "numberOfItems" : 177
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "23:03:44",
+  "upper" : "23:07:02",
+  "cumulfreq" : 98.4,
+  "freq" : 0.1,
+  "numberOfItems" : 192
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "23:07:03",
+  "upper" : "23:10:18",
+  "cumulfreq" : 98.5,
+  "freq" : 0.1,
+  "numberOfItems" : 198
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "23:10:19",
+  "upper" : "23:13:26",
+  "cumulfreq" : 98.6,
+  "freq" : 0.1,
+  "numberOfItems" : 189
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "23:13:27",
+  "upper" : "23:16:35",
+  "cumulfreq" : 98.7,
+  "freq" : 0.1,
+  "numberOfItems" : 188
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "23:16:36",
+  "upper" : "23:19:51",
+  "cumulfreq" : 98.8,
+  "freq" : 0.1,
+  "numberOfItems" : 195
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "23:19:52",
+  "upper" : "23:23:22",
+  "cumulfreq" : 98.9,
+  "freq" : 0.1,
+  "numberOfItems" : 200
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "23:23:24",
+  "upper" : "23:26:53",
+  "cumulfreq" : 99.0,
+  "freq" : 0.1,
+  "numberOfItems" : 195
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "23:26:54",
+  "upper" : "23:30:09",
+  "cumulfreq" : 99.1,
+  "freq" : 0.1,
+  "numberOfItems" : 189
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "23:30:10",
+  "upper" : "23:33:27",
+  "cumulfreq" : 99.2,
+  "freq" : 0.1,
+  "numberOfItems" : 196
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "23:33:28",
+  "upper" : "23:37:00",
+  "cumulfreq" : 99.3,
+  "freq" : 0.1,
+  "numberOfItems" : 204
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "23:37:01",
+  "upper" : "23:40:24",
+  "cumulfreq" : 99.4,
+  "freq" : 0.1,
+  "numberOfItems" : 202
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "23:40:25",
+  "upper" : "23:43:33",
+  "cumulfreq" : 99.5,
+  "freq" : 0.1,
+  "numberOfItems" : 188
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "23:43:34",
+  "upper" : "23:46:47",
+  "cumulfreq" : 99.6,
+  "freq" : 0.1,
+  "numberOfItems" : 191
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "23:46:48",
+  "upper" : "23:50:06",
+  "cumulfreq" : 99.7,
+  "freq" : 0.1,
+  "numberOfItems" : 185
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "23:50:07",
+  "upper" : "23:53:25",
+  "cumulfreq" : 99.8,
+  "freq" : 0.1,
+  "numberOfItems" : 184
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "23:53:26",
+  "upper" : "23:56:45",
+  "cumulfreq" : 99.9,
+  "freq" : 0.1,
+  "numberOfItems" : 194
+}, {
+  "attribute" : "start_time",
+  "value" : null,
+  "lower" : "23:56:46",
+  "upper" : "23:59:59",
+  "cumulfreq" : 100.0,
+  "freq" : 0.1,
+  "numberOfItems" : 184
+} ]

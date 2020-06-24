@@ -1,0 +1,41 @@
+[ {
+  "attribute" : "O_ORDERPRIORITY",
+  "value" : "1-URGENT",
+  "lower" : null,
+  "upper" : null,
+  "cumulfreq" : 20.1,
+  "freq" : 20.1,
+  "numberOfItems" : 0
+}, {
+  "attribute" : "O_ORDERPRIORITY",
+  "value" : "2-HIGH",
+  "lower" : null,
+  "upper" : null,
+  "cumulfreq" : 40.3,
+  "freq" : 20.2,
+  "numberOfItems" : 0
+}, {
+  "attribute" : "O_ORDERPRIORITY",
+  "value" : "3-MEDIUM",
+  "lower" : null,
+  "upper" : null,
+  "cumulfreq" : 60.1,
+  "freq" : 19.8,
+  "numberOfItems" : 0
+}, {
+  "attribute" : "O_ORDERPRIORITY",
+  "value" : "4-NOT SPECIFIED",
+  "lower" : null,
+  "upper" : null,
+  "cumulfreq" : 80.1,
+  "freq" : 19.9,
+  "numberOfItems" : 0
+}, {
+  "attribute" : "O_ORDERPRIORITY",
+  "value" : "5-LOW",
+  "lower" : null,
+  "upper" : null,
+  "cumulfreq" : 100.0,
+  "freq" : 19.9,
+  "numberOfItems" : 0
+} ]

@@ -556,4 +556,17 @@ public class BEPolicy {
     }
 
 
+    @Override
+    public String toString() {
+        return "BEPolicy{" +
+                "id='" + id + '\'' +
+                ", description='" + description + '\'' +
+                ", metadata='" + metadata + '\'' +
+                ", object_conditions=" + object_conditions +
+                ", querier_conditions=" + querier_conditions +
+                ", purpose='" + purpose + '\'' +
+                ", action='" + action + '\'' +
+                ", inserted_at=" + inserted_at +
+                '}';
+    }
 }

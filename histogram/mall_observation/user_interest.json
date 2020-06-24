@@ -1,0 +1,49 @@
+[ {
+  "attribute" : "user_interest",
+  "value" : "arcade",
+  "lower" : null,
+  "upper" : null,
+  "cumulfreq" : 5.0,
+  "freq" : 5.0,
+  "numberOfItems" : 0
+}, {
+  "attribute" : "user_interest",
+  "value" : "clothes",
+  "lower" : null,
+  "upper" : null,
+  "cumulfreq" : 10.2,
+  "freq" : 5.2,
+  "numberOfItems" : 0
+}, {
+  "attribute" : "user_interest",
+  "value" : "cosmetics",
+  "lower" : null,
+  "upper" : null,
+  "cumulfreq" : 14.9,
+  "freq" : 4.7,
+  "numberOfItems" : 0
+}, {
+  "attribute" : "user_interest",
+  "value" : "movies",
+  "lower" : null,
+  "upper" : null,
+  "cumulfreq" : 19.5,
+  "freq" : 4.7,
+  "numberOfItems" : 0
+}, {
+  "attribute" : "user_interest",
+  "value" : "restaurant",
+  "lower" : null,
+  "upper" : null,
+  "cumulfreq" : 24.2,
+  "freq" : 4.6,
+  "numberOfItems" : 0
+}, {
+  "attribute" : "user_interest",
+  "value" : "shoes",
+  "lower" : null,
+  "upper" : null,
+  "cumulfreq" : 29.4,
+  "freq" : 5.3,
+  "numberOfItems" : 0
+} ]

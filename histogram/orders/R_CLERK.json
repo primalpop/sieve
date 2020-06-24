@@ -1,0 +1,81 @@
+[ {
+  "attribute" : "R_CLERK",
+  "value" : "0",
+  "lower" : null,
+  "upper" : null,
+  "cumulfreq" : 10.1,
+  "freq" : 10.1,
+  "numberOfItems" : 0
+}, {
+  "attribute" : "R_CLERK",
+  "value" : "1",
+  "lower" : null,
+  "upper" : null,
+  "cumulfreq" : 20.1,
+  "freq" : 10.0,
+  "numberOfItems" : 0
+}, {
+  "attribute" : "R_CLERK",
+  "value" : "2",
+  "lower" : null,
+  "upper" : null,
+  "cumulfreq" : 30.0,
+  "freq" : 9.9,
+  "numberOfItems" : 0
+}, {
+  "attribute" : "R_CLERK",
+  "value" : "3",
+  "lower" : null,
+  "upper" : null,
+  "cumulfreq" : 39.9,
+  "freq" : 9.9,
+  "numberOfItems" : 0
+}, {
+  "attribute" : "R_CLERK",
+  "value" : "4",
+  "lower" : null,
+  "upper" : null,
+  "cumulfreq" : 50.0,
+  "freq" : 10.1,
+  "numberOfItems" : 0
+}, {
+  "attribute" : "R_CLERK",
+  "value" : "5",
+  "lower" : null,
+  "upper" : null,
+  "cumulfreq" : 60.0,
+  "freq" : 9.9,
+  "numberOfItems" : 0
+}, {
+  "attribute" : "R_CLERK",
+  "value" : "6",
+  "lower" : null,
+  "upper" : null,
+  "cumulfreq" : 70.2,
+  "freq" : 10.2,
+  "numberOfItems" : 0
+}, {
+  "attribute" : "R_CLERK",
+  "value" : "7",
+  "lower" : null,
+  "upper" : null,
+  "cumulfreq" : 80.0,
+  "freq" : 9.9,
+  "numberOfItems" : 0
+}, {
+  "attribute" : "R_CLERK",
+  "value" : "8",
+  "lower" : null,
+  "upper" : null,
+  "cumulfreq" : 90.0,
+  "freq" : 10.0,
+  "numberOfItems" : 0
+}, {
+  "attribute" : "R_CLERK",
+  "value" : "9",
+  "lower" : null,
+  "upper" : null,
+  "cumulfreq" : 100.0,
+  "freq" : 10.0,
+  "numberOfItems" : 0
+} ]

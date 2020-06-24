@@ -1,0 +1,41 @@
+[ {
+  "attribute" : "O_PROFILE",
+  "value" : "1-URGENT",
+  "lower" : null,
+  "upper" : null,
+  "cumulfreq" : 14.9,
+  "freq" : 14.9,
+  "numberOfItems" : 0
+}, {
+  "attribute" : "O_PROFILE",
+  "value" : "2-HIGH",
+  "lower" : null,
+  "upper" : null,
+  "cumulfreq" : 32.0,
+  "freq" : 17.1,
+  "numberOfItems" : 0
+}, {
+  "attribute" : "O_PROFILE",
+  "value" : "3-MEDIUM",
+  "lower" : null,
+  "upper" : null,
+  "cumulfreq" : 50.8,
+  "freq" : 18.8,
+  "numberOfItems" : 0
+}, {
+  "attribute" : "O_PROFILE",
+  "value" : "4-NOT SPECIFIED",
+  "lower" : null,
+  "upper" : null,
+  "cumulfreq" : 73.0,
+  "freq" : 22.2,
+  "numberOfItems" : 0
+}, {
+  "attribute" : "O_PROFILE",
+  "value" : "5-LOW",
+  "lower" : null,
+  "upper" : null,
+  "cumulfreq" : 100.0,
+  "freq" : 27.0,
+  "numberOfItems" : 0
+} ]

@@ -1,0 +1,8193 @@
+[ {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1",
+  "upper" : "3",
+  "cumulfreq" : 0.1,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "4",
+  "upper" : "6",
+  "cumulfreq" : 0.2,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "7",
+  "upper" : "9",
+  "cumulfreq" : 0.3,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "10",
+  "upper" : "11",
+  "cumulfreq" : 0.4,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "12",
+  "upper" : "12",
+  "cumulfreq" : 0.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "13",
+  "upper" : "13",
+  "cumulfreq" : 0.6,
+  "freq" : 0.0,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "14",
+  "upper" : "14",
+  "cumulfreq" : 0.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "15",
+  "upper" : "16",
+  "cumulfreq" : 0.8,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "17",
+  "upper" : "18",
+  "cumulfreq" : 0.9,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "19",
+  "upper" : "21",
+  "cumulfreq" : 1.0,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "22",
+  "upper" : "22",
+  "cumulfreq" : 1.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "23",
+  "upper" : "25",
+  "cumulfreq" : 1.2,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "26",
+  "upper" : "31",
+  "cumulfreq" : 1.3,
+  "freq" : 0.1,
+  "numberOfItems" : 6
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "32",
+  "upper" : "35",
+  "cumulfreq" : 1.4,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "36",
+  "upper" : "36",
+  "cumulfreq" : 1.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "37",
+  "upper" : "37",
+  "cumulfreq" : 1.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "38",
+  "upper" : "39",
+  "cumulfreq" : 1.7,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "40",
+  "upper" : "40",
+  "cumulfreq" : 1.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "41",
+  "upper" : "42",
+  "cumulfreq" : 1.9,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "43",
+  "upper" : "45",
+  "cumulfreq" : 2.0,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "46",
+  "upper" : "47",
+  "cumulfreq" : 2.1,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "48",
+  "upper" : "49",
+  "cumulfreq" : 2.1,
+  "freq" : 0.0,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "50",
+  "upper" : "51",
+  "cumulfreq" : 2.2,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "52",
+  "upper" : "55",
+  "cumulfreq" : 2.3,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "56",
+  "upper" : "57",
+  "cumulfreq" : 2.5,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "58",
+  "upper" : "58",
+  "cumulfreq" : 2.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "59",
+  "upper" : "60",
+  "cumulfreq" : 2.6,
+  "freq" : 0.0,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "61",
+  "upper" : "61",
+  "cumulfreq" : 2.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "62",
+  "upper" : "63",
+  "cumulfreq" : 2.9,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "64",
+  "upper" : "64",
+  "cumulfreq" : 3.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "65",
+  "upper" : "66",
+  "cumulfreq" : 3.0,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "67",
+  "upper" : "71",
+  "cumulfreq" : 3.2,
+  "freq" : 0.1,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "72",
+  "upper" : "73",
+  "cumulfreq" : 3.2,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "74",
+  "upper" : "77",
+  "cumulfreq" : 3.3,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "78",
+  "upper" : "79",
+  "cumulfreq" : 3.4,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "80",
+  "upper" : "89",
+  "cumulfreq" : 3.5,
+  "freq" : 0.1,
+  "numberOfItems" : 10
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "90",
+  "upper" : "95",
+  "cumulfreq" : 3.6,
+  "freq" : 0.1,
+  "numberOfItems" : 6
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "96",
+  "upper" : "97",
+  "cumulfreq" : 3.7,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "98",
+  "upper" : "98",
+  "cumulfreq" : 3.8,
+  "freq" : 0.0,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "99",
+  "upper" : "102",
+  "cumulfreq" : 3.9,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "103",
+  "upper" : "104",
+  "cumulfreq" : 4.0,
+  "freq" : 0.0,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "105",
+  "upper" : "107",
+  "cumulfreq" : 4.1,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "108",
+  "upper" : "109",
+  "cumulfreq" : 4.2,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "110",
+  "upper" : "110",
+  "cumulfreq" : 4.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "111",
+  "upper" : "112",
+  "cumulfreq" : 4.4,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "113",
+  "upper" : "113",
+  "cumulfreq" : 4.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "115",
+  "upper" : "116",
+  "cumulfreq" : 4.6,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "117",
+  "upper" : "119",
+  "cumulfreq" : 4.7,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "120",
+  "upper" : "121",
+  "cumulfreq" : 4.8,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "122",
+  "upper" : "124",
+  "cumulfreq" : 4.9,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "125",
+  "upper" : "129",
+  "cumulfreq" : 5.0,
+  "freq" : 0.1,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "130",
+  "upper" : "131",
+  "cumulfreq" : 5.0,
+  "freq" : 0.0,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "132",
+  "upper" : "133",
+  "cumulfreq" : 5.2,
+  "freq" : 0.2,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "134",
+  "upper" : "134",
+  "cumulfreq" : 5.3,
+  "freq" : 0.0,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "135",
+  "upper" : "136",
+  "cumulfreq" : 5.4,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "137",
+  "upper" : "138",
+  "cumulfreq" : 5.5,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "139",
+  "upper" : "140",
+  "cumulfreq" : 5.6,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "141",
+  "upper" : "142",
+  "cumulfreq" : 5.7,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "143",
+  "upper" : "146",
+  "cumulfreq" : 5.8,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "147",
+  "upper" : "147",
+  "cumulfreq" : 5.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "148",
+  "upper" : "151",
+  "cumulfreq" : 6.0,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "152",
+  "upper" : "152",
+  "cumulfreq" : 6.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "153",
+  "upper" : "156",
+  "cumulfreq" : 6.2,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "157",
+  "upper" : "159",
+  "cumulfreq" : 6.3,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "160",
+  "upper" : "160",
+  "cumulfreq" : 6.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "161",
+  "upper" : "161",
+  "cumulfreq" : 6.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "162",
+  "upper" : "162",
+  "cumulfreq" : 6.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "163",
+  "upper" : "166",
+  "cumulfreq" : 6.6,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "167",
+  "upper" : "168",
+  "cumulfreq" : 6.7,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "169",
+  "upper" : "171",
+  "cumulfreq" : 6.9,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "172",
+  "upper" : "176",
+  "cumulfreq" : 7.0,
+  "freq" : 0.1,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "177",
+  "upper" : "181",
+  "cumulfreq" : 7.0,
+  "freq" : 0.1,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "182",
+  "upper" : "182",
+  "cumulfreq" : 7.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "183",
+  "upper" : "184",
+  "cumulfreq" : 7.2,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "185",
+  "upper" : "186",
+  "cumulfreq" : 7.3,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "187",
+  "upper" : "189",
+  "cumulfreq" : 7.4,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "190",
+  "upper" : "191",
+  "cumulfreq" : 7.5,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "192",
+  "upper" : "193",
+  "cumulfreq" : 7.6,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "194",
+  "upper" : "196",
+  "cumulfreq" : 7.7,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "197",
+  "upper" : "198",
+  "cumulfreq" : 7.9,
+  "freq" : 0.2,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "199",
+  "upper" : "200",
+  "cumulfreq" : 7.9,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "201",
+  "upper" : "201",
+  "cumulfreq" : 8.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "202",
+  "upper" : "203",
+  "cumulfreq" : 8.1,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "204",
+  "upper" : "204",
+  "cumulfreq" : 8.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "205",
+  "upper" : "209",
+  "cumulfreq" : 8.3,
+  "freq" : 0.1,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "210",
+  "upper" : "211",
+  "cumulfreq" : 8.4,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "212",
+  "upper" : "215",
+  "cumulfreq" : 8.5,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "216",
+  "upper" : "216",
+  "cumulfreq" : 8.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "217",
+  "upper" : "220",
+  "cumulfreq" : 8.7,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "221",
+  "upper" : "222",
+  "cumulfreq" : 8.8,
+  "freq" : 0.0,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "223",
+  "upper" : "226",
+  "cumulfreq" : 8.9,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "227",
+  "upper" : "229",
+  "cumulfreq" : 9.0,
+  "freq" : 0.2,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "230",
+  "upper" : "232",
+  "cumulfreq" : 9.1,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "233",
+  "upper" : "236",
+  "cumulfreq" : 9.2,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "237",
+  "upper" : "241",
+  "cumulfreq" : 9.3,
+  "freq" : 0.1,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "242",
+  "upper" : "245",
+  "cumulfreq" : 9.4,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "246",
+  "upper" : "248",
+  "cumulfreq" : 9.5,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "249",
+  "upper" : "251",
+  "cumulfreq" : 9.6,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "252",
+  "upper" : "253",
+  "cumulfreq" : 9.7,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "254",
+  "upper" : "259",
+  "cumulfreq" : 9.8,
+  "freq" : 0.1,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "260",
+  "upper" : "262",
+  "cumulfreq" : 9.9,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "263",
+  "upper" : "264",
+  "cumulfreq" : 10.0,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "265",
+  "upper" : "271",
+  "cumulfreq" : 10.0,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "272",
+  "upper" : "274",
+  "cumulfreq" : 10.2,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "275",
+  "upper" : "277",
+  "cumulfreq" : 10.3,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "278",
+  "upper" : "279",
+  "cumulfreq" : 10.4,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "280",
+  "upper" : "280",
+  "cumulfreq" : 10.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "281",
+  "upper" : "281",
+  "cumulfreq" : 10.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "282",
+  "upper" : "283",
+  "cumulfreq" : 10.7,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "284",
+  "upper" : "284",
+  "cumulfreq" : 10.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "285",
+  "upper" : "286",
+  "cumulfreq" : 10.8,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "287",
+  "upper" : "289",
+  "cumulfreq" : 10.9,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "290",
+  "upper" : "290",
+  "cumulfreq" : 11.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "291",
+  "upper" : "291",
+  "cumulfreq" : 11.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "292",
+  "upper" : "294",
+  "cumulfreq" : 11.2,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "295",
+  "upper" : "299",
+  "cumulfreq" : 11.3,
+  "freq" : 0.1,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "300",
+  "upper" : "301",
+  "cumulfreq" : 11.5,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "302",
+  "upper" : "304",
+  "cumulfreq" : 11.5,
+  "freq" : 0.0,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "305",
+  "upper" : "305",
+  "cumulfreq" : 11.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "306",
+  "upper" : "307",
+  "cumulfreq" : 11.7,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "308",
+  "upper" : "309",
+  "cumulfreq" : 11.8,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "310",
+  "upper" : "311",
+  "cumulfreq" : 11.9,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "312",
+  "upper" : "314",
+  "cumulfreq" : 12.1,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "315",
+  "upper" : "315",
+  "cumulfreq" : 12.1,
+  "freq" : 0.0,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "316",
+  "upper" : "318",
+  "cumulfreq" : 12.2,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "319",
+  "upper" : "320",
+  "cumulfreq" : 12.3,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "321",
+  "upper" : "324",
+  "cumulfreq" : 12.4,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "325",
+  "upper" : "325",
+  "cumulfreq" : 12.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "326",
+  "upper" : "327",
+  "cumulfreq" : 12.6,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "328",
+  "upper" : "329",
+  "cumulfreq" : 12.7,
+  "freq" : 0.0,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "330",
+  "upper" : "331",
+  "cumulfreq" : 12.8,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "332",
+  "upper" : "332",
+  "cumulfreq" : 12.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "333",
+  "upper" : "333",
+  "cumulfreq" : 13.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "334",
+  "upper" : "338",
+  "cumulfreq" : 13.1,
+  "freq" : 0.1,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "339",
+  "upper" : "341",
+  "cumulfreq" : 13.2,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "342",
+  "upper" : "342",
+  "cumulfreq" : 13.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "343",
+  "upper" : "347",
+  "cumulfreq" : 13.4,
+  "freq" : 0.1,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "348",
+  "upper" : "351",
+  "cumulfreq" : 13.5,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "352",
+  "upper" : "362",
+  "cumulfreq" : 13.6,
+  "freq" : 0.1,
+  "numberOfItems" : 11
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "363",
+  "upper" : "365",
+  "cumulfreq" : 13.7,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "366",
+  "upper" : "366",
+  "cumulfreq" : 13.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "367",
+  "upper" : "367",
+  "cumulfreq" : 13.8,
+  "freq" : 0.0,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "368",
+  "upper" : "371",
+  "cumulfreq" : 14.0,
+  "freq" : 0.2,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "372",
+  "upper" : "374",
+  "cumulfreq" : 14.1,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "375",
+  "upper" : "376",
+  "cumulfreq" : 14.1,
+  "freq" : 0.0,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "377",
+  "upper" : "378",
+  "cumulfreq" : 14.3,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "379",
+  "upper" : "379",
+  "cumulfreq" : 14.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "380",
+  "upper" : "381",
+  "cumulfreq" : 14.5,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "382",
+  "upper" : "382",
+  "cumulfreq" : 14.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "383",
+  "upper" : "384",
+  "cumulfreq" : 14.7,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "385",
+  "upper" : "387",
+  "cumulfreq" : 14.7,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "388",
+  "upper" : "389",
+  "cumulfreq" : 14.8,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "390",
+  "upper" : "393",
+  "cumulfreq" : 14.9,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "394",
+  "upper" : "397",
+  "cumulfreq" : 15.0,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "398",
+  "upper" : "400",
+  "cumulfreq" : 15.1,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "401",
+  "upper" : "401",
+  "cumulfreq" : 15.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "402",
+  "upper" : "402",
+  "cumulfreq" : 15.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "403",
+  "upper" : "404",
+  "cumulfreq" : 15.4,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "405",
+  "upper" : "406",
+  "cumulfreq" : 15.5,
+  "freq" : 0.0,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "407",
+  "upper" : "408",
+  "cumulfreq" : 15.7,
+  "freq" : 0.2,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "409",
+  "upper" : "410",
+  "cumulfreq" : 15.7,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "411",
+  "upper" : "414",
+  "cumulfreq" : 15.8,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "415",
+  "upper" : "416",
+  "cumulfreq" : 16.0,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "417",
+  "upper" : "419",
+  "cumulfreq" : 16.0,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "420",
+  "upper" : "420",
+  "cumulfreq" : 16.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "421",
+  "upper" : "422",
+  "cumulfreq" : 16.2,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "423",
+  "upper" : "425",
+  "cumulfreq" : 16.3,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "426",
+  "upper" : "428",
+  "cumulfreq" : 16.4,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "429",
+  "upper" : "429",
+  "cumulfreq" : 16.5,
+  "freq" : 0.0,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "430",
+  "upper" : "430",
+  "cumulfreq" : 16.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "431",
+  "upper" : "432",
+  "cumulfreq" : 16.7,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "433",
+  "upper" : "435",
+  "cumulfreq" : 16.8,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "436",
+  "upper" : "437",
+  "cumulfreq" : 16.9,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "438",
+  "upper" : "439",
+  "cumulfreq" : 17.0,
+  "freq" : 0.0,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "440",
+  "upper" : "444",
+  "cumulfreq" : 17.1,
+  "freq" : 0.1,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "445",
+  "upper" : "446",
+  "cumulfreq" : 17.2,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "447",
+  "upper" : "450",
+  "cumulfreq" : 17.3,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "451",
+  "upper" : "452",
+  "cumulfreq" : 17.4,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "453",
+  "upper" : "454",
+  "cumulfreq" : 17.5,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "455",
+  "upper" : "455",
+  "cumulfreq" : 17.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "456",
+  "upper" : "459",
+  "cumulfreq" : 17.7,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "460",
+  "upper" : "461",
+  "cumulfreq" : 17.8,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "462",
+  "upper" : "463",
+  "cumulfreq" : 17.9,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "464",
+  "upper" : "466",
+  "cumulfreq" : 18.0,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "467",
+  "upper" : "467",
+  "cumulfreq" : 18.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "468",
+  "upper" : "469",
+  "cumulfreq" : 18.1,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "470",
+  "upper" : "471",
+  "cumulfreq" : 18.2,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "472",
+  "upper" : "472",
+  "cumulfreq" : 18.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "473",
+  "upper" : "477",
+  "cumulfreq" : 18.4,
+  "freq" : 0.1,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "478",
+  "upper" : "479",
+  "cumulfreq" : 18.6,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "480",
+  "upper" : "481",
+  "cumulfreq" : 18.7,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "482",
+  "upper" : "483",
+  "cumulfreq" : 18.8,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "484",
+  "upper" : "485",
+  "cumulfreq" : 18.9,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "486",
+  "upper" : "489",
+  "cumulfreq" : 19.0,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "490",
+  "upper" : "491",
+  "cumulfreq" : 19.0,
+  "freq" : 0.0,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "492",
+  "upper" : "496",
+  "cumulfreq" : 19.1,
+  "freq" : 0.1,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "497",
+  "upper" : "498",
+  "cumulfreq" : 19.2,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "499",
+  "upper" : "504",
+  "cumulfreq" : 19.3,
+  "freq" : 0.1,
+  "numberOfItems" : 6
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "505",
+  "upper" : "505",
+  "cumulfreq" : 19.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "506",
+  "upper" : "511",
+  "cumulfreq" : 19.5,
+  "freq" : 0.1,
+  "numberOfItems" : 6
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "512",
+  "upper" : "514",
+  "cumulfreq" : 19.6,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "515",
+  "upper" : "517",
+  "cumulfreq" : 19.7,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "518",
+  "upper" : "520",
+  "cumulfreq" : 19.8,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "521",
+  "upper" : "522",
+  "cumulfreq" : 19.9,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "523",
+  "upper" : "526",
+  "cumulfreq" : 20.0,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "527",
+  "upper" : "529",
+  "cumulfreq" : 20.1,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "530",
+  "upper" : "532",
+  "cumulfreq" : 20.2,
+  "freq" : 0.0,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "533",
+  "upper" : "539",
+  "cumulfreq" : 20.3,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "540",
+  "upper" : "541",
+  "cumulfreq" : 20.4,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "542",
+  "upper" : "545",
+  "cumulfreq" : 20.5,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "546",
+  "upper" : "547",
+  "cumulfreq" : 20.6,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "548",
+  "upper" : "549",
+  "cumulfreq" : 20.7,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "550",
+  "upper" : "550",
+  "cumulfreq" : 20.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "551",
+  "upper" : "552",
+  "cumulfreq" : 20.9,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "553",
+  "upper" : "553",
+  "cumulfreq" : 21.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "554",
+  "upper" : "555",
+  "cumulfreq" : 21.1,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "556",
+  "upper" : "557",
+  "cumulfreq" : 21.2,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "558",
+  "upper" : "559",
+  "cumulfreq" : 21.3,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "560",
+  "upper" : "560",
+  "cumulfreq" : 21.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "561",
+  "upper" : "563",
+  "cumulfreq" : 21.5,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "564",
+  "upper" : "568",
+  "cumulfreq" : 21.6,
+  "freq" : 0.1,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "569",
+  "upper" : "570",
+  "cumulfreq" : 21.7,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "571",
+  "upper" : "573",
+  "cumulfreq" : 21.7,
+  "freq" : 0.0,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "574",
+  "upper" : "574",
+  "cumulfreq" : 21.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "575",
+  "upper" : "576",
+  "cumulfreq" : 22.0,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "577",
+  "upper" : "578",
+  "cumulfreq" : 22.1,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "579",
+  "upper" : "580",
+  "cumulfreq" : 22.2,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "581",
+  "upper" : "583",
+  "cumulfreq" : 22.3,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "584",
+  "upper" : "585",
+  "cumulfreq" : 22.4,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "586",
+  "upper" : "587",
+  "cumulfreq" : 22.4,
+  "freq" : 0.0,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "588",
+  "upper" : "589",
+  "cumulfreq" : 22.6,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "590",
+  "upper" : "593",
+  "cumulfreq" : 22.6,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "594",
+  "upper" : "594",
+  "cumulfreq" : 22.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "595",
+  "upper" : "596",
+  "cumulfreq" : 22.9,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "597",
+  "upper" : "598",
+  "cumulfreq" : 22.9,
+  "freq" : 0.0,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "599",
+  "upper" : "600",
+  "cumulfreq" : 23.0,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "601",
+  "upper" : "601",
+  "cumulfreq" : 23.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "602",
+  "upper" : "603",
+  "cumulfreq" : 23.2,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "604",
+  "upper" : "608",
+  "cumulfreq" : 23.3,
+  "freq" : 0.1,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "609",
+  "upper" : "611",
+  "cumulfreq" : 23.5,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "612",
+  "upper" : "612",
+  "cumulfreq" : 23.5,
+  "freq" : 0.0,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "613",
+  "upper" : "617",
+  "cumulfreq" : 23.6,
+  "freq" : 0.1,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "618",
+  "upper" : "624",
+  "cumulfreq" : 23.7,
+  "freq" : 0.1,
+  "numberOfItems" : 7
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "625",
+  "upper" : "632",
+  "cumulfreq" : 23.8,
+  "freq" : 0.1,
+  "numberOfItems" : 8
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "633",
+  "upper" : "634",
+  "cumulfreq" : 23.9,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "635",
+  "upper" : "636",
+  "cumulfreq" : 24.0,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "637",
+  "upper" : "637",
+  "cumulfreq" : 24.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "638",
+  "upper" : "642",
+  "cumulfreq" : 24.2,
+  "freq" : 0.1,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "643",
+  "upper" : "645",
+  "cumulfreq" : 24.3,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "646",
+  "upper" : "646",
+  "cumulfreq" : 24.4,
+  "freq" : 0.0,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "647",
+  "upper" : "648",
+  "cumulfreq" : 24.6,
+  "freq" : 0.2,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "649",
+  "upper" : "650",
+  "cumulfreq" : 24.7,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "651",
+  "upper" : "651",
+  "cumulfreq" : 24.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "652",
+  "upper" : "653",
+  "cumulfreq" : 24.8,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "654",
+  "upper" : "656",
+  "cumulfreq" : 24.9,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "657",
+  "upper" : "658",
+  "cumulfreq" : 25.0,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "659",
+  "upper" : "662",
+  "cumulfreq" : 25.1,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "663",
+  "upper" : "666",
+  "cumulfreq" : 25.2,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "667",
+  "upper" : "669",
+  "cumulfreq" : 25.3,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "670",
+  "upper" : "670",
+  "cumulfreq" : 25.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "671",
+  "upper" : "671",
+  "cumulfreq" : 25.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "672",
+  "upper" : "673",
+  "cumulfreq" : 25.6,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "674",
+  "upper" : "675",
+  "cumulfreq" : 25.6,
+  "freq" : 0.0,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "676",
+  "upper" : "677",
+  "cumulfreq" : 25.8,
+  "freq" : 0.2,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "678",
+  "upper" : "679",
+  "cumulfreq" : 25.9,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "680",
+  "upper" : "683",
+  "cumulfreq" : 26.0,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "684",
+  "upper" : "685",
+  "cumulfreq" : 26.1,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "686",
+  "upper" : "688",
+  "cumulfreq" : 26.2,
+  "freq" : 0.0,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "689",
+  "upper" : "689",
+  "cumulfreq" : 26.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "690",
+  "upper" : "693",
+  "cumulfreq" : 26.4,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "694",
+  "upper" : "694",
+  "cumulfreq" : 26.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "695",
+  "upper" : "697",
+  "cumulfreq" : 26.6,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "698",
+  "upper" : "698",
+  "cumulfreq" : 26.6,
+  "freq" : 0.0,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "699",
+  "upper" : "699",
+  "cumulfreq" : 26.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "700",
+  "upper" : "703",
+  "cumulfreq" : 26.8,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "704",
+  "upper" : "705",
+  "cumulfreq" : 27.0,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "706",
+  "upper" : "706",
+  "cumulfreq" : 27.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "707",
+  "upper" : "709",
+  "cumulfreq" : 27.2,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "710",
+  "upper" : "713",
+  "cumulfreq" : 27.2,
+  "freq" : 0.0,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "714",
+  "upper" : "718",
+  "cumulfreq" : 27.3,
+  "freq" : 0.1,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "719",
+  "upper" : "720",
+  "cumulfreq" : 27.5,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "721",
+  "upper" : "722",
+  "cumulfreq" : 27.6,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "723",
+  "upper" : "723",
+  "cumulfreq" : 27.6,
+  "freq" : 0.0,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "724",
+  "upper" : "726",
+  "cumulfreq" : 27.7,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "727",
+  "upper" : "729",
+  "cumulfreq" : 27.8,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "730",
+  "upper" : "731",
+  "cumulfreq" : 27.9,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "732",
+  "upper" : "734",
+  "cumulfreq" : 28.0,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "735",
+  "upper" : "735",
+  "cumulfreq" : 28.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "736",
+  "upper" : "737",
+  "cumulfreq" : 28.2,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "738",
+  "upper" : "739",
+  "cumulfreq" : 28.3,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "740",
+  "upper" : "741",
+  "cumulfreq" : 28.4,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "742",
+  "upper" : "742",
+  "cumulfreq" : 28.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "743",
+  "upper" : "747",
+  "cumulfreq" : 28.6,
+  "freq" : 0.1,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "748",
+  "upper" : "749",
+  "cumulfreq" : 28.7,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "750",
+  "upper" : "751",
+  "cumulfreq" : 28.8,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "752",
+  "upper" : "754",
+  "cumulfreq" : 28.9,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "755",
+  "upper" : "758",
+  "cumulfreq" : 29.0,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "759",
+  "upper" : "760",
+  "cumulfreq" : 29.1,
+  "freq" : 0.0,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "761",
+  "upper" : "764",
+  "cumulfreq" : 29.2,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "765",
+  "upper" : "767",
+  "cumulfreq" : 29.3,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "768",
+  "upper" : "770",
+  "cumulfreq" : 29.4,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "771",
+  "upper" : "774",
+  "cumulfreq" : 29.5,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "775",
+  "upper" : "780",
+  "cumulfreq" : 29.6,
+  "freq" : 0.1,
+  "numberOfItems" : 6
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "781",
+  "upper" : "783",
+  "cumulfreq" : 29.7,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "784",
+  "upper" : "786",
+  "cumulfreq" : 29.8,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "787",
+  "upper" : "789",
+  "cumulfreq" : 29.9,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "790",
+  "upper" : "790",
+  "cumulfreq" : 30.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "791",
+  "upper" : "795",
+  "cumulfreq" : 30.1,
+  "freq" : 0.1,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "796",
+  "upper" : "798",
+  "cumulfreq" : 30.2,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "799",
+  "upper" : "801",
+  "cumulfreq" : 30.2,
+  "freq" : 0.0,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "802",
+  "upper" : "808",
+  "cumulfreq" : 30.4,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "809",
+  "upper" : "810",
+  "cumulfreq" : 30.5,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "811",
+  "upper" : "813",
+  "cumulfreq" : 30.6,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "814",
+  "upper" : "816",
+  "cumulfreq" : 30.7,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "817",
+  "upper" : "818",
+  "cumulfreq" : 30.8,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "819",
+  "upper" : "819",
+  "cumulfreq" : 30.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "820",
+  "upper" : "820",
+  "cumulfreq" : 30.9,
+  "freq" : 0.0,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "821",
+  "upper" : "822",
+  "cumulfreq" : 31.1,
+  "freq" : 0.2,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "823",
+  "upper" : "823",
+  "cumulfreq" : 31.1,
+  "freq" : 0.0,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "824",
+  "upper" : "825",
+  "cumulfreq" : 31.3,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "826",
+  "upper" : "828",
+  "cumulfreq" : 31.4,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "829",
+  "upper" : "829",
+  "cumulfreq" : 31.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "830",
+  "upper" : "832",
+  "cumulfreq" : 31.6,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "833",
+  "upper" : "837",
+  "cumulfreq" : 31.7,
+  "freq" : 0.1,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "838",
+  "upper" : "839",
+  "cumulfreq" : 31.8,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "840",
+  "upper" : "842",
+  "cumulfreq" : 31.8,
+  "freq" : 0.0,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "843",
+  "upper" : "843",
+  "cumulfreq" : 31.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "844",
+  "upper" : "845",
+  "cumulfreq" : 32.0,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "846",
+  "upper" : "847",
+  "cumulfreq" : 32.1,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "848",
+  "upper" : "849",
+  "cumulfreq" : 32.2,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "850",
+  "upper" : "852",
+  "cumulfreq" : 32.3,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "853",
+  "upper" : "854",
+  "cumulfreq" : 32.4,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "855",
+  "upper" : "857",
+  "cumulfreq" : 32.5,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "858",
+  "upper" : "859",
+  "cumulfreq" : 32.6,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "860",
+  "upper" : "863",
+  "cumulfreq" : 32.8,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "864",
+  "upper" : "864",
+  "cumulfreq" : 32.8,
+  "freq" : 0.0,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "865",
+  "upper" : "866",
+  "cumulfreq" : 32.9,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "867",
+  "upper" : "868",
+  "cumulfreq" : 33.0,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "869",
+  "upper" : "870",
+  "cumulfreq" : 33.1,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "871",
+  "upper" : "871",
+  "cumulfreq" : 33.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "872",
+  "upper" : "874",
+  "cumulfreq" : 33.3,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "875",
+  "upper" : "878",
+  "cumulfreq" : 33.4,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "879",
+  "upper" : "880",
+  "cumulfreq" : 33.5,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "881",
+  "upper" : "885",
+  "cumulfreq" : 33.6,
+  "freq" : 0.1,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "886",
+  "upper" : "889",
+  "cumulfreq" : 33.7,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "890",
+  "upper" : "900",
+  "cumulfreq" : 33.8,
+  "freq" : 0.1,
+  "numberOfItems" : 11
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "901",
+  "upper" : "903",
+  "cumulfreq" : 33.9,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "904",
+  "upper" : "904",
+  "cumulfreq" : 34.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "905",
+  "upper" : "905",
+  "cumulfreq" : 34.0,
+  "freq" : 0.0,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "906",
+  "upper" : "909",
+  "cumulfreq" : 34.2,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "910",
+  "upper" : "912",
+  "cumulfreq" : 34.3,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "913",
+  "upper" : "915",
+  "cumulfreq" : 34.4,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "916",
+  "upper" : "916",
+  "cumulfreq" : 34.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "917",
+  "upper" : "918",
+  "cumulfreq" : 34.6,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "919",
+  "upper" : "919",
+  "cumulfreq" : 34.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "920",
+  "upper" : "921",
+  "cumulfreq" : 34.7,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "922",
+  "upper" : "924",
+  "cumulfreq" : 34.9,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "925",
+  "upper" : "927",
+  "cumulfreq" : 35.0,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "928",
+  "upper" : "930",
+  "cumulfreq" : 35.0,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "931",
+  "upper" : "933",
+  "cumulfreq" : 35.2,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "934",
+  "upper" : "937",
+  "cumulfreq" : 35.3,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "938",
+  "upper" : "939",
+  "cumulfreq" : 35.3,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "940",
+  "upper" : "940",
+  "cumulfreq" : 35.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "941",
+  "upper" : "941",
+  "cumulfreq" : 35.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "942",
+  "upper" : "944",
+  "cumulfreq" : 35.6,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "945",
+  "upper" : "945",
+  "cumulfreq" : 35.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "946",
+  "upper" : "948",
+  "cumulfreq" : 35.8,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "949",
+  "upper" : "952",
+  "cumulfreq" : 35.9,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "953",
+  "upper" : "954",
+  "cumulfreq" : 36.1,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "955",
+  "upper" : "957",
+  "cumulfreq" : 36.1,
+  "freq" : 0.0,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "958",
+  "upper" : "959",
+  "cumulfreq" : 36.3,
+  "freq" : 0.2,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "960",
+  "upper" : "962",
+  "cumulfreq" : 36.3,
+  "freq" : 0.0,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "963",
+  "upper" : "963",
+  "cumulfreq" : 36.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "964",
+  "upper" : "966",
+  "cumulfreq" : 36.5,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "967",
+  "upper" : "968",
+  "cumulfreq" : 36.7,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "969",
+  "upper" : "969",
+  "cumulfreq" : 36.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "970",
+  "upper" : "972",
+  "cumulfreq" : 36.8,
+  "freq" : 0.0,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "973",
+  "upper" : "974",
+  "cumulfreq" : 36.9,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "975",
+  "upper" : "976",
+  "cumulfreq" : 37.0,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "977",
+  "upper" : "978",
+  "cumulfreq" : 37.1,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "979",
+  "upper" : "983",
+  "cumulfreq" : 37.2,
+  "freq" : 0.1,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "984",
+  "upper" : "988",
+  "cumulfreq" : 37.3,
+  "freq" : 0.1,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "989",
+  "upper" : "989",
+  "cumulfreq" : 37.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "990",
+  "upper" : "991",
+  "cumulfreq" : 37.5,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "992",
+  "upper" : "993",
+  "cumulfreq" : 37.6,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "994",
+  "upper" : "996",
+  "cumulfreq" : 37.7,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "997",
+  "upper" : "999",
+  "cumulfreq" : 37.8,
+  "freq" : 0.2,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1000",
+  "upper" : "1000",
+  "cumulfreq" : 37.9,
+  "freq" : 0.0,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1001",
+  "upper" : "1004",
+  "cumulfreq" : 38.0,
+  "freq" : 0.2,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1005",
+  "upper" : "1005",
+  "cumulfreq" : 38.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1006",
+  "upper" : "1007",
+  "cumulfreq" : 38.2,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1008",
+  "upper" : "1009",
+  "cumulfreq" : 38.2,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1010",
+  "upper" : "1010",
+  "cumulfreq" : 38.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1011",
+  "upper" : "1015",
+  "cumulfreq" : 38.4,
+  "freq" : 0.1,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1016",
+  "upper" : "1017",
+  "cumulfreq" : 38.6,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1018",
+  "upper" : "1019",
+  "cumulfreq" : 38.7,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1020",
+  "upper" : "1022",
+  "cumulfreq" : 38.8,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1023",
+  "upper" : "1026",
+  "cumulfreq" : 38.9,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1027",
+  "upper" : "1028",
+  "cumulfreq" : 38.9,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1029",
+  "upper" : "1030",
+  "cumulfreq" : 39.1,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1031",
+  "upper" : "1035",
+  "cumulfreq" : 39.1,
+  "freq" : 0.0,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1036",
+  "upper" : "1038",
+  "cumulfreq" : 39.2,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1039",
+  "upper" : "1043",
+  "cumulfreq" : 39.4,
+  "freq" : 0.2,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1044",
+  "upper" : "1047",
+  "cumulfreq" : 39.5,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1048",
+  "upper" : "1052",
+  "cumulfreq" : 39.6,
+  "freq" : 0.1,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1053",
+  "upper" : "1054",
+  "cumulfreq" : 39.6,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1055",
+  "upper" : "1058",
+  "cumulfreq" : 39.7,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1059",
+  "upper" : "1059",
+  "cumulfreq" : 39.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1060",
+  "upper" : "1063",
+  "cumulfreq" : 39.9,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1064",
+  "upper" : "1067",
+  "cumulfreq" : 40.1,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1068",
+  "upper" : "1070",
+  "cumulfreq" : 40.1,
+  "freq" : 0.0,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1071",
+  "upper" : "1077",
+  "cumulfreq" : 40.2,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1078",
+  "upper" : "1079",
+  "cumulfreq" : 40.4,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1080",
+  "upper" : "1082",
+  "cumulfreq" : 40.4,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1083",
+  "upper" : "1085",
+  "cumulfreq" : 40.5,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1086",
+  "upper" : "1087",
+  "cumulfreq" : 40.7,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1088",
+  "upper" : "1088",
+  "cumulfreq" : 40.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1089",
+  "upper" : "1089",
+  "cumulfreq" : 40.8,
+  "freq" : 0.0,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1090",
+  "upper" : "1090",
+  "cumulfreq" : 40.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1091",
+  "upper" : "1092",
+  "cumulfreq" : 41.0,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1093",
+  "upper" : "1094",
+  "cumulfreq" : 41.1,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1095",
+  "upper" : "1097",
+  "cumulfreq" : 41.2,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1098",
+  "upper" : "1098",
+  "cumulfreq" : 41.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1099",
+  "upper" : "1101",
+  "cumulfreq" : 41.4,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1102",
+  "upper" : "1106",
+  "cumulfreq" : 41.5,
+  "freq" : 0.1,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1107",
+  "upper" : "1107",
+  "cumulfreq" : 41.6,
+  "freq" : 0.0,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1108",
+  "upper" : "1111",
+  "cumulfreq" : 41.7,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1112",
+  "upper" : "1112",
+  "cumulfreq" : 41.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1113",
+  "upper" : "1113",
+  "cumulfreq" : 41.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1114",
+  "upper" : "1116",
+  "cumulfreq" : 42.0,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1117",
+  "upper" : "1118",
+  "cumulfreq" : 42.1,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1119",
+  "upper" : "1121",
+  "cumulfreq" : 42.2,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1122",
+  "upper" : "1123",
+  "cumulfreq" : 42.3,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1124",
+  "upper" : "1125",
+  "cumulfreq" : 42.3,
+  "freq" : 0.0,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1126",
+  "upper" : "1127",
+  "cumulfreq" : 42.5,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1128",
+  "upper" : "1131",
+  "cumulfreq" : 42.6,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1132",
+  "upper" : "1132",
+  "cumulfreq" : 42.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1133",
+  "upper" : "1134",
+  "cumulfreq" : 42.8,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1135",
+  "upper" : "1136",
+  "cumulfreq" : 42.8,
+  "freq" : 0.0,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1137",
+  "upper" : "1138",
+  "cumulfreq" : 43.0,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1139",
+  "upper" : "1139",
+  "cumulfreq" : 43.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1140",
+  "upper" : "1141",
+  "cumulfreq" : 43.2,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1142",
+  "upper" : "1146",
+  "cumulfreq" : 43.3,
+  "freq" : 0.1,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1147",
+  "upper" : "1148",
+  "cumulfreq" : 43.3,
+  "freq" : 0.0,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1149",
+  "upper" : "1150",
+  "cumulfreq" : 43.5,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1151",
+  "upper" : "1154",
+  "cumulfreq" : 43.5,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1155",
+  "upper" : "1159",
+  "cumulfreq" : 43.7,
+  "freq" : 0.1,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1160",
+  "upper" : "1170",
+  "cumulfreq" : 43.8,
+  "freq" : 0.1,
+  "numberOfItems" : 11
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1171",
+  "upper" : "1172",
+  "cumulfreq" : 43.8,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1173",
+  "upper" : "1173",
+  "cumulfreq" : 43.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1174",
+  "upper" : "1175",
+  "cumulfreq" : 44.1,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1176",
+  "upper" : "1180",
+  "cumulfreq" : 44.2,
+  "freq" : 0.1,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1181",
+  "upper" : "1181",
+  "cumulfreq" : 44.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1182",
+  "upper" : "1184",
+  "cumulfreq" : 44.3,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1185",
+  "upper" : "1185",
+  "cumulfreq" : 44.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1186",
+  "upper" : "1187",
+  "cumulfreq" : 44.5,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1188",
+  "upper" : "1188",
+  "cumulfreq" : 44.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1189",
+  "upper" : "1190",
+  "cumulfreq" : 44.7,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1191",
+  "upper" : "1193",
+  "cumulfreq" : 44.8,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1194",
+  "upper" : "1196",
+  "cumulfreq" : 44.9,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1197",
+  "upper" : "1199",
+  "cumulfreq" : 45.0,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1200",
+  "upper" : "1202",
+  "cumulfreq" : 45.1,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1203",
+  "upper" : "1206",
+  "cumulfreq" : 45.2,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1207",
+  "upper" : "1208",
+  "cumulfreq" : 45.3,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1209",
+  "upper" : "1209",
+  "cumulfreq" : 45.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1210",
+  "upper" : "1210",
+  "cumulfreq" : 45.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1211",
+  "upper" : "1213",
+  "cumulfreq" : 45.6,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1214",
+  "upper" : "1214",
+  "cumulfreq" : 45.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1215",
+  "upper" : "1216",
+  "cumulfreq" : 45.8,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1217",
+  "upper" : "1218",
+  "cumulfreq" : 45.9,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1219",
+  "upper" : "1222",
+  "cumulfreq" : 46.0,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1223",
+  "upper" : "1223",
+  "cumulfreq" : 46.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1224",
+  "upper" : "1227",
+  "cumulfreq" : 46.2,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1228",
+  "upper" : "1228",
+  "cumulfreq" : 46.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1229",
+  "upper" : "1231",
+  "cumulfreq" : 46.3,
+  "freq" : 0.0,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1232",
+  "upper" : "1234",
+  "cumulfreq" : 46.5,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1235",
+  "upper" : "1236",
+  "cumulfreq" : 46.6,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1237",
+  "upper" : "1237",
+  "cumulfreq" : 46.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1238",
+  "upper" : "1238",
+  "cumulfreq" : 46.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1239",
+  "upper" : "1242",
+  "cumulfreq" : 46.9,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1243",
+  "upper" : "1243",
+  "cumulfreq" : 47.0,
+  "freq" : 0.0,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1244",
+  "upper" : "1246",
+  "cumulfreq" : 47.1,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1247",
+  "upper" : "1247",
+  "cumulfreq" : 47.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1248",
+  "upper" : "1252",
+  "cumulfreq" : 47.3,
+  "freq" : 0.1,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1253",
+  "upper" : "1257",
+  "cumulfreq" : 47.4,
+  "freq" : 0.1,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1258",
+  "upper" : "1258",
+  "cumulfreq" : 47.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1259",
+  "upper" : "1260",
+  "cumulfreq" : 47.5,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1261",
+  "upper" : "1262",
+  "cumulfreq" : 47.7,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1263",
+  "upper" : "1265",
+  "cumulfreq" : 47.7,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1266",
+  "upper" : "1268",
+  "cumulfreq" : 47.9,
+  "freq" : 0.2,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1269",
+  "upper" : "1269",
+  "cumulfreq" : 47.9,
+  "freq" : 0.0,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1270",
+  "upper" : "1273",
+  "cumulfreq" : 48.1,
+  "freq" : 0.2,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1274",
+  "upper" : "1274",
+  "cumulfreq" : 48.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1275",
+  "upper" : "1276",
+  "cumulfreq" : 48.2,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1277",
+  "upper" : "1278",
+  "cumulfreq" : 48.3,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1279",
+  "upper" : "1279",
+  "cumulfreq" : 48.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1280",
+  "upper" : "1284",
+  "cumulfreq" : 48.5,
+  "freq" : 0.1,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1285",
+  "upper" : "1285",
+  "cumulfreq" : 48.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1286",
+  "upper" : "1288",
+  "cumulfreq" : 48.8,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1289",
+  "upper" : "1290",
+  "cumulfreq" : 48.8,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1291",
+  "upper" : "1292",
+  "cumulfreq" : 48.9,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1293",
+  "upper" : "1296",
+  "cumulfreq" : 49.0,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1297",
+  "upper" : "1298",
+  "cumulfreq" : 49.1,
+  "freq" : 0.0,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1299",
+  "upper" : "1304",
+  "cumulfreq" : 49.2,
+  "freq" : 0.1,
+  "numberOfItems" : 6
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1305",
+  "upper" : "1307",
+  "cumulfreq" : 49.3,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1308",
+  "upper" : "1311",
+  "cumulfreq" : 49.4,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1312",
+  "upper" : "1313",
+  "cumulfreq" : 49.5,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1314",
+  "upper" : "1319",
+  "cumulfreq" : 49.6,
+  "freq" : 0.1,
+  "numberOfItems" : 6
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1320",
+  "upper" : "1322",
+  "cumulfreq" : 49.7,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1323",
+  "upper" : "1325",
+  "cumulfreq" : 49.8,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1326",
+  "upper" : "1328",
+  "cumulfreq" : 49.9,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1329",
+  "upper" : "1329",
+  "cumulfreq" : 50.0,
+  "freq" : 0.0,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1330",
+  "upper" : "1335",
+  "cumulfreq" : 50.1,
+  "freq" : 0.1,
+  "numberOfItems" : 6
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1336",
+  "upper" : "1338",
+  "cumulfreq" : 50.2,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1339",
+  "upper" : "1340",
+  "cumulfreq" : 50.3,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1341",
+  "upper" : "1347",
+  "cumulfreq" : 50.4,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1348",
+  "upper" : "1350",
+  "cumulfreq" : 50.5,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1351",
+  "upper" : "1353",
+  "cumulfreq" : 50.6,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1354",
+  "upper" : "1355",
+  "cumulfreq" : 50.7,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1356",
+  "upper" : "1356",
+  "cumulfreq" : 50.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1357",
+  "upper" : "1357",
+  "cumulfreq" : 50.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1358",
+  "upper" : "1359",
+  "cumulfreq" : 51.0,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1360",
+  "upper" : "1360",
+  "cumulfreq" : 51.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1361",
+  "upper" : "1362",
+  "cumulfreq" : 51.1,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1363",
+  "upper" : "1365",
+  "cumulfreq" : 51.2,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1366",
+  "upper" : "1366",
+  "cumulfreq" : 51.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1367",
+  "upper" : "1369",
+  "cumulfreq" : 51.4,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1370",
+  "upper" : "1374",
+  "cumulfreq" : 51.5,
+  "freq" : 0.1,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1375",
+  "upper" : "1376",
+  "cumulfreq" : 51.6,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1377",
+  "upper" : "1380",
+  "cumulfreq" : 51.8,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1381",
+  "upper" : "1381",
+  "cumulfreq" : 51.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1382",
+  "upper" : "1382",
+  "cumulfreq" : 52.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1383",
+  "upper" : "1384",
+  "cumulfreq" : 52.0,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1385",
+  "upper" : "1386",
+  "cumulfreq" : 52.1,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1387",
+  "upper" : "1389",
+  "cumulfreq" : 52.2,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1390",
+  "upper" : "1391",
+  "cumulfreq" : 52.3,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1392",
+  "upper" : "1394",
+  "cumulfreq" : 52.4,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1395",
+  "upper" : "1395",
+  "cumulfreq" : 52.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1396",
+  "upper" : "1399",
+  "cumulfreq" : 52.6,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1400",
+  "upper" : "1401",
+  "cumulfreq" : 52.7,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1402",
+  "upper" : "1403",
+  "cumulfreq" : 52.9,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1404",
+  "upper" : "1405",
+  "cumulfreq" : 52.9,
+  "freq" : 0.0,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1406",
+  "upper" : "1407",
+  "cumulfreq" : 53.0,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1408",
+  "upper" : "1408",
+  "cumulfreq" : 53.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1409",
+  "upper" : "1410",
+  "cumulfreq" : 53.2,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1411",
+  "upper" : "1415",
+  "cumulfreq" : 53.3,
+  "freq" : 0.1,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1416",
+  "upper" : "1417",
+  "cumulfreq" : 53.4,
+  "freq" : 0.0,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1418",
+  "upper" : "1419",
+  "cumulfreq" : 53.5,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1420",
+  "upper" : "1424",
+  "cumulfreq" : 53.6,
+  "freq" : 0.1,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1425",
+  "upper" : "1430",
+  "cumulfreq" : 53.7,
+  "freq" : 0.1,
+  "numberOfItems" : 6
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1431",
+  "upper" : "1439",
+  "cumulfreq" : 53.8,
+  "freq" : 0.1,
+  "numberOfItems" : 9
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1440",
+  "upper" : "1441",
+  "cumulfreq" : 53.9,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1442",
+  "upper" : "1443",
+  "cumulfreq" : 54.0,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1444",
+  "upper" : "1444",
+  "cumulfreq" : 54.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1445",
+  "upper" : "1449",
+  "cumulfreq" : 54.2,
+  "freq" : 0.1,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1450",
+  "upper" : "1452",
+  "cumulfreq" : 54.3,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1453",
+  "upper" : "1454",
+  "cumulfreq" : 54.4,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1455",
+  "upper" : "1455",
+  "cumulfreq" : 54.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1456",
+  "upper" : "1457",
+  "cumulfreq" : 54.6,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1458",
+  "upper" : "1458",
+  "cumulfreq" : 54.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1459",
+  "upper" : "1460",
+  "cumulfreq" : 54.8,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1461",
+  "upper" : "1463",
+  "cumulfreq" : 54.9,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1464",
+  "upper" : "1466",
+  "cumulfreq" : 55.0,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1467",
+  "upper" : "1469",
+  "cumulfreq" : 55.1,
+  "freq" : 0.0,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1470",
+  "upper" : "1474",
+  "cumulfreq" : 55.2,
+  "freq" : 0.1,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1475",
+  "upper" : "1476",
+  "cumulfreq" : 55.2,
+  "freq" : 0.0,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1477",
+  "upper" : "1477",
+  "cumulfreq" : 55.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1478",
+  "upper" : "1478",
+  "cumulfreq" : 55.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1479",
+  "upper" : "1480",
+  "cumulfreq" : 55.6,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1481",
+  "upper" : "1483",
+  "cumulfreq" : 55.7,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1484",
+  "upper" : "1484",
+  "cumulfreq" : 55.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1485",
+  "upper" : "1486",
+  "cumulfreq" : 55.8,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1487",
+  "upper" : "1491",
+  "cumulfreq" : 56.0,
+  "freq" : 0.1,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1492",
+  "upper" : "1492",
+  "cumulfreq" : 56.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1493",
+  "upper" : "1496",
+  "cumulfreq" : 56.2,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1497",
+  "upper" : "1497",
+  "cumulfreq" : 56.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1498",
+  "upper" : "1500",
+  "cumulfreq" : 56.3,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1501",
+  "upper" : "1503",
+  "cumulfreq" : 56.4,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1504",
+  "upper" : "1504",
+  "cumulfreq" : 56.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1505",
+  "upper" : "1506",
+  "cumulfreq" : 56.7,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1507",
+  "upper" : "1507",
+  "cumulfreq" : 56.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1508",
+  "upper" : "1511",
+  "cumulfreq" : 56.9,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1512",
+  "upper" : "1512",
+  "cumulfreq" : 56.9,
+  "freq" : 0.0,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1513",
+  "upper" : "1514",
+  "cumulfreq" : 57.0,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1515",
+  "upper" : "1516",
+  "cumulfreq" : 57.1,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1517",
+  "upper" : "1521",
+  "cumulfreq" : 57.2,
+  "freq" : 0.1,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1522",
+  "upper" : "1526",
+  "cumulfreq" : 57.3,
+  "freq" : 0.1,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1527",
+  "upper" : "1527",
+  "cumulfreq" : 57.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1528",
+  "upper" : "1530",
+  "cumulfreq" : 57.5,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1531",
+  "upper" : "1531",
+  "cumulfreq" : 57.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1532",
+  "upper" : "1534",
+  "cumulfreq" : 57.7,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1535",
+  "upper" : "1537",
+  "cumulfreq" : 57.9,
+  "freq" : 0.2,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1538",
+  "upper" : "1538",
+  "cumulfreq" : 57.9,
+  "freq" : 0.0,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1539",
+  "upper" : "1542",
+  "cumulfreq" : 58.1,
+  "freq" : 0.2,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1543",
+  "upper" : "1543",
+  "cumulfreq" : 58.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1544",
+  "upper" : "1545",
+  "cumulfreq" : 58.2,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1546",
+  "upper" : "1547",
+  "cumulfreq" : 58.3,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1548",
+  "upper" : "1548",
+  "cumulfreq" : 58.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1549",
+  "upper" : "1553",
+  "cumulfreq" : 58.5,
+  "freq" : 0.1,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1554",
+  "upper" : "1554",
+  "cumulfreq" : 58.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1555",
+  "upper" : "1557",
+  "cumulfreq" : 58.7,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1558",
+  "upper" : "1559",
+  "cumulfreq" : 58.8,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1560",
+  "upper" : "1561",
+  "cumulfreq" : 58.9,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1562",
+  "upper" : "1565",
+  "cumulfreq" : 59.0,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1566",
+  "upper" : "1568",
+  "cumulfreq" : 59.1,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1569",
+  "upper" : "1573",
+  "cumulfreq" : 59.2,
+  "freq" : 0.0,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1574",
+  "upper" : "1576",
+  "cumulfreq" : 59.3,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1577",
+  "upper" : "1580",
+  "cumulfreq" : 59.3,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1581",
+  "upper" : "1583",
+  "cumulfreq" : 59.5,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1584",
+  "upper" : "1589",
+  "cumulfreq" : 59.6,
+  "freq" : 0.1,
+  "numberOfItems" : 6
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1590",
+  "upper" : "1591",
+  "cumulfreq" : 59.7,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1592",
+  "upper" : "1595",
+  "cumulfreq" : 59.8,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1596",
+  "upper" : "1597",
+  "cumulfreq" : 59.9,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1598",
+  "upper" : "1599",
+  "cumulfreq" : 60.0,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1600",
+  "upper" : "1605",
+  "cumulfreq" : 60.1,
+  "freq" : 0.1,
+  "numberOfItems" : 6
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1606",
+  "upper" : "1608",
+  "cumulfreq" : 60.1,
+  "freq" : 0.0,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1609",
+  "upper" : "1609",
+  "cumulfreq" : 60.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1610",
+  "upper" : "1617",
+  "cumulfreq" : 60.4,
+  "freq" : 0.2,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1618",
+  "upper" : "1620",
+  "cumulfreq" : 60.5,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1621",
+  "upper" : "1623",
+  "cumulfreq" : 60.6,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1624",
+  "upper" : "1625",
+  "cumulfreq" : 60.7,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1626",
+  "upper" : "1626",
+  "cumulfreq" : 60.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1627",
+  "upper" : "1627",
+  "cumulfreq" : 60.8,
+  "freq" : 0.0,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1628",
+  "upper" : "1628",
+  "cumulfreq" : 60.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1629",
+  "upper" : "1630",
+  "cumulfreq" : 61.0,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1631",
+  "upper" : "1632",
+  "cumulfreq" : 61.2,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1633",
+  "upper" : "1635",
+  "cumulfreq" : 61.3,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1636",
+  "upper" : "1636",
+  "cumulfreq" : 61.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1637",
+  "upper" : "1639",
+  "cumulfreq" : 61.5,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1640",
+  "upper" : "1644",
+  "cumulfreq" : 61.6,
+  "freq" : 0.1,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1645",
+  "upper" : "1645",
+  "cumulfreq" : 61.6,
+  "freq" : 0.0,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1646",
+  "upper" : "1649",
+  "cumulfreq" : 61.7,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1650",
+  "upper" : "1650",
+  "cumulfreq" : 61.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1651",
+  "upper" : "1651",
+  "cumulfreq" : 61.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1652",
+  "upper" : "1654",
+  "cumulfreq" : 62.0,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1655",
+  "upper" : "1656",
+  "cumulfreq" : 62.1,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1657",
+  "upper" : "1659",
+  "cumulfreq" : 62.3,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1660",
+  "upper" : "1661",
+  "cumulfreq" : 62.3,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1662",
+  "upper" : "1663",
+  "cumulfreq" : 62.4,
+  "freq" : 0.0,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1664",
+  "upper" : "1665",
+  "cumulfreq" : 62.5,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1666",
+  "upper" : "1669",
+  "cumulfreq" : 62.6,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1670",
+  "upper" : "1670",
+  "cumulfreq" : 62.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1671",
+  "upper" : "1672",
+  "cumulfreq" : 62.8,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1673",
+  "upper" : "1674",
+  "cumulfreq" : 62.8,
+  "freq" : 0.0,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1675",
+  "upper" : "1676",
+  "cumulfreq" : 63.0,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1677",
+  "upper" : "1677",
+  "cumulfreq" : 63.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1678",
+  "upper" : "1679",
+  "cumulfreq" : 63.2,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1680",
+  "upper" : "1684",
+  "cumulfreq" : 63.3,
+  "freq" : 0.1,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1685",
+  "upper" : "1687",
+  "cumulfreq" : 63.4,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1688",
+  "upper" : "1688",
+  "cumulfreq" : 63.5,
+  "freq" : 0.0,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1689",
+  "upper" : "1693",
+  "cumulfreq" : 63.6,
+  "freq" : 0.1,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1694",
+  "upper" : "1699",
+  "cumulfreq" : 63.7,
+  "freq" : 0.1,
+  "numberOfItems" : 6
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1700",
+  "upper" : "1708",
+  "cumulfreq" : 63.8,
+  "freq" : 0.1,
+  "numberOfItems" : 9
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1709",
+  "upper" : "1710",
+  "cumulfreq" : 63.8,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1711",
+  "upper" : "1712",
+  "cumulfreq" : 64.0,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1713",
+  "upper" : "1713",
+  "cumulfreq" : 64.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1714",
+  "upper" : "1718",
+  "cumulfreq" : 64.1,
+  "freq" : 0.1,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1719",
+  "upper" : "1721",
+  "cumulfreq" : 64.3,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1722",
+  "upper" : "1723",
+  "cumulfreq" : 64.4,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1724",
+  "upper" : "1724",
+  "cumulfreq" : 64.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1725",
+  "upper" : "1726",
+  "cumulfreq" : 64.6,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1727",
+  "upper" : "1727",
+  "cumulfreq" : 64.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1728",
+  "upper" : "1729",
+  "cumulfreq" : 64.8,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1730",
+  "upper" : "1732",
+  "cumulfreq" : 64.8,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1733",
+  "upper" : "1734",
+  "cumulfreq" : 64.9,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1735",
+  "upper" : "1738",
+  "cumulfreq" : 65.0,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1739",
+  "upper" : "1742",
+  "cumulfreq" : 65.1,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1743",
+  "upper" : "1745",
+  "cumulfreq" : 65.2,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1746",
+  "upper" : "1746",
+  "cumulfreq" : 65.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1747",
+  "upper" : "1747",
+  "cumulfreq" : 65.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1748",
+  "upper" : "1749",
+  "cumulfreq" : 65.5,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1750",
+  "upper" : "1752",
+  "cumulfreq" : 65.7,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1753",
+  "upper" : "1753",
+  "cumulfreq" : 65.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1754",
+  "upper" : "1755",
+  "cumulfreq" : 65.8,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1756",
+  "upper" : "1760",
+  "cumulfreq" : 65.9,
+  "freq" : 0.1,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1761",
+  "upper" : "1761",
+  "cumulfreq" : 66.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1762",
+  "upper" : "1765",
+  "cumulfreq" : 66.1,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1766",
+  "upper" : "1766",
+  "cumulfreq" : 66.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1767",
+  "upper" : "1769",
+  "cumulfreq" : 66.3,
+  "freq" : 0.0,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1770",
+  "upper" : "1772",
+  "cumulfreq" : 66.4,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1773",
+  "upper" : "1773",
+  "cumulfreq" : 66.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1774",
+  "upper" : "1775",
+  "cumulfreq" : 66.6,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1776",
+  "upper" : "1776",
+  "cumulfreq" : 66.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1777",
+  "upper" : "1780",
+  "cumulfreq" : 66.8,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1781",
+  "upper" : "1781",
+  "cumulfreq" : 66.9,
+  "freq" : 0.0,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1782",
+  "upper" : "1784",
+  "cumulfreq" : 67.0,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1785",
+  "upper" : "1785",
+  "cumulfreq" : 67.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1786",
+  "upper" : "1790",
+  "cumulfreq" : 67.2,
+  "freq" : 0.1,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1791",
+  "upper" : "1795",
+  "cumulfreq" : 67.3,
+  "freq" : 0.1,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1796",
+  "upper" : "1796",
+  "cumulfreq" : 67.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1797",
+  "upper" : "1799",
+  "cumulfreq" : 67.5,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1800",
+  "upper" : "1800",
+  "cumulfreq" : 67.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1801",
+  "upper" : "1804",
+  "cumulfreq" : 67.7,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1805",
+  "upper" : "1806",
+  "cumulfreq" : 67.8,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1807",
+  "upper" : "1808",
+  "cumulfreq" : 67.9,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1809",
+  "upper" : "1811",
+  "cumulfreq" : 68.0,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1812",
+  "upper" : "1812",
+  "cumulfreq" : 68.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1813",
+  "upper" : "1814",
+  "cumulfreq" : 68.1,
+  "freq" : 0.0,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1815",
+  "upper" : "1816",
+  "cumulfreq" : 68.2,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1817",
+  "upper" : "1817",
+  "cumulfreq" : 68.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1818",
+  "upper" : "1822",
+  "cumulfreq" : 68.4,
+  "freq" : 0.1,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1823",
+  "upper" : "1824",
+  "cumulfreq" : 68.6,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1825",
+  "upper" : "1826",
+  "cumulfreq" : 68.7,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1827",
+  "upper" : "1829",
+  "cumulfreq" : 68.7,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1830",
+  "upper" : "1833",
+  "cumulfreq" : 68.8,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1834",
+  "upper" : "1835",
+  "cumulfreq" : 68.9,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1836",
+  "upper" : "1837",
+  "cumulfreq" : 69.1,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1838",
+  "upper" : "1842",
+  "cumulfreq" : 69.1,
+  "freq" : 0.0,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1843",
+  "upper" : "1845",
+  "cumulfreq" : 69.2,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1846",
+  "upper" : "1849",
+  "cumulfreq" : 69.3,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1850",
+  "upper" : "1852",
+  "cumulfreq" : 69.4,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1853",
+  "upper" : "1858",
+  "cumulfreq" : 69.5,
+  "freq" : 0.1,
+  "numberOfItems" : 6
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1859",
+  "upper" : "1860",
+  "cumulfreq" : 69.6,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1861",
+  "upper" : "1864",
+  "cumulfreq" : 69.7,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1865",
+  "upper" : "1866",
+  "cumulfreq" : 69.8,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1867",
+  "upper" : "1868",
+  "cumulfreq" : 69.9,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1869",
+  "upper" : "1874",
+  "cumulfreq" : 70.1,
+  "freq" : 0.1,
+  "numberOfItems" : 6
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1875",
+  "upper" : "1877",
+  "cumulfreq" : 70.1,
+  "freq" : 0.0,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1878",
+  "upper" : "1878",
+  "cumulfreq" : 70.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1879",
+  "upper" : "1885",
+  "cumulfreq" : 70.3,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1886",
+  "upper" : "1889",
+  "cumulfreq" : 70.4,
+  "freq" : 0.2,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1890",
+  "upper" : "1891",
+  "cumulfreq" : 70.5,
+  "freq" : 0.0,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1892",
+  "upper" : "1893",
+  "cumulfreq" : 70.6,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1894",
+  "upper" : "1894",
+  "cumulfreq" : 70.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1895",
+  "upper" : "1896",
+  "cumulfreq" : 70.8,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1897",
+  "upper" : "1897",
+  "cumulfreq" : 70.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1898",
+  "upper" : "1899",
+  "cumulfreq" : 71.0,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1900",
+  "upper" : "1901",
+  "cumulfreq" : 71.1,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1902",
+  "upper" : "1904",
+  "cumulfreq" : 71.2,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1905",
+  "upper" : "1905",
+  "cumulfreq" : 71.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1906",
+  "upper" : "1908",
+  "cumulfreq" : 71.4,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1909",
+  "upper" : "1913",
+  "cumulfreq" : 71.5,
+  "freq" : 0.1,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1914",
+  "upper" : "1915",
+  "cumulfreq" : 71.6,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1916",
+  "upper" : "1918",
+  "cumulfreq" : 71.6,
+  "freq" : 0.0,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1919",
+  "upper" : "1919",
+  "cumulfreq" : 71.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1920",
+  "upper" : "1921",
+  "cumulfreq" : 71.9,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1922",
+  "upper" : "1923",
+  "cumulfreq" : 72.0,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1924",
+  "upper" : "1925",
+  "cumulfreq" : 72.1,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1926",
+  "upper" : "1928",
+  "cumulfreq" : 72.2,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1929",
+  "upper" : "1930",
+  "cumulfreq" : 72.3,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1931",
+  "upper" : "1933",
+  "cumulfreq" : 72.4,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1934",
+  "upper" : "1934",
+  "cumulfreq" : 72.5,
+  "freq" : 0.0,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1935",
+  "upper" : "1938",
+  "cumulfreq" : 72.5,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1939",
+  "upper" : "1940",
+  "cumulfreq" : 72.7,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1941",
+  "upper" : "1941",
+  "cumulfreq" : 72.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1942",
+  "upper" : "1944",
+  "cumulfreq" : 72.9,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1945",
+  "upper" : "1945",
+  "cumulfreq" : 72.9,
+  "freq" : 0.0,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1946",
+  "upper" : "1946",
+  "cumulfreq" : 73.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1947",
+  "upper" : "1949",
+  "cumulfreq" : 73.2,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1950",
+  "upper" : "1953",
+  "cumulfreq" : 73.2,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1954",
+  "upper" : "1956",
+  "cumulfreq" : 73.4,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1957",
+  "upper" : "1960",
+  "cumulfreq" : 73.4,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1961",
+  "upper" : "1962",
+  "cumulfreq" : 73.5,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1963",
+  "upper" : "1972",
+  "cumulfreq" : 73.6,
+  "freq" : 0.1,
+  "numberOfItems" : 10
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1973",
+  "upper" : "1978",
+  "cumulfreq" : 73.7,
+  "freq" : 0.1,
+  "numberOfItems" : 6
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1979",
+  "upper" : "1979",
+  "cumulfreq" : 73.8,
+  "freq" : 0.0,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1980",
+  "upper" : "1981",
+  "cumulfreq" : 73.9,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1982",
+  "upper" : "1984",
+  "cumulfreq" : 74.0,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1985",
+  "upper" : "1987",
+  "cumulfreq" : 74.1,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1988",
+  "upper" : "1990",
+  "cumulfreq" : 74.2,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1991",
+  "upper" : "1992",
+  "cumulfreq" : 74.3,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1993",
+  "upper" : "1993",
+  "cumulfreq" : 74.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1994",
+  "upper" : "1995",
+  "cumulfreq" : 74.5,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1996",
+  "upper" : "1997",
+  "cumulfreq" : 74.6,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "1998",
+  "upper" : "1999",
+  "cumulfreq" : 74.7,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2000",
+  "upper" : "2002",
+  "cumulfreq" : 74.8,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2003",
+  "upper" : "2004",
+  "cumulfreq" : 74.9,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2005",
+  "upper" : "2008",
+  "cumulfreq" : 75.0,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2009",
+  "upper" : "2012",
+  "cumulfreq" : 75.1,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2013",
+  "upper" : "2015",
+  "cumulfreq" : 75.2,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2016",
+  "upper" : "2016",
+  "cumulfreq" : 75.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2017",
+  "upper" : "2017",
+  "cumulfreq" : 75.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2018",
+  "upper" : "2019",
+  "cumulfreq" : 75.5,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2020",
+  "upper" : "2021",
+  "cumulfreq" : 75.6,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2022",
+  "upper" : "2023",
+  "cumulfreq" : 75.7,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2024",
+  "upper" : "2025",
+  "cumulfreq" : 75.8,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2026",
+  "upper" : "2029",
+  "cumulfreq" : 75.9,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2030",
+  "upper" : "2031",
+  "cumulfreq" : 76.0,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2032",
+  "upper" : "2034",
+  "cumulfreq" : 76.1,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2035",
+  "upper" : "2035",
+  "cumulfreq" : 76.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2036",
+  "upper" : "2039",
+  "cumulfreq" : 76.3,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2040",
+  "upper" : "2041",
+  "cumulfreq" : 76.3,
+  "freq" : 0.0,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2042",
+  "upper" : "2043",
+  "cumulfreq" : 76.5,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2044",
+  "upper" : "2044",
+  "cumulfreq" : 76.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2045",
+  "upper" : "2046",
+  "cumulfreq" : 76.7,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2047",
+  "upper" : "2049",
+  "cumulfreq" : 76.8,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2050",
+  "upper" : "2051",
+  "cumulfreq" : 76.9,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2052",
+  "upper" : "2053",
+  "cumulfreq" : 76.9,
+  "freq" : 0.0,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2054",
+  "upper" : "2058",
+  "cumulfreq" : 77.0,
+  "freq" : 0.1,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2059",
+  "upper" : "2060",
+  "cumulfreq" : 77.1,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2061",
+  "upper" : "2064",
+  "cumulfreq" : 77.2,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2065",
+  "upper" : "2066",
+  "cumulfreq" : 77.3,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2067",
+  "upper" : "2068",
+  "cumulfreq" : 77.4,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2069",
+  "upper" : "2070",
+  "cumulfreq" : 77.5,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2071",
+  "upper" : "2074",
+  "cumulfreq" : 77.6,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2075",
+  "upper" : "2076",
+  "cumulfreq" : 77.7,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2077",
+  "upper" : "2079",
+  "cumulfreq" : 77.8,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2080",
+  "upper" : "2080",
+  "cumulfreq" : 77.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2081",
+  "upper" : "2082",
+  "cumulfreq" : 78.0,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2083",
+  "upper" : "2084",
+  "cumulfreq" : 78.1,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2085",
+  "upper" : "2086",
+  "cumulfreq" : 78.2,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2087",
+  "upper" : "2087",
+  "cumulfreq" : 78.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2088",
+  "upper" : "2092",
+  "cumulfreq" : 78.4,
+  "freq" : 0.1,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2093",
+  "upper" : "2094",
+  "cumulfreq" : 78.5,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2095",
+  "upper" : "2096",
+  "cumulfreq" : 78.6,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2097",
+  "upper" : "2099",
+  "cumulfreq" : 78.7,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2100",
+  "upper" : "2103",
+  "cumulfreq" : 78.8,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2104",
+  "upper" : "2105",
+  "cumulfreq" : 78.9,
+  "freq" : 0.0,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2106",
+  "upper" : "2110",
+  "cumulfreq" : 79.0,
+  "freq" : 0.1,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2111",
+  "upper" : "2112",
+  "cumulfreq" : 79.1,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2113",
+  "upper" : "2115",
+  "cumulfreq" : 79.2,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2116",
+  "upper" : "2120",
+  "cumulfreq" : 79.3,
+  "freq" : 0.1,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2121",
+  "upper" : "2126",
+  "cumulfreq" : 79.4,
+  "freq" : 0.1,
+  "numberOfItems" : 6
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2127",
+  "upper" : "2129",
+  "cumulfreq" : 79.5,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2130",
+  "upper" : "2132",
+  "cumulfreq" : 79.6,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2133",
+  "upper" : "2135",
+  "cumulfreq" : 79.7,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2136",
+  "upper" : "2136",
+  "cumulfreq" : 79.8,
+  "freq" : 0.0,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2137",
+  "upper" : "2142",
+  "cumulfreq" : 79.9,
+  "freq" : 0.1,
+  "numberOfItems" : 6
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2143",
+  "upper" : "2146",
+  "cumulfreq" : 80.0,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2147",
+  "upper" : "2147",
+  "cumulfreq" : 80.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2148",
+  "upper" : "2154",
+  "cumulfreq" : 80.1,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2155",
+  "upper" : "2157",
+  "cumulfreq" : 80.3,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2158",
+  "upper" : "2160",
+  "cumulfreq" : 80.4,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2161",
+  "upper" : "2162",
+  "cumulfreq" : 80.5,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2163",
+  "upper" : "2163",
+  "cumulfreq" : 80.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2164",
+  "upper" : "2165",
+  "cumulfreq" : 80.7,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2166",
+  "upper" : "2166",
+  "cumulfreq" : 80.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2167",
+  "upper" : "2167",
+  "cumulfreq" : 80.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2168",
+  "upper" : "2169",
+  "cumulfreq" : 80.9,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2170",
+  "upper" : "2172",
+  "cumulfreq" : 81.0,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2173",
+  "upper" : "2173",
+  "cumulfreq" : 81.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2174",
+  "upper" : "2176",
+  "cumulfreq" : 81.2,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2177",
+  "upper" : "2181",
+  "cumulfreq" : 81.3,
+  "freq" : 0.1,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2182",
+  "upper" : "2183",
+  "cumulfreq" : 81.4,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2184",
+  "upper" : "2187",
+  "cumulfreq" : 81.5,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2188",
+  "upper" : "2188",
+  "cumulfreq" : 81.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2189",
+  "upper" : "2189",
+  "cumulfreq" : 81.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2190",
+  "upper" : "2191",
+  "cumulfreq" : 81.8,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2192",
+  "upper" : "2193",
+  "cumulfreq" : 81.9,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2194",
+  "upper" : "2196",
+  "cumulfreq" : 82.0,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2197",
+  "upper" : "2198",
+  "cumulfreq" : 82.1,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2199",
+  "upper" : "2201",
+  "cumulfreq" : 82.2,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2202",
+  "upper" : "2202",
+  "cumulfreq" : 82.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2203",
+  "upper" : "2206",
+  "cumulfreq" : 82.4,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2207",
+  "upper" : "2208",
+  "cumulfreq" : 82.5,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2209",
+  "upper" : "2209",
+  "cumulfreq" : 82.6,
+  "freq" : 0.0,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2210",
+  "upper" : "2212",
+  "cumulfreq" : 82.7,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2213",
+  "upper" : "2214",
+  "cumulfreq" : 82.8,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2215",
+  "upper" : "2215",
+  "cumulfreq" : 82.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2216",
+  "upper" : "2217",
+  "cumulfreq" : 83.0,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2218",
+  "upper" : "2222",
+  "cumulfreq" : 83.1,
+  "freq" : 0.1,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2223",
+  "upper" : "2224",
+  "cumulfreq" : 83.2,
+  "freq" : 0.0,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2225",
+  "upper" : "2226",
+  "cumulfreq" : 83.3,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2227",
+  "upper" : "2231",
+  "cumulfreq" : 83.4,
+  "freq" : 0.1,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2232",
+  "upper" : "2237",
+  "cumulfreq" : 83.5,
+  "freq" : 0.1,
+  "numberOfItems" : 6
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2238",
+  "upper" : "2246",
+  "cumulfreq" : 83.6,
+  "freq" : 0.1,
+  "numberOfItems" : 9
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2247",
+  "upper" : "2248",
+  "cumulfreq" : 83.7,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2249",
+  "upper" : "2250",
+  "cumulfreq" : 83.8,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2251",
+  "upper" : "2251",
+  "cumulfreq" : 83.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2252",
+  "upper" : "2256",
+  "cumulfreq" : 84.0,
+  "freq" : 0.1,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2257",
+  "upper" : "2258",
+  "cumulfreq" : 84.1,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2259",
+  "upper" : "2260",
+  "cumulfreq" : 84.1,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2261",
+  "upper" : "2261",
+  "cumulfreq" : 84.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2262",
+  "upper" : "2264",
+  "cumulfreq" : 84.4,
+  "freq" : 0.2,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2265",
+  "upper" : "2265",
+  "cumulfreq" : 84.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2266",
+  "upper" : "2267",
+  "cumulfreq" : 84.6,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2268",
+  "upper" : "2270",
+  "cumulfreq" : 84.7,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2271",
+  "upper" : "2272",
+  "cumulfreq" : 84.7,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2273",
+  "upper" : "2276",
+  "cumulfreq" : 84.8,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2277",
+  "upper" : "2281",
+  "cumulfreq" : 85.0,
+  "freq" : 0.1,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2282",
+  "upper" : "2283",
+  "cumulfreq" : 85.0,
+  "freq" : 0.0,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2284",
+  "upper" : "2284",
+  "cumulfreq" : 85.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2285",
+  "upper" : "2285",
+  "cumulfreq" : 85.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2286",
+  "upper" : "2287",
+  "cumulfreq" : 85.3,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2288",
+  "upper" : "2290",
+  "cumulfreq" : 85.5,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2291",
+  "upper" : "2291",
+  "cumulfreq" : 85.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2292",
+  "upper" : "2293",
+  "cumulfreq" : 85.6,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2294",
+  "upper" : "2298",
+  "cumulfreq" : 85.8,
+  "freq" : 0.1,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2299",
+  "upper" : "2299",
+  "cumulfreq" : 85.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2300",
+  "upper" : "2302",
+  "cumulfreq" : 85.9,
+  "freq" : 0.0,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2303",
+  "upper" : "2304",
+  "cumulfreq" : 86.1,
+  "freq" : 0.2,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2305",
+  "upper" : "2307",
+  "cumulfreq" : 86.1,
+  "freq" : 0.0,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2308",
+  "upper" : "2309",
+  "cumulfreq" : 86.2,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2310",
+  "upper" : "2311",
+  "cumulfreq" : 86.3,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2312",
+  "upper" : "2313",
+  "cumulfreq" : 86.5,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2314",
+  "upper" : "2314",
+  "cumulfreq" : 86.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2315",
+  "upper" : "2317",
+  "cumulfreq" : 86.6,
+  "freq" : 0.0,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2318",
+  "upper" : "2319",
+  "cumulfreq" : 86.7,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2320",
+  "upper" : "2321",
+  "cumulfreq" : 86.8,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2322",
+  "upper" : "2323",
+  "cumulfreq" : 86.9,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2324",
+  "upper" : "2328",
+  "cumulfreq" : 87.0,
+  "freq" : 0.1,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2329",
+  "upper" : "2333",
+  "cumulfreq" : 87.1,
+  "freq" : 0.1,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2334",
+  "upper" : "2334",
+  "cumulfreq" : 87.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2335",
+  "upper" : "2337",
+  "cumulfreq" : 87.3,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2338",
+  "upper" : "2338",
+  "cumulfreq" : 87.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2339",
+  "upper" : "2341",
+  "cumulfreq" : 87.5,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2342",
+  "upper" : "2344",
+  "cumulfreq" : 87.6,
+  "freq" : 0.2,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2345",
+  "upper" : "2346",
+  "cumulfreq" : 87.7,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2347",
+  "upper" : "2349",
+  "cumulfreq" : 87.8,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2350",
+  "upper" : "2350",
+  "cumulfreq" : 87.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2351",
+  "upper" : "2352",
+  "cumulfreq" : 88.0,
+  "freq" : 0.0,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2353",
+  "upper" : "2354",
+  "cumulfreq" : 88.1,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2355",
+  "upper" : "2355",
+  "cumulfreq" : 88.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2356",
+  "upper" : "2360",
+  "cumulfreq" : 88.3,
+  "freq" : 0.1,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2361",
+  "upper" : "2362",
+  "cumulfreq" : 88.4,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2363",
+  "upper" : "2364",
+  "cumulfreq" : 88.5,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2365",
+  "upper" : "2367",
+  "cumulfreq" : 88.6,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2368",
+  "upper" : "2371",
+  "cumulfreq" : 88.7,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2372",
+  "upper" : "2373",
+  "cumulfreq" : 88.8,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2374",
+  "upper" : "2375",
+  "cumulfreq" : 88.9,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2376",
+  "upper" : "2380",
+  "cumulfreq" : 88.9,
+  "freq" : 0.0,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2381",
+  "upper" : "2383",
+  "cumulfreq" : 89.0,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2384",
+  "upper" : "2387",
+  "cumulfreq" : 89.1,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2388",
+  "upper" : "2392",
+  "cumulfreq" : 89.3,
+  "freq" : 0.1,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2393",
+  "upper" : "2397",
+  "cumulfreq" : 89.4,
+  "freq" : 0.1,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2398",
+  "upper" : "2399",
+  "cumulfreq" : 89.5,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2400",
+  "upper" : "2403",
+  "cumulfreq" : 89.6,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2404",
+  "upper" : "2404",
+  "cumulfreq" : 89.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2405",
+  "upper" : "2408",
+  "cumulfreq" : 89.7,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2409",
+  "upper" : "2412",
+  "cumulfreq" : 89.9,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2413",
+  "upper" : "2415",
+  "cumulfreq" : 89.9,
+  "freq" : 0.0,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2416",
+  "upper" : "2417",
+  "cumulfreq" : 90.0,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2422",
+  "upper" : "2424",
+  "cumulfreq" : 90.2,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2425",
+  "upper" : "2427",
+  "cumulfreq" : 90.2,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2428",
+  "upper" : "2430",
+  "cumulfreq" : 90.3,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2431",
+  "upper" : "2432",
+  "cumulfreq" : 90.5,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2433",
+  "upper" : "2433",
+  "cumulfreq" : 90.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2434",
+  "upper" : "2434",
+  "cumulfreq" : 90.6,
+  "freq" : 0.0,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2435",
+  "upper" : "2436",
+  "cumulfreq" : 90.8,
+  "freq" : 0.2,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2437",
+  "upper" : "2437",
+  "cumulfreq" : 90.8,
+  "freq" : 0.0,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2438",
+  "upper" : "2439",
+  "cumulfreq" : 90.9,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2440",
+  "upper" : "2442",
+  "cumulfreq" : 91.0,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2443",
+  "upper" : "2443",
+  "cumulfreq" : 91.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2444",
+  "upper" : "2446",
+  "cumulfreq" : 91.2,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2447",
+  "upper" : "2451",
+  "cumulfreq" : 91.3,
+  "freq" : 0.1,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2452",
+  "upper" : "2453",
+  "cumulfreq" : 91.4,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2454",
+  "upper" : "2457",
+  "cumulfreq" : 91.6,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2458",
+  "upper" : "2458",
+  "cumulfreq" : 91.7,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2459",
+  "upper" : "2460",
+  "cumulfreq" : 91.7,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2461",
+  "upper" : "2461",
+  "cumulfreq" : 91.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2462",
+  "upper" : "2464",
+  "cumulfreq" : 91.9,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2465",
+  "upper" : "2466",
+  "cumulfreq" : 92.0,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2467",
+  "upper" : "2468",
+  "cumulfreq" : 92.1,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2469",
+  "upper" : "2471",
+  "cumulfreq" : 92.2,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2472",
+  "upper" : "2473",
+  "cumulfreq" : 92.3,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2474",
+  "upper" : "2477",
+  "cumulfreq" : 92.4,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2478",
+  "upper" : "2478",
+  "cumulfreq" : 92.5,
+  "freq" : 0.0,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2479",
+  "upper" : "2480",
+  "cumulfreq" : 92.6,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2481",
+  "upper" : "2482",
+  "cumulfreq" : 92.7,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2483",
+  "upper" : "2484",
+  "cumulfreq" : 92.8,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2485",
+  "upper" : "2485",
+  "cumulfreq" : 92.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2486",
+  "upper" : "2488",
+  "cumulfreq" : 93.0,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2489",
+  "upper" : "2492",
+  "cumulfreq" : 93.1,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2493",
+  "upper" : "2494",
+  "cumulfreq" : 93.2,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2495",
+  "upper" : "2498",
+  "cumulfreq" : 93.2,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2499",
+  "upper" : "2502",
+  "cumulfreq" : 93.4,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2503",
+  "upper" : "2514",
+  "cumulfreq" : 93.5,
+  "freq" : 0.1,
+  "numberOfItems" : 12
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2515",
+  "upper" : "2516",
+  "cumulfreq" : 93.5,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2517",
+  "upper" : "2518",
+  "cumulfreq" : 93.7,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2519",
+  "upper" : "2519",
+  "cumulfreq" : 93.7,
+  "freq" : 0.0,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2520",
+  "upper" : "2523",
+  "cumulfreq" : 93.9,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2524",
+  "upper" : "2526",
+  "cumulfreq" : 94.0,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2527",
+  "upper" : "2529",
+  "cumulfreq" : 94.1,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2530",
+  "upper" : "2530",
+  "cumulfreq" : 94.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2531",
+  "upper" : "2531",
+  "cumulfreq" : 94.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2532",
+  "upper" : "2533",
+  "cumulfreq" : 94.3,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2534",
+  "upper" : "2535",
+  "cumulfreq" : 94.4,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2536",
+  "upper" : "2537",
+  "cumulfreq" : 94.5,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2538",
+  "upper" : "2540",
+  "cumulfreq" : 94.6,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2541",
+  "upper" : "2542",
+  "cumulfreq" : 94.7,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2543",
+  "upper" : "2546",
+  "cumulfreq" : 94.8,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2547",
+  "upper" : "2550",
+  "cumulfreq" : 94.9,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2551",
+  "upper" : "2553",
+  "cumulfreq" : 95.1,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2554",
+  "upper" : "2554",
+  "cumulfreq" : 95.1,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2555",
+  "upper" : "2555",
+  "cumulfreq" : 95.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2556",
+  "upper" : "2557",
+  "cumulfreq" : 95.3,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2558",
+  "upper" : "2559",
+  "cumulfreq" : 95.4,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2560",
+  "upper" : "2560",
+  "cumulfreq" : 95.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2561",
+  "upper" : "2563",
+  "cumulfreq" : 95.6,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2564",
+  "upper" : "2567",
+  "cumulfreq" : 95.7,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2568",
+  "upper" : "2568",
+  "cumulfreq" : 95.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2569",
+  "upper" : "2572",
+  "cumulfreq" : 95.9,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2573",
+  "upper" : "2573",
+  "cumulfreq" : 96.0,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2574",
+  "upper" : "2576",
+  "cumulfreq" : 96.1,
+  "freq" : 0.0,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2577",
+  "upper" : "2579",
+  "cumulfreq" : 96.2,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2580",
+  "upper" : "2581",
+  "cumulfreq" : 96.3,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2582",
+  "upper" : "2582",
+  "cumulfreq" : 96.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2583",
+  "upper" : "2583",
+  "cumulfreq" : 96.5,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2584",
+  "upper" : "2587",
+  "cumulfreq" : 96.6,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2588",
+  "upper" : "2588",
+  "cumulfreq" : 96.7,
+  "freq" : 0.0,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2589",
+  "upper" : "2591",
+  "cumulfreq" : 96.8,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2592",
+  "upper" : "2595",
+  "cumulfreq" : 96.9,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2596",
+  "upper" : "2597",
+  "cumulfreq" : 97.0,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2598",
+  "upper" : "2602",
+  "cumulfreq" : 97.0,
+  "freq" : 0.1,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2603",
+  "upper" : "2604",
+  "cumulfreq" : 97.2,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2605",
+  "upper" : "2606",
+  "cumulfreq" : 97.3,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2607",
+  "upper" : "2607",
+  "cumulfreq" : 97.3,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2608",
+  "upper" : "2611",
+  "cumulfreq" : 97.5,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2612",
+  "upper" : "2613",
+  "cumulfreq" : 97.6,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2614",
+  "upper" : "2615",
+  "cumulfreq" : 97.7,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2616",
+  "upper" : "2618",
+  "cumulfreq" : 97.8,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2619",
+  "upper" : "2619",
+  "cumulfreq" : 97.9,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2620",
+  "upper" : "2621",
+  "cumulfreq" : 97.9,
+  "freq" : 0.0,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2622",
+  "upper" : "2624",
+  "cumulfreq" : 98.1,
+  "freq" : 0.2,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2625",
+  "upper" : "2625",
+  "cumulfreq" : 98.2,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2626",
+  "upper" : "2629",
+  "cumulfreq" : 98.2,
+  "freq" : 0.0,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2630",
+  "upper" : "2632",
+  "cumulfreq" : 98.4,
+  "freq" : 0.2,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2633",
+  "upper" : "2633",
+  "cumulfreq" : 98.4,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2634",
+  "upper" : "2636",
+  "cumulfreq" : 98.5,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2637",
+  "upper" : "2640",
+  "cumulfreq" : 98.6,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2641",
+  "upper" : "2643",
+  "cumulfreq" : 98.7,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2644",
+  "upper" : "2644",
+  "cumulfreq" : 98.8,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2645",
+  "upper" : "2649",
+  "cumulfreq" : 98.9,
+  "freq" : 0.0,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2650",
+  "upper" : "2653",
+  "cumulfreq" : 99.1,
+  "freq" : 0.2,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2654",
+  "upper" : "2657",
+  "cumulfreq" : 99.2,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2658",
+  "upper" : "2662",
+  "cumulfreq" : 99.2,
+  "freq" : 0.1,
+  "numberOfItems" : 5
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2663",
+  "upper" : "2666",
+  "cumulfreq" : 99.3,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2667",
+  "upper" : "2668",
+  "cumulfreq" : 99.4,
+  "freq" : 0.1,
+  "numberOfItems" : 2
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2669",
+  "upper" : "2672",
+  "cumulfreq" : 99.5,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2673",
+  "upper" : "2673",
+  "cumulfreq" : 99.6,
+  "freq" : 0.1,
+  "numberOfItems" : 1
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2674",
+  "upper" : "2677",
+  "cumulfreq" : 99.7,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2678",
+  "upper" : "2681",
+  "cumulfreq" : 99.8,
+  "freq" : 0.1,
+  "numberOfItems" : 4
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2682",
+  "upper" : "2684",
+  "cumulfreq" : 99.9,
+  "freq" : 0.0,
+  "numberOfItems" : 3
+}, {
+  "attribute" : "device_id",
+  "value" : null,
+  "lower" : "2685",
+  "upper" : "2942",
+  "cumulfreq" : 100.0,
+  "freq" : 0.1,
+  "numberOfItems" : 3
+} ]

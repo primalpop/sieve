@@ -15,11 +15,11 @@
 log/
 target/
 
-*.json
-!histogram/*.json
 *results/
 *.csv
 *.swp
+
+*data/
 
 *credentials/
 !*/credentials/

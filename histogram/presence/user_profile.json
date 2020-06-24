@@ -1,0 +1,41 @@
+[ {
+  "attribute" : "user_profile",
+  "value" : "faculty",
+  "lower" : null,
+  "upper" : null,
+  "cumulfreq" : 5.6,
+  "freq" : 5.6,
+  "numberOfItems" : 0
+}, {
+  "attribute" : "user_profile",
+  "value" : "graduate",
+  "lower" : null,
+  "upper" : null,
+  "cumulfreq" : 53.9,
+  "freq" : 48.4,
+  "numberOfItems" : 0
+}, {
+  "attribute" : "user_profile",
+  "value" : "staff",
+  "lower" : null,
+  "upper" : null,
+  "cumulfreq" : 64.0,
+  "freq" : 10.1,
+  "numberOfItems" : 0
+}, {
+  "attribute" : "user_profile",
+  "value" : "undergrad",
+  "lower" : null,
+  "upper" : null,
+  "cumulfreq" : 75.7,
+  "freq" : 11.7,
+  "numberOfItems" : 0
+}, {
+  "attribute" : "user_profile",
+  "value" : "visitor",
+  "lower" : null,
+  "upper" : null,
+  "cumulfreq" : 100.0,
+  "freq" : 24.3,
+  "numberOfItems" : 0
+} ]
