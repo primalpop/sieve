@@ -22,6 +22,3 @@ target/
 *data/
 
 *credentials/
-!*/credentials/
-*credentials/*
-!*/credentials/sample/
